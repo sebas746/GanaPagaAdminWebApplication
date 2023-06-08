@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React from 'react'
 import {useIntl} from 'react-intl'
-import {KTSVG} from '../../../../helpers'
 import {SidebarMenuItemWithSub} from './SidebarMenuItemWithSub'
 import {SidebarMenuItem} from './SidebarMenuItem'
 
@@ -27,6 +26,64 @@ const SidebarMenuMain = () => {
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Crafted</span>
         </div>
       </div>
+
+      <SidebarMenuItemWithSub
+        to='/pages/raffle-results'
+        title='Resultados Sorteos'
+        icon='/media/icons/duotune/graphs/gra001.svg'
+        fontIcon='bi-graph-up-arrow'
+      >
+        <SidebarMenuItem
+          to='/pages/raffle-results/animal-game'
+          title='Animalitos'
+          hasBullet={true}
+        />
+        <SidebarMenuItem
+          to='/pages/raffle-results/chance-3-digits'
+          title='Chance de 3 cifras'
+          hasBullet={true}
+        />
+        <SidebarMenuItem
+          to='/pages/raffle-results/chance-4-digits'
+          title='Chance de 4 cifras'
+          hasBullet={true}
+        />
+        <SidebarMenuItem
+          to='/pages/raffle-results/chance-zodiac'
+          title='Chance Zodiacal'
+          hasBullet={true}
+        />
+      </SidebarMenuItemWithSub>
+
+      <SidebarMenuItemWithSub
+        to='/pages/game-scrutiny'
+        title='Escrutinio Sorteos'
+        icon='/media/icons/duotune/files/fil024.svg'
+        fontIcon='bi-cash-coin'
+      >
+        <SidebarMenuItem
+          to='/pages/scrutiny/animal-game'
+          title='Animalitos'
+          hasBullet={true}
+        />
+        <SidebarMenuItem
+          to='/pages/scrutiny/chance-3-digits'
+          title='Chance de 3 cifras'
+          hasBullet={true}
+        />
+        <SidebarMenuItem
+          to='/pages/scrutiny/chance-4-digits'
+          title='Chance de 4 cifras'
+          hasBullet={true}
+        />
+        <SidebarMenuItem
+          to='/pages/scrutiny/chance-zodiac'
+          title='Chance Zodiacal'
+          hasBullet={true}
+        />
+      </SidebarMenuItemWithSub>
+
+
       <SidebarMenuItemWithSub
         to='/crafted/pages'
         title='Pages'
@@ -93,39 +150,6 @@ const SidebarMenuMain = () => {
         <SidebarMenuItem to='/crafted/widgets/tables' title='Tables' hasBullet={true} />
         <SidebarMenuItem to='/crafted/widgets/feeds' title='Feeds' hasBullet={true} />
       </SidebarMenuItemWithSub>
-      <div className='menu-item'>
-        <div className='menu-content pt-8 pb-2'>
-          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Apps</span>
-        </div>
-      </div>
-      <SidebarMenuItemWithSub
-        to='/apps/chat'
-        title='Chat'
-        fontIcon='bi-chat-left'
-        icon='/media/icons/duotune/communication/com012.svg'
-      >
-        <SidebarMenuItem to='/apps/chat/private-chat' title='Private Chat' hasBullet={true} />
-        <SidebarMenuItem to='/apps/chat/group-chat' title='Group Chart' hasBullet={true} />
-        <SidebarMenuItem to='/apps/chat/drawer-chat' title='Drawer Chart' hasBullet={true} />
-      </SidebarMenuItemWithSub>
-      <SidebarMenuItem
-        to='/apps/user-management/users'
-        icon='/media/icons/duotune/general/gen051.svg'
-        title='User management'
-        fontIcon='bi-layers'
-      />
-      <div className='menu-item'>
-        <a
-          target='_blank'
-          className='menu-link'
-          href={process.env.REACT_APP_PREVIEW_DOCS_URL + '/docs/changelog'}
-        >
-          <span className='menu-icon'>
-            <KTSVG path='/media/icons/duotune/general/gen005.svg' className='svg-icon-2' />
-          </span>
-          <span className='menu-title'>Changelog {process.env.REACT_APP_VERSION}</span>
-        </a>
-      </div>
     </>
   )
 }

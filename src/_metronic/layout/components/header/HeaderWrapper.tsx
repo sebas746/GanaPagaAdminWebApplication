@@ -3,7 +3,6 @@ import clsx from 'clsx'
 import {Link} from 'react-router-dom'
 import {KTSVG, toAbsoluteUrl} from '../../../helpers'
 import {useLayout} from '../../core'
-import {Header} from './Header'
 import {Navbar} from './Navbar'
 
 export function HeaderWrapper() {
@@ -72,26 +71,8 @@ export function HeaderWrapper() {
 
         <div
           id='kt_app_header_wrapper'
-          className='d-flex align-items-stretch justify-content-between flex-lg-grow-1'
+          className='d-flex align-items-stretch justify-content-end flex-lg-grow-1'
         >
-          {config.app.header.default?.content === 'menu' &&
-            config.app.header.default.menu?.display && (
-              <div
-                className='app-header-menu app-header-mobile-drawer align-items-stretch'
-                data-kt-drawer='true'
-                data-kt-drawer-name='app-header-menu'
-                data-kt-drawer-activate='{default: true, lg: false}'
-                data-kt-drawer-overlay='true'
-                data-kt-drawer-width='225px'
-                data-kt-drawer-direction='end'
-                data-kt-drawer-toggle='#kt_app_header_menu_toggle'
-                data-kt-swapper='true'
-                data-kt-swapper-mode="{default: 'append', lg: 'prepend'}"
-                data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_wrapper'}"
-              >
-                <Header />
-              </div>
-            )}
           <Navbar />
         </div>
       </div>
