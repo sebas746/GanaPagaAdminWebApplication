@@ -19,6 +19,8 @@ import './_metronic/assets/sass/plugins.scss'
 import './_metronic/assets/sass/style.react.scss'
 import {AppRoutes} from './app/routing/AppRoutes'
 import {setupAxios} from './app/modules/auth'
+import {oidcConfig} from './app/config/oidc-identity-server'
+import {AuthProvider} from 'oidc-react'
 /**
  * Creates `axios-mock-adapter` instance for provided `axios` instance, add
  * basic Metronic mocks and returns it.
@@ -37,13 +39,13 @@ const queryClient = new QueryClient()
 const container = document.getElementById('root')
 if (container) {
   createRoot(container).render(
-    // <AuthProvider {...oidcConfig}>
+    <AuthProvider {...oidcConfig}>
       <QueryClientProvider client={queryClient}>
         <MetronicI18nProvider>
           <AppRoutes />
         </MetronicI18nProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-    // </AuthProvider>
+    </AuthProvider>
   )
 }

@@ -10,7 +10,7 @@ export const IDENTITY_CONFIG = {
   // audience: 'https://example.com', // is there a way to specific the audience when making the jwt
   responseType: 'code', // (string, default: 'id_token'): The type of response desired from the OIDC provider.
   grantType: 'client_credentials',
-  scope: 'openid profile ganapagaweb.read ganapagaweb.write', // (string, default: 'openid'): The scope being requested from the OIDC provider.
+  scope: 'openid profile ganapagawebadmin.read ganapagawebadmin.write', // (string, default: 'openid'): The scope being requested from the OIDC provider.
   webAuthResponseType: 'code',
 };
 
