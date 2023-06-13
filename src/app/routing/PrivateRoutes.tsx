@@ -15,6 +15,8 @@ const PrivateRoutes = () => {
   const WidgetsPage = lazy(() => import('../modules/widgets/WidgetsPage'))
   const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'))
   const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'))
+  const RaffleResultsPage = lazy(() => import('../modules/raffle-results/RaffleResultPage'))
+  const ScrutinyPage = lazy(() => import('../modules/scrutiny/ScrutinyPage'))
 
   return (
     <Routes>
@@ -71,6 +73,22 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <UsersPage />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='pages/raffle-results/*'
+          element={
+            <SuspensedView>
+              <RaffleResultsPage />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='pages/scrutiny/*'
+          element={
+            <SuspensedView>
+              <ScrutinyPage />
             </SuspensedView>
           }
         />

@@ -31,6 +31,9 @@ module.exports = {
     filename: '[name].js',
   },
   resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src/app/'),
+    },
     extensions: ['.scss'],
   },
   plugins: [
