@@ -41,8 +41,9 @@ const registrationSchema = Yup.object().shape({
     .required('Password confirmation is required')
     .when('password', {
       is: (val: string) => (val && val.length > 0 ? true : false),
-      then: Yup.string().oneOf([Yup.ref('password')], "Password and Confirm Password didn't match"),
-    }),
+      then: (schema) => schema.oneOf([Yup.ref('password')], "Password and Confirm Password didn't match"),
+    })
+    ,
   acceptTerms: Yup.bool().required('You must accept the terms and conditions'),
 })
 
