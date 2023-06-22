@@ -4,10 +4,16 @@ import RaffleResultCard from '../../../components/Cards/RaffleResultCard/RaffleR
 import {useRaffleResultsAnimalitos} from './RaffleResultsAnimalitos.hook'
 import clsx from 'clsx'
 import {IAnimalDetail, IRaffleResultAnimalitosDetail} from '../../../../types/Animalitos.types'
+import ConditionalRendering from '../../../helpers/ConditionalRedering'
 
 const RaffleResultsAnimalitos = () => {
-  const {raffleResultState, isLoading, setSelectedTab, setRaffleResultForm, changeRaffleAnimalitoResult} =
-    useRaffleResultsAnimalitos()
+  const {
+    raffleResultState,
+    isLoading,
+    setSelectedTab,
+    setRaffleResultForm,
+    changeRaffleAnimalitoResult,
+  } = useRaffleResultsAnimalitos()
 
   const renderAnimalitosTabs = useMemo(() => {
     return raffleResultState.animalitosLotteries.map((lottery) => {
@@ -31,9 +37,13 @@ const RaffleResultsAnimalitos = () => {
     })
   }, [raffleResultState.animalitosLotteries])
 
-  const renderResultCard = (raffles: IRaffleResultAnimalitosDetail[], animalOptions: IAnimalDetail[]) =>
+  const renderResultCard = (
+    raffles: IRaffleResultAnimalitosDetail[],
+    animalOptions: IAnimalDetail[]
+  ) =>
     raffles.map((raffle) => {
-      const wrapAddRaffleAnimalitosResult = (selectedAnimal: string) => changeRaffleAnimalitoResult(raffle, selectedAnimal)
+      const wrapAddRaffleAnimalitosResult = (selectedAnimal: string) =>
+        changeRaffleAnimalitoResult(raffle, selectedAnimal)
       return (
         <div
           className='col-sm-12 col-md-4'
@@ -72,7 +82,7 @@ const RaffleResultsAnimalitos = () => {
       </div>
     ))
 
-  if (isLoading) {
+  const renderLoader = () => {
     return (
       <div className='spinner-border' role='status'>
         <span className='sr-only'>Loading...</span>
@@ -88,6 +98,7 @@ const RaffleResultsAnimalitos = () => {
             setRaffleForm={setRaffleResultForm}
           />
         </div>
+
         <ul
           className='nav nav-tabs nav-line-tabs nav-line-tabs-2x mb-5 fs-6'
           id='pills-tab'
@@ -97,7 +108,8 @@ const RaffleResultsAnimalitos = () => {
         </ul>
       </div>
       <div className='tab-content' id='pills-tabContent'>
-        {renderAnimalitosTabContent()}
+        {!isLoading && renderAnimalitosTabContent()}
+        {isLoading && renderLoader()}
       </div>
     </div>
   )

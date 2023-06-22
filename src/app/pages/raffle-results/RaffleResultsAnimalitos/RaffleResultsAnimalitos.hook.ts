@@ -11,6 +11,7 @@ import {QueryResponse, ReactQueryResponse} from '../../../../types/Generics'
 import {RaffleResultsForm} from '../../../../types/Forms.types'
 import {DateTime} from 'luxon'
 import raffleResultForm from '../../../components/Forms/RaffleResultForm/RaffleResultForm'
+import {batch} from '@preact/signals-react'
 
 enum RaffleResultsAnimalitosKind {
   SET_ANIMALITOS_LOTTERIES = 'SET_ANIMALITOS_LOTTERIES',
@@ -80,7 +81,7 @@ export const useRaffleResultsAnimalitos = () => {
     isLoadingAnimalitosLotteries: false,
     selectedTab: 1,
     raffleResultForm: {
-      date: DateTime.now().toString(),
+      date: DateTime.now().toFormat('yyyy-MM-dd').toString(),
       raffleResultStateId: '1',
     },
     raffleResultsByLottery: [],
@@ -117,7 +118,7 @@ export const useRaffleResultsAnimalitos = () => {
   >(
     'get-raffle-results-by-lottery',
     async () => {
-      await dispatchRaffleResult({
+      dispatchRaffleResult({
         type: RaffleResultsAnimalitosKind.SET_IS_LOADING_ANIMALITOS_LOTTERIES,
         payload: true,
       })
@@ -158,14 +159,18 @@ export const useRaffleResultsAnimalitos = () => {
       type: RaffleResultsAnimalitosKind.SET_RAFFLE_FORM,
       payload: form,
     })
-    getRaffleResultsByDateLottery()
   }
+
+  useEffect(() => {
+    if (!raffleResultState.isLoadingAnimalitosLotteries) {
+      getRaffleResultsByDateLottery()
+    }
+  }, [raffleResultState.raffleResultForm])
 
   const changeRaffleAnimalitoResult = async (
     raffleDetail: IRaffleResultAnimalitosDetail,
     animalitoSelected: string
   ) => {
-
     try {
       const algo = await addRaffleAnimalitosResultMutation({
         raffleId: Number(raffleDetail.animalitosRaffleId),
@@ -192,7 +197,10 @@ export const useRaffleResultsAnimalitos = () => {
         animalitosRaffleStatus: 'PendingApprove',
         raffleResultDetailResponse: raffleResultLottery,
       }
-      dispatchRaffleResult({type: RaffleResultsAnimalitosKind.SET_RAFFLE_RESULTS_BY_LOTTERY, payload: newRaffleResultLottery})
+      dispatchRaffleResult({
+        type: RaffleResultsAnimalitosKind.SET_RAFFLE_RESULTS_BY_LOTTERY,
+        payload: newRaffleResultLottery,
+      })
     } catch (error) {
       console.log(error)
     }

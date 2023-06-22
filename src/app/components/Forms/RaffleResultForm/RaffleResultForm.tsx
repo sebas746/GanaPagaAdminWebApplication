@@ -26,7 +26,12 @@ const RaffleResultForm = ({raffleFormState, setRaffleForm}: RaffleResultFormProp
               className='form-control'
               id='date'
               selected={DateTime.fromISO(formik.values.date).toJSDate()}
-              onChange={(date) => date && formik.handleChange({target: {name: 'date', value: DateTime.fromISO(date.toISOString()).toISODate()}})}
+              onChange={(date) =>
+                date &&
+                formik.handleChange({
+                  target: {name: 'date', value: DateTime.fromISO(date.toISOString()).toISODate()},
+                })
+              }
             />
           </div>
           <div className=''>
@@ -34,7 +39,7 @@ const RaffleResultForm = ({raffleFormState, setRaffleForm}: RaffleResultFormProp
               Estado del sorteo
             </label>
             <Form.Select
-              id='raffleResultId'
+              id='raffleResultStateId'
               onChange={formik.handleChange}
               value={formik.values.raffleResultStateId}
             >
