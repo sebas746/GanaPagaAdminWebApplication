@@ -3,26 +3,41 @@ import DatePicker from 'react-datepicker'
 import {useRaffleResultForm} from './RaffleResultForm.hook'
 import Button from 'react-bootstrap/Button'
 import {Form} from 'react-bootstrap'
+import {RaffleResultsForm} from '../../../../types/Forms.types'
+import {DateTime} from 'luxon'
 
-const RaffleResultForm = () => {
-  const {formik} = useRaffleResultForm()
+interface RaffleResultFormProps {
+  raffleFormState: RaffleResultsForm
+  setRaffleForm: (form: RaffleResultsForm) => void
+}
+
+const RaffleResultForm = ({raffleFormState, setRaffleForm}: RaffleResultFormProps) => {
+  const {formik} = useRaffleResultForm(raffleFormState, setRaffleForm)
 
   return (
     <div className='flex-center'>
       <form onSubmit={formik.handleSubmit}>
         <div className='d-flex align-items-end column-gap-8'>
           <div className=''>
-            <label className="fs-6" htmlFor='date'>Fecha de sorteo</label>
+            <label className='fs-6' htmlFor='date'>
+              Fecha de sorteo
+            </label>
             <DatePicker
               className='form-control'
               id='date'
-              selected={formik.values.date}
-              onChange={formik.handleChange}
+              selected={DateTime.fromISO(formik.values.date).toJSDate()}
+              onChange={(date) => date && formik.handleChange({target: {name: 'date', value: DateTime.fromISO(date.toISOString()).toISODate()}})}
             />
           </div>
           <div className=''>
-            <label className="fs-6" htmlFor='state'>Estado del sorteo</label>
-            <Form.Select id='state' onChange={formik.handleChange} value={formik.values.state}>
+            <label className='fs-6' htmlFor='state'>
+              Estado del sorteo
+            </label>
+            <Form.Select
+              id='raffleResultId'
+              onChange={formik.handleChange}
+              value={formik.values.raffleResultStateId}
+            >
               <option value='1'>Todos</option>
               <option value='2'>Sin Jugar Sorteo</option>
               <option value='3'>Pendiente Resultado</option>
@@ -31,7 +46,7 @@ const RaffleResultForm = () => {
             </Form.Select>
           </div>
           <div>
-            <Button type='submit' variant='primary' >
+            <Button type='submit' variant='primary'>
               Buscar
             </Button>
           </div>

@@ -2,8 +2,7 @@
 // @ts-nocheck
 import React, {useState, useEffect, useRef} from 'react'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
-import Highlight, {defaultProps, Language} from 'prism-react-renderer'
-import theme from 'prism-react-renderer/themes/shadesOfPurple'
+import {Highlight, Language, themes} from 'prism-react-renderer'
 import {OverlayTrigger, Tooltip} from 'react-bootstrap'
 
 type Props = {
@@ -50,7 +49,7 @@ const CodeBlock: React.FC<Props> = ({code, language}) => {
         </OverlayTrigger>
 
         <div className='highlight-code' ref={codeRef}>
-          <Highlight {...defaultProps} theme={theme} code={code} language={language}>
+          <Highlight theme={themes.shadesOfPurple} code={code} language={language}>
             {({className, style, tokens, getLineProps, getTokenProps}) => {
               return (
                 <pre className={className} style={{maxHeight: '300px', ...style}}>

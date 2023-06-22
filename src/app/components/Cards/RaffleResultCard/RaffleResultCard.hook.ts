@@ -1,35 +1,44 @@
-interface IRaffleResultHookCard {
-  state: 'no-played' | 'pending-result' | 'pending-approval' | 'approved'
-}
+import {RaffleStatus} from '../../../../types/Animalitos.types'
+import {useState} from 'react'
 
-export const useRaffleResultCard = ({state}: IRaffleResultHookCard) => {
+interface IRaffleResultHookCard extends RaffleStatus {}
+
+export const useRaffleResultCard = ({animalitosRaffleStatus}: IRaffleResultHookCard) => {
+  const [showRaffleResultForm, setShowRaffleResultForm] = useState(false)
+
+  const setRaffleResultForm = () => {
+    setShowRaffleResultForm(!showRaffleResultForm)
+  }
+
   const mapColorToState = {
-    'no-played': 'bg-secondary',
-    'pending-result': 'bg-danger',
-    'pending-approval': 'bg-warning',
-    approved: 'bg-success',
+    PendingDraw: 'bg-secondary',
+    PendingResult: 'bg-danger',
+    PendingApprove: 'bg-warning',
+    Approved: 'bg-success',
   }
 
   const mapColorTextToState = {
-    'no-played': 'text-dark',
-    'pending-result': 'text-white',
-    'pending-approval': 'text-white',
-    approved: 'text-white',
+    PendingDraw: 'text-dark',
+    PendingResult: 'text-white',
+    PendingApprove: 'text-white',
+    Approved: 'text-white',
   }
 
   const mapStateToText = {
-    'no-played': 'Sin jugar sorteo',
-    'pending-result': 'Pendiente resultado',
-    'pending-approval': 'Pendiente de aprobación',
-    approved: 'Ingresado y aprobado',
+    PendingDraw: 'Sin jugar sorteo',
+    PendingResult: 'Pendiente resultado',
+    PendingApprove: 'Pendiente de aprobación',
+    Approved: 'Ingresado y aprobado',
   }
-  const colorState = mapColorToState[state || 'no-played']
-  const textState = mapStateToText[state || 'no-played']
-  const colorTextState = mapColorTextToState[state || 'no-played']
+  const colorState = mapColorToState[animalitosRaffleStatus || 'PendingDraw']
+  const textState = mapStateToText[animalitosRaffleStatus || 'PendingDraw']
+  const colorTextState = mapColorTextToState[animalitosRaffleStatus || 'PendingDraw']
 
   return {
     colorState,
     textState,
     colorTextState,
+    showRaffleResultForm,
+    setRaffleResultForm
   }
 }

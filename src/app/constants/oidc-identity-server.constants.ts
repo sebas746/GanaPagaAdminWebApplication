@@ -1,4 +1,4 @@
-export const IDENTITY_CONFIG = {
+export const  IDENTITY_CONFIG = {
   authority: process.env.REACT_APP_AUTH_URL, // (string): The URL of the OIDC provider.
   clientId: process.env.REACT_APP_IDENTITY_CLIENT_ID, // (string): Your client application's identifier as registered with the OIDC provider.
   redirectUri: process.env.REACT_APP_REDIRECT_URL, // The URI of your client application to receive a response from the OIDC provider.
@@ -10,7 +10,7 @@ export const IDENTITY_CONFIG = {
   // audience: 'https://example.com', // is there a way to specific the audience when making the jwt
   responseType: 'code', // (string, default: 'id_token'): The type of response desired from the OIDC provider.
   grantType: 'client_credentials',
-  scope: 'openid profile ganapagawebadmin.read ganapagawebadmin.write', // (string, default: 'openid'): The scope being requested from the OIDC provider.
+  scope: 'openid profile ganapagawebadmin.read ganapagawebadmin.write offline_access', // (string, default: 'openid'): The scope being requested from the OIDC provider.
   webAuthResponseType: 'code',
 };
 

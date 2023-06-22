@@ -35,7 +35,19 @@ import {AuthProvider} from 'oidc-react'
 setupAxios(axios)
 Chart.register(...registerables)
 
-const queryClient = new QueryClient()
+const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      retry: false,
+      staleTime: twentyFourHoursInMs,
+    },
+  },
+})
 const container = document.getElementById('root')
 if (container) {
   createRoot(container).render(
@@ -44,7 +56,7 @@ if (container) {
         <MetronicI18nProvider>
           <AppRoutes />
         </MetronicI18nProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/*<ReactQueryDevtools initialIsOpen={false} />*/}
       </QueryClientProvider>
     </AuthProvider>
   )

@@ -38,7 +38,6 @@ const MasterLayout = () => {
                     <Outlet />
                   </Content>
                 </div>
-                <FooterWrapper />
               </div>
             </div>
           </div>
@@ -46,14 +45,9 @@ const MasterLayout = () => {
 
         {/* begin:: Drawers */}
         <ActivityDrawer />
-        <RightToolbar />
         <DrawerMessenger />
         {/* end:: Drawers */}
 
-        {/* begin:: Modals */}
-        <InviteUsers />
-        <UpgradePlan />
-        {/* end:: Modals */}
         <ScrollTop />
       </ThemeModeProvider>
     </PageDataProvider>

@@ -30,7 +30,7 @@ const passwordFormValidationSchema = Yup.object().shape({
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
     .required('Password is required')
-    .oneOf([Yup.ref('newPassword'), null], 'Passwords must match'),
+    .oneOf([Yup.ref('newPassword')], 'Passwords must match'),
 })
 
 const SignInMethod: React.FC = () => {
