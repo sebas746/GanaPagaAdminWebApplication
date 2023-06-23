@@ -38,5 +38,4 @@ export interface IRaffleResultAnimalitosResponse {
 export interface AddRaffleAnimalitosResultBody {
   raffleId: number
   raffleResultValue: string
-  raffleResultCreatedBy: string
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import {IAnimalDetail} from '../../../../types/Animalitos.types'
+import {IAnimalDetail, IRaffleResultAnimalitosDetail} from '../../../../types/Animalitos.types'
 import {Form} from 'react-bootstrap'
 import {useAddRaffleAnimalitoResultForm} from './AddRaffleAnimalitosResultForm.hook'
 import Button from 'react-bootstrap/Button'
@@ -9,6 +9,7 @@ interface AddRaffleAnimalitoResultFormProps {
   selectedOption: string
   addRaffleAnimalitosResult: (selectedAnimal: string) => void
   setRaffleResultForm: () => void
+  wrappedGetSubmitButtonText: (selectedOption: string | undefined) => string | undefined
 }
 
 const AddRaffleAnimalitoResultForm = ({
@@ -16,6 +17,7 @@ const AddRaffleAnimalitoResultForm = ({
   selectedOption,
   addRaffleAnimalitosResult,
   setRaffleResultForm,
+  wrappedGetSubmitButtonText,
 }: AddRaffleAnimalitoResultFormProps) => {
   const {formik} = useAddRaffleAnimalitoResultForm(addRaffleAnimalitosResult, selectedOption)
   return (
@@ -28,7 +30,7 @@ const AddRaffleAnimalitoResultForm = ({
         ))}
       </Form.Select>
       <Button variant='primary' type='submit'>
-        Ingresar
+        {wrappedGetSubmitButtonText(formik.values.animalitoId)}
       </Button>
       <Button type='reset' variant='danger' onClick={setRaffleResultForm}>
         Cancelar

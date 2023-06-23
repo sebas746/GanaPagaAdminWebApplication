@@ -1,4 +1,4 @@
-import {RaffleStatus} from '../../../../types/Animalitos.types'
+import {IRaffleResultAnimalitosDetail, RaffleStatus} from '../../../../types/Animalitos.types'
 import {useState} from 'react'
 
 interface IRaffleResultHookCard extends RaffleStatus {}
@@ -30,15 +30,47 @@ export const useRaffleResultCard = ({animalitosRaffleStatus}: IRaffleResultHookC
     PendingApprove: 'Pendiente de aprobación',
     Approved: 'Ingresado y aprobado',
   }
+
+  const mapStateToButtonText = {
+    PendingDraw: undefined,
+    PendingResult: 'Ingresar resultado',
+    PendingApprove: 'Aprobar/Actualizar resultado',
+    Approved: undefined,
+  }
+
+  const mapStateToSubmitButtonText = {
+    PendingDraw: undefined,
+    PendingResult: 'Guardar',
+    PendingApprove: 'Aprobar',
+    Approved: undefined,
+    Update: 'Actualizar',
+  }
+
   const colorState = mapColorToState[animalitosRaffleStatus || 'PendingDraw']
   const textState = mapStateToText[animalitosRaffleStatus || 'PendingDraw']
   const colorTextState = mapColorTextToState[animalitosRaffleStatus || 'PendingDraw']
+  const buttonText = mapStateToButtonText[animalitosRaffleStatus || 'PendingDraw']
+  const getSubmitButtonText = (
+    raffle: IRaffleResultAnimalitosDetail,
+    selectedOption: string | undefined
+  ) => {
+    if (selectedOption !== 'undefined' && animalitosRaffleStatus === 'PendingApprove') {
+      if (raffle.animalitosRaffleResultValue === selectedOption) {
+        return mapStateToSubmitButtonText['PendingApprove']
+      } else {
+        return mapStateToSubmitButtonText['Update']
+      }
+    }
+    return mapStateToSubmitButtonText['PendingResult']
+  }
 
   return {
     colorState,
     textState,
     colorTextState,
+    buttonText,
+    getSubmitButtonText,
     showRaffleResultForm,
-    setRaffleResultForm
+    setRaffleResultForm,
   }
 }

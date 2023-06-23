@@ -145,6 +145,37 @@ export const useRaffleResultsAnimalitos = () => {
     mutationFn: async (body: AddRaffleAnimalitosResultBody) => {
       return await axios.post('/AnimalitosRaffleResult/add-animalitos-raffle-result', body)
     },
+    onSuccess(data, variables, context) {
+      getRaffleResultsByDateLottery()
+    },
+    onError(error, variables, context) {
+      console.log(error)
+    },
+  })
+
+  const {mutate: updateRaffleAnimalitosResultMutation} = useMutation({
+    mutationFn: async (body: AddRaffleAnimalitosResultBody) => {
+      return await axios.put('/AnimalitosRaffleResult/update-animalitos-raffle-result', body)
+    },
+    onSuccess(data, variables, context) {
+      console.log(data)
+      //getRaffleResultsByDateLottery()
+    },
+    onError(error, variables, context) {
+      console.log(error)
+    },
+  })
+
+  const {mutate: approveRaffleAnimalitosResultMutation} = useMutation({
+    mutationFn: async (body: AddRaffleAnimalitosResultBody) => {
+      return await axios.post('/AnimalitosRaffleResult/approve-animalitos-raffle-result', body)
+    },
+    onSuccess(data, variables, context) {
+      getRaffleResultsByDateLottery()
+    },
+    onError(error, variables, context) {
+      console.log(error)
+    },
   })
 
   const setSelectedTab = (tab: number) => {
@@ -172,35 +203,28 @@ export const useRaffleResultsAnimalitos = () => {
     animalitoSelected: string
   ) => {
     try {
-      const algo = await addRaffleAnimalitosResultMutation({
-        raffleId: Number(raffleDetail.animalitosRaffleId),
-        raffleResultCreatedBy: 'rarango',
-        raffleResultValue: animalitoSelected,
-      })
-      debugger
-
-      const raffleResultLottery = raffleResultState.raffleResultsByLottery.map((raffle) => {
-        debugger
-        const raffleResult = raffle.raffleResultDetailResponse.map((raffleDetailResponse) => {
-          if (raffleDetailResponse.animalitosRaffleId === raffleDetail.animalitosRaffleId) {
-            return {
-              ...raffleDetailResponse,
-              animalitosRaffleResultValue: animalitoSelected,
-            }
-            return raffleDetail
+      switch (raffleDetail.animalitosRaffleStatus) {
+        case 'PendingResult':
+          await addRaffleAnimalitosResultMutation({
+            raffleId: Number(raffleDetail.animalitosRaffleId),
+            raffleResultValue: animalitoSelected,
+          })
+          break
+        case 'PendingApprove':
+          if (animalitoSelected === raffleDetail.animalitosRaffleResultValue) {
+            await approveRaffleAnimalitosResultMutation({
+              raffleId: Number(raffleDetail.animalitosRaffleId),
+              raffleResultValue: animalitoSelected,
+            })
+          } else {
+            await updateRaffleAnimalitosResultMutation({
+              raffleId: Number(raffleDetail.animalitosRaffleId),
+              raffleResultValue: animalitoSelected,
+            })
           }
-        })
-        return raffleResult
-      })
-      const newRaffleResultLottery = {
-        ...raffleResultState.raffleResultsByLottery,
-        animalitosRaffleStatus: 'PendingApprove',
-        raffleResultDetailResponse: raffleResultLottery,
+
+          break
       }
-      dispatchRaffleResult({
-        type: RaffleResultsAnimalitosKind.SET_RAFFLE_RESULTS_BY_LOTTERY,
-        payload: newRaffleResultLottery,
-      })
     } catch (error) {
       console.log(error)
     }
