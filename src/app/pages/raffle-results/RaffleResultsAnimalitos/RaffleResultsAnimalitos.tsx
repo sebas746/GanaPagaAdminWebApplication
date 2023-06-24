@@ -4,7 +4,6 @@ import RaffleResultCard from '../../../components/Cards/RaffleResultCard/RaffleR
 import {useRaffleResultsAnimalitos} from './RaffleResultsAnimalitos.hook'
 import clsx from 'clsx'
 import {IAnimalDetail, IRaffleResultAnimalitosDetail} from '../../../../types/Animalitos.types'
-import ConditionalRendering from '../../../helpers/ConditionalRedering'
 
 const RaffleResultsAnimalitos = () => {
   const {
@@ -13,6 +12,8 @@ const RaffleResultsAnimalitos = () => {
     setSelectedTab,
     setRaffleResultForm,
     changeRaffleAnimalitoResult,
+    isLoadingState,
+    createdBy,
   } = useRaffleResultsAnimalitos()
 
   const renderAnimalitosTabs = useMemo(() => {
@@ -46,7 +47,7 @@ const RaffleResultsAnimalitos = () => {
         changeRaffleAnimalitoResult(raffle, selectedAnimal)
       return (
         <div
-          className='col-sm-12 col-md-4'
+          className='col-sm-12 col-md-6'
           key={`card-raffle-${raffle.animalitosRaffleName.split('').join('-')}-${
             raffle.animalitosRaffleId
           }`}
@@ -55,6 +56,8 @@ const RaffleResultsAnimalitos = () => {
             raffle={raffle}
             animalOptions={animalOptions}
             addRaffleAnimalitosResult={wrapAddRaffleAnimalitosResult}
+            isLoadingState={isLoadingState}
+            createdBy={createdBy ?? ''}
           />
         </div>
       )
@@ -82,13 +85,6 @@ const RaffleResultsAnimalitos = () => {
       </div>
     ))
 
-  const renderLoader = () => {
-    return (
-      <div className='spinner-border' role='status'>
-        <span className='sr-only'>Loading...</span>
-      </div>
-    )
-  }
   return (
     <div className='container-fluid'>
       <div className='mb-10'>
@@ -104,12 +100,11 @@ const RaffleResultsAnimalitos = () => {
           id='pills-tab'
           role='tablist'
         >
-          {renderAnimalitosTabs}
+          {!isLoading && renderAnimalitosTabs}
         </ul>
       </div>
       <div className='tab-content' id='pills-tabContent'>
         {!isLoading && renderAnimalitosTabContent()}
-        {isLoading && renderLoader()}
       </div>
     </div>
   )

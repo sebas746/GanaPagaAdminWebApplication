@@ -19,8 +19,10 @@ const onRequestError = (error: AxiosError): Promise<AxiosError> => {
 }
 
 const onResponse = (response: AxiosResponse): AxiosResponse => {
-  if (response && !response.data.success) {
-    console.log(response.data.errors)
+  if (response) {
+    if (response.data.sucess) {
+      // toastr
+    }
   }
   return response
 }

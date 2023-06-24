@@ -10,12 +10,16 @@ interface RaffleResultCardProps {
   raffle: IRaffleResultAnimalitosDetail
   animalOptions: IAnimalDetail[]
   addRaffleAnimalitosResult: (selectedAnimal: string) => void
+  isLoadingState: boolean
+  createdBy: string
 }
 
 const RaffleResultCard = ({
   raffle,
   addRaffleAnimalitosResult,
   animalOptions,
+  isLoadingState,
+  createdBy,
 }: RaffleResultCardProps) => {
   const {
     colorState,
@@ -31,7 +35,7 @@ const RaffleResultCard = ({
 
   const addRaffleAnimalitosResultWrapper = (selectedAnimal: string) => {
     addRaffleAnimalitosResult(selectedAnimal)
-    setRaffleResultForm()
+    // setRaffleResultForm()
   }
 
   const wrappedGetSubmitButtonText = (selectedAnimal: string | undefined) => {
@@ -61,7 +65,11 @@ const RaffleResultCard = ({
           <div className='fw-bold me-4'>Resultado: </div>
           <ConditionalRendering isTrue={!showRaffleResultForm}>
             <span>
-              {animalOptions.find((ap) => raffle.animalitosRaffleResultValue)?.animalName}{' '}
+              {
+                animalOptions.find(
+                  (ap) => ap.animalId.toString() === raffle.animalitosRaffleResultValue
+                )?.animalName
+              }{' '}
             </span>
           </ConditionalRendering>
           <ConditionalRendering isTrue={showRaffleResultForm}>
@@ -71,13 +79,19 @@ const RaffleResultCard = ({
               addRaffleAnimalitosResult={addRaffleAnimalitosResultWrapper}
               setRaffleResultForm={setRaffleResultForm}
               wrappedGetSubmitButtonText={wrappedGetSubmitButtonText}
+              isLoadingState={isLoadingState}
             />
           </ConditionalRendering>
         </div>
         <ConditionalRendering isTrue={!showRaffleResultForm}>
           <div className='d-flex justify-content-end align-items-center'>
             {!!buttonText && (
-              <Button className='m-1' variant='primary' onClick={setRaffleResultForm}>
+              <Button
+                className='m-1'
+                variant='primary'
+                onClick={setRaffleResultForm}
+                disabled={createdBy === raffle.animalitosRaffleResultCreatedBy}
+              >
                 {buttonText}
               </Button>
             )}

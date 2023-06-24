@@ -12,6 +12,8 @@ import {RaffleResultsForm} from '../../../../types/Forms.types'
 import {DateTime} from 'luxon'
 import raffleResultForm from '../../../components/Forms/RaffleResultForm/RaffleResultForm'
 import {batch} from '@preact/signals-react'
+import {enqueueSnackbar} from 'notistack'
+import {useAuth} from 'oidc-react'
 
 enum RaffleResultsAnimalitosKind {
   SET_ANIMALITOS_LOTTERIES = 'SET_ANIMALITOS_LOTTERIES',
@@ -76,6 +78,7 @@ export const raffleResultReducer = (
 }
 
 export const useRaffleResultsAnimalitos = () => {
+  const auth = useAuth()
   const [raffleResultState, dispatchRaffleResult] = useReducer(raffleResultReducer, {
     animalitosLotteries: [],
     isLoadingAnimalitosLotteries: false,
@@ -87,31 +90,7 @@ export const useRaffleResultsAnimalitos = () => {
     raffleResultsByLottery: [],
   })
 
-  const {isLoading: isLoadingAnimalitosLotteries, refetch: getAnimalitosLotteries} = useQuery<
-    ReactQueryResponse<IAnimalitosLotteries[]>
-  >(
-    'get-animalitos-lotteries',
-    async () => {
-      dispatchRaffleResult({
-        type: RaffleResultsAnimalitosKind.SET_IS_LOADING_ANIMALITOS_LOTTERIES,
-        payload: true,
-      })
-      return await axios.get('/Lottery/get-lottery-by-game-type/gameType/Animalitos')
-    },
-    {
-      onSuccess: (res) => {
-        dispatchRaffleResult({
-          type: RaffleResultsAnimalitosKind.SET_IS_LOADING_ANIMALITOS_LOTTERIES,
-          payload: false,
-        })
-        dispatchRaffleResult({
-          type: RaffleResultsAnimalitosKind.SET_ANIMALITOS_LOTTERIES,
-          payload: res.data.response,
-        })
-      },
-      onError: (err) => {},
-    }
-  )
+  const [createdBy, setCreatedBy] = useState(auth.userData?.profile.preferred_username)
 
   const {isFetching, refetch: getRaffleResultsByDateLottery} = useQuery<
     ReactQueryResponse<IRaffleResultAnimalitosResponse[]>
@@ -141,42 +120,68 @@ export const useRaffleResultsAnimalitos = () => {
     }
   )
 
-  const {mutate: addRaffleAnimalitosResultMutation} = useMutation({
+  const {mutate: addRaffleAnimalitosResultMutation, isLoading: loadingAdd} = useMutation({
     mutationFn: async (body: AddRaffleAnimalitosResultBody) => {
       return await axios.post('/AnimalitosRaffleResult/add-animalitos-raffle-result', body)
     },
     onSuccess(data, variables, context) {
-      getRaffleResultsByDateLottery()
+      handleSuccessResponse(data)
     },
     onError(error, variables, context) {
-      console.log(error)
+      handleErrorResponse()
     },
   })
 
-  const {mutate: updateRaffleAnimalitosResultMutation} = useMutation({
+  const {mutate: updateRaffleAnimalitosResultMutation, isLoading: loadingUpdate} = useMutation({
     mutationFn: async (body: AddRaffleAnimalitosResultBody) => {
       return await axios.put('/AnimalitosRaffleResult/update-animalitos-raffle-result', body)
     },
     onSuccess(data, variables, context) {
-      console.log(data)
-      //getRaffleResultsByDateLottery()
+      handleSuccessResponse(data)
     },
     onError(error, variables, context) {
-      console.log(error)
+      handleErrorResponse()
     },
   })
 
-  const {mutate: approveRaffleAnimalitosResultMutation} = useMutation({
+  const handleErrorResponse = () => {
+    enqueueSnackbar(
+      'Se ha presentado un error, por favor recargue la página o consulte con el administrador.',
+      {
+        variant: 'error',
+        hideIconVariant: true,
+      }
+    )
+  }
+
+  const {mutate: approveRaffleAnimalitosResultMutation, isLoading: loadingApprove} = useMutation({
     mutationFn: async (body: AddRaffleAnimalitosResultBody) => {
       return await axios.post('/AnimalitosRaffleResult/approve-animalitos-raffle-result', body)
     },
     onSuccess(data, variables, context) {
-      getRaffleResultsByDateLottery()
+      handleSuccessResponse(data)
     },
     onError(error, variables, context) {
-      console.log(error)
+      handleErrorResponse()
     },
   })
+
+  const handleSuccessResponse = (data: any) => {
+    if (!data.data.success && data.data.errors[0]) {
+      data.data.errors[0].errorList.forEach((errorDetail: any) => {
+        enqueueSnackbar(errorDetail.description, {
+          variant: 'error',
+          hideIconVariant: true,
+        })
+      })
+    } else {
+      enqueueSnackbar(data.data.message, {
+        variant: 'success',
+        hideIconVariant: true,
+      })
+      getRaffleResultsByDateLottery()
+    }
+  }
 
   const setSelectedTab = (tab: number) => {
     dispatchRaffleResult({
@@ -231,10 +236,12 @@ export const useRaffleResultsAnimalitos = () => {
   }
 
   return {
-    isLoading: isFetching || isLoadingAnimalitosLotteries,
+    isLoading: isFetching,
     raffleResultState,
     setSelectedTab,
     setRaffleResultForm,
     changeRaffleAnimalitoResult,
+    isLoadingState: loadingAdd || loadingApprove || loadingUpdate,
+    createdBy,
   }
 }

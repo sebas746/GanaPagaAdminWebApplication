@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button'
 import {Form} from 'react-bootstrap'
 import {RaffleResultsForm} from '../../../../types/Forms.types'
 import {DateTime} from 'luxon'
+import {useRaffleResultsAnimalitos} from '../../../pages/raffle-results/RaffleResultsAnimalitos/RaffleResultsAnimalitos.hook'
+import RenderLoader from '../../RenderLoader/RenderLoader'
 
 interface RaffleResultFormProps {
   raffleFormState: RaffleResultsForm
@@ -13,6 +15,7 @@ interface RaffleResultFormProps {
 
 const RaffleResultForm = ({raffleFormState, setRaffleForm}: RaffleResultFormProps) => {
   const {formik} = useRaffleResultForm(raffleFormState, setRaffleForm)
+  const {isLoading} = useRaffleResultsAnimalitos()
 
   return (
     <div className='flex-center'>
@@ -52,7 +55,7 @@ const RaffleResultForm = ({raffleFormState, setRaffleForm}: RaffleResultFormProp
           </div>
           <div>
             <Button type='submit' variant='primary'>
-              Buscar
+              Buscar <RenderLoader show={isLoading} />
             </Button>
           </div>
         </div>
