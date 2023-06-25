@@ -9,7 +9,7 @@ export const useAddRaffleAnimalitoResultForm = (
       animalitoId: selectedOption,
     },
     onSubmit: (values) => {
-      addRaffleAnimalitosResult(values.animalitoId)
+      addRaffleAnimalitosResult(values.animalitoId.toString())
     },
   })
 

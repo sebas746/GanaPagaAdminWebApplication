@@ -46,11 +46,11 @@ const RaffleResultForm = ({raffleFormState, setRaffleForm}: RaffleResultFormProp
               onChange={formik.handleChange}
               value={formik.values.raffleResultStateId}
             >
-              <option value='1'>Todos</option>
-              <option value='2'>Sin Jugar Sorteo</option>
-              <option value='3'>Pendiente Resultado</option>
-              <option value='4'>Ingresado y Pendiente de Aprobación</option>
-              <option value='5'>Ingresado y Aprobado</option>
+              <option value=''>Todos</option>
+              <option value='PendingDraw'>Sin Jugar Sorteo</option>
+              <option value='PendingResult'>Pendiente Resultado</option>
+              <option value='PendingApprove'>Ingresado y Pendiente de Aprobación</option>
+              <option value='Approved'>Ingresado y Aprobado</option>
             </Form.Select>
           </div>
           <div>

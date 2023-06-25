@@ -10,6 +10,11 @@ export interface IAnimalDetail {
   animalImageUrl: string
 }
 
+export interface IAnimalDetailSelect {
+  id: number
+  label: string
+}
+
 export interface RaffleStatus {
   animalitosRaffleStatus: 'PendingDraw' | 'PendingResult' | 'PendingApprove' | 'Approved'
 }

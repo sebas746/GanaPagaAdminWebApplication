@@ -85,7 +85,7 @@ export const useRaffleResultsAnimalitos = () => {
     selectedTab: 1,
     raffleResultForm: {
       date: DateTime.now().toFormat('yyyy-MM-dd').toString(),
-      raffleResultStateId: '1',
+      raffleResultStateId: '',
     },
     raffleResultsByLottery: [],
   })
@@ -102,7 +102,13 @@ export const useRaffleResultsAnimalitos = () => {
         payload: true,
       })
       return await axios.get(
-        `/AnimalitosRaffleResult/get-animalitos-raffle-result/${raffleResultState.raffleResultForm.date}`
+        `/AnimalitosRaffleResult/get-animalitos-raffle-result/${
+          raffleResultState.raffleResultForm.date
+        }${
+          raffleResultState.raffleResultForm.raffleResultStateId
+            ? '/' + raffleResultState.raffleResultForm.raffleResultStateId
+            : ''
+        }`
       )
     },
     {
