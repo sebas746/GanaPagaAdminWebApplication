@@ -54,7 +54,7 @@ const RaffleResultForm = ({raffleFormState, setRaffleForm}: RaffleResultFormProp
             </Form.Select>
           </div>
           <div>
-            <Button type='submit' variant='primary'>
+            <Button type='submit' variant='primary' disabled={isLoading}>
               Buscar <RenderLoader show={isLoading} />
             </Button>
           </div>

@@ -75,7 +75,7 @@ const RaffleResultCard = ({
           <ConditionalRendering isTrue={showRaffleResultForm}>
             <AddRaffleAnimalitoResultForm
               options={animalOptions}
-              selectedOption={raffle.animalitosRaffleResultValue ?? '1'}
+              selectedOption={raffle.animalitosRaffleResultValue ?? ''}
               addRaffleAnimalitosResult={addRaffleAnimalitosResultWrapper}
               setRaffleResultForm={setRaffleResultForm}
               wrappedGetSubmitButtonText={wrappedGetSubmitButtonText}

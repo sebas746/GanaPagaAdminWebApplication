@@ -31,19 +31,24 @@ const AddRaffleAnimalitoResultForm = ({
   const submitButtonText = wrappedGetSubmitButtonText(formik.values.animalitoId)
   var Typeahead = require('react-bootstrap-typeahead').Typeahead // CommonJS
 
-  var options1 = [
-    {id: 1, label: 'John'},
-    {id: 2, label: 'Miles'},
-    {id: 3, label: 'Charles'},
-    {id: 4, label: 'Herbie'},
-  ]
-
-  const animalOptions: IAnimalDetailSelect[] = options.map((options) => {
+  const animalOptions: IAnimalDetailSelect[] = options.map((option) => {
     return {
-      id: options.animalId,
-      label: options.animalName,
+      id: option.animalId,
+      label: option.animalName,
     }
   })
+
+  const animalIdSelected =
+    options.find((op) => op.animalId === Number(selectedOption))?.animalId ?? undefined
+
+  const animalSelected =
+    options.find((op) => op.animalId === Number(selectedOption))?.animalName ?? undefined
+
+  const animalOptionsSelected: IAnimalDetailSelect[] = []
+
+  if (animalIdSelected !== undefined && animalSelected !== undefined) {
+    animalOptionsSelected.push({id: animalIdSelected, label: animalSelected})
+  }
 
   return (
     <form className='d-flex align-items-center column-gap-4' onSubmit={formik.handleSubmit}>
@@ -58,8 +63,8 @@ const AddRaffleAnimalitoResultForm = ({
         }}
         options={animalOptions}
         key={animalOptions.every((e) => e.id + 'typeahead_opt')}
-        defaultValue={selectedOption}
-        placerholder={'Seleccione...'}
+        defaultSelected={animalOptionsSelected ?? undefined}
+        placeholder={'Seleccionar animalito...'}
       />
       <Button variant='primary' type='submit' disabled={isLoadingState}>
         {isLoadingState && <RenderLoader show={isLoadingState} />}
