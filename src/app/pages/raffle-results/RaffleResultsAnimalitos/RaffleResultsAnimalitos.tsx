@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 import RaffleResultForm from '../../../components/Forms/RaffleResultForm/RaffleResultForm'
-import RaffleResultCard from '../../../components/Cards/RaffleResultCard/RaffleResultCard'
+import RaffleResultCard from '../../../components/Cards/Animalitos/AnimalitosRaffleResultCard'
 import {useRaffleResultsAnimalitos} from './RaffleResultsAnimalitos.hook'
 import clsx from 'clsx'
 import {IAnimalDetail, IRaffleResultAnimalitosDetail} from '../../../../types/Animalitos.types'

@@ -28,16 +28,13 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 }
 
 const OnResponseError = (error: AxiosError): Promise<AxiosError> => {
-  const auth = useAuth()
+  //const auth = useAuth()
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   if (error.response.status === 401) {
-    auth.userManager.signinSilent().then((renewedUser) => {
-      // setToken(re)
-    })
-    removeToken()
-    auth.signOut()
-    auth.signOutRedirect()
+    //removeToken()
+    //auth.signOut()
+    //auth.signOutRedirect()
     // window.location.href = '/login';
     return Promise.reject(error)
   }

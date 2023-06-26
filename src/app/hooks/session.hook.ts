@@ -1,6 +1,6 @@
 import {useAuth} from 'oidc-react/build/src/useAuth'
 import {useEffect, useState} from 'react'
-import {setToken} from '../helpers/localstorage.helper'
+import {removeToken, setToken} from '../helpers/localstorage.helper'
 import {disableSplashScreen, enableSplashScreen} from '../components/RenderLoader/RenderLoader'
 
 export const useCheckSessionStatus = () => {
@@ -11,6 +11,9 @@ export const useCheckSessionStatus = () => {
   // const [firstTimeRun, setFirstTimeRun] = useState(false)
 
   useEffect(() => {
+    if (auth.userData?.expires_in !== undefined && !intervalRunning) {
+      checkTokenExpiration(auth.userData?.expires_in)
+    }
     if (auth.isLoading || auth.userData === null) {
       setTimeout(() => {
         enableSplashScreen()
@@ -35,13 +38,11 @@ export const useCheckSessionStatus = () => {
     const expiresIn = auth.userData?.expires_in
     if (Number(expiresIn) < expirationRenewSeconds) {
       try {
-        enableSplashScreen()
         auth.userManager.signinSilent().then((renewedUser) => {
           if (renewedUser?.access_token !== undefined && !renewedUser.expired) {
             setToken(renewedUser?.access_token)
             setIntervalRunning(false)
             clearInterval(intervalId)
-            disableSplashScreen()
           }
         })
       } catch (e: any) {
@@ -49,10 +50,17 @@ export const useCheckSessionStatus = () => {
       }
     }
   }
+}
 
-  useEffect(() => {
-    if (auth.userData?.expires_in !== undefined && !intervalRunning) {
-      checkTokenExpiration(auth.userData?.expires_in)
-    }
-  }, [auth])
+export const useRemoveSession = () => {
+  const auth = useAuth()
+
+  const deleteTokenAndSignOut = () => {
+    removeToken()
+    auth.signOut()
+    auth.signOutRedirect()
+  }
+  return {
+    deleteTokenAndSignOut,
+  }
 }
