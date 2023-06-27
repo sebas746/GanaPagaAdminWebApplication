@@ -10,7 +10,6 @@ import {
 import {QueryResponse, ReactQueryResponse} from '../../../../types/Generics'
 import {RaffleResultsForm} from '../../../../types/Forms.types'
 import {DateTime} from 'luxon'
-import raffleResultForm from '../../../components/Forms/RaffleResultForm/RaffleResultForm'
 import {batch} from '@preact/signals-react'
 import {enqueueSnackbar} from 'notistack'
 import {useAuth} from 'oidc-react'
@@ -34,7 +33,7 @@ interface RaffleResultsChance3DigitsAction {
 }
 
 interface RaffleResultsChance3DigitsState {
-  Chance3DigitsLotteries: IChance3DigitsLotteries[]
+  chance3DigitsLotteries: IChance3DigitsLotteries[]
   isLoadingChance3DigitsLotteries: boolean
   selectedTab: number
   raffleResultForm: RaffleResultsForm
@@ -49,7 +48,7 @@ export const raffleResultReducer = (
     case RaffleResultsChance3DigitsKind.SET_CHANCE3DIGITS_LOTTERIES:
       return {
         ...state,
-        Chance3DigitsLotteries: action.payload as IChance3DigitsLotteries[],
+        chance3DigitsLotteries: action.payload as IChance3DigitsLotteries[],
       }
     case RaffleResultsChance3DigitsKind.SET_IS_LOADING_CHANCE3DIGITS_LOTTERIES:
       return {
@@ -80,7 +79,7 @@ export const raffleResultReducer = (
 export const useRaffleResultsChance3Digits = () => {
   const auth = useAuth()
   const [raffleResultState, dispatchRaffleResult] = useReducer(raffleResultReducer, {
-    Chance3DigitsLotteries: [],
+    chance3DigitsLotteries: [],
     isLoadingChance3DigitsLotteries: false,
     selectedTab: 1,
     raffleResultForm: {
@@ -92,17 +91,43 @@ export const useRaffleResultsChance3Digits = () => {
 
   const [createdBy, setCreatedBy] = useState(auth.userData?.profile.preferred_username)
 
-  const {isFetching, refetch: getRaffleResultsByDateLottery} = useQuery<
+  const {isLoading: isLoadingChance3DigitsLotteries, refetch: getChance3DigitsLotteries} = useQuery<
+    ReactQueryResponse<IChance3DigitsLotteries[]>
+  >(
+    'get-chance3digits-lotteries',
+    async () => {
+      dispatchRaffleResult({
+        type: RaffleResultsChance3DigitsKind.SET_IS_LOADING_CHANCE3DIGITS_LOTTERIES,
+        payload: true,
+      })
+      return await axios.get('/Lottery/get-lottery-by-game-type/gameType/Chance')
+    },
+    {
+      onSuccess: (res) => {
+        dispatchRaffleResult({
+          type: RaffleResultsChance3DigitsKind.SET_IS_LOADING_CHANCE3DIGITS_LOTTERIES,
+          payload: false,
+        })
+        dispatchRaffleResult({
+          type: RaffleResultsChance3DigitsKind.SET_CHANCE3DIGITS_LOTTERIES,
+          payload: res.data.response,
+        })
+      },
+      onError: (err) => {},
+    }
+  )
+
+  const {isFetching, refetch: getChance3DigitsRaffleResultsByDateLottery} = useQuery<
     ReactQueryResponse<IRaffleResultChance3DigitsResponse[]>
   >(
-    'get-raffle-results-by-lottery',
+    'get-chance-three-raffle-results-by-lottery',
     async () => {
       dispatchRaffleResult({
         type: RaffleResultsChance3DigitsKind.SET_IS_LOADING_CHANCE3DIGITS_LOTTERIES,
         payload: true,
       })
       return await axios.get(
-        `/Chance3DigitsRaffleResult/get-Chance3Digits-raffle-result/${
+        `/ChanceThreeRaffleResult/get-chance-three-raffle-result/${
           raffleResultState.raffleResultForm.date
         }${
           raffleResultState.raffleResultForm.raffleResultStateId
@@ -128,7 +153,7 @@ export const useRaffleResultsChance3Digits = () => {
 
   const {mutate: addRaffleChance3DigitsResultMutation, isLoading: loadingAdd} = useMutation({
     mutationFn: async (body: AddRaffleChance3DigitsResultBody) => {
-      return await axios.post('/Chance3DigitsRaffleResult/add-Chance3Digits-raffle-result', body)
+      return await axios.post('/ChanceThreeRaffleResult/add-chance-three-raffle-result', body)
     },
     onSuccess(data, variables, context) {
       handleSuccessResponse(data)
@@ -140,7 +165,7 @@ export const useRaffleResultsChance3Digits = () => {
 
   const {mutate: updateRaffleChance3DigitsResultMutation, isLoading: loadingUpdate} = useMutation({
     mutationFn: async (body: AddRaffleChance3DigitsResultBody) => {
-      return await axios.put('/Chance3DigitsRaffleResult/update-Chance3Digits-raffle-result', body)
+      return await axios.put('/ChanceThreeRaffleResult/update-chance-three-raffle-result', body)
     },
     onSuccess(data, variables, context) {
       handleSuccessResponse(data)
@@ -163,10 +188,7 @@ export const useRaffleResultsChance3Digits = () => {
   const {mutate: approveRaffleChance3DigitsResultMutation, isLoading: loadingApprove} = useMutation(
     {
       mutationFn: async (body: AddRaffleChance3DigitsResultBody) => {
-        return await axios.post(
-          '/Chance3DigitsRaffleResult/approve-Chance3Digits-raffle-result',
-          body
-        )
+        return await axios.post('/ChanceThreeRaffleResult/approve-chance-three-raffle-result', body)
       },
       onSuccess(data, variables, context) {
         handleSuccessResponse(data)
@@ -190,7 +212,7 @@ export const useRaffleResultsChance3Digits = () => {
         variant: 'success',
         hideIconVariant: true,
       })
-      getRaffleResultsByDateLottery()
+      getChance3DigitsRaffleResultsByDateLottery()
     }
   }
 
@@ -210,32 +232,34 @@ export const useRaffleResultsChance3Digits = () => {
 
   useEffect(() => {
     if (!raffleResultState.isLoadingChance3DigitsLotteries) {
-      getRaffleResultsByDateLottery()
+      getChance3DigitsRaffleResultsByDateLottery()
     }
   }, [raffleResultState.raffleResultForm])
 
-  const changeRaffleAnimalitoResult = async (
+  const changeRaffleChance3DigitsResult = async (
     raffleDetail: IRaffleResultChance3DigitsDetail,
-    Chance3Digitselected: string
+    chance3DigitsValue: string
   ) => {
     try {
-      switch (raffleDetail.Chance3DigitsRaffleStatus) {
+      console.log(raffleDetail)
+      console.log(chance3DigitsValue)
+      switch (raffleDetail.chanceThreeRaffleStatus) {
         case 'PendingResult':
           await addRaffleChance3DigitsResultMutation({
-            raffleId: Number(raffleDetail.Chance3DigitsRaffleId),
-            raffleResultValue: Chance3Digitselected,
+            raffleId: Number(raffleDetail.chanceThreeRaffleId),
+            raffleResultValue: chance3DigitsValue,
           })
           break
         case 'PendingApprove':
-          if (Chance3Digitselected === raffleDetail.Chance3DigitsRaffleResultValue) {
+          if (chance3DigitsValue === raffleDetail.chanceThreeRaffleResultValue) {
             await approveRaffleChance3DigitsResultMutation({
-              raffleId: Number(raffleDetail.Chance3DigitsRaffleId),
-              raffleResultValue: Chance3Digitselected,
+              raffleId: Number(raffleDetail.chanceThreeRaffleId),
+              raffleResultValue: chance3DigitsValue,
             })
           } else {
             await updateRaffleChance3DigitsResultMutation({
-              raffleId: Number(raffleDetail.Chance3DigitsRaffleId),
-              raffleResultValue: Chance3Digitselected,
+              raffleId: Number(raffleDetail.chanceThreeRaffleId),
+              raffleResultValue: chance3DigitsValue,
             })
           }
 
@@ -247,12 +271,12 @@ export const useRaffleResultsChance3Digits = () => {
   }
 
   return {
-    isLoading: isFetching,
+    isLoadingChance3: isFetching || isLoadingChance3DigitsLotteries,
     raffleResultState,
     setSelectedTab,
     setRaffleResultForm,
-    changeRaffleAnimalitoResult,
-    isLoadingState: loadingAdd || loadingApprove || loadingUpdate,
+    changeRaffleChance3DigitsResult,
+    isLoadingStateChance3: loadingAdd || loadingApprove || loadingUpdate,
     createdBy,
   }
 }

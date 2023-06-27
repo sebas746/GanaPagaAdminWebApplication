@@ -50,6 +50,8 @@ const AddRaffleAnimalitoResultForm = ({
     animalOptionsSelected.push({id: animalIdSelected, label: animalSelected})
   }
 
+  console.log(formik.errors.animalitoId)
+
   return (
     <form className='d-flex align-items-center column-gap-4' onSubmit={formik.handleSubmit}>
       <Typeahead
@@ -59,12 +61,18 @@ const AddRaffleAnimalitoResultForm = ({
             formik.handleChange({
               target: {name: 'animalitoId', value: selectedAnimal[0].id},
             })
+          } else {
+            formik.handleChange({
+              target: {name: 'animalitoId', value: undefined},
+            })
           }
         }}
         options={animalOptions}
         key={animalOptions.every((e) => e.id + 'typeahead_opt')}
         defaultSelected={animalOptionsSelected ?? undefined}
         placeholder={'Seleccionar animalito...'}
+        isInvalid={!!formik.errors.animalitoId}
+        isValid={formik.dirty && !formik.errors.animalitoId}
       />
       <Button variant='primary' type='submit' disabled={isLoadingState}>
         {isLoadingState && <RenderLoader show={isLoadingState} />}

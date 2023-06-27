@@ -1,13 +1,13 @@
 import {
-  IRaffleResultChance3DigitsDetail,
-  Chance3DigitsRaffleStatus,
-} from '../../../../types/Chance3Digits.types'
+  IRaffleResultChance4DigitsDetail,
+  Chance4DigitsRaffleStatus,
+} from '../../../../types/Chance4Digits.types'
 import {useState} from 'react'
 
-interface IRaffleResultHookCard extends Chance3DigitsRaffleStatus {}
+interface IRaffleResultHookCard extends Chance4DigitsRaffleStatus {}
 
-export const useChance3DigitsRaffleResultCard = ({
-  chanceThreeRaffleStatus,
+export const useChance4DigitsRaffleResultCard = ({
+  chanceFourRaffleStatus,
 }: IRaffleResultHookCard) => {
   const [showRaffleResultForm, setShowRaffleResultForm] = useState(false)
 
@@ -51,16 +51,16 @@ export const useChance3DigitsRaffleResultCard = ({
     Update: 'Actualizar',
   }
 
-  const colorState = mapColorToState[chanceThreeRaffleStatus || 'PendingDraw']
-  const textState = mapStateToText[chanceThreeRaffleStatus || 'PendingDraw']
-  const colorTextState = mapColorTextToState[chanceThreeRaffleStatus || 'PendingDraw']
-  const buttonText = mapStateToButtonText[chanceThreeRaffleStatus || 'PendingDraw']
+  const colorState = mapColorToState[chanceFourRaffleStatus || 'PendingDraw']
+  const textState = mapStateToText[chanceFourRaffleStatus || 'PendingDraw']
+  const colorTextState = mapColorTextToState[chanceFourRaffleStatus || 'PendingDraw']
+  const buttonText = mapStateToButtonText[chanceFourRaffleStatus || 'PendingDraw']
   const getSubmitButtonText = (
-    raffle: IRaffleResultChance3DigitsDetail,
+    raffle: IRaffleResultChance4DigitsDetail,
     selectedOption: string | undefined
   ) => {
-    if (selectedOption !== 'undefined' && chanceThreeRaffleStatus === 'PendingApprove') {
-      if (raffle.chanceThreeRaffleResultValue === selectedOption) {
+    if (selectedOption !== 'undefined' && chanceFourRaffleStatus === 'PendingApprove') {
+      if (raffle.chanceFourRaffleResultValue === selectedOption) {
         return mapStateToSubmitButtonText['PendingApprove']
       } else {
         return mapStateToSubmitButtonText['Update']

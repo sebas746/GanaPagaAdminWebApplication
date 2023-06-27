@@ -92,6 +92,32 @@ export const useRaffleResultsAnimalitos = () => {
 
   const [createdBy, setCreatedBy] = useState(auth.userData?.profile.preferred_username)
 
+  const {isLoading: isLoadingAnimalitosLotteries, refetch: getAnimalitosLotteries} = useQuery<
+    ReactQueryResponse<IAnimalitosLotteries[]>
+  >(
+    'get-animalitos-lotteries',
+    async () => {
+      dispatchRaffleResult({
+        type: RaffleResultsAnimalitosKind.SET_IS_LOADING_ANIMALITOS_LOTTERIES,
+        payload: true,
+      })
+      return await axios.get('/Lottery/get-lottery-by-game-type/gameType/Animalitos')
+    },
+    {
+      onSuccess: (res) => {
+        dispatchRaffleResult({
+          type: RaffleResultsAnimalitosKind.SET_IS_LOADING_ANIMALITOS_LOTTERIES,
+          payload: false,
+        })
+        dispatchRaffleResult({
+          type: RaffleResultsAnimalitosKind.SET_ANIMALITOS_LOTTERIES,
+          payload: res.data.response,
+        })
+      },
+      onError: (err) => {},
+    }
+  )
+
   const {isFetching, refetch: getRaffleResultsByDateLottery} = useQuery<
     ReactQueryResponse<IRaffleResultAnimalitosResponse[]>
   >(
@@ -242,7 +268,7 @@ export const useRaffleResultsAnimalitos = () => {
   }
 
   return {
-    isLoading: isFetching,
+    isLoading: isFetching || isLoadingAnimalitosLotteries,
     raffleResultState,
     setSelectedTab,
     setRaffleResultForm,

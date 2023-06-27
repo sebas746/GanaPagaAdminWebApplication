@@ -11,6 +11,14 @@ export const useAddRaffleAnimalitoResultForm = (
     onSubmit: (values) => {
       addRaffleAnimalitosResult(values.animalitoId.toString())
     },
+    validate: (values) => {
+      const errors = {} as any
+
+      if (!values.animalitoId) {
+        errors.animalitoId = 'Parámetro requerido'
+      }
+      return errors
+    },
   })
 
   return {

@@ -1,28 +1,25 @@
 import React, {useMemo} from 'react'
 import RaffleResultForm from '../../../components/Forms/RaffleResultForm/RaffleResultForm'
-import RaffleResultCard from '../../../components/Cards/Animalitos/AnimalitosRaffleResultCard'
 import {useRaffleResultsChance3Digits} from './RaffleResultsChance3Digits.hook'
 import clsx from 'clsx'
-import {
-  IAnimalDetail,
-  IRaffleResultChance3DigitsDetail,
-} from '../../../../types/Chance3Digits.types'
+import {IRaffleResultChance3DigitsDetail} from '../../../../types/Chance3Digits.types'
+import Chance3DigitsRaffleResultCard from '../../../components/Cards/Chance3Digits/Chance3DigitsRaffleResultCard'
 
 const RaffleResultsChance3Digits = () => {
   const {
     raffleResultState,
-    isLoading,
+    isLoadingChance3,
     setSelectedTab,
     setRaffleResultForm,
-    changeRaffleAnimalitoResult,
-    isLoadingState,
+    changeRaffleChance3DigitsResult,
+    isLoadingStateChance3,
     createdBy,
   } = useRaffleResultsChance3Digits()
 
   const renderChance3DigitsTabs = useMemo(() => {
-    return raffleResultState.Chance3DigitsLotteries.map((lottery) => {
+    return raffleResultState.chance3DigitsLotteries.map((lottery) => {
       return (
-        <li className='nav-link' role='presentation' key={`Chance3Digits-tab-${lottery.lotteryId}`}>
+        <li className='nav-link' role='presentation' key={`chance3Digits-tab-${lottery.lotteryId}`}>
           <button
             className={clsx('nav-link', {active: 1 === lottery.lotteryId})}
             id={`pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}-tab`}
@@ -39,27 +36,23 @@ const RaffleResultsChance3Digits = () => {
         </li>
       )
     })
-  }, [raffleResultState.Chance3DigitsLotteries])
+  }, [raffleResultState.chance3DigitsLotteries])
 
-  const renderResultCard = (
-    raffles: IRaffleResultChance3DigitsDetail[],
-    animalOptions: IAnimalDetail[]
-  ) =>
+  const renderResultCard = (raffles: IRaffleResultChance3DigitsDetail[]) =>
     raffles.map((raffle) => {
-      const wrapAddRaffleChance3DigitsResult = (selectedAnimal: string) =>
-        changeRaffleAnimalitoResult(raffle, selectedAnimal)
+      const wrapAddRaffleChance3DigitsResult = (resultValue: string) =>
+        changeRaffleChance3DigitsResult(raffle, resultValue)
       return (
         <div
           className='col-sm-12 col-md-6'
-          key={`card-raffle-${raffle.Chance3DigitsRaffleName.split('').join('-')}-${
-            raffle.Chance3DigitsRaffleId
+          key={`card-chance3digits-raffle-${raffle.chanceThreeRaffleName.split('').join('-')}-${
+            raffle.chanceThreeRaffleId
           }`}
         >
-          <RaffleResultCard
+          <Chance3DigitsRaffleResultCard
             raffle={raffle}
-            animalOptions={animalOptions}
             addRaffleChance3DigitsResult={wrapAddRaffleChance3DigitsResult}
-            isLoadingState={isLoadingState}
+            isLoadingState={isLoadingStateChance3}
             createdBy={createdBy ?? ''}
           />
         </div>
@@ -70,21 +63,23 @@ const RaffleResultsChance3Digits = () => {
     raffleResultState.raffleResultsByLottery.map((raffleResult) => (
       <div
         className={clsx('tab-pane', 'fade', {
-          show: raffleResultState.selectedTab === raffleResult.Chance3DigitsLotteryId,
-          active: raffleResultState.selectedTab === raffleResult.Chance3DigitsLotteryId,
+          show: raffleResultState.selectedTab === raffleResult.chanceThreeLotteryId,
+          active: raffleResultState.selectedTab === raffleResult.chanceThreeLotteryId,
         })}
-        id={`pill-${raffleResult.Chance3DigitsLotteryName.toLowerCase().split(' ').join('-')}`}
-        key={`tab-content-${raffleResult.Chance3DigitsLotteryName.toLowerCase()
+        id={`pill-${raffleResult.chanceThreeLotteryName.toLowerCase().split(' ').join('-')}`}
+        key={`tab-content-${raffleResult.chanceThreeLotteryName
+          .toLowerCase()
           .split(' ')
           .join('-')}`}
         role='tabpanel'
-        aria-labelledby={`pills-${raffleResult.Chance3DigitsLotteryName.toLowerCase()
+        aria-labelledby={`pills-${raffleResult.chanceThreeLotteryName
+          .toLowerCase()
           .split(' ')
           .join('-')}-tab`}
         tabIndex={0}
       >
         <div className='row row-gap-8'>
-          {renderResultCard(raffleResult.raffleResultDetailResponse, raffleResult.animalDetails)}
+          {renderResultCard(raffleResult.raffleResultDetailResponse)}
         </div>
       </div>
     ))
@@ -104,11 +99,11 @@ const RaffleResultsChance3Digits = () => {
           id='pills-tab'
           role='tablist'
         >
-          {!isLoading && renderChance3DigitsTabs}
+          {!isLoadingChance3 && renderChance3DigitsTabs}
         </ul>
       </div>
       <div className='tab-content' id='pills-tabContent'>
-        {!isLoading && renderChance3DigitsTabContent()}
+        {!isLoadingChance3 && renderChance3DigitsTabContent()}
       </div>
     </div>
   )

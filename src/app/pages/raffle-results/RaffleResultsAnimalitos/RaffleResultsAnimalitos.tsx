@@ -4,6 +4,7 @@ import RaffleResultCard from '../../../components/Cards/Animalitos/AnimalitosRaf
 import {useRaffleResultsAnimalitos} from './RaffleResultsAnimalitos.hook'
 import clsx from 'clsx'
 import {IAnimalDetail, IRaffleResultAnimalitosDetail} from '../../../../types/Animalitos.types'
+import AnimalitosRaffleResultCard from '../../../components/Cards/Animalitos/AnimalitosRaffleResultCard'
 
 const RaffleResultsAnimalitos = () => {
   const {
@@ -52,7 +53,7 @@ const RaffleResultsAnimalitos = () => {
             raffle.animalitosRaffleId
           }`}
         >
-          <RaffleResultCard
+          <AnimalitosRaffleResultCard
             raffle={raffle}
             animalOptions={animalOptions}
             addRaffleAnimalitosResult={wrapAddRaffleAnimalitosResult}
@@ -84,6 +85,8 @@ const RaffleResultsAnimalitos = () => {
         </div>
       </div>
     ))
+
+  console.log(!isLoading && renderAnimalitosTabContent())
 
   return (
     <div className='container-fluid'>
