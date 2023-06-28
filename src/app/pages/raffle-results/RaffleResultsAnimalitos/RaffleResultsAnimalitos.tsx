@@ -1,13 +1,21 @@
 import React, {useMemo} from 'react'
 import RaffleResultForm from '../../../components/Forms/RaffleResultForm/RaffleResultForm'
-import RaffleResultCard from '../../../components/Cards/RaffleResultCard/RaffleResultCard'
+import RaffleResultCard from '../../../components/Cards/Animalitos/AnimalitosRaffleResultCard'
 import {useRaffleResultsAnimalitos} from './RaffleResultsAnimalitos.hook'
 import clsx from 'clsx'
 import {IAnimalDetail, IRaffleResultAnimalitosDetail} from '../../../../types/Animalitos.types'
+import AnimalitosRaffleResultCard from '../../../components/Cards/Animalitos/AnimalitosRaffleResultCard'
 
 const RaffleResultsAnimalitos = () => {
-  const {raffleResultState, isLoading, setSelectedTab, setRaffleResultForm, changeRaffleAnimalitoResult} =
-    useRaffleResultsAnimalitos()
+  const {
+    raffleResultState,
+    isLoading,
+    setSelectedTab,
+    setRaffleResultForm,
+    changeRaffleAnimalitoResult,
+    isLoadingState,
+    createdBy,
+  } = useRaffleResultsAnimalitos()
 
   const renderAnimalitosTabs = useMemo(() => {
     return raffleResultState.animalitosLotteries.map((lottery) => {
@@ -31,20 +39,26 @@ const RaffleResultsAnimalitos = () => {
     })
   }, [raffleResultState.animalitosLotteries])
 
-  const renderResultCard = (raffles: IRaffleResultAnimalitosDetail[], animalOptions: IAnimalDetail[]) =>
+  const renderResultCard = (
+    raffles: IRaffleResultAnimalitosDetail[],
+    animalOptions: IAnimalDetail[]
+  ) =>
     raffles.map((raffle) => {
-      const wrapAddRaffleAnimalitosResult = (selectedAnimal: string) => changeRaffleAnimalitoResult(raffle, selectedAnimal)
+      const wrapAddRaffleAnimalitosResult = (selectedAnimal: string) =>
+        changeRaffleAnimalitoResult(raffle, selectedAnimal)
       return (
         <div
-          className='col-sm-12 col-md-4'
+          className='col-sm-12 col-md-6'
           key={`card-raffle-${raffle.animalitosRaffleName.split('').join('-')}-${
             raffle.animalitosRaffleId
           }`}
         >
-          <RaffleResultCard
+          <AnimalitosRaffleResultCard
             raffle={raffle}
             animalOptions={animalOptions}
             addRaffleAnimalitosResult={wrapAddRaffleAnimalitosResult}
+            isLoadingState={isLoadingState}
+            createdBy={createdBy ?? ''}
           />
         </div>
       )
@@ -72,13 +86,8 @@ const RaffleResultsAnimalitos = () => {
       </div>
     ))
 
-  if (isLoading) {
-    return (
-      <div className='spinner-border' role='status'>
-        <span className='sr-only'>Loading...</span>
-      </div>
-    )
-  }
+  console.log(!isLoading && renderAnimalitosTabContent())
+
   return (
     <div className='container-fluid'>
       <div className='mb-10'>
@@ -88,16 +97,17 @@ const RaffleResultsAnimalitos = () => {
             setRaffleForm={setRaffleResultForm}
           />
         </div>
+
         <ul
           className='nav nav-tabs nav-line-tabs nav-line-tabs-2x mb-5 fs-6'
           id='pills-tab'
           role='tablist'
         >
-          {renderAnimalitosTabs}
+          {!isLoading && renderAnimalitosTabs}
         </ul>
       </div>
       <div className='tab-content' id='pills-tabContent'>
-        {renderAnimalitosTabContent()}
+        {!isLoading && renderAnimalitosTabContent()}
       </div>
     </div>
   )

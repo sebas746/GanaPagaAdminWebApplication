@@ -1,7 +1,10 @@
 import {useFormik} from 'formik'
 import {RaffleResultsForm} from '../../../../types/Forms.types'
 
-export const useRaffleResultForm = (raffleFormState: RaffleResultsForm, setRaffleForm: (form: RaffleResultsForm) => void) => {
+export const useRaffleResultForm = (
+  raffleFormState: RaffleResultsForm,
+  setRaffleForm: (form: RaffleResultsForm) => void
+) => {
   const formik = useFormik({
     initialValues: {
       date: raffleFormState.date,

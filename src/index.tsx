@@ -5,7 +5,7 @@ import {Chart, registerables} from 'chart.js'
 import {QueryClient, QueryClientProvider} from 'react-query'
 import {ReactQueryDevtools} from 'react-query/devtools'
 
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css'
 
 // Apps
 import {MetronicI18nProvider} from './_metronic/i18n/Metronici18n'
@@ -21,6 +21,7 @@ import {AppRoutes} from './app/routing/AppRoutes'
 import {setupAxios} from './app/modules/auth'
 import {oidcConfig} from './app/config/oidc-identity-server'
 import {AuthProvider} from 'oidc-react'
+import {SnackbarProvider} from 'notistack'
 /**
  * Creates `axios-mock-adapter` instance for provided `axios` instance, add
  * basic Metronic mocks and returns it.
@@ -35,7 +36,7 @@ import {AuthProvider} from 'oidc-react'
 setupAxios(axios)
 Chart.register(...registerables)
 
-const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
+const twentyFourHoursInMs = 1000 * 60 * 60 * 24
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,9 +54,18 @@ if (container) {
   createRoot(container).render(
     <AuthProvider {...oidcConfig}>
       <QueryClientProvider client={queryClient}>
-        <MetronicI18nProvider>
-          <AppRoutes />
-        </MetronicI18nProvider>
+        <SnackbarProvider
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          maxSnack={10}
+          autoHideDuration={10000}
+        >
+          <MetronicI18nProvider>
+            <AppRoutes />
+          </MetronicI18nProvider>
+        </SnackbarProvider>
         {/*<ReactQueryDevtools initialIsOpen={false} />*/}
       </QueryClientProvider>
     </AuthProvider>
