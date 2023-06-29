@@ -11,6 +11,7 @@ interface AddRaffleChance3DigitsResultFormProps {
   setRaffleResultForm: () => void
   wrappedGetSubmitButtonText: (selectedOption: string | undefined) => string | undefined
   isLoadingState: boolean
+  maxDigitsByBet: number
 }
 
 const AddRaffleChance3DigitsResultForm = ({
@@ -19,15 +20,20 @@ const AddRaffleChance3DigitsResultForm = ({
   setRaffleResultForm,
   wrappedGetSubmitButtonText,
   isLoadingState,
+  maxDigitsByBet,
 }: AddRaffleChance3DigitsResultFormProps) => {
-  const {formik} = useAddRaffleChance3DigitsResultForm(addRaffleChance3DigitsResult, selectedOption)
+  const {formik} = useAddRaffleChance3DigitsResultForm(
+    addRaffleChance3DigitsResult,
+    selectedOption,
+    maxDigitsByBet
+  )
   const submitButtonText = wrappedGetSubmitButtonText(formik.values.resultValue)
 
   return (
     <form className='d-flex align-items-center column-gap-4' onSubmit={formik.handleSubmit}>
       <Form.Control
-        minLength={3}
-        maxLength={3}
+        minLength={maxDigitsByBet}
+        maxLength={maxDigitsByBet}
         max={999}
         id='resultValue'
         defaultValue={formik.values.resultValue}

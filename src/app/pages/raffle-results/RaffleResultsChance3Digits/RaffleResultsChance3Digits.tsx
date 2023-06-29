@@ -38,7 +38,7 @@ const RaffleResultsChance3Digits = () => {
     })
   }, [raffleResultState.chance3DigitsLotteries])
 
-  const renderResultCard = (raffles: IRaffleResultChance3DigitsDetail[]) =>
+  const renderResultCard = (raffles: IRaffleResultChance3DigitsDetail[], maxDigitsByBet: number) =>
     raffles.map((raffle) => {
       const wrapAddRaffleChance3DigitsResult = (resultValue: string) =>
         changeRaffleChance3DigitsResult(raffle, resultValue)
@@ -54,6 +54,7 @@ const RaffleResultsChance3Digits = () => {
             addRaffleChance3DigitsResult={wrapAddRaffleChance3DigitsResult}
             isLoadingState={isLoadingStateChance3}
             createdBy={createdBy ?? ''}
+            maxDigitsByBet={maxDigitsByBet}
           />
         </div>
       )
@@ -67,7 +68,7 @@ const RaffleResultsChance3Digits = () => {
           active: raffleResultState.selectedTab === raffleResult.chanceThreeLotteryId,
         })}
         id={`pill-${raffleResult.chanceThreeLotteryName.toLowerCase().split(' ').join('-')}`}
-        key={`tab-content-${raffleResult.chanceThreeLotteryName
+        key={`tab-content-chance3-${raffleResult.chanceThreeLotteryName
           .toLowerCase()
           .split(' ')
           .join('-')}`}
@@ -79,7 +80,10 @@ const RaffleResultsChance3Digits = () => {
         tabIndex={0}
       >
         <div className='row row-gap-8'>
-          {renderResultCard(raffleResult.raffleResultDetailResponse)}
+          {renderResultCard(
+            raffleResult.raffleResultDetailResponse,
+            raffleResult.chanceThreeLotteryMaxDigitsByBet
+          )}
         </div>
       </div>
     ))

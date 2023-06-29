@@ -11,6 +11,7 @@ interface Chance3DigitsRaffleResultCardProps {
   addRaffleChance3DigitsResult: (resultValue: string) => void
   isLoadingState: boolean
   createdBy: string
+  maxDigitsByBet: number
 }
 
 const Chance3DigitsRaffleResultCard = ({
@@ -18,6 +19,7 @@ const Chance3DigitsRaffleResultCard = ({
   addRaffleChance3DigitsResult,
   isLoadingState,
   createdBy,
+  maxDigitsByBet,
 }: Chance3DigitsRaffleResultCardProps) => {
   const {
     colorState,
@@ -71,6 +73,7 @@ const Chance3DigitsRaffleResultCard = ({
               setRaffleResultForm={setRaffleResultForm}
               wrappedGetSubmitButtonText={wrappedGetSubmitButtonText}
               isLoadingState={isLoadingState}
+              maxDigitsByBet={maxDigitsByBet}
             />
           </ConditionalRendering>
         </div>

@@ -2,7 +2,8 @@ import {useFormik} from 'formik'
 
 export const useAddRaffleChance3DigitsResultForm = (
   addRaffleChance3DigitsResult: (resultValue: string) => void,
-  raffleResultValue: string
+  raffleResultValue: string,
+  maxDigitsByBet: number
 ) => {
   const formik = useFormik({
     initialValues: {
@@ -17,7 +18,10 @@ export const useAddRaffleChance3DigitsResultForm = (
 
       if (!values.resultValue) {
         errors.resultValue = 'Parámetro requerido'
-      } else if (values.resultValue.length > 3 || values.resultValue.length < 3) {
+      } else if (
+        values.resultValue.length > maxDigitsByBet ||
+        values.resultValue.length < maxDigitsByBet
+      ) {
         errors.resultValue = 'El número ingresado debe tener 3 dígitos'
       } else if (!regex.test(values.resultValue)) {
         errors.resultValue = 'El valor debe ser un número'

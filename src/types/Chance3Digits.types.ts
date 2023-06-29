@@ -26,6 +26,7 @@ export interface IRaffleResultChance3DigitsDetail
 export interface IRaffleResultChance3DigitsResponse {
   chanceThreeLotteryId: number
   chanceThreeLotteryName: string
+  chanceThreeLotteryMaxDigitsByBet: number
   raffleResultDetailResponse: IRaffleResultChance3DigitsDetail[]
 }
 
