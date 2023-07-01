@@ -1,7 +1,7 @@
 import React from 'react'
 import {Outlet, Route, Routes} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
-import ScrutinyAnimalitos from '../../pages/scrutiny/ScrutinyAnimalitos'
+import ScrutinyAnimalitos from '../../pages/scrutiny/ScrutinyAnimalitos/ScrutinyAnimalitos'
 import ScrutinyChance3Digits from '../../pages/scrutiny/ScrutinyChance3Digits'
 import ScrutinyChance4Digits from '../../pages/scrutiny/ScrutinyChance4Digits'
 import ScrutinyChanceZodiacal from '../../pages/scrutiny/ScrutinyChanceZodiacal'

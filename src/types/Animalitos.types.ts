@@ -15,12 +15,24 @@ export interface IAnimalDetailSelect {
   label: string
 }
 
+export enum RaffleResulStatus {
+  PendingDraw = 'PendingDraw',
+  PendingResult = 'PendingResult',
+  PendingApprove = 'PendingApprove',
+  Approved = 'Approved',
+}
+
 export interface RaffleStatus {
-  animalitosRaffleStatus: 'PendingDraw' | 'PendingResult' | 'PendingApprove' | 'Approved'
+  animalitosRaffleStatus: RaffleResulStatus
+}
+
+export enum RaffleScrutinyStatus {
+  PendingResultApprove = 'PendingScrutiny',
+  Scrutinized = 'Scrutinized',
 }
 
 export interface ScrutinyStatus {
-  animalitosRaffleScrutinyStatus: 'PendingResultApprove' | 'PendingResultApprove' | 'Scrutinized'
+  animalitosRaffleScrutinyStatus: RaffleScrutinyStatus
 }
 
 export interface IRaffleResultAnimalitosDetail extends RaffleStatus, ScrutinyStatus {
@@ -44,3 +56,10 @@ export interface AddRaffleAnimalitosResultBody {
   raffleId: number
   raffleResultValue: string
 }
+
+export interface AddScrutinyAnimalitosBody {
+  raffleId: number
+  createdBy: string
+}
+
+export interface IRaffleScrutinyAnimalitosResponse extends IRaffleResultAnimalitosResponse {}

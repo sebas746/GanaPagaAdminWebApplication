@@ -5,7 +5,7 @@ const RaffleResultsChanceZodiacal = () => {
     <div className='container-fluid'>
       <div className='mb-10'>
         <div className='mb-10'>
-          {/*<RaffleResultForm*/}
+          {/*<ScrutinyForm*/}
           {/*  raffleFormState={raffleResultState.raffleResultForm}*/}
           {/*  setRaffleForm={setRaffleResultForm}*/}
           {/*/>*/}
