@@ -1,13 +1,15 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import RaffleResultForm from '../../../components/Forms/RaffleResultForm/RaffleResultForm'
-import RaffleResultCard from '../../../components/Cards/Animalitos/AnimalitosRaffleResultCard'
 import {useRaffleResultsAnimalitos} from './RaffleResultsAnimalitos.hook'
 import clsx from 'clsx'
 import {IAnimalDetail, IRaffleResultAnimalitosDetail} from '../../../../types/Animalitos.types'
-import AnimalitosRaffleResultCard from '../../../components/Cards/Animalitos/AnimalitosRaffleResultCard'
+import AnimalitosRaffleResultCard from '../../../components/Cards/AnimalitosRaffleResult/AnimalitosRaffleResultCard'
+import AnimalitosTabs from '../../../components/AnimalitosTabs/AnimalitosTabs'
+import ConditionalRedering from '../../../helpers/ConditionalRedering'
 
 const RaffleResultsAnimalitos = () => {
   const {
+    animalitosLotteriesState,
     raffleResultState,
     isLoading,
     setSelectedTab,
@@ -16,28 +18,6 @@ const RaffleResultsAnimalitos = () => {
     isLoadingState,
     createdBy,
   } = useRaffleResultsAnimalitos()
-
-  const renderAnimalitosTabs = useMemo(() => {
-    return raffleResultState.animalitosLotteries.map((lottery) => {
-      return (
-        <li className='nav-link' role='presentation' key={`animalitos-tab-${lottery.lotteryId}`}>
-          <button
-            className={clsx('nav-link', {active: 1 === lottery.lotteryId})}
-            id={`pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}-tab`}
-            data-bs-toggle='pill'
-            data-bs-target={`#pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
-            type='button'
-            onClick={() => setSelectedTab(lottery.lotteryId)}
-            role='tab'
-            aria-controls={`pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
-            aria-selected='true'
-          >
-            {lottery.lotteryName}
-          </button>
-        </li>
-      )
-    })
-  }, [raffleResultState.animalitosLotteries])
 
   const renderResultCard = (
     raffles: IRaffleResultAnimalitosDetail[],
@@ -86,8 +66,6 @@ const RaffleResultsAnimalitos = () => {
       </div>
     ))
 
-  console.log(!isLoading && renderAnimalitosTabContent())
-
   return (
     <div className='container-fluid'>
       <div className='mb-10'>
@@ -103,7 +81,13 @@ const RaffleResultsAnimalitos = () => {
           id='pills-tab'
           role='tablist'
         >
-          {!isLoading && renderAnimalitosTabs}
+          <ConditionalRedering isTrue={!isLoading}>
+            <AnimalitosTabs
+              tabs={animalitosLotteriesState.animalitosLotteries}
+              setSelectedTab={setSelectedTab}
+              selectedTab={raffleResultState.selectedTab}
+            />
+          </ConditionalRedering>
         </ul>
       </div>
       <div className='tab-content' id='pills-tabContent'>

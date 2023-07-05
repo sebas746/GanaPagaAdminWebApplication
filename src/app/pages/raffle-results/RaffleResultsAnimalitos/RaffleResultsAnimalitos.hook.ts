@@ -14,9 +14,9 @@ import raffleResultForm from '../../../components/Forms/RaffleResultForm/RaffleR
 import {batch} from '@preact/signals-react'
 import {enqueueSnackbar} from 'notistack'
 import {useAuth} from 'oidc-react'
+import {useAnimalitosLotteries} from '../../../hooks/animalitosLotteries.hook'
 
 enum RaffleResultsAnimalitosKind {
-  SET_ANIMALITOS_LOTTERIES = 'SET_ANIMALITOS_LOTTERIES',
   SET_IS_LOADING_ANIMALITOS_LOTTERIES = 'SET_IS_LOADING_ANIMALITOS_LOTTERIES',
   SET_RAFFLE_FORM = 'SET_RAFFLE_FORM',
   SET_SELECTED_TAB = 'SET_SELECTED_TAB',
@@ -26,7 +26,6 @@ enum RaffleResultsAnimalitosKind {
 interface RaffleResultsAnimalitosAction {
   type: RaffleResultsAnimalitosKind
   payload:
-    | IAnimalitosLotteries[]
     | boolean
     | RaffleResultsForm
     | number
@@ -34,7 +33,6 @@ interface RaffleResultsAnimalitosAction {
 }
 
 interface RaffleResultsAnimalitosState {
-  animalitosLotteries: IAnimalitosLotteries[]
   isLoadingAnimalitosLotteries: boolean
   selectedTab: number
   raffleResultForm: RaffleResultsForm
@@ -46,11 +44,6 @@ export const raffleResultReducer = (
   action: RaffleResultsAnimalitosAction
 ) => {
   switch (action.type) {
-    case RaffleResultsAnimalitosKind.SET_ANIMALITOS_LOTTERIES:
-      return {
-        ...state,
-        animalitosLotteries: action.payload as IAnimalitosLotteries[],
-      }
     case RaffleResultsAnimalitosKind.SET_IS_LOADING_ANIMALITOS_LOTTERIES:
       return {
         ...state,
@@ -79,8 +72,8 @@ export const raffleResultReducer = (
 
 export const useRaffleResultsAnimalitos = () => {
   const auth = useAuth()
+  const {animalitosLotteriesState} = useAnimalitosLotteries()
   const [raffleResultState, dispatchRaffleResult] = useReducer(raffleResultReducer, {
-    animalitosLotteries: [],
     isLoadingAnimalitosLotteries: false,
     selectedTab: 1,
     raffleResultForm: {
@@ -91,32 +84,6 @@ export const useRaffleResultsAnimalitos = () => {
   })
 
   const [createdBy, setCreatedBy] = useState(auth.userData?.profile.preferred_username)
-
-  const {isLoading: isLoadingAnimalitosLotteries, refetch: getAnimalitosLotteries} = useQuery<
-    ReactQueryResponse<IAnimalitosLotteries[]>
-  >(
-    'get-animalitos-lotteries',
-    async () => {
-      dispatchRaffleResult({
-        type: RaffleResultsAnimalitosKind.SET_IS_LOADING_ANIMALITOS_LOTTERIES,
-        payload: true,
-      })
-      return await axios.get('/Lottery/get-lottery-by-game-type/gameType/Animalitos')
-    },
-    {
-      onSuccess: (res) => {
-        dispatchRaffleResult({
-          type: RaffleResultsAnimalitosKind.SET_IS_LOADING_ANIMALITOS_LOTTERIES,
-          payload: false,
-        })
-        dispatchRaffleResult({
-          type: RaffleResultsAnimalitosKind.SET_ANIMALITOS_LOTTERIES,
-          payload: res.data.response,
-        })
-      },
-      onError: (err) => {},
-    }
-  )
 
   const {isFetching, refetch: getRaffleResultsByDateLottery} = useQuery<
     ReactQueryResponse<IRaffleResultAnimalitosResponse[]>
@@ -268,7 +235,8 @@ export const useRaffleResultsAnimalitos = () => {
   }
 
   return {
-    isLoading: isFetching || isLoadingAnimalitosLotteries,
+    isLoading: isFetching || animalitosLotteriesState.isLoadingAnimalitosLotteries,
+    animalitosLotteriesState,
     raffleResultState,
     setSelectedTab,
     setRaffleResultForm,

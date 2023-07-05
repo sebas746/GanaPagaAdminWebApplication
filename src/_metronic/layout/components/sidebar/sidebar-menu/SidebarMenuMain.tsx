@@ -56,7 +56,7 @@ const SidebarMenuMain = () => {
       </SidebarMenuItemWithSub>
 
       <SidebarMenuItemWithSub
-        to='/pages/game-scrutiny'
+        to='/pages/scrutiny'
         title='Escrutinio Sorteos'
         icon='/media/icons/duotune/files/fil024.svg'
         fontIcon='bi-cash-coin'
