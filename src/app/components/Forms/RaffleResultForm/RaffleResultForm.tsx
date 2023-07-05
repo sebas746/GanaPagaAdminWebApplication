@@ -9,19 +9,16 @@ import {useRaffleResultsAnimalitos} from '../../../pages/raffle-results/RaffleRe
 import RenderLoader from '../../RenderLoader/RenderLoader'
 import {useRaffleResultsChance3Digits} from '../../../pages/raffle-results/RaffleResultsChance3Digits/RaffleResultsChance3Digits.hook'
 import {useRaffleResultsChance4Digits} from '../../../pages/raffle-results/RaffleResultsChance4Digits/RaffleResultsChance4Digits.hook'
+import {useRaffleResultsChanceZodiac} from '../../../pages/raffle-results/RaffleResultsChanceZodiacal/RaffleResultsChanceZodiacal.hook'
 
 interface RaffleResultFormProps {
   raffleFormState: RaffleResultsForm
   setRaffleForm: (form: RaffleResultsForm) => void
+  isLoading: boolean
 }
 
-const RaffleResultForm = ({raffleFormState, setRaffleForm}: RaffleResultFormProps) => {
+const RaffleResultForm = ({raffleFormState, setRaffleForm, isLoading}: RaffleResultFormProps) => {
   const {formik} = useRaffleResultForm(raffleFormState, setRaffleForm)
-  const {isLoading} = useRaffleResultsAnimalitos()
-  const {isLoadingChance3} = useRaffleResultsChance3Digits()
-  const {isLoadingChance4} = useRaffleResultsChance4Digits()
-
-  const globalIsLoading = isLoading || isLoadingChance3 || isLoadingChance4
 
   return (
     <div className='flex-center'>
@@ -60,8 +57,8 @@ const RaffleResultForm = ({raffleFormState, setRaffleForm}: RaffleResultFormProp
             </Form.Select>
           </div>
           <div>
-            <Button type='submit' variant='primary' disabled={globalIsLoading}>
-              Buscar <RenderLoader show={globalIsLoading} />
+            <Button type='submit' variant='primary' disabled={isLoading}>
+              Buscar <RenderLoader show={isLoading} />
             </Button>
           </div>
         </div>

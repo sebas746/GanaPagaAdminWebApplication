@@ -13,6 +13,7 @@ import {DateTime} from 'luxon'
 import {batch} from '@preact/signals-react'
 import {enqueueSnackbar} from 'notistack'
 import {useAuth} from 'oidc-react'
+import {useChance3DigitsLotteries} from '../../../hooks/chance3DigitsLotteries.hook'
 
 enum RaffleResultsChance3DigitsKind {
   SET_CHANCE3DIGITS_LOTTERIES = 'SET_CHANCE3DIGITS_LOTTERIES',
@@ -78,6 +79,7 @@ export const raffleResultReducer = (
 
 export const useRaffleResultsChance3Digits = () => {
   const auth = useAuth()
+  const {chance3DigitsLotteriesState} = useChance3DigitsLotteries()
   const [raffleResultState, dispatchRaffleResult] = useReducer(raffleResultReducer, {
     chance3DigitsLotteries: [],
     isLoadingChance3DigitsLotteries: false,
@@ -90,32 +92,6 @@ export const useRaffleResultsChance3Digits = () => {
   })
 
   const [createdBy, setCreatedBy] = useState(auth.userData?.profile.preferred_username)
-
-  const {isLoading: isLoadingChance3DigitsLotteries, refetch: getChance3DigitsLotteries} = useQuery<
-    ReactQueryResponse<IChance3DigitsLotteries[]>
-  >(
-    'get-chance3digits-lotteries',
-    async () => {
-      dispatchRaffleResult({
-        type: RaffleResultsChance3DigitsKind.SET_IS_LOADING_CHANCE3DIGITS_LOTTERIES,
-        payload: true,
-      })
-      return await axios.get('/Lottery/get-lottery-by-game-type/gameType/Chance')
-    },
-    {
-      onSuccess: (res) => {
-        dispatchRaffleResult({
-          type: RaffleResultsChance3DigitsKind.SET_IS_LOADING_CHANCE3DIGITS_LOTTERIES,
-          payload: false,
-        })
-        dispatchRaffleResult({
-          type: RaffleResultsChance3DigitsKind.SET_CHANCE3DIGITS_LOTTERIES,
-          payload: res.data.response,
-        })
-      },
-      onError: (err) => {},
-    }
-  )
 
   const {isFetching, refetch: getChance3DigitsRaffleResultsByDateLottery} = useQuery<
     ReactQueryResponse<IRaffleResultChance3DigitsResponse[]>
@@ -271,7 +247,8 @@ export const useRaffleResultsChance3Digits = () => {
   }
 
   return {
-    isLoadingChance3: isFetching || isLoadingChance3DigitsLotteries,
+    isLoadingChance3: isFetching || chance3DigitsLotteriesState.isLoadingChance3DigitsLotteries,
+    chance3DigitsLotteriesState,
     raffleResultState,
     setSelectedTab,
     setRaffleResultForm,

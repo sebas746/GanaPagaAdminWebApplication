@@ -1,6 +1,6 @@
 import React from 'react'
 import {useScrutinyAnimalitos} from './ScrutinyAnimalitos.hook'
-import AnimalitosTabs from '../../../components/AnimalitosTabs/AnimalitosTabs'
+import AnimalitosTabs from '../../../components/Tabs/AnimalitosTabs'
 import ScrutinyForm from '../../../components/Forms/ScrutinyForm/ScrutinyForm'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
 import AnimalitosScrutinyCardList from '../../../components/AnimalitosScrutinyCardList/AnimalitosScrutinyCardList'
@@ -16,7 +16,7 @@ const ScrutinyAnimalitos = () => {
     setIsLoadingScrutinyResults,
     isLoading,
     setSelectedTab,
-    addRaffleScrutinyAnimalitos
+    addRaffleScrutinyAnimalitos,
   } = useScrutinyAnimalitos()
 
   return (

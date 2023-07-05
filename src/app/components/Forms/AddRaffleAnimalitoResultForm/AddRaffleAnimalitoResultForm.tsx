@@ -50,8 +50,6 @@ const AddRaffleAnimalitoResultForm = ({
     animalOptionsSelected.push({id: animalIdSelected, label: animalSelected})
   }
 
-  console.log(formik.errors.animalitoId)
-
   return (
     <form className='d-flex align-items-center column-gap-4' onSubmit={formik.handleSubmit}>
       <Typeahead
