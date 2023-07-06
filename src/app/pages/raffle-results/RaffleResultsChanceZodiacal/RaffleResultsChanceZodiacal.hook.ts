@@ -212,26 +212,27 @@ export const useRaffleResultsChanceZodiac = () => {
 
   const changeRaffleChanceZodiacResult = async (
     raffleDetail: IRaffleResultChanceZodiacDetail,
-    ChanceZodiacValue: string
+    ChanceZodiacValue: string,
+    starSignId: number
   ) => {
     try {
       switch (raffleDetail.chanceZodiacRaffleStatus) {
         case 'PendingResult':
           await addRaffleChanceZodiacResultMutation({
             raffleId: Number(raffleDetail.chanceZodiacRaffleId),
-            raffleResultValue: ChanceZodiacValue,
+            raffleResultValue: ChanceZodiacValue + '-' + starSignId,
           })
           break
         case 'PendingApprove':
           if (ChanceZodiacValue === raffleDetail.chanceZodiacRaffleResultValue) {
             await approveRaffleChanceZodiacResultMutation({
               raffleId: Number(raffleDetail.chanceZodiacRaffleId),
-              raffleResultValue: ChanceZodiacValue,
+              raffleResultValue: ChanceZodiacValue + '-' + starSignId,
             })
           } else {
             await updateRaffleChanceZodiacResultMutation({
               raffleId: Number(raffleDetail.chanceZodiacRaffleId),
-              raffleResultValue: ChanceZodiacValue,
+              raffleResultValue: ChanceZodiacValue + '-' + starSignId,
             })
           }
 

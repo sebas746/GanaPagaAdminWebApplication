@@ -21,8 +21,8 @@ const RaffleResultsChanceZodiac = () => {
 
   const renderResultCard = (raffles: IRaffleResultChanceZodiacDetail[]) =>
     raffles.map((raffle) => {
-      const wrapAddRaffleChanceZodiacResult = (resultValue: string) =>
-        changeRaffleChanceZodiacResult(raffle, resultValue)
+      const wrapAddRaffleChanceZodiacResult = (resultValue: string, starSignId: number) =>
+        changeRaffleChanceZodiacResult(raffle, resultValue, starSignId)
       return (
         <div
           className='col-sm-12 col-md-6'
@@ -64,11 +64,7 @@ const RaffleResultsChanceZodiac = () => {
         </div>
       </div>
     ))
-  if (!isLoadingChanceZodiac) {
-    raffleResultState.raffleResultsByLottery.map((raffleResult) => {
-      console.log(raffleResult.chanceZodiacLotteryName)
-    })
-  }
+
   return (
     <div className='container-fluid'>
       <div className='mb-10'>

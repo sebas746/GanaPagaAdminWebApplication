@@ -18,6 +18,8 @@ export interface IRaffleResultChanceZodiacDetail
   chanceZodiacRaffleName: string
   chanceZodiacRaffleDrawTime: string
   chanceZodiacRaffleResultValue: string
+  chanceZodiacStarSignId: number
+  chanceZodiacStarSignName: string
   chanceZodiacRaffleResultCreatedBy: string
   chanceZodiacRaffleResultLastUpdatedBy: string
   chanceZodiacRaffleResultApprovedBy: string

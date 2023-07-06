@@ -1,7 +1,7 @@
 import {useFormik} from 'formik'
 
 export const useAddRaffleChanceZodiacResultForm = (
-  addRafflechanceZodiacResult: (resultValue: string) => void,
+  addRafflechanceZodiacResult: (resultValue: string, starSignId: number) => void,
   raffleResultValue: string,
   starSignId: number
 ) => {
@@ -11,7 +11,7 @@ export const useAddRaffleChanceZodiacResultForm = (
       starSignId: starSignId,
     },
     onSubmit: (values) => {
-      addRafflechanceZodiacResult(values.resultValue)
+      addRafflechanceZodiacResult(values.resultValue, values.starSignId)
     },
     validate: (values) => {
       const errors = {} as any
@@ -19,10 +19,13 @@ export const useAddRaffleChanceZodiacResultForm = (
 
       if (!values.resultValue) {
         errors.resultValue = 'Parámetro requerido'
-      } else if (values.resultValue.length > 4 || values.resultValue.length < 4) {
+      } else if (values.resultValue.length > 3 || values.resultValue.length < 3) {
         errors.resultValue = 'El número ingresado debe tener 3 dígitos'
       } else if (!regex.test(values.resultValue)) {
         errors.resultValue = 'El valor debe ser un número'
+      }
+      if (!values.starSignId) {
+        errors.starSignId = 'Parámetro requerido'
       }
       return errors
     },

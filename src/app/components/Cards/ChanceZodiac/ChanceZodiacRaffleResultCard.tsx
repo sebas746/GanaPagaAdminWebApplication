@@ -2,14 +2,13 @@ import React from 'react'
 import {Card} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import ConditionalRendering from '../../../helpers/ConditionalRedering'
-import AddRafflechance4DigitsResultForm from '../../Forms/AddRaffleChance4DigitsResultForm/AddRaffleChance4DigitsResultForm'
 import {IRaffleResultChanceZodiacDetail} from '../../../../types/ChanceZodiac.types'
 import {useChanceZodiacRaffleResultCard} from './ChanceZodiacRaffleResultCard.hook'
 import AddRaffleChanceZodiacResultForm from '../../Forms/AddRaffleChanceZodiacResultForm/AddRaffleChanceZodiacResultForm'
 
 interface ChanceZodiacRaffleResultCardProps {
   raffle: IRaffleResultChanceZodiacDetail
-  addRaffleChanceZodiacResult: (resultValue: string) => void
+  addRaffleChanceZodiacResult: (resultValue: string, starSignId: number) => void
   isLoadingState: boolean
   createdBy: string
 }
@@ -32,8 +31,8 @@ const ChanceZodiacRaffleResultCard = ({
     chanceZodiacRaffleStatus: raffle.chanceZodiacRaffleStatus,
   })
 
-  const addRaffleChanceZodiacResultWrapper = (resultValue: string) => {
-    addRaffleChanceZodiacResult(resultValue)
+  const addRaffleChanceZodiacResultWrapper = (resultValue: string, starSignId: number) => {
+    addRaffleChanceZodiacResult(resultValue, starSignId)
     // setRaffleResultForm()
   }
 
@@ -63,11 +62,14 @@ const ChanceZodiacRaffleResultCard = ({
         <div className='d-flex align-items-center'>
           <div className='fw-bold me-4'>Resultado: </div>
           <ConditionalRendering isTrue={!showRaffleResultForm}>
-            <span>{raffle.chanceZodiacRaffleResultValue}</span>
+            <span>
+              {raffle.chanceZodiacRaffleResultValue}-{raffle.chanceZodiacStarSignName}
+            </span>
           </ConditionalRendering>
           <ConditionalRendering isTrue={showRaffleResultForm}>
             <AddRaffleChanceZodiacResultForm
-              selectedOption={raffle.chanceZodiacRaffleResultValue ?? ''}
+              resultValue={raffle.chanceZodiacRaffleResultValue ?? ''}
+              starSignId={raffle.chanceZodiacStarSignId}
               addRaffleChanceZodiacResult={addRaffleChanceZodiacResultWrapper}
               setRaffleResultForm={setRaffleResultForm}
               wrappedGetSubmitButtonText={wrappedGetSubmitButtonText}

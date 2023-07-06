@@ -41,7 +41,7 @@ const RaffleResultForm = ({raffleFormState, setRaffleForm, isLoading}: RaffleRes
             />
           </div>
           <div className=''>
-            <label className='fs-6' htmlFor='state'>
+            <label className='fs-6' htmlFor='raffleResultStateId'>
               Estado del sorteo
             </label>
             <Form.Select

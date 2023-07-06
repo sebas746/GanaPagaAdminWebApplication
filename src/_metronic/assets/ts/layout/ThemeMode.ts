@@ -72,11 +72,13 @@ class ThemeMode {
     // Store mode value in storage
     if (localStorage) {
       localStorage.setItem(themeModelSKey, mode)
+      //localStorage.setItem(themeModelSKey, 'light')
     }
 
     // Set active menu item
     if (activeMenuItem && localStorage) {
       localStorage.setItem(themeMenuModeLSKey, menuMode)
+      //localStorage.setItem(themeMenuModeLSKey, 'light')
       this.setActiveMenuItem(activeMenuItem)
     }
 

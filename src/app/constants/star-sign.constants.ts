@@ -1,4 +1,4 @@
-interface StarSign {
+export interface StarSign {
   starSignId: number
   starSignName: string
   starSignImage: string | null

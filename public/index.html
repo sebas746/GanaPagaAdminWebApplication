@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -22,6 +22,7 @@
         var defaultThemeMode = 'system'
 
         var themeMode = localStorage.getItem('kt_theme_mode_value')
+
         if (!themeMode) {
           if (defaultThemeMode === 'system') {
             themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
@@ -30,7 +31,7 @@
           }
         }
 
-        document.documentElement.setAttribute('data-bs-theme', themeMode)
+        //document.documentElement.setAttribute('data-bs-theme', themeMode)
       }
     </script>
     <!--end::Theme mode setup on page load-->

@@ -5,17 +5,20 @@ import RenderLoader from '../../RenderLoader/RenderLoader'
 import {useAddRaffleChanceZodiacResultForm} from './AddRaffleChanceZodiacResultForm.hook'
 import {starSignList} from '../../../constants/star-sign.constants'
 import {IStarSignDetailSelect} from '../../../../types/ChanceZodiac.types'
+import StarSignImage from './components/StarSignImage'
 
 interface AddRaffleChanceZodiacResultFormProps {
-  selectedOption: string
-  addRaffleChanceZodiacResult: (raffleResult: string) => void
+  resultValue: string
+  starSignId: number
+  addRaffleChanceZodiacResult: (raffleResult: string, starSignId: number) => void
   setRaffleResultForm: () => void
   wrappedGetSubmitButtonText: (selectedOption: string | undefined) => string | undefined
   isLoadingState: boolean
 }
 
 const AddRaffleChanceZodiacResultForm = ({
-  selectedOption,
+  resultValue,
+  starSignId,
   addRaffleChanceZodiacResult,
   setRaffleResultForm,
   wrappedGetSubmitButtonText,
@@ -23,8 +26,8 @@ const AddRaffleChanceZodiacResultForm = ({
 }: AddRaffleChanceZodiacResultFormProps) => {
   const {formik} = useAddRaffleChanceZodiacResultForm(
     addRaffleChanceZodiacResult,
-    selectedOption,
-    1
+    resultValue,
+    starSignId
   )
   const submitButtonText = wrappedGetSubmitButtonText(formik.values.resultValue)
   var Typeahead = require('react-bootstrap-typeahead').Typeahead // CommonJS
@@ -36,8 +39,31 @@ const AddRaffleChanceZodiacResultForm = ({
     }
   })
 
+  const starSignIdSelected = starSignOptions.find((op) => op.id === starSignId)?.id ?? undefined
+
+  const starSignNameSelected =
+    starSignList.find((op) => op.starSignId === starSignId)?.starSignName ?? ''
+
+  const starSignOptionsSelected: IStarSignDetailSelect[] = []
+
+  if (starSignId !== undefined && starSignIdSelected !== undefined) {
+    starSignOptionsSelected.push({id: starSignIdSelected, label: starSignNameSelected})
+  }
+
   return (
     <form className='d-flex align-items-center column-gap-4' onSubmit={formik.handleSubmit}>
+      <Form.Control
+        minLength={3}
+        maxLength={3}
+        max={999}
+        id='resultValue'
+        defaultValue={formik.values.resultValue}
+        onChange={formik.handleChange}
+        autoComplete={'off'}
+        isInvalid={!!formik.errors.resultValue}
+        isValid={formik.dirty && !formik.errors.resultValue}
+        className='col'
+      />
       <Typeahead
         id={'starSignId'}
         onChange={(selectedStarSign: IStarSignDetailSelect[]) => {
@@ -53,22 +79,12 @@ const AddRaffleChanceZodiacResultForm = ({
         }}
         options={starSignOptions}
         key={starSignOptions.every((e) => e.id + 'typeahead_opt')}
-        defaultSelected={selectedOption ?? undefined}
+        defaultSelected={starSignOptionsSelected ?? undefined}
         placeholder={'Seleccionar signo...'}
         isInvalid={!!formik.errors.starSignId}
         isValid={formik.dirty && !formik.errors.starSignId}
-      />
-      <Form.Control
-        minLength={3}
-        maxLength={3}
-        max={999}
-        id='resultValue'
-        defaultValue={formik.values.resultValue}
-        onChange={formik.handleChange}
-        autoComplete={'off'}
-        isInvalid={!!formik.errors.resultValue}
-        isValid={formik.dirty && !formik.errors.resultValue}
-      />
+        className='col'
+      ></Typeahead>
       <Button variant='primary' type='submit' disabled={isLoadingState}>
         {isLoadingState && <RenderLoader show={isLoadingState} />}
         {!isLoadingState && submitButtonText}
