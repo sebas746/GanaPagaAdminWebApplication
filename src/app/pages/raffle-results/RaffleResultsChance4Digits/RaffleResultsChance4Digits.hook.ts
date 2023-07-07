@@ -13,6 +13,7 @@ import {DateTime} from 'luxon'
 import {batch} from '@preact/signals-react'
 import {enqueueSnackbar} from 'notistack'
 import {useAuth} from 'oidc-react'
+import {useChance4DigitsLotteries} from '../../../hooks/chance4DigitsLotteries.hook'
 
 enum RaffleResultsChance4DigitsKind {
   SET_CHANCE4DIGITS_LOTTERIES = 'SET_CHANCE4DIGITS_LOTTERIES',
@@ -78,6 +79,7 @@ export const raffleResultReducer = (
 
 export const useRaffleResultsChance4Digits = () => {
   const auth = useAuth()
+  const {chance4DigitsLotteriesState} = useChance4DigitsLotteries()
   const [raffleResultState, dispatchRaffleResult] = useReducer(raffleResultReducer, {
     chance4DigitsLotteries: [],
     isLoadingChance4DigitsLotteries: false,
@@ -90,32 +92,6 @@ export const useRaffleResultsChance4Digits = () => {
   })
 
   const [createdBy, setCreatedBy] = useState(auth.userData?.profile.preferred_username)
-
-  const {isLoading: isLoadingChance4DigitsLotteries, refetch: getChance4DigitsLotteries} = useQuery<
-    ReactQueryResponse<IChance4DigitsLotteries[]>
-  >(
-    'get-Chance4Digits-lotteries',
-    async () => {
-      dispatchRaffleResult({
-        type: RaffleResultsChance4DigitsKind.SET_IS_LOADING_Chance4Digits_LOTTERIES,
-        payload: true,
-      })
-      return await axios.get('/Lottery/get-lottery-by-game-type/gameType/Chance4Cifras')
-    },
-    {
-      onSuccess: (res) => {
-        dispatchRaffleResult({
-          type: RaffleResultsChance4DigitsKind.SET_IS_LOADING_Chance4Digits_LOTTERIES,
-          payload: false,
-        })
-        dispatchRaffleResult({
-          type: RaffleResultsChance4DigitsKind.SET_CHANCE4DIGITS_LOTTERIES,
-          payload: res.data.response,
-        })
-      },
-      onError: (err) => {},
-    }
-  )
 
   const {isFetching, refetch: getChance4DigitsRaffleResultsByDateLottery} = useQuery<
     ReactQueryResponse<IRaffleResultChance4DigitsResponse[]>
@@ -241,8 +217,6 @@ export const useRaffleResultsChance4Digits = () => {
     Chance4DigitsValue: string
   ) => {
     try {
-      console.log(raffleDetail)
-      console.log(Chance4DigitsValue)
       switch (raffleDetail.chanceFourRaffleStatus) {
         case 'PendingResult':
           await addRaffleChance4DigitsResultMutation({
@@ -271,7 +245,8 @@ export const useRaffleResultsChance4Digits = () => {
   }
 
   return {
-    isLoadingChance4: isFetching || isLoadingChance4DigitsLotteries,
+    isLoadingChance4: isFetching || chance4DigitsLotteriesState.isLoadingchance4DigitsLotteries,
+    chance4DigitsLotteriesState,
     raffleResultState,
     setSelectedTab,
     setRaffleResultForm,

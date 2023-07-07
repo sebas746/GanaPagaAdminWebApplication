@@ -4,10 +4,13 @@ import {useRaffleResultsChance4Digits} from './RaffleResultsChance4Digits.hook'
 import clsx from 'clsx'
 import {IRaffleResultChance4DigitsDetail} from '../../../../types/Chance4Digits.types'
 import Chance4DigitsRaffleResultCard from '../../../components/Cards/Chance4Digits/Chance4DigitsRaffleResultCard'
+import ConditionalRedering from '../../../helpers/ConditionalRedering'
+import Chance4DigitsTabs from '../../../components/Tabs/Chance4DigitsTabs'
 
 const RaffleResultsChance4Digits = () => {
   const {
     raffleResultState,
+    chance4DigitsLotteriesState,
     isLoadingChance4,
     setSelectedTab,
     setRaffleResultForm,
@@ -15,28 +18,6 @@ const RaffleResultsChance4Digits = () => {
     isLoadingStateChance4,
     createdBy,
   } = useRaffleResultsChance4Digits()
-
-  const renderChance4DigitsTabs = useMemo(() => {
-    return raffleResultState.chance4DigitsLotteries.map((lottery) => {
-      return (
-        <li className='nav-link' role='presentation' key={`Chance4Digits-tab-${lottery.lotteryId}`}>
-          <button
-            className={clsx('nav-link', {active: 1 === lottery.lotteryId})}
-            id={`pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}-tab`}
-            data-bs-toggle='pill'
-            data-bs-target={`#pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
-            type='button'
-            onClick={() => setSelectedTab(lottery.lotteryId)}
-            role='tab'
-            aria-controls={`pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
-            aria-selected='true'
-          >
-            {lottery.lotteryName}
-          </button>
-        </li>
-      )
-    })
-  }, [raffleResultState.chance4DigitsLotteries])
 
   const renderResultCard = (raffles: IRaffleResultChance4DigitsDetail[]) =>
     raffles.map((raffle) => {
@@ -88,6 +69,7 @@ const RaffleResultsChance4Digits = () => {
           <RaffleResultForm
             raffleFormState={raffleResultState.raffleResultForm}
             setRaffleForm={setRaffleResultForm}
+            isLoading={isLoadingChance4}
           />
         </div>
 
@@ -96,7 +78,13 @@ const RaffleResultsChance4Digits = () => {
           id='pills-tab'
           role='tablist'
         >
-          {!isLoadingChance4 && renderChance4DigitsTabs}
+          <ConditionalRedering isTrue={!isLoadingChance4}>
+            <Chance4DigitsTabs
+              tabs={chance4DigitsLotteriesState.chance4DigitsLotteries}
+              setSelectedTab={setSelectedTab}
+              selectedTab={raffleResultState.selectedTab}
+            />
+          </ConditionalRedering>
         </ul>
       </div>
       <div className='tab-content' id='pills-tabContent'>

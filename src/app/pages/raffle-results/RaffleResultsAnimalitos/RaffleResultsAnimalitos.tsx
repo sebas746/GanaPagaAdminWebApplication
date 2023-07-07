@@ -4,7 +4,7 @@ import {useRaffleResultsAnimalitos} from './RaffleResultsAnimalitos.hook'
 import clsx from 'clsx'
 import {IAnimalDetail, IRaffleResultAnimalitosDetail} from '../../../../types/Animalitos.types'
 import AnimalitosRaffleResultCard from '../../../components/Cards/AnimalitosRaffleResult/AnimalitosRaffleResultCard'
-import AnimalitosTabs from '../../../components/AnimalitosTabs/AnimalitosTabs'
+import AnimalitosTabs from '../../../components/Tabs/AnimalitosTabs'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
 
 const RaffleResultsAnimalitos = () => {
@@ -73,6 +73,7 @@ const RaffleResultsAnimalitos = () => {
           <RaffleResultForm
             raffleFormState={raffleResultState.raffleResultForm}
             setRaffleForm={setRaffleResultForm}
+            isLoading={isLoading}
           />
         </div>
 
