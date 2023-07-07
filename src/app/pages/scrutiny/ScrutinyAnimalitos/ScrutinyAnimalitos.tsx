@@ -17,6 +17,7 @@ const ScrutinyAnimalitos = () => {
     isLoading,
     setSelectedTab,
     addRaffleScrutinyAnimalitos,
+    loadingAdd,
   } = useScrutinyAnimalitos()
 
   return (
@@ -49,6 +50,7 @@ const ScrutinyAnimalitos = () => {
             addRaffleScrutinyAnimalitos={addRaffleScrutinyAnimalitos}
             raffleScrutinyResults={raffleScrutinyState.raffleResultsByLottery}
             selectedTab={raffleScrutinyState.selectedTab}
+            loadingAdd={loadingAdd}
           />
         </ConditionalRedering>
       </div>

@@ -7,13 +7,19 @@ import {
   RaffleScrutinyStatus,
 } from '../../../../types/Animalitos.types'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
+import RenderLoader from '../../RenderLoader/RenderLoader'
 
 interface AnimalitosScrutinyProps {
   addRaffleScrutinyAnimalitos: () => void
   raffle: IRaffleResultAnimalitosDetail
+  loadingAdd: boolean
 }
 
-const AnimalitosScrutinyCard = ({raffle, addRaffleScrutinyAnimalitos}: AnimalitosScrutinyProps) => {
+const AnimalitosScrutinyCard = ({
+  raffle,
+  addRaffleScrutinyAnimalitos,
+  loadingAdd,
+}: AnimalitosScrutinyProps) => {
   const {colorState, colorTextState, textState, buttonText} = useScrutinyAnimalitos({
     animalitosRaffleScrutinyStatus: raffle.animalitosRaffleScrutinyStatus,
   })
@@ -38,7 +44,7 @@ const AnimalitosScrutinyCard = ({raffle, addRaffleScrutinyAnimalitos}: Animalito
         </p>
         <div className='d-flex align-items-center'>
           <div className='fw-bold me-4 flex-grow-1'>
-            Resultado: {raffle.animalitosRaffleResultValue}
+            Resultado: {raffle.animalitosRaffleResultAnimal}
           </div>
           <ConditionalRedering
             isTrue={
@@ -48,6 +54,7 @@ const AnimalitosScrutinyCard = ({raffle, addRaffleScrutinyAnimalitos}: Animalito
           >
             <button className='btn btn-primary' onClick={addRaffleScrutinyAnimalitos}>
               {buttonText}
+              {loadingAdd && <RenderLoader show={loadingAdd} />}
             </button>
           </ConditionalRedering>
         </div>

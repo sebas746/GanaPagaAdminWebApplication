@@ -40,6 +40,7 @@ export interface IRaffleResultAnimalitosDetail extends RaffleStatus, ScrutinySta
   animalitosRaffleName: string
   animalitosRaffleDrawTime: string
   animalitosRaffleResultValue: string
+  animalitosRaffleResultAnimal: string
   animalitosRaffleResultCreatedBy: string
   animalitosRaffleResultLastUpdatedBy: string
   animalitosRaffleResultApprovedBy: string

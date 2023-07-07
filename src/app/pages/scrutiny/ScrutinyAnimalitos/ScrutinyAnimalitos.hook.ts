@@ -94,7 +94,7 @@ export const useScrutinyAnimalitos = () => {
     'get-scrutiny-results',
     async () => {
       return await axios.get(
-        `/AnimalitosRaffleResult/get-animalitos-raffle-result/${
+        `/AnimalitosScrutiny/get-animalitos-raffle-scrutiny/${
           raffleScrutinyState.raffleResultForm.date
         }${
           raffleScrutinyState.raffleResultForm.raffleResultStateId
@@ -180,5 +180,6 @@ export const useScrutinyAnimalitos = () => {
     setIsLoadingScrutinyResults,
     setSelectedTab,
     addRaffleScrutinyAnimalitos,
+    loadingAdd,
   }
 }

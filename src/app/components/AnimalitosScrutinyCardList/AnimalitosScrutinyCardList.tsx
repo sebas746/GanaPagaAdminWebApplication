@@ -12,12 +12,14 @@ interface IAnimalitosCardListProps {
   addRaffleScrutinyAnimalitos: (raffleId: number) => void
   raffleScrutinyResults: IRaffleScrutinyAnimalitosResponse[]
   selectedTab: number
+  loadingAdd: boolean
 }
 
 const AnimalitosScrutinyCardList = ({
   addRaffleScrutinyAnimalitos,
   raffleScrutinyResults,
   selectedTab,
+  loadingAdd,
 }: IAnimalitosCardListProps) => {
   const renderResultCard = (raffles: IRaffleResultAnimalitosDetail[]) =>
     raffles.map((raffle) => {
@@ -30,7 +32,11 @@ const AnimalitosScrutinyCardList = ({
             raffle.animalitosRaffleId
           }`}
         >
-          <AnimalitosScrutinyCard raffle={raffle} addRaffleScrutinyAnimalitos={wrapAddRaffleAnimalitosResult} />
+          <AnimalitosScrutinyCard
+            raffle={raffle}
+            addRaffleScrutinyAnimalitos={wrapAddRaffleAnimalitosResult}
+            loadingAdd={loadingAdd}
+          />
         </div>
       )
     })

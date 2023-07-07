@@ -46,7 +46,8 @@ const ScrutinyForm = ({raffleFormState, setRaffleForm, loading}: ScrutinyFormPro
               value={formik.values.raffleResultStateId}
             >
               <option value=''>Todos</option>
-              <option value='PendingResultApprove'>Sorteo pendiente de escrutinio</option>
+              <option value='PendingResultApprove'>Sorteo pendiente de resultado</option>
+              <option value='PendingScrutiny'>Sorteo pendiente de escrutinio</option>
               <option value='Scrutinized'>Sorteo con escrutinio</option>
             </Form.Select>
           </div>
