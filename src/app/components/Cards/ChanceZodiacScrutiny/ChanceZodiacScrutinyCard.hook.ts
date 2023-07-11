@@ -1,6 +1,8 @@
-import {ScrutinyStatus} from '../../../../types/Animalitos.types'
+import {ChanceZodiacScrutinyStatus} from '../../../../types/ChanceZodiac.types'
 
-export const useScrutinyAnimalitos = ({animalitosRaffleScrutinyStatus}: ScrutinyStatus) => {
+export const useScrutinyChanceZodiac = ({
+  chanceZodiacRaffleScrutinyStatus,
+}: ChanceZodiacScrutinyStatus) => {
   const mapColorToState = {
     PendingResultApprove: 'bg-secondary',
     PendingScrutiny: 'bg-danger',
@@ -25,10 +27,10 @@ export const useScrutinyAnimalitos = ({animalitosRaffleScrutinyStatus}: Scrutiny
     Scrutinized: 'Detalles',
   }
 
-  const colorState = mapColorToState[animalitosRaffleScrutinyStatus || 'PendingScrutiny']
-  const textState = mapStateToText[animalitosRaffleScrutinyStatus || 'PendingScrutiny']
-  const colorTextState = mapColorTextToState[animalitosRaffleScrutinyStatus || 'PendingScrutiny']
-  const buttonText = mapStateToButtonText[animalitosRaffleScrutinyStatus || 'PendingScrutiny']
+  const colorState = mapColorToState[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
+  const textState = mapStateToText[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
+  const colorTextState = mapColorTextToState[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
+  const buttonText = mapStateToButtonText[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
 
   return {
     colorState,

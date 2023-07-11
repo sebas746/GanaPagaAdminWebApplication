@@ -4,11 +4,11 @@ export interface IChanceZodiacLotteries {
 }
 
 export interface ChanceZodiacRaffleStatus {
-  chanceZodiacRaffleStatus: 'PendingDraw' | 'PendingResult' | 'PendingApprove' | 'Approved'
+  chanceZodiacRaffleStatus: ChanceZodiacRaffleResultStatus
 }
 
 export interface ChanceZodiacScrutinyStatus {
-  chanceZodiacRaffleScrutinyStatus: 'PendingResultApprove' | 'PendingResultApprove' | 'Scrutinized'
+  chanceZodiacRaffleScrutinyStatus: ChanceZodiacRaffleScrutinyStatus
 }
 
 export interface IRaffleResultChanceZodiacDetail
@@ -31,6 +31,18 @@ export interface IRaffleResultChanceZodiacResponse {
   raffleResultDetailResponse: IRaffleResultChanceZodiacDetail[]
 }
 
+export enum ChanceZodiacRaffleResultStatus {
+  PendingDraw = 'PendingDraw',
+  PendingResult = 'PendingResult',
+  PendingApprove = 'PendingApprove',
+  Approved = 'Approved',
+}
+
+export enum ChanceZodiacRaffleScrutinyStatus {
+  PendingResultApprove = 'PendingScrutiny',
+  Scrutinized = 'Scrutinized',
+}
+
 export interface AddRaffleChanceZodiacResultBody {
   raffleId: number
   raffleResultValue: string
@@ -40,3 +52,9 @@ export interface IStarSignDetailSelect {
   id: number
   label: string
 }
+
+export interface AddScrutinyChanceZodiacBody {
+  raffleId: number
+}
+
+export interface IRaffleScrutinyChanceZodiacResponse extends IRaffleResultChanceZodiacResponse {}

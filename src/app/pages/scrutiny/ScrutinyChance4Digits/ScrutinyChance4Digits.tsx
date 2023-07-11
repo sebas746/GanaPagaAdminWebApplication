@@ -1,14 +1,14 @@
 import React from 'react'
-import {useScrutinyAnimalitos} from './ScrutinyAnimalitos.hook'
-import AnimalitosTabs from '../../../components/Tabs/AnimalitosTabs'
+import {useScrutinyChance4Digits} from './ScrutinyChance4Digits.hook'
+import Chance4DigitsTabs from '../../../components/Tabs/Chance4DigitsTabs'
 import ScrutinyForm from '../../../components/Forms/ScrutinyForm/ScrutinyForm'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
-import AnimalitosScrutinyCardList from '../../../components/AnimalitosScrutinyCardList/AnimalitosScrutinyCardList'
+import Chance4DigitsScrutinyCardList from '../../../components/Cards/Chance4DigitsScrutiny/components/Chance4DigitsScrutinyCardList'
 
-const ScrutinyAnimalitos = () => {
+const ScrutinyChance4Digits = () => {
   const {
     raffleScrutinyState,
-    animalitosLotteries,
+    Chance4DigitsLotteries,
     hasError,
     setScrutinyForm,
     setScrutinyResults,
@@ -16,9 +16,9 @@ const ScrutinyAnimalitos = () => {
     setIsLoadingScrutinyResults,
     isLoading,
     setSelectedTab,
-    addRaffleScrutinyAnimalitos,
+    addRaffleScrutinyChance4Digits,
     loadingAdd,
-  } = useScrutinyAnimalitos()
+  } = useScrutinyChance4Digits()
 
   return (
     <div className='container-fluid'>
@@ -36,8 +36,8 @@ const ScrutinyAnimalitos = () => {
           role='tablist'
         >
           <ConditionalRedering isTrue={!isLoading}>
-            <AnimalitosTabs
-              tabs={animalitosLotteries}
+            <Chance4DigitsTabs
+              tabs={Chance4DigitsLotteries}
               setSelectedTab={setSelectedTab}
               selectedTab={raffleScrutinyState.selectedTab}
             />
@@ -46,12 +46,12 @@ const ScrutinyAnimalitos = () => {
       </div>
       <div className='tab-content' id='pills-tabContent'>
         <ConditionalRedering isTrue={!isLoading}>
-          <AnimalitosScrutinyCardList
-            addRaffleScrutinyAnimalitos={addRaffleScrutinyAnimalitos}
+          <Chance4DigitsScrutinyCardList
+            addRaffleScrutinyChance4Digits={addRaffleScrutinyChance4Digits}
             raffleScrutinyResults={raffleScrutinyState.raffleResultsByLottery}
             selectedTab={raffleScrutinyState.selectedTab}
             loadingAdd={loadingAdd}
-            raffleId={raffleScrutinyState.animalitosRaffleId}
+            raffleId={raffleScrutinyState.Chance4DigitsRaffleId}
           />
         </ConditionalRedering>
       </div>
@@ -59,4 +59,4 @@ const ScrutinyAnimalitos = () => {
   )
 }
 
-export default ScrutinyAnimalitos
+export default ScrutinyChance4Digits

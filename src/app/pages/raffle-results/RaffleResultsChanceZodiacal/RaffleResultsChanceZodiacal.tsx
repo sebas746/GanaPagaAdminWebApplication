@@ -3,7 +3,7 @@ import RaffleResultForm from '../../../components/Forms/RaffleResultForm/RaffleR
 import clsx from 'clsx'
 import {IRaffleResultChanceZodiacDetail} from '../../../../types/ChanceZodiac.types'
 import {useRaffleResultsChanceZodiac} from './RaffleResultsChanceZodiacal.hook'
-import ChanceZodiacRaffleResultCard from '../../../components/Cards/ChanceZodiac/ChanceZodiacRaffleResultCard'
+import ChanceZodiacRaffleResultCard from '../../../components/Cards/ChanceZodiacRaffleResult/ChanceZodiacRaffleResultCard'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
 import ChanceZodiacTabs from '../../../components/Tabs/ChanceZodiacTabs'
 

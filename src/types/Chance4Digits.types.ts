@@ -4,11 +4,11 @@ export interface IChance4DigitsLotteries {
 }
 
 export interface Chance4DigitsRaffleStatus {
-  chanceFourRaffleStatus: 'PendingDraw' | 'PendingResult' | 'PendingApprove' | 'Approved'
+  chanceFourRaffleStatus: Chance4DigitsRaffleResultStatus
 }
 
 export interface Chance4ScrutinyStatus {
-  chanceFourRaffleScrutinyStatus: 'PendingResultApprove' | 'PendingResultApprove' | 'Scrutinized'
+  chanceFourRaffleScrutinyStatus: Chance4DigitsRaffleScrutinyStatus
 }
 
 export interface IRaffleResultChance4DigitsDetail
@@ -23,6 +23,18 @@ export interface IRaffleResultChance4DigitsDetail
   chanceFourRaffleResultApprovedBy: string
 }
 
+export enum Chance4DigitsRaffleResultStatus {
+  PendingDraw = 'PendingDraw',
+  PendingResult = 'PendingResult',
+  PendingApprove = 'PendingApprove',
+  Approved = 'Approved',
+}
+
+export enum Chance4DigitsRaffleScrutinyStatus {
+  PendingResultApprove = 'PendingScrutiny',
+  Scrutinized = 'Scrutinized',
+}
+
 export interface IRaffleResultChance4DigitsResponse {
   chanceFourLotteryId: number
   chanceFourLotteryName: string
@@ -33,3 +45,9 @@ export interface AddRaffleChance4DigitsResultBody {
   raffleId: number
   raffleResultValue: string
 }
+
+export interface AddScrutinyChance4DigitsBody {
+  raffleId: number
+}
+
+export interface IRaffleScrutinyChance4DigitsResponse extends IRaffleResultChance4DigitsResponse {}

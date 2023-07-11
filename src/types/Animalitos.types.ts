@@ -60,7 +60,6 @@ export interface AddRaffleAnimalitosResultBody {
 
 export interface AddScrutinyAnimalitosBody {
   raffleId: number
-  createdBy: string
 }
 
 export interface IRaffleScrutinyAnimalitosResponse extends IRaffleResultAnimalitosResponse {}

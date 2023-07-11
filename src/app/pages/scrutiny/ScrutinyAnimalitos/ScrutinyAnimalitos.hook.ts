@@ -11,6 +11,7 @@ import {useMutation, useQuery} from 'react-query'
 import {ReactQueryResponse} from '../../../../types/Generics'
 import axios from '../../../config/http-common'
 import {useAnimalitosLotteries} from '../../../hooks/animalitosLotteries.hook'
+import {enqueueSnackbar} from 'notistack'
 
 enum ScrutinyAnimalitosAction {
   SET_SCRUTINY_FORM = 'SET_SCRUTINY_FORM',
@@ -18,6 +19,7 @@ enum ScrutinyAnimalitosAction {
   SET_SCRUTINY_RESULTS_BY_LOTTERY = 'SET_SCRUTINY_RESULTS_BY_LOTTERY',
   SET_IS_LOADING_SCRUTINY_RESULTS = 'SET_IS_LOADING_SCRUTINY_RESULTS',
   SET_SELECTED_TAB = 'SET_SELECTED_TAB',
+  SET_RAFFLE_ID_LOADING = 'SET_RAFFLE_ID_LOADING',
 }
 
 interface ScrutinyAnimalitosState {
@@ -36,6 +38,7 @@ interface RaffleScrutinyAnimalitosState {
   selectedTab: number
   raffleResultForm: RaffleResultsForm
   raffleResultsByLottery: IRaffleScrutinyAnimalitosResponse[]
+  animalitosRaffleId: number
 }
 
 export const raffleResultReducer = (
@@ -68,6 +71,11 @@ export const raffleResultReducer = (
         ...state,
         selectedTab: action.payload as number,
       }
+    case ScrutinyAnimalitosAction.SET_RAFFLE_ID_LOADING:
+      return {
+        ...state,
+        animalitosRaffleId: action.payload as number,
+      }
     default:
       return state
   }
@@ -83,6 +91,7 @@ export const useScrutinyAnimalitos = () => {
       raffleResultStateId: '',
     },
     raffleResultsByLottery: [],
+    animalitosRaffleId: 0,
   })
   const {animalitosLotteriesState} = useAnimalitosLotteries()
 
@@ -107,16 +116,43 @@ export const useScrutinyAnimalitos = () => {
 
   const {mutate: addRaffleScrutinyAnimalitosMutation, isLoading: loadingAdd} = useMutation({
     mutationFn: async (body: AddScrutinyAnimalitosBody) => {
+      setRaffleIdLoading(body.raffleId)
       return await axios.post('/AnimalitosScrutiny/add-animalitos-scrutiny', body)
     },
     onSuccess(data, variables, context) {
-      getAnimalitosScrutiny()
-      // handleSuccessResponse(data)
+      handleSuccessResponse(data)
     },
     onError(error, variables, context) {
-      // handleErrorResponse()
+      handleErrorResponse()
     },
   })
+
+  const handleErrorResponse = () => {
+    enqueueSnackbar(
+      'Se ha presentado un error, por favor recargue la página o consulte con el administrador.',
+      {
+        variant: 'error',
+        hideIconVariant: true,
+      }
+    )
+  }
+
+  const handleSuccessResponse = (data: any) => {
+    if (!data.data.success && data.data.errors[0]) {
+      data.data.errors[0].errorList.forEach((errorDetail: any) => {
+        enqueueSnackbar(errorDetail.description, {
+          variant: 'error',
+          hideIconVariant: true,
+        })
+      })
+    } else {
+      enqueueSnackbar(data.data.message, {
+        variant: 'success',
+        hideIconVariant: true,
+      })
+    }
+    getAnimalitosScrutiny()
+  }
 
   useEffect(() => {
     if (!isFetching && animalitosScrutinyData) {
@@ -129,6 +165,13 @@ export const useScrutinyAnimalitos = () => {
       getAnimalitosScrutiny()
     }
   }, [raffleScrutinyState.raffleResultForm])
+
+  const setRaffleIdLoading = (payload: number) => {
+    dispatchScrutinyAnimalitos({
+      type: ScrutinyAnimalitosAction.SET_RAFFLE_ID_LOADING,
+      payload,
+    })
+  }
 
   const setScrutinyForm = (payload: RaffleResultsForm) => {
     dispatchScrutinyAnimalitos({
@@ -166,7 +209,7 @@ export const useScrutinyAnimalitos = () => {
   }
 
   const addRaffleScrutinyAnimalitos = (raffleId: number) => {
-    addRaffleScrutinyAnimalitosMutation({raffleId, createdBy: 'rarangor'})
+    addRaffleScrutinyAnimalitosMutation({raffleId})
   }
 
   return {

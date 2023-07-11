@@ -5,7 +5,6 @@ import {
   IRaffleResultAnimalitosDetail,
   IRaffleScrutinyAnimalitosResponse,
 } from '../../../types/Animalitos.types'
-import AnimalitosRaffleResultCard from '../Cards/AnimalitosRaffleResult/AnimalitosRaffleResultCard'
 import AnimalitosScrutinyCard from '../Cards/AnimalitosScrutiny/AnimalitosScrutinyCard'
 
 interface IAnimalitosCardListProps {
@@ -13,6 +12,7 @@ interface IAnimalitosCardListProps {
   raffleScrutinyResults: IRaffleScrutinyAnimalitosResponse[]
   selectedTab: number
   loadingAdd: boolean
+  raffleId: number
 }
 
 const AnimalitosScrutinyCardList = ({
@@ -20,6 +20,7 @@ const AnimalitosScrutinyCardList = ({
   raffleScrutinyResults,
   selectedTab,
   loadingAdd,
+  raffleId,
 }: IAnimalitosCardListProps) => {
   const renderResultCard = (raffles: IRaffleResultAnimalitosDetail[]) =>
     raffles.map((raffle) => {
@@ -36,6 +37,7 @@ const AnimalitosScrutinyCardList = ({
             raffle={raffle}
             addRaffleScrutinyAnimalitos={wrapAddRaffleAnimalitosResult}
             loadingAdd={loadingAdd}
+            raffleId={raffleId}
           />
         </div>
       )
