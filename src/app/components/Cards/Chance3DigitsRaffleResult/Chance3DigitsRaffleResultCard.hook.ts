@@ -3,6 +3,13 @@ import {
   Chance3DigitsRaffleStatus,
 } from '../../../../types/Chance3Digits.types'
 import {useState} from 'react'
+import {
+  mapRaffleStatusColorToState,
+  mapRaffleStatusToText,
+  mapRaffleStatusColorTextToState,
+  mapRaffleStatusToButtonText,
+  mapRaffleStatusToSubmitButtonText,
+} from '../../../constants/raffle-state.constants'
 
 interface IRaffleResultHookCard extends Chance3DigitsRaffleStatus {}
 
@@ -15,58 +22,22 @@ export const useChance3DigitsRaffleResultCard = ({
     setShowRaffleResultForm(!showRaffleResultForm)
   }
 
-  const mapColorToState = {
-    PendingDraw: 'bg-secondary',
-    PendingResult: 'bg-danger',
-    PendingApprove: 'bg-warning',
-    Approved: 'bg-success',
-  }
-
-  const mapColorTextToState = {
-    PendingDraw: 'text-dark',
-    PendingResult: 'text-white',
-    PendingApprove: 'text-white',
-    Approved: 'text-white',
-  }
-
-  const mapStateToText = {
-    PendingDraw: 'Sin jugar sorteo',
-    PendingResult: 'Pendiente resultado',
-    PendingApprove: 'Pendiente de aprobación',
-    Approved: 'Ingresado y aprobado',
-  }
-
-  const mapStateToButtonText = {
-    PendingDraw: undefined,
-    PendingResult: 'Ingresar resultado',
-    PendingApprove: 'Aprobar/Actualizar resultado',
-    Approved: undefined,
-  }
-
-  const mapStateToSubmitButtonText = {
-    PendingDraw: undefined,
-    PendingResult: 'Guardar',
-    PendingApprove: 'Aprobar',
-    Approved: undefined,
-    Update: 'Actualizar',
-  }
-
-  const colorState = mapColorToState[chanceThreeRaffleStatus || 'PendingDraw']
-  const textState = mapStateToText[chanceThreeRaffleStatus || 'PendingDraw']
-  const colorTextState = mapColorTextToState[chanceThreeRaffleStatus || 'PendingDraw']
-  const buttonText = mapStateToButtonText[chanceThreeRaffleStatus || 'PendingDraw']
+  const colorState = mapRaffleStatusColorToState[chanceThreeRaffleStatus || 'PendingDraw']
+  const textState = mapRaffleStatusToText[chanceThreeRaffleStatus || 'PendingDraw']
+  const colorTextState = mapRaffleStatusColorTextToState[chanceThreeRaffleStatus || 'PendingDraw']
+  const buttonText = mapRaffleStatusToButtonText[chanceThreeRaffleStatus || 'PendingDraw']
   const getSubmitButtonText = (
     raffle: IRaffleResultChance3DigitsDetail,
     selectedOption: string | undefined
   ) => {
     if (selectedOption !== 'undefined' && chanceThreeRaffleStatus === 'PendingApprove') {
       if (raffle.chanceThreeRaffleResultValue === selectedOption) {
-        return mapStateToSubmitButtonText['PendingApprove']
+        return mapRaffleStatusToSubmitButtonText['PendingApprove']
       } else {
-        return mapStateToSubmitButtonText['Update']
+        return mapRaffleStatusToSubmitButtonText['Update']
       }
     }
-    return mapStateToSubmitButtonText['PendingResult']
+    return mapRaffleStatusToSubmitButtonText['PendingResult']
   }
 
   return {

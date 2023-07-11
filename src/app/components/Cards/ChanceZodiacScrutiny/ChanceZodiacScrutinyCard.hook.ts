@@ -1,36 +1,20 @@
 import {ChanceZodiacScrutinyStatus} from '../../../../types/ChanceZodiac.types'
+import {
+  mapScrutinyColorToState,
+  mapScrutinyStateToText,
+  mapColorScrutinyTextToState,
+  mapScrutinyStateToButtonText,
+} from '../../../constants/raffle-state.constants'
 
 export const useScrutinyChanceZodiac = ({
   chanceZodiacRaffleScrutinyStatus,
 }: ChanceZodiacScrutinyStatus) => {
-  const mapColorToState = {
-    PendingResultApprove: 'bg-secondary',
-    PendingScrutiny: 'bg-danger',
-    Scrutinized: 'bg-success',
-  }
-
-  const mapColorTextToState = {
-    PendingResultApprove: 'text-white',
-    PendingScrutiny: 'text-white',
-    Scrutinized: 'text-white',
-  }
-
-  const mapStateToText = {
-    PendingResultApprove: 'Sorteo pendiente por resultado',
-    PendingScrutiny: 'Sorteo pendiente de escrutinio',
-    Scrutinized: 'Sorteo con escrutinio',
-  }
-
-  const mapStateToButtonText = {
-    PendingResultApprove: undefined,
-    PendingScrutiny: 'Calcular',
-    Scrutinized: 'Detalles',
-  }
-
-  const colorState = mapColorToState[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
-  const textState = mapStateToText[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
-  const colorTextState = mapColorTextToState[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
-  const buttonText = mapStateToButtonText[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
+  const colorState = mapScrutinyColorToState[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
+  const textState = mapScrutinyStateToText[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
+  const colorTextState =
+    mapColorScrutinyTextToState[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
+  const buttonText =
+    mapScrutinyStateToButtonText[chanceZodiacRaffleScrutinyStatus || 'PendingScrutiny']
 
   return {
     colorState,

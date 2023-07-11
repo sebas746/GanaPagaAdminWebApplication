@@ -3,6 +3,13 @@ import {
   Chance4DigitsRaffleStatus,
 } from '../../../../types/Chance4Digits.types'
 import {useState} from 'react'
+import {
+  mapRaffleStatusColorToState,
+  mapRaffleStatusToText,
+  mapRaffleStatusColorTextToState,
+  mapRaffleStatusToSubmitButtonText,
+  mapRaffleStatusToButtonText,
+} from '../../../constants/raffle-state.constants'
 
 interface IRaffleResultHookCard extends Chance4DigitsRaffleStatus {}
 
@@ -15,58 +22,22 @@ export const useChance4DigitsRaffleResultCard = ({
     setShowRaffleResultForm(!showRaffleResultForm)
   }
 
-  const mapColorToState = {
-    PendingDraw: 'bg-secondary',
-    PendingResult: 'bg-danger',
-    PendingApprove: 'bg-warning',
-    Approved: 'bg-success',
-  }
-
-  const mapColorTextToState = {
-    PendingDraw: 'text-dark',
-    PendingResult: 'text-white',
-    PendingApprove: 'text-white',
-    Approved: 'text-white',
-  }
-
-  const mapStateToText = {
-    PendingDraw: 'Sin jugar sorteo',
-    PendingResult: 'Pendiente resultado',
-    PendingApprove: 'Pendiente de aprobación',
-    Approved: 'Ingresado y aprobado',
-  }
-
-  const mapStateToButtonText = {
-    PendingDraw: undefined,
-    PendingResult: 'Ingresar resultado',
-    PendingApprove: 'Aprobar/Actualizar resultado',
-    Approved: undefined,
-  }
-
-  const mapStateToSubmitButtonText = {
-    PendingDraw: undefined,
-    PendingResult: 'Guardar',
-    PendingApprove: 'Aprobar',
-    Approved: undefined,
-    Update: 'Actualizar',
-  }
-
-  const colorState = mapColorToState[chanceFourRaffleStatus || 'PendingDraw']
-  const textState = mapStateToText[chanceFourRaffleStatus || 'PendingDraw']
-  const colorTextState = mapColorTextToState[chanceFourRaffleStatus || 'PendingDraw']
-  const buttonText = mapStateToButtonText[chanceFourRaffleStatus || 'PendingDraw']
+  const colorState = mapRaffleStatusColorToState[chanceFourRaffleStatus || 'PendingDraw']
+  const textState = mapRaffleStatusToText[chanceFourRaffleStatus || 'PendingDraw']
+  const colorTextState = mapRaffleStatusColorTextToState[chanceFourRaffleStatus || 'PendingDraw']
+  const buttonText = mapRaffleStatusToButtonText[chanceFourRaffleStatus || 'PendingDraw']
   const getSubmitButtonText = (
     raffle: IRaffleResultChance4DigitsDetail,
     selectedOption: string | undefined
   ) => {
     if (selectedOption !== 'undefined' && chanceFourRaffleStatus === 'PendingApprove') {
       if (raffle.chanceFourRaffleResultValue === selectedOption) {
-        return mapStateToSubmitButtonText['PendingApprove']
+        return mapRaffleStatusToSubmitButtonText['PendingApprove']
       } else {
-        return mapStateToSubmitButtonText['Update']
+        return mapRaffleStatusToSubmitButtonText['Update']
       }
     }
-    return mapStateToSubmitButtonText['PendingResult']
+    return mapRaffleStatusToSubmitButtonText['PendingResult']
   }
 
   return {
