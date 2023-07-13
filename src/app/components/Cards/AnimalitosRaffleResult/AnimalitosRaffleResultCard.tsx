@@ -42,6 +42,22 @@ const AnimalitosRaffleResultCard = ({
     return getSubmitButtonText(raffle, selectedAnimal)
   }
 
+  const disableSubmitButton = () => {
+    let disabled = false
+    if (
+      !raffle.animalitosRaffleResultLastUpdatedBy &&
+      createdBy === raffle.animalitosRaffleResultCreatedBy
+    ) {
+      disabled = true
+    } else if (
+      raffle.animalitosRaffleResultLastUpdatedBy &&
+      createdBy === raffle.animalitosRaffleResultLastUpdatedBy
+    ) {
+      disabled = true
+    }
+    return disabled
+  }
+
   return (
     <Card>
       <Card.Header className={`p-2 rounded-2 ${colorState}`}>
@@ -90,7 +106,7 @@ const AnimalitosRaffleResultCard = ({
                 className='m-1'
                 variant='primary'
                 onClick={setRaffleResultForm}
-                disabled={createdBy === raffle.animalitosRaffleResultCreatedBy}
+                disabled={disableSubmitButton()}
               >
                 {buttonText}
               </Button>

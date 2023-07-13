@@ -42,6 +42,22 @@ const Chance3DigitsRaffleResultCard = ({
     return getSubmitButtonText(raffle, resultValue)
   }
 
+  const disableSubmitButton = () => {
+    let disabled = false
+    if (
+      !raffle.chanceThreeRaffleResultLastUpdatedBy &&
+      createdBy === raffle.chanceThreeRaffleResultCreatedBy
+    ) {
+      disabled = true
+    } else if (
+      raffle.chanceThreeRaffleResultLastUpdatedBy &&
+      createdBy === raffle.chanceThreeRaffleResultLastUpdatedBy
+    ) {
+      disabled = true
+    }
+    return disabled
+  }
+
   return (
     <Card>
       <Card.Header className={`p-2 rounded-2 ${colorState}`}>
@@ -84,7 +100,7 @@ const Chance3DigitsRaffleResultCard = ({
                 className='m-1'
                 variant='primary'
                 onClick={setRaffleResultForm}
-                disabled={createdBy === raffle.chanceThreeRaffleResultCreatedBy}
+                disabled={disableSubmitButton()}
               >
                 {buttonText}
               </Button>

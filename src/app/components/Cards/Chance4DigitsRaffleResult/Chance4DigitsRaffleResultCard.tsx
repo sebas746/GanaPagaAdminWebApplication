@@ -40,6 +40,22 @@ const Chance4DigitsRaffleResultCard = ({
     return getSubmitButtonText(raffle, resultValue)
   }
 
+  const disableSubmitButton = () => {
+    let disabled = false
+    if (
+      !raffle.chanceFourRaffleResultLastUpdatedBy &&
+      createdBy === raffle.chanceFourRaffleResultCreatedBy
+    ) {
+      disabled = true
+    } else if (
+      raffle.chanceFourRaffleResultLastUpdatedBy &&
+      createdBy === raffle.chanceFourRaffleResultLastUpdatedBy
+    ) {
+      disabled = true
+    }
+    return disabled
+  }
+
   return (
     <Card>
       <Card.Header className={`p-2 rounded-2 ${colorState}`}>
@@ -81,7 +97,7 @@ const Chance4DigitsRaffleResultCard = ({
                 className='m-1'
                 variant='primary'
                 onClick={setRaffleResultForm}
-                disabled={createdBy === raffle.chanceFourRaffleResultCreatedBy}
+                disabled={disableSubmitButton()}
               >
                 {buttonText}
               </Button>
