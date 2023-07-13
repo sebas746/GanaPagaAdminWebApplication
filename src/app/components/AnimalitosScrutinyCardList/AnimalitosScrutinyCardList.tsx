@@ -13,6 +13,7 @@ interface IAnimalitosCardListProps {
   selectedTab: number
   loadingAdd: boolean
   raffleId: number
+  onClickScrutinyAnimalitosDetail: (raffleId: number) => void
 }
 
 const AnimalitosScrutinyCardList = ({
@@ -21,11 +22,15 @@ const AnimalitosScrutinyCardList = ({
   selectedTab,
   loadingAdd,
   raffleId,
+  onClickScrutinyAnimalitosDetail,
 }: IAnimalitosCardListProps) => {
   const renderResultCard = (raffles: IRaffleResultAnimalitosDetail[]) =>
     raffles.map((raffle) => {
       const wrapAddRaffleAnimalitosResult = () =>
         addRaffleScrutinyAnimalitos(raffle.animalitosRaffleId)
+      const wrapOnClickRaffleAnimalitosResult = () =>
+        onClickScrutinyAnimalitosDetail(raffle.animalitosRaffleId)
+
       return (
         <div
           className='col-sm-12 col-md-6'
@@ -38,6 +43,7 @@ const AnimalitosScrutinyCardList = ({
             addRaffleScrutinyAnimalitos={wrapAddRaffleAnimalitosResult}
             loadingAdd={loadingAdd}
             raffleId={raffleId}
+            onClickScrutinyAnimalitosDetail={wrapOnClickRaffleAnimalitosResult}
           />
         </div>
       )

@@ -1,10 +1,11 @@
 import React from 'react'
-import {Outlet, Route, Routes} from 'react-router-dom'
+import {Outlet, Route, Routes, useLocation} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
 import ScrutinyAnimalitos from '../../pages/scrutiny/ScrutinyAnimalitos/ScrutinyAnimalitos'
 import ScrutinyChance3Digits from '../../pages/scrutiny/ScrutinyChance3Digits/ScrutinyChance3Digits'
 import ScrutinyChanceZodiacal from '../../pages/scrutiny/ScrutinyChanceZodiac/ScrutinyChanceZodiac'
 import ScrutinyChance4Digits from '../../pages/scrutiny/ScrutinyChance4Digits/ScrutinyChance4Digits'
+import ScrutinyDetail from '../../pages/scrutiny/ScrutinyDetail/ScrutinyDetail'
 
 const scrutinyBreadCrumbs: Array<PageLink> = [
   {
@@ -21,6 +22,8 @@ const scrutinyBreadCrumbs: Array<PageLink> = [
   },
 ]
 const ScrutinyPage = () => {
+  const location = useLocation()
+  console.log(location.state)
   return (
     <Routes>
       <Route element={<Outlet />}>
@@ -60,6 +63,17 @@ const ScrutinyPage = () => {
             </>
           }
         />
+        {location.state && location.state.raffleId && (
+          <Route
+            path='scrutiny-detail'
+            element={
+              <>
+                <PageTitle breadcrumbs={scrutinyBreadCrumbs}>Escrutinio detalle</PageTitle>
+                <ScrutinyDetail />
+              </>
+            }
+          />
+        )}
       </Route>
     </Routes>
   )

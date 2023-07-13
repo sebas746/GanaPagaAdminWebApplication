@@ -14,6 +14,7 @@ interface AnimalitosScrutinyProps {
   raffle: IRaffleResultAnimalitosDetail
   loadingAdd: boolean
   raffleId: number
+  onClickScrutinyAnimalitosDetail: () => void
 }
 
 const AnimalitosScrutinyCard = ({
@@ -21,6 +22,7 @@ const AnimalitosScrutinyCard = ({
   addRaffleScrutinyAnimalitos,
   loadingAdd,
   raffleId,
+  onClickScrutinyAnimalitosDetail,
 }: AnimalitosScrutinyProps) => {
   const {colorState, colorTextState, textState, buttonText} = useScrutinyAnimalitos({
     animalitosRaffleScrutinyStatus: raffle.animalitosRaffleScrutinyStatus,
@@ -50,10 +52,8 @@ const AnimalitosScrutinyCard = ({
           </div>
           <ConditionalRedering
             isTrue={
-              (raffle.animalitosRaffleScrutinyStatus ===
-                RaffleScrutinyStatus.PendingResultApprove &&
-                raffle.animalitosRaffleStatus === RaffleResulStatus.Approved) ||
-              raffle.animalitosRaffleScrutinyStatus === RaffleScrutinyStatus.Scrutinized
+              raffle.animalitosRaffleScrutinyStatus === RaffleScrutinyStatus.PendingResultApprove &&
+              raffle.animalitosRaffleStatus === RaffleResulStatus.Approved
             }
           >
             <button
@@ -65,6 +65,13 @@ const AnimalitosScrutinyCard = ({
               {loadingAdd && (
                 <RenderLoader show={loadingAdd && raffle.animalitosRaffleId === raffleId} />
               )}
+            </button>
+          </ConditionalRedering>
+          <ConditionalRedering
+            isTrue={raffle.animalitosRaffleScrutinyStatus === RaffleScrutinyStatus.Scrutinized}
+          >
+            <button className='btn btn-primary' onClick={onClickScrutinyAnimalitosDetail}>
+              {buttonText}
             </button>
           </ConditionalRedering>
         </div>

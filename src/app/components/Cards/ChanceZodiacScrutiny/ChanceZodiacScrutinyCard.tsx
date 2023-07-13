@@ -26,8 +26,7 @@ const ChanceZodiacScrutinyCard = ({
   const {colorState, colorTextState, textState, buttonText} = useScrutinyChanceZodiac({
     chanceZodiacRaffleScrutinyStatus: raffle.chanceZodiacRaffleScrutinyStatus,
   })
-  console.log(raffle.chanceZodiacRaffleId)
-  console.log(raffleId)
+
   return (
     <Card>
       <Card.Header className={`p-2 rounded-2 ${colorState}`}>

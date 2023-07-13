@@ -12,6 +12,8 @@ import {ReactQueryResponse} from '../../../../types/Generics'
 import axios from '../../../config/http-common'
 import {useAnimalitosLotteries} from '../../../hooks/animalitosLotteries.hook'
 import {enqueueSnackbar} from 'notistack'
+import {useNavigate} from 'react-router-dom'
+import {gameType} from '../../../constants/game-type.constants'
 
 enum ScrutinyAnimalitosAction {
   SET_SCRUTINY_FORM = 'SET_SCRUTINY_FORM',
@@ -82,6 +84,7 @@ export const raffleResultReducer = (
 }
 
 export const useScrutinyAnimalitos = () => {
+  const navigate = useNavigate()
   const [raffleScrutinyState, dispatchScrutinyAnimalitos] = useReducer(raffleResultReducer, {
     animalitosLotteries: [],
     isLoadingAnimalitosLotteries: false,
@@ -212,6 +215,10 @@ export const useScrutinyAnimalitos = () => {
     addRaffleScrutinyAnimalitosMutation({raffleId})
   }
 
+  const onClickScrutinyAnimalitosDetail = (raffleId: number) => {
+    navigate('../scrutiny-detail', {state: {raffleId: raffleId, gameType: gameType.animalitos}})
+  }
+
   return {
     isLoading: animalitosLotteriesState.isLoadingAnimalitosLotteries || isFetching,
     animalitosLotteries: animalitosLotteriesState.animalitosLotteries,
@@ -224,5 +231,6 @@ export const useScrutinyAnimalitos = () => {
     setSelectedTab,
     addRaffleScrutinyAnimalitos,
     loadingAdd,
+    onClickScrutinyAnimalitosDetail,
   }
 }

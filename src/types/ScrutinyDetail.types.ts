@@ -1,7 +1,7 @@
 export interface IScrutinyDetailResponse {
   raffleId: number
   raffleName: string
-  raffleDrawTime: Date
+  raffleDrawTime: string
   raffleResult: string
   raffleResultName: string
   scrutinies: Scrutiny[]
