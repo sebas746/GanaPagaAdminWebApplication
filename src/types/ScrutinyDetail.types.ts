@@ -25,5 +25,5 @@ export interface Winner {
   betValue: number
   totalToPay: number
   isPaid: boolean
-  currencyName: string
+  currencyCode: string
 }
