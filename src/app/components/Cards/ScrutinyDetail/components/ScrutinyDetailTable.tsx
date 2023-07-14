@@ -46,8 +46,8 @@ const ScrutinyDetailTable = ({winners}: ScrutinyDetailTableProps) => {
                   </td>
                   <td>{'vendedor'}</td>
                   <td>{'punto de venta'}</td>
-                  <td className='text-end'>
-                    <button className='btn btn-bg-light btn-color-muted btn-active-color-success btn-sm px-4 me-2'>
+                  <td className='text-start'>
+                    <button className='btn btn-bg-light btn-primary btn-active-color-success btn-sm px-4 me-2'>
                       DETALLE
                     </button>
                   </td>

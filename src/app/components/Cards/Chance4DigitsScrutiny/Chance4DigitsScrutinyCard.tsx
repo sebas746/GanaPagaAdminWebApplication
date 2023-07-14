@@ -14,6 +14,7 @@ interface Chance4DigitsScrutinyProps {
   raffle: IRaffleResultChance4DigitsDetail
   loadingAdd: boolean
   raffleId: number
+  onClickScrutinyChance4DigitsDetail: () => void
 }
 
 const Chance4DigitsScrutinyCard = ({
@@ -21,6 +22,7 @@ const Chance4DigitsScrutinyCard = ({
   addRaffleScrutinyChance4Digits,
   loadingAdd,
   raffleId,
+  onClickScrutinyChance4DigitsDetail,
 }: Chance4DigitsScrutinyProps) => {
   const {colorState, colorTextState, textState, buttonText} = useScrutinyChance4Digits({
     chanceFourRaffleScrutinyStatus: raffle.chanceFourRaffleScrutinyStatus,
@@ -50,11 +52,9 @@ const Chance4DigitsScrutinyCard = ({
           </div>
           <ConditionalRedering
             isTrue={
-              (raffle.chanceFourRaffleScrutinyStatus ===
-                Chance4DigitsRaffleScrutinyStatus.PendingResultApprove &&
-                raffle.chanceFourRaffleStatus === Chance4DigitsRaffleResultStatus.Approved) ||
               raffle.chanceFourRaffleScrutinyStatus ===
-                Chance4DigitsRaffleScrutinyStatus.Scrutinized
+                Chance4DigitsRaffleScrutinyStatus.PendingResultApprove &&
+              raffle.chanceFourRaffleStatus === Chance4DigitsRaffleResultStatus.Approved
             }
           >
             <button
@@ -66,6 +66,16 @@ const Chance4DigitsScrutinyCard = ({
               {loadingAdd && (
                 <RenderLoader show={loadingAdd && raffle.chanceFourRaffleId === raffleId} />
               )}
+            </button>
+          </ConditionalRedering>
+          <ConditionalRedering
+            isTrue={
+              raffle.chanceFourRaffleScrutinyStatus ===
+              Chance4DigitsRaffleScrutinyStatus.Scrutinized
+            }
+          >
+            <button className='btn btn-primary' onClick={onClickScrutinyChance4DigitsDetail}>
+              {buttonText}
             </button>
           </ConditionalRedering>
         </div>

@@ -18,6 +18,7 @@ const ScrutinyChance3Digits = () => {
     setSelectedTab,
     addRaffleScrutinyChance3Digits,
     loadingAdd,
+    onClickScrutinyChance3DigitsDetail,
   } = useScrutinyChance3Digits()
 
   return (
@@ -52,6 +53,7 @@ const ScrutinyChance3Digits = () => {
             selectedTab={raffleScrutinyState.selectedTab}
             loadingAdd={loadingAdd}
             raffleId={raffleScrutinyState.Chance3DigitsRaffleId}
+            onClickScrutinyChance3DigitsDetail={onClickScrutinyChance3DigitsDetail}
           />
         </ConditionalRedering>
       </div>

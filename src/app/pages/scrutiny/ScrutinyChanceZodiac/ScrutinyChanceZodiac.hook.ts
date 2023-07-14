@@ -13,6 +13,8 @@ import axios from '../../../config/http-common'
 
 import {enqueueSnackbar} from 'notistack'
 import {useChanceZodiacLotteries} from '../../../hooks/chanceZodiacLotteries.hook'
+import {useNavigate} from 'react-router-dom'
+import {gameType} from '../../../constants/game-type.constants'
 
 enum ScrutinyChanceZodiacAction {
   SET_SCRUTINY_FORM = 'SET_SCRUTINY_FORM',
@@ -83,6 +85,7 @@ export const raffleResultReducer = (
 }
 
 export const useScrutinyChanceZodiac = () => {
+  const navigate = useNavigate()
   const [raffleScrutinyState, dispatchScrutinyChanceZodiac] = useReducer(raffleResultReducer, {
     chanceZodiacLotteries: [],
     isLoadingChanceZodiacLotteries: false,
@@ -213,6 +216,13 @@ export const useScrutinyChanceZodiac = () => {
     addRaffleScrutinyChanceZodiacMutation({raffleId})
   }
 
+  const onClickScrutinyChanceZodiacDetail = (raffleId: number) => {
+    navigate('../scrutiny-detail', {
+      replace: true,
+      state: {raffleId: raffleId, gameType: gameType.chanceZodiacal},
+    })
+  }
+
   return {
     isLoading: chanceZodiacLotteriesState.isLoadingChanceZodiacLotteries || isFetching,
     chanceZodiacLotteries: chanceZodiacLotteriesState.chanceZodiacLotteries,
@@ -225,5 +235,6 @@ export const useScrutinyChanceZodiac = () => {
     setSelectedTab,
     addRaffleScrutinyChanceZodiac,
     loadingAdd,
+    onClickScrutinyChanceZodiacDetail,
   }
 }

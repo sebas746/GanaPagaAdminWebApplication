@@ -13,6 +13,8 @@ import axios from '../../../config/http-common'
 
 import {enqueueSnackbar} from 'notistack'
 import {useChance3DigitsLotteries} from '../../../hooks/chance3DigitsLotteries.hook'
+import {useNavigate} from 'react-router-dom'
+import {gameType} from '../../../constants/game-type.constants'
 
 enum ScrutinyChance3DigitsAction {
   SET_SCRUTINY_FORM = 'SET_SCRUTINY_FORM',
@@ -83,6 +85,7 @@ export const raffleResultReducer = (
 }
 
 export const useScrutinyChance3Digits = () => {
+  const navigate = useNavigate()
   const [raffleScrutinyState, dispatchScrutinyChance3Digits] = useReducer(raffleResultReducer, {
     Chance3DigitsLotteries: [],
     isLoadingChance3DigitsLotteries: false,
@@ -213,6 +216,13 @@ export const useScrutinyChance3Digits = () => {
     addRaffleScrutinyChance3DigitsMutation({raffleId})
   }
 
+  const onClickScrutinyChance3DigitsDetail = (raffleId: number) => {
+    navigate('../scrutiny-detail', {
+      replace: true,
+      state: {raffleId: raffleId, gameType: gameType.chance3Digits},
+    })
+  }
+
   return {
     isLoading: chance3DigitsLotteriesState.isLoadingChance3DigitsLotteries || isFetching,
     chance3DigitsLotteries: chance3DigitsLotteriesState.chance3DigitsLotteries,
@@ -225,5 +235,6 @@ export const useScrutinyChance3Digits = () => {
     setSelectedTab,
     addRaffleScrutinyChance3Digits,
     loadingAdd,
+    onClickScrutinyChance3DigitsDetail,
   }
 }

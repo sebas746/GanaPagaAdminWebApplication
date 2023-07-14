@@ -13,6 +13,7 @@ interface IChance3DigitsCardListProps {
   selectedTab: number
   loadingAdd: boolean
   raffleId: number
+  onClickScrutinyChance3DigitsDetail: (raffleId: number) => void
 }
 
 const Chance3DigitsScrutinyCardList = ({
@@ -21,11 +22,14 @@ const Chance3DigitsScrutinyCardList = ({
   selectedTab,
   loadingAdd,
   raffleId,
+  onClickScrutinyChance3DigitsDetail,
 }: IChance3DigitsCardListProps) => {
   const renderResultCard = (raffles: IRaffleResultChance3DigitsDetail[]) =>
     raffles.map((raffle) => {
       const wrapAddRaffleChance3DigitsResult = () =>
         addRaffleScrutinyChance3Digits(raffle.chanceThreeRaffleId)
+      const wrapOnClickRaffleChance3DigitsResult = () =>
+        onClickScrutinyChance3DigitsDetail(raffle.chanceThreeRaffleId)
       return (
         <div
           className='col-sm-12 col-md-6'
@@ -38,6 +42,7 @@ const Chance3DigitsScrutinyCardList = ({
             addRaffleScrutinyChance3Digits={wrapAddRaffleChance3DigitsResult}
             loadingAdd={loadingAdd}
             raffleId={raffleId}
+            onClickScrutinyChance3DigitsDetail={wrapOnClickRaffleChance3DigitsResult}
           />
         </div>
       )

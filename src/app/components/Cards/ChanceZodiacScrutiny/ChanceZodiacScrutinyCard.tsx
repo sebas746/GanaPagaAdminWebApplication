@@ -15,6 +15,7 @@ interface ChanceZodiacScrutinyProps {
   raffle: IRaffleResultChanceZodiacDetail
   loadingAdd: boolean
   raffleId: number
+  onClickScrutinyChanceZodiacDetail: () => void
 }
 
 const ChanceZodiacScrutinyCard = ({
@@ -22,6 +23,7 @@ const ChanceZodiacScrutinyCard = ({
   addRaffleScrutinyChanceZodiac,
   loadingAdd,
   raffleId,
+  onClickScrutinyChanceZodiacDetail,
 }: ChanceZodiacScrutinyProps) => {
   const {colorState, colorTextState, textState, buttonText} = useScrutinyChanceZodiac({
     chanceZodiacRaffleScrutinyStatus: raffle.chanceZodiacRaffleScrutinyStatus,
@@ -56,11 +58,9 @@ const ChanceZodiacScrutinyCard = ({
           </div>
           <ConditionalRedering
             isTrue={
-              (raffle.chanceZodiacRaffleScrutinyStatus ===
-                ChanceZodiacRaffleScrutinyStatus.PendingResultApprove &&
-                raffle.chanceZodiacRaffleStatus === ChanceZodiacRaffleResultStatus.Approved) ||
               raffle.chanceZodiacRaffleScrutinyStatus ===
-                ChanceZodiacRaffleScrutinyStatus.Scrutinized
+                ChanceZodiacRaffleScrutinyStatus.PendingResultApprove &&
+              raffle.chanceZodiacRaffleStatus === ChanceZodiacRaffleResultStatus.Approved
             }
           >
             <button
@@ -72,6 +72,16 @@ const ChanceZodiacScrutinyCard = ({
               {loadingAdd && (
                 <RenderLoader show={loadingAdd && raffle.chanceZodiacRaffleId === raffleId} />
               )}
+            </button>
+          </ConditionalRedering>
+          <ConditionalRedering
+            isTrue={
+              raffle.chanceZodiacRaffleScrutinyStatus ===
+              ChanceZodiacRaffleScrutinyStatus.Scrutinized
+            }
+          >
+            <button className='btn btn-primary' onClick={onClickScrutinyChanceZodiacDetail}>
+              {buttonText}
             </button>
           </ConditionalRedering>
         </div>

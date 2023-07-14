@@ -113,12 +113,15 @@ export const useScrutinyDetail = () => {
   } = useQuery<ReactQueryResponse<IScrutinyDetailResponse>>(
     'get-scrutiny-detail-by-raffle-and-currency',
     async () => {
-      return await axios.get(
-        `/AnimalitosScrutiny/get-animalitos-scrutiny-by-raffle-and-currency/${scrutinyDetailState.raffleId}`
-      )
-      //return await axios.get(`${scrutinyDetailState.url}${scrutinyDetailState.raffleId}`)
+      return await axios.get(`${scrutinyDetailState.url}${scrutinyDetailState.raffleId}`)
     }
   )
+
+  useEffect(() => {
+    if (!isFetching) {
+      getAnimalitosScrutinyDetail()
+    }
+  }, [scrutinyDetailState.url])
 
   useEffect(() => {
     if (scrutinyDetailState.url && !isFetching && animalitosScrutinyDetailData) {

@@ -4,6 +4,10 @@ export interface IScrutinyDetailResponse {
   raffleDrawTime: string
   raffleResult: string
   raffleResultName: string
+  totalSalesDollar: number
+  totalSalesBolivar: number
+  totalToPayDollar: number
+  totalToPayBolivar: number
   scrutinies: Scrutiny[]
 }
 
@@ -11,9 +15,7 @@ export interface Scrutiny {
   currencyId: number
   currencyName: string
   currencyCode: string
-  totalSales: number
   totalWinners: number
-  totalToPay: number
   betReturnedRate: number
   winners: Winner[]
 }

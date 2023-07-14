@@ -12,7 +12,7 @@ import {ReactQueryResponse} from '../../../../types/Generics'
 import axios from '../../../config/http-common'
 import {useAnimalitosLotteries} from '../../../hooks/animalitosLotteries.hook'
 import {enqueueSnackbar} from 'notistack'
-import {useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import {gameType} from '../../../constants/game-type.constants'
 
 enum ScrutinyAnimalitosAction {
@@ -85,6 +85,7 @@ export const raffleResultReducer = (
 
 export const useScrutinyAnimalitos = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [raffleScrutinyState, dispatchScrutinyAnimalitos] = useReducer(raffleResultReducer, {
     animalitosLotteries: [],
     isLoadingAnimalitosLotteries: false,
@@ -216,7 +217,10 @@ export const useScrutinyAnimalitos = () => {
   }
 
   const onClickScrutinyAnimalitosDetail = (raffleId: number) => {
-    navigate('../scrutiny-detail', {state: {raffleId: raffleId, gameType: gameType.animalitos}})
+    navigate('../scrutiny-detail', {
+      replace: true,
+      state: {raffleId: raffleId, gameType: gameType.animalitos},
+    })
   }
 
   return {

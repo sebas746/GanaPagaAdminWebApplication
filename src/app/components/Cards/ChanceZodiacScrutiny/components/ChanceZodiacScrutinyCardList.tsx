@@ -13,6 +13,7 @@ interface IChanceZodiacCardListProps {
   selectedTab: number
   loadingAdd: boolean
   raffleId: number
+  onClickScrutinyChanceZodiacDetail: (raffleId: number) => void
 }
 
 const ChanceZodiacScrutinyCardList = ({
@@ -21,11 +22,14 @@ const ChanceZodiacScrutinyCardList = ({
   selectedTab,
   loadingAdd,
   raffleId,
+  onClickScrutinyChanceZodiacDetail,
 }: IChanceZodiacCardListProps) => {
   const renderResultCard = (raffles: IRaffleResultChanceZodiacDetail[]) =>
     raffles.map((raffle) => {
       const wrapAddRaffleChanceZodiacResult = () =>
         addRaffleScrutinyChanceZodiac(raffle.chanceZodiacRaffleId)
+      const wrapOnClickScrutinyChanceZodiacDetail = () =>
+        onClickScrutinyChanceZodiacDetail(raffle.chanceZodiacRaffleId)
       return (
         <div
           className='col-sm-12 col-md-6'
@@ -38,6 +42,7 @@ const ChanceZodiacScrutinyCardList = ({
             addRaffleScrutinyChanceZodiac={wrapAddRaffleChanceZodiacResult}
             loadingAdd={loadingAdd}
             raffleId={raffleId}
+            onClickScrutinyChanceZodiacDetail={wrapOnClickScrutinyChanceZodiacDetail}
           />
         </div>
       )

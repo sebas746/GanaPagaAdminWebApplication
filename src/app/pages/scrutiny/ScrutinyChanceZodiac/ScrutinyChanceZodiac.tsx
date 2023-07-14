@@ -18,6 +18,7 @@ const ScrutinyChanceZodiac = () => {
     setSelectedTab,
     addRaffleScrutinyChanceZodiac,
     loadingAdd,
+    onClickScrutinyChanceZodiacDetail,
   } = useScrutinyChanceZodiac()
 
   return (
@@ -52,6 +53,7 @@ const ScrutinyChanceZodiac = () => {
             selectedTab={raffleScrutinyState.selectedTab}
             loadingAdd={loadingAdd}
             raffleId={raffleScrutinyState.chanceZodiacRaffleId}
+            onClickScrutinyChanceZodiacDetail={onClickScrutinyChanceZodiacDetail}
           />
         </ConditionalRedering>
       </div>
