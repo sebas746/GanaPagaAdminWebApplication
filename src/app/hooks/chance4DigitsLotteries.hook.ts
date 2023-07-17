@@ -18,9 +18,9 @@ interface Chance4DigitsLotteriesAction {
 
 interface Chance4DigitsLotteriesState {
   chance4DigitsLotteries: IChance4DigitsLotteries[]
-  isLoadingchance4DigitsLotteries: boolean
-  hasErrorchance4Digits: boolean
-  errorMessagechance4DigitsLotteries: string
+  isLoadingChance4DigitsLotteries: boolean
+  hasErrorChance4Digits: boolean
+  errorMessageChance4DigitsLotteries: string
 }
 
 export const Chance4DigitsLotteriesReducer = (
@@ -58,9 +58,9 @@ export const useChance4DigitsLotteries = () => {
     Chance4DigitsLotteriesReducer,
     {
       chance4DigitsLotteries: [],
-      isLoadingchance4DigitsLotteries: false,
-      hasErrorchance4Digits: false,
-      errorMessagechance4DigitsLotteries: '',
+      isLoadingChance4DigitsLotteries: false,
+      hasErrorChance4Digits: false,
+      errorMessageChance4DigitsLotteries: '',
     }
   )
 

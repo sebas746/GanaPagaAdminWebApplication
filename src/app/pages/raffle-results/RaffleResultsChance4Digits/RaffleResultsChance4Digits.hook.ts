@@ -245,7 +245,7 @@ export const useRaffleResultsChance4Digits = () => {
   }
 
   return {
-    isLoadingChance4: isFetching || chance4DigitsLotteriesState.isLoadingchance4DigitsLotteries,
+    isLoadingChance4: isFetching || chance4DigitsLotteriesState.isLoadingChance4DigitsLotteries,
     chance4DigitsLotteriesState,
     raffleResultState,
     setSelectedTab,

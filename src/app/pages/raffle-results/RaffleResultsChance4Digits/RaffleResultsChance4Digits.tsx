@@ -3,7 +3,7 @@ import RaffleResultForm from '../../../components/Forms/RaffleResultForm/RaffleR
 import {useRaffleResultsChance4Digits} from './RaffleResultsChance4Digits.hook'
 import clsx from 'clsx'
 import {IRaffleResultChance4DigitsDetail} from '../../../../types/Chance4Digits.types'
-import Chance4DigitsRaffleResultCard from '../../../components/Cards/Chance4Digits/Chance4DigitsRaffleResultCard'
+import Chance4DigitsRaffleResultCard from '../../../components/Cards/Chance4DigitsRaffleResult/Chance4DigitsRaffleResultCard'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
 import Chance4DigitsTabs from '../../../components/Tabs/Chance4DigitsTabs'
 

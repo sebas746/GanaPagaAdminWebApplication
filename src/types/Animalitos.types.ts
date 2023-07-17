@@ -40,6 +40,7 @@ export interface IRaffleResultAnimalitosDetail extends RaffleStatus, ScrutinySta
   animalitosRaffleName: string
   animalitosRaffleDrawTime: string
   animalitosRaffleResultValue: string
+  animalitosRaffleResultAnimal: string
   animalitosRaffleResultCreatedBy: string
   animalitosRaffleResultLastUpdatedBy: string
   animalitosRaffleResultApprovedBy: string
@@ -59,7 +60,6 @@ export interface AddRaffleAnimalitosResultBody {
 
 export interface AddScrutinyAnimalitosBody {
   raffleId: number
-  createdBy: string
 }
 
 export interface IRaffleScrutinyAnimalitosResponse extends IRaffleResultAnimalitosResponse {}

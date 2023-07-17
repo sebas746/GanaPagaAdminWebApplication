@@ -40,6 +40,22 @@ const ChanceZodiacRaffleResultCard = ({
     return getSubmitButtonText(raffle, resultValue)
   }
 
+  const disableSubmitButton = () => {
+    let disabled = false
+    if (
+      !raffle.chanceZodiacRaffleResultLastUpdatedBy &&
+      createdBy === raffle.chanceZodiacRaffleResultCreatedBy
+    ) {
+      disabled = true
+    } else if (
+      raffle.chanceZodiacRaffleResultLastUpdatedBy &&
+      createdBy === raffle.chanceZodiacRaffleResultLastUpdatedBy
+    ) {
+      disabled = true
+    }
+    return disabled
+  }
+
   return (
     <Card>
       <Card.Header className={`p-2 rounded-2 ${colorState}`}>
@@ -84,7 +100,7 @@ const ChanceZodiacRaffleResultCard = ({
                 className='m-1'
                 variant='primary'
                 onClick={setRaffleResultForm}
-                disabled={createdBy === raffle.chanceZodiacRaffleResultCreatedBy}
+                disabled={disableSubmitButton()}
               >
                 {buttonText}
               </Button>

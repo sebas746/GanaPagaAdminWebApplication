@@ -5,24 +5,32 @@ import {
   IRaffleResultAnimalitosDetail,
   IRaffleScrutinyAnimalitosResponse,
 } from '../../../types/Animalitos.types'
-import AnimalitosRaffleResultCard from '../Cards/AnimalitosRaffleResult/AnimalitosRaffleResultCard'
 import AnimalitosScrutinyCard from '../Cards/AnimalitosScrutiny/AnimalitosScrutinyCard'
 
 interface IAnimalitosCardListProps {
   addRaffleScrutinyAnimalitos: (raffleId: number) => void
   raffleScrutinyResults: IRaffleScrutinyAnimalitosResponse[]
   selectedTab: number
+  loadingAdd: boolean
+  raffleId: number
+  onClickScrutinyAnimalitosDetail: (raffleId: number) => void
 }
 
 const AnimalitosScrutinyCardList = ({
   addRaffleScrutinyAnimalitos,
   raffleScrutinyResults,
   selectedTab,
+  loadingAdd,
+  raffleId,
+  onClickScrutinyAnimalitosDetail,
 }: IAnimalitosCardListProps) => {
   const renderResultCard = (raffles: IRaffleResultAnimalitosDetail[]) =>
     raffles.map((raffle) => {
       const wrapAddRaffleAnimalitosResult = () =>
         addRaffleScrutinyAnimalitos(raffle.animalitosRaffleId)
+      const wrapOnClickRaffleAnimalitosResult = () =>
+        onClickScrutinyAnimalitosDetail(raffle.animalitosRaffleId)
+
       return (
         <div
           className='col-sm-12 col-md-6'
@@ -30,7 +38,13 @@ const AnimalitosScrutinyCardList = ({
             raffle.animalitosRaffleId
           }`}
         >
-          <AnimalitosScrutinyCard raffle={raffle} addRaffleScrutinyAnimalitos={wrapAddRaffleAnimalitosResult} />
+          <AnimalitosScrutinyCard
+            raffle={raffle}
+            addRaffleScrutinyAnimalitos={wrapAddRaffleAnimalitosResult}
+            loadingAdd={loadingAdd}
+            raffleId={raffleId}
+            onClickScrutinyAnimalitosDetail={wrapOnClickRaffleAnimalitosResult}
+          />
         </div>
       )
     })

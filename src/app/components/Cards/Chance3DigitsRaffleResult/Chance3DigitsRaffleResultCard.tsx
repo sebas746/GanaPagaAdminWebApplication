@@ -1,24 +1,26 @@
 import React from 'react'
 import {Card} from 'react-bootstrap'
+import {IRaffleResultChance3DigitsDetail} from '../../../../types/Chance3Digits.types'
 import Button from 'react-bootstrap/Button'
 import ConditionalRendering from '../../../helpers/ConditionalRedering'
-import {useChance4DigitsRaffleResultCard} from './Chance4DigitsRaffleResultCard.hook'
-import {IRaffleResultChance4DigitsDetail} from '../../../../types/Chance4Digits.types'
-import AddRafflechance4DigitsResultForm from '../../Forms/AddRaffleChance4DigitsResultForm/AddRaffleChance4DigitsResultForm'
+import AddRaffleChance3DigitsResultForm from '../../Forms/AddRaffleChance3DigitsResultForm/AddRaffleChance3DigitsResultForm'
+import {useChance3DigitsRaffleResultCard} from './Chance3DigitsRaffleResultCard.hook'
 
-interface Chance4DigitsRaffleResultCardProps {
-  raffle: IRaffleResultChance4DigitsDetail
-  addRaffleChance4DigitsResult: (resultValue: string) => void
+interface Chance3DigitsRaffleResultCardProps {
+  raffle: IRaffleResultChance3DigitsDetail
+  addRaffleChance3DigitsResult: (resultValue: string) => void
   isLoadingState: boolean
   createdBy: string
+  maxDigitsByBet: number
 }
 
-const Chance4DigitsRaffleResultCard = ({
+const Chance3DigitsRaffleResultCard = ({
   raffle,
-  addRaffleChance4DigitsResult,
+  addRaffleChance3DigitsResult,
   isLoadingState,
   createdBy,
-}: Chance4DigitsRaffleResultCardProps) => {
+  maxDigitsByBet,
+}: Chance3DigitsRaffleResultCardProps) => {
   const {
     colorState,
     colorTextState,
@@ -27,17 +29,33 @@ const Chance4DigitsRaffleResultCard = ({
     getSubmitButtonText,
     showRaffleResultForm,
     setRaffleResultForm,
-  } = useChance4DigitsRaffleResultCard({
-    chanceFourRaffleStatus: raffle.chanceFourRaffleStatus,
+  } = useChance3DigitsRaffleResultCard({
+    chanceThreeRaffleStatus: raffle.chanceThreeRaffleStatus,
   })
 
-  const addRaffleChance4DigitsResultWrapper = (resultValue: string) => {
-    addRaffleChance4DigitsResult(resultValue)
+  const addRaffleChance3DigitsResultWrapper = (resultValue: string) => {
+    addRaffleChance3DigitsResult(resultValue)
     // setRaffleResultForm()
   }
 
   const wrappedGetSubmitButtonText = (resultValue: string | undefined) => {
     return getSubmitButtonText(raffle, resultValue)
+  }
+
+  const disableSubmitButton = () => {
+    let disabled = false
+    if (
+      !raffle.chanceThreeRaffleResultLastUpdatedBy &&
+      createdBy === raffle.chanceThreeRaffleResultCreatedBy
+    ) {
+      disabled = true
+    } else if (
+      raffle.chanceThreeRaffleResultLastUpdatedBy &&
+      createdBy === raffle.chanceThreeRaffleResultLastUpdatedBy
+    ) {
+      disabled = true
+    }
+    return disabled
   }
 
   return (
@@ -47,7 +65,7 @@ const Chance4DigitsRaffleResultCard = ({
           <div
             className={`d-flex justify-content-between align-items-center flex-grow-1 column-gap-4`}
           >
-            <h5 className={colorTextState}>{raffle.chanceFourRaffleName}</h5>
+            <h5 className={colorTextState}>{raffle.chanceThreeRaffleName}</h5>
             <h5 className='d-flex align-items-center'>
               <div className={`me-2 ${colorTextState}`}>Estado:</div>
               <div className={colorTextState}>{textState}</div>
@@ -57,20 +75,21 @@ const Chance4DigitsRaffleResultCard = ({
       </Card.Header>
       <Card.Body>
         <p>
-          <span className='fw-bold'>Fecha sorteo:</span> {raffle.chanceFourRaffleDrawTime}
+          <span className='fw-bold'>Fecha sorteo:</span> {raffle.chanceThreeRaffleDrawTime}
         </p>
         <div className='d-flex align-items-center'>
           <div className='fw-bold me-4'>Resultado: </div>
           <ConditionalRendering isTrue={!showRaffleResultForm}>
-            <span>{raffle.chanceFourRaffleResultValue}</span>
+            <span>{raffle.chanceThreeRaffleResultValue}</span>
           </ConditionalRendering>
           <ConditionalRendering isTrue={showRaffleResultForm}>
-            <AddRafflechance4DigitsResultForm
-              selectedOption={raffle.chanceFourRaffleResultValue ?? ''}
-              addRafflechance4DigitsResult={addRaffleChance4DigitsResultWrapper}
+            <AddRaffleChance3DigitsResultForm
+              selectedOption={raffle.chanceThreeRaffleResultValue ?? ''}
+              addRaffleChance3DigitsResult={addRaffleChance3DigitsResultWrapper}
               setRaffleResultForm={setRaffleResultForm}
               wrappedGetSubmitButtonText={wrappedGetSubmitButtonText}
               isLoadingState={isLoadingState}
+              maxDigitsByBet={maxDigitsByBet}
             />
           </ConditionalRendering>
         </div>
@@ -81,7 +100,7 @@ const Chance4DigitsRaffleResultCard = ({
                 className='m-1'
                 variant='primary'
                 onClick={setRaffleResultForm}
-                disabled={createdBy === raffle.chanceFourRaffleResultCreatedBy}
+                disabled={disableSubmitButton()}
               >
                 {buttonText}
               </Button>
@@ -93,4 +112,4 @@ const Chance4DigitsRaffleResultCard = ({
   )
 }
 
-export default Chance4DigitsRaffleResultCard
+export default Chance3DigitsRaffleResultCard

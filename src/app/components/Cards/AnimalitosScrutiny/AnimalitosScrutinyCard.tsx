@@ -7,13 +7,23 @@ import {
   RaffleScrutinyStatus,
 } from '../../../../types/Animalitos.types'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
+import RenderLoader from '../../RenderLoader/RenderLoader'
 
 interface AnimalitosScrutinyProps {
   addRaffleScrutinyAnimalitos: () => void
   raffle: IRaffleResultAnimalitosDetail
+  loadingAdd: boolean
+  raffleId: number
+  onClickScrutinyAnimalitosDetail: () => void
 }
 
-const AnimalitosScrutinyCard = ({raffle, addRaffleScrutinyAnimalitos}: AnimalitosScrutinyProps) => {
+const AnimalitosScrutinyCard = ({
+  raffle,
+  addRaffleScrutinyAnimalitos,
+  loadingAdd,
+  raffleId,
+  onClickScrutinyAnimalitosDetail,
+}: AnimalitosScrutinyProps) => {
   const {colorState, colorTextState, textState, buttonText} = useScrutinyAnimalitos({
     animalitosRaffleScrutinyStatus: raffle.animalitosRaffleScrutinyStatus,
   })
@@ -38,7 +48,7 @@ const AnimalitosScrutinyCard = ({raffle, addRaffleScrutinyAnimalitos}: Animalito
         </p>
         <div className='d-flex align-items-center'>
           <div className='fw-bold me-4 flex-grow-1'>
-            Resultado: {raffle.animalitosRaffleResultValue}
+            Resultado: {raffle.animalitosRaffleResultAnimal}
           </div>
           <ConditionalRedering
             isTrue={
@@ -46,7 +56,21 @@ const AnimalitosScrutinyCard = ({raffle, addRaffleScrutinyAnimalitos}: Animalito
               raffle.animalitosRaffleStatus === RaffleResulStatus.Approved
             }
           >
-            <button className='btn btn-primary' onClick={addRaffleScrutinyAnimalitos}>
+            <button
+              className='btn btn-primary'
+              onClick={addRaffleScrutinyAnimalitos}
+              disabled={loadingAdd}
+            >
+              {buttonText}
+              {loadingAdd && (
+                <RenderLoader show={loadingAdd && raffle.animalitosRaffleId === raffleId} />
+              )}
+            </button>
+          </ConditionalRedering>
+          <ConditionalRedering
+            isTrue={raffle.animalitosRaffleScrutinyStatus === RaffleScrutinyStatus.Scrutinized}
+          >
+            <button className='btn btn-primary' onClick={onClickScrutinyAnimalitosDetail}>
               {buttonText}
             </button>
           </ConditionalRedering>

@@ -4,11 +4,11 @@ export interface IChance3DigitsLotteries {
 }
 
 export interface Chance3DigitsRaffleStatus {
-  chanceThreeRaffleStatus: 'PendingDraw' | 'PendingResult' | 'PendingApprove' | 'Approved'
+  chanceThreeRaffleStatus: Chance3DigitsRaffleResultStatus
 }
 
 export interface Chance3ScrutinyStatus {
-  chanceThreeRaffleScrutinyStatus: 'PendingResultApprove' | 'PendingResultApprove' | 'Scrutinized'
+  chanceThreeRaffleScrutinyStatus: Chance3DigitsRaffleScrutinyStatus
 }
 
 export interface IRaffleResultChance3DigitsDetail
@@ -34,3 +34,21 @@ export interface AddRaffleChance3DigitsResultBody {
   raffleId: number
   raffleResultValue: string
 }
+
+export enum Chance3DigitsRaffleResultStatus {
+  PendingDraw = 'PendingDraw',
+  PendingResult = 'PendingResult',
+  PendingApprove = 'PendingApprove',
+  Approved = 'Approved',
+}
+
+export enum Chance3DigitsRaffleScrutinyStatus {
+  PendingResultApprove = 'PendingScrutiny',
+  Scrutinized = 'Scrutinized',
+}
+
+export interface AddScrutinyChance3DigitsBody {
+  raffleId: number
+}
+
+export interface IRaffleScrutinyChance3DigitsResponse extends IRaffleResultChance3DigitsResponse {}
