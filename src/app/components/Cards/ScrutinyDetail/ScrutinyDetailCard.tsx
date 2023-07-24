@@ -52,7 +52,7 @@ const ScrutinyDetailCard = ({scrutinyDetail, isLoading}: ScrutinyDetailCardProps
           key={`scrutiny-sales-detail-info-card${scrutinyDetail.raffleId}${scrutinyDetail.totalSalesDollar}`}
           title={'Total vendido en'}
           summaryDollar={formatCurrency(scrutinyDetail.totalSalesDollar, CurrencyCode.USD)}
-          summaryBolivar={formatCurrency(scrutinyDetail.totalSalesDollar, CurrencyCode.VES)}
+          summaryBolivar={formatCurrency(scrutinyDetail.totalSalesBolivar, CurrencyCode.VES)}
           isLoading={isLoading}
         />
       )}
