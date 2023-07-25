@@ -23,7 +23,6 @@ const scrutinyBreadCrumbs: Array<PageLink> = [
 ]
 const ScrutinyPage = () => {
   const location = useLocation()
-  console.log(location.state)
   return (
     <Routes>
       <Route element={<Outlet />}>

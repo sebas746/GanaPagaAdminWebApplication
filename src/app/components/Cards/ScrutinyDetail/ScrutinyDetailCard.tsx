@@ -28,19 +28,17 @@ const ScrutinyDetailCard = ({scrutinyDetail, isLoading}: ScrutinyDetailCardProps
   return (
     <>
       {' '}
-      <div className='btn-toolbar m-1'>
-        <button onClick={() => navigate(0)} className='btn btn-primary m-1'>
+      <div className='btn-toolbar justify-content-between mb-4'>
+        <button onClick={() => navigate(0)} className='btn btn-primary'>
           Regresar
         </button>
-        <button className='btn btn-primary m-1'>Imprimir</button>
+        <button className='btn btn-primary'>Exportar</button>
       </div>
       {!isLoading && scrutinyDetail && (
-        <div
-          className={`d-flex flex-column justify-content-between align-items-start flex-grow-1 m-2`}
-        >
-          <h4 className='d-flex'>Lotería: {scrutinyDetail.raffleName}</h4>
-          <h4 className='d-flex'>Sorteo: {raffleDate}</h4>
-          <h4 className=' d-flex'>
+        <div className='d-flex flex-column justify-content-between align-items-start bg-light p-3 rounded shadow-sm'>
+          <h4 className='mb-2'>Lotería: {scrutinyDetail.raffleName}</h4>
+          <h4 className='mb-2'>Sorteo: {raffleDate}</h4>
+          <h4>
             Resultado:{' '}
             {(scrutinyDetail.raffleResultName && scrutinyDetail.raffleResultName) ||
               scrutinyDetail.raffleResult}

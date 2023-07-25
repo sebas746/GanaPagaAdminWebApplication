@@ -18,7 +18,7 @@ const RenderLoader = ({show, huge}: renderLoaderProps) => {
     return (
       <ConditionalRendering isTrue={show}>
         <div
-          className='spinner-grow align-item-center'
+          className='spinner-border align-item-center'
           style={{width: '5rem', height: '5rem'}}
           role='status'
         >
