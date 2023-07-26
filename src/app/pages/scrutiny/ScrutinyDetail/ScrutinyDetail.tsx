@@ -24,6 +24,7 @@ const ScrutinyDetail = () => {
             <ScrutinyDetailCard
               scrutinyDetail={scrutinyDetailState.scrutinyDetail}
               isLoading={isLoading}
+              gameType={scrutinyDetailState.gameType}
             />
           </ConditionalRendering>
         </div>
