@@ -4,6 +4,7 @@ import {CurrencyCode} from '../../../../types/Currency.types'
 import ScrutinyDetailInfoCurrencyCard from './components/ScrutinyDetailInfoCurrencyCard'
 import {useNavigate} from 'react-router-dom'
 import {useDownloadFiles} from '../../../hooks/downloadFiles.hook'
+import RenderLoader from '../../RenderLoader/RenderLoader'
 
 interface ScrutinyDetailCardProps {
   scrutinyDetail: IScrutinyDetailResponse
@@ -13,7 +14,7 @@ interface ScrutinyDetailCardProps {
 
 const ScrutinyDetailCard = ({scrutinyDetail, isLoading, gameType}: ScrutinyDetailCardProps) => {
   const navigate = useNavigate()
-  const {isLoadingDownloadFile, downloadFilesState, handleDownloadFileClick} = useDownloadFiles()
+  const {isLoadingDownloadFile, handleDownloadFileClick} = useDownloadFiles()
 
   const totalWinnersDollar =
     scrutinyDetail.scrutinies?.find((scrutiny) => scrutiny.currencyCode === CurrencyCode.USD)
@@ -38,9 +39,12 @@ const ScrutinyDetailCard = ({scrutinyDetail, isLoading, gameType}: ScrutinyDetai
             id='dropdownMenuButton1'
             data-bs-toggle='dropdown'
             aria-expanded='false'
+            disabled={isLoadingDownloadFile}
           >
+            <RenderLoader show={isLoadingDownloadFile} />
             Exportar
           </button>
+
           <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton1'>
             <li>
               <button

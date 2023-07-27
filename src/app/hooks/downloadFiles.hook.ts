@@ -10,11 +10,12 @@ enum DownloadFilesAction {
   SET_FILE_TYPE = 'SET_FILE_TYPE',
   SET_DOWNLOAD_URL = 'SET_DOWNLOAD_URL',
   SET_DATA_DOWNLOAD = 'SET_DATA_DOWNLOAD',
+  SET_RESET = 'SET_RESET',
 }
 
 interface IDownloadFilesState {
   type: DownloadFilesAction
-  payload: number | string | IDownloadFilesResponse
+  payload: number | string | IDownloadFilesResponse | void
 }
 
 interface DownloadFilesState {
@@ -52,6 +53,14 @@ export const downloadFilesReducer = (state: DownloadFilesState, action: IDownloa
         ...state,
         dataDownload: action.payload as IDownloadFilesResponse,
       }
+    case DownloadFilesAction.SET_RESET:
+      return {
+        raffleId: 0,
+        gameType: '',
+        fileType: '',
+        downloadUrl: '',
+        dataDownload: {} as IDownloadFilesResponse,
+      }
     default:
       return state
   }
@@ -66,6 +75,13 @@ export const useDownloadFiles = () => {
     dataDownload: {} as IDownloadFilesResponse,
   })
   const [isInitialRun, setIsInitialRun] = useState(true)
+
+  const setReset = (payload: void) => {
+    dispatchDownloadFiles({
+      type: DownloadFilesAction.SET_RESET,
+      payload,
+    })
+  }
 
   const setRaffleId = (payload: number) => {
     dispatchDownloadFiles({
@@ -119,13 +135,20 @@ export const useDownloadFiles = () => {
   )
 
   const handleDownloadFileClick = (raffleId: number, gametype: string, fileType: string) => {
-    console.log(raffleId)
     setIsInitialRun(true)
     setRaffleId(raffleId)
     setGameType(gametype)
     setFileType(fileType)
-    getDownloadFile()
   }
+
+  useEffect(() => {
+    if (
+      downloadFilesState.raffleId !== 0 &&
+      downloadFilesState.gameType !== '' &&
+      downloadFilesState.fileType !== ''
+    )
+      getDownloadFile()
+  }, [downloadFilesState.raffleId, downloadFilesState.gameType, downloadFilesState.fileType])
 
   useEffect(() => {
     if (!isFetching && downloadFilesData) {
@@ -149,6 +172,7 @@ export const useDownloadFiles = () => {
     link.setAttribute('download', data.fileDownloadName)
     document.body.appendChild(link)
     link.click()
+    setReset()
   }
 
   return {isLoadingDownloadFile: isFetching, downloadFilesState, handleDownloadFileClick}

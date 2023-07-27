@@ -106,6 +106,15 @@ const TicketDetail = () => {
               <div className='modal-footer' style={{backgroundColor: '#f8f9fa'}}>
                 <button
                   type='button'
+                  className='btn btn-primary'
+                  data-bs-dismiss='modal'
+                  onClick={() => setTicketModalShow(false)}
+                  style={{fontWeight: '600'}}
+                >
+                  Exportar
+                </button>
+                <button
+                  type='button'
                   className='btn btn-secondary'
                   data-bs-dismiss='modal'
                   onClick={() => setTicketModalShow(false)}

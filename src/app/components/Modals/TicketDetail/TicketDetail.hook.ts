@@ -8,11 +8,12 @@ enum TicketDetailAction {
   SET_TICKET_ID = 'SET_TICKET_ID',
   SET_TICKET_MODAL_SHOW = 'SET_TICKET_MODAL_SHOW',
   SET_TICKET_DETAIL = 'SET_TICKET_DETAIL',
+  SET_RESET = 'SET_RESET',
 }
 
 interface TicketDetailState {
   type: TicketDetailAction
-  payload: string | boolean | ITicketResponse
+  payload: string | boolean | ITicketResponse | void
 }
 
 interface TicketInfoDetailState {
@@ -38,6 +39,12 @@ export const ticketDetailReducer = (state: TicketInfoDetailState, action: Ticket
         ...state,
         ticketDetail: action.payload as ITicketResponse,
       }
+    case TicketDetailAction.SET_RESET:
+      return {
+        ticketId: '',
+        ticketModalShow: false,
+        ticketDetail: {} as ITicketResponse,
+      }
     default:
       return state
   }
@@ -58,10 +65,18 @@ export const useTicketDetail = () => {
     })
   }
 
+  const setReset = (payload: void) => {
+    dispatchTicketDetail({
+      type: TicketDetailAction.SET_RESET,
+      payload,
+    })
+  }
+
   const handleCloseTicketModal = () => {
     setTicketId('')
     setTicketModalShow(false)
     setRefreshCount(0)
+    setReset()
   }
 
   const setTicketId = (payload: string) => {
