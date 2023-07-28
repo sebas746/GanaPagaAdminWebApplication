@@ -3,6 +3,7 @@ import {useTicketDetail} from './TicketDetail.hook'
 import {Modal} from 'bootstrap'
 import {formatCurrency} from '../../../helpers/currency.helpers'
 import {DateTime} from 'luxon'
+import {usePdfCreator} from '../../DocumentRender/Pdf/PdfCreator.hook'
 
 const TicketDetail = () => {
   const {
@@ -12,6 +13,7 @@ const TicketDetail = () => {
     refreshCount,
     isTicketDetailLoading,
   } = useTicketDetail()
+  const {exportTicketPDF} = usePdfCreator()
   const modalRef = useRef<HTMLDivElement | null>(null) // correct way to create the ref
 
   useEffect(() => {
@@ -107,8 +109,7 @@ const TicketDetail = () => {
                 <button
                   type='button'
                   className='btn btn-primary'
-                  data-bs-dismiss='modal'
-                  onClick={() => setTicketModalShow(false)}
+                  onClick={() => exportTicketPDF(ticketDetailState.ticketDetail)}
                   style={{fontWeight: '600'}}
                 >
                   Exportar
