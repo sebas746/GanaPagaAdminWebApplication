@@ -23,6 +23,7 @@ export const usePdfCreator = () => {
       link.click()
       setTimeout(() => {
         setTicketContent({} as ITicketResponse)
+        instance.url = null
       }, 1000)
     }
   }, [instance])
