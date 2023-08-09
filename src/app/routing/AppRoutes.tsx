@@ -11,6 +11,9 @@ import {PrivateRoutes} from './PrivateRoutes'
 import {ErrorsPage} from '../modules/errors/ErrorsPage'
 import {Logout} from '../modules/auth'
 import {App} from '../App'
+import {UserProvider} from '../components/User/UserContext'
+import {UserRole} from '../../types/UserRoles.types'
+import {useRbac} from '../hooks/rbac.hook'
 
 /**
  * Base URL of the website.
@@ -20,17 +23,22 @@ import {App} from '../App'
 const {PUBLIC_URL} = process.env
 
 const AppRoutes: FC = () => {
+  const {getJwtRole} = useRbac()
+  const userRoles: UserRole[] = [getJwtRole()] // Fetch this from your backend or token
+
   return (
-    <BrowserRouter basename={PUBLIC_URL}>
-      <Routes>
-        <Route element={<App />}>
-          <Route path='error/*' element={<ErrorsPage />} />
-          <Route path='logout' element={<Logout />} />
-          <Route path='/*' element={<PrivateRoutes />} />
-          <Route index element={<Navigate to='/dashboard' />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <UserProvider roles={userRoles}>
+      <BrowserRouter basename={PUBLIC_URL}>
+        <Routes>
+          <Route element={<App />}>
+            <Route path='error/*' element={<ErrorsPage />} />
+            <Route path='logout' element={<Logout />} />
+            <Route path='/*' element={<PrivateRoutes />} />
+            <Route index element={<Navigate to='/dashboard' />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   )
 }
 

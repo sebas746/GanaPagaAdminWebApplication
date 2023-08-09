@@ -1,10 +1,11 @@
-import React from 'react'
-import {Outlet, Route, Routes} from 'react-router-dom'
+import React, {useEffect} from 'react'
+import {Navigate, Outlet, Route, Routes, useNavigate} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
 import RaffleResultsAnimalitos from '../../pages/raffle-results/RaffleResultsAnimalitos/RaffleResultsAnimalitos'
 import RaffleResultsChance3Digits from '../../pages/raffle-results/RaffleResultsChance3Digits/RaffleResultsChance3Digits'
 import RaffleResultsChance4Digits from '../../pages/raffle-results/RaffleResultsChance4Digits/RaffleResultsChance4Digits'
 import RaffleResultsChanceZodiacal from '../../pages/raffle-results/RaffleResultsChanceZodiacal/RaffleResultsChanceZodiacal'
+import {useProtectedRoute} from '../../hooks/routeProtection.hook'
 
 const raffleResultBreadCrumbs: Array<PageLink> = [
   {
@@ -21,6 +22,15 @@ const raffleResultBreadCrumbs: Array<PageLink> = [
   },
 ]
 const RaffleResultPage = () => {
+  const navigate = useNavigate()
+  const canAccess = useProtectedRoute('Admin')
+
+  useEffect(() => {
+    if (!canAccess) {
+      navigate('/error/500')
+    }
+  }, [])
+
   return (
     <Routes>
       <Route element={<Outlet />}>
