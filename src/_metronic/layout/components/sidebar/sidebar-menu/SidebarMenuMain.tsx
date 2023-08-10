@@ -3,9 +3,13 @@ import React from 'react'
 import {useIntl} from 'react-intl'
 import {SidebarMenuItemWithSub} from './SidebarMenuItemWithSub'
 import {SidebarMenuItem} from './SidebarMenuItem'
+import {useProtectedRoute} from '../../../../../app/hooks/routeProtection.hook'
+import {UserRolesEnum} from '../../../../../types/UserRoles.types'
 
 const SidebarMenuMain = () => {
   const intl = useIntl()
+  const canAccessScrutiny = useProtectedRoute(UserRolesEnum.Scrutiny)
+  const canAccessAdmin = useProtectedRoute(UserRolesEnum.Admin)
 
   return (
     <>
@@ -26,63 +30,60 @@ const SidebarMenuMain = () => {
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Crafted</span>
         </div>
       </div>
-
-      <SidebarMenuItemWithSub
-        to='/pages/raffle-results'
-        title='Resultados Sorteos'
-        icon='/media/icons/duotune/graphs/gra001.svg'
-        fontIcon='bi-graph-up-arrow'
-      >
-        <SidebarMenuItem
-          to='/pages/raffle-results/animal-game'
-          title='Animalitos'
-          hasBullet={true}
-        />
-        <SidebarMenuItem
-          to='/pages/raffle-results/chance-3-digits'
-          title='Chance de 3 cifras'
-          hasBullet={true}
-        />
-        <SidebarMenuItem
-          to='/pages/raffle-results/chance-4-digits'
-          title='Chance de 4 cifras'
-          hasBullet={true}
-        />
-        <SidebarMenuItem
-          to='/pages/raffle-results/chance-zodiac'
-          title='Chance Zodiacal'
-          hasBullet={true}
-        />
-      </SidebarMenuItemWithSub>
-
-      <SidebarMenuItemWithSub
-        to='/pages/scrutiny'
-        title='Escrutinio Sorteos'
-        icon='/media/icons/duotune/files/fil024.svg'
-        fontIcon='bi-cash-coin'
-      >
-        <SidebarMenuItem
-          to='/pages/scrutiny/animal-game'
-          title='Animalitos'
-          hasBullet={true}
-        />
-        <SidebarMenuItem
-          to='/pages/scrutiny/chance-3-digits'
-          title='Chance de 3 cifras'
-          hasBullet={true}
-        />
-        <SidebarMenuItem
-          to='/pages/scrutiny/chance-4-digits'
-          title='Chance de 4 cifras'
-          hasBullet={true}
-        />
-        <SidebarMenuItem
-          to='/pages/scrutiny/chance-zodiac'
-          title='Chance Zodiacal'
-          hasBullet={true}
-        />
-      </SidebarMenuItemWithSub>
-
+      {canAccessScrutiny && (
+        <SidebarMenuItemWithSub
+          to='/pages/raffle-results'
+          title='Resultados Sorteos'
+          icon='/media/icons/duotune/graphs/gra001.svg'
+          fontIcon='bi-graph-up-arrow'
+        >
+          <SidebarMenuItem
+            to='/pages/raffle-results/animal-game'
+            title='Animalitos'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
+            to='/pages/raffle-results/chance-3-digits'
+            title='Chance de 3 cifras'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
+            to='/pages/raffle-results/chance-4-digits'
+            title='Chance de 4 cifras'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
+            to='/pages/raffle-results/chance-zodiac'
+            title='Chance Zodiacal'
+            hasBullet={true}
+          />
+        </SidebarMenuItemWithSub>
+      )}
+      {canAccessScrutiny && (
+        <SidebarMenuItemWithSub
+          to='/pages/scrutiny'
+          title='Escrutinio Sorteos'
+          icon='/media/icons/duotune/files/fil024.svg'
+          fontIcon='bi-cash-coin'
+        >
+          <SidebarMenuItem to='/pages/scrutiny/animal-game' title='Animalitos' hasBullet={true} />
+          <SidebarMenuItem
+            to='/pages/scrutiny/chance-3-digits'
+            title='Chance de 3 cifras'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
+            to='/pages/scrutiny/chance-4-digits'
+            title='Chance de 4 cifras'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
+            to='/pages/scrutiny/chance-zodiac'
+            title='Chance Zodiacal'
+            hasBullet={true}
+          />
+        </SidebarMenuItemWithSub>
+      )}
 
       <SidebarMenuItemWithSub
         to='/crafted/pages'

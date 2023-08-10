@@ -6,6 +6,7 @@ import RaffleResultsChance3Digits from '../../pages/raffle-results/RaffleResults
 import RaffleResultsChance4Digits from '../../pages/raffle-results/RaffleResultsChance4Digits/RaffleResultsChance4Digits'
 import RaffleResultsChanceZodiacal from '../../pages/raffle-results/RaffleResultsChanceZodiacal/RaffleResultsChanceZodiacal'
 import {useProtectedRoute} from '../../hooks/routeProtection.hook'
+import {UserRolesEnum} from '../../../types/UserRoles.types'
 
 const raffleResultBreadCrumbs: Array<PageLink> = [
   {
@@ -23,11 +24,11 @@ const raffleResultBreadCrumbs: Array<PageLink> = [
 ]
 const RaffleResultPage = () => {
   const navigate = useNavigate()
-  const canAccess = useProtectedRoute('Admin')
+  const canAccess = useProtectedRoute(UserRolesEnum.Scrutiny)
 
   useEffect(() => {
     if (!canAccess) {
-      navigate('/error/500')
+      navigate('/error/404')
     }
   }, [])
 

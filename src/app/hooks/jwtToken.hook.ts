@@ -3,7 +3,7 @@ import {useAuth} from 'oidc-react'
 import {JwtToken} from '../../types/JwtToken.types'
 import {UserRole} from '../../types/UserRoles.types'
 
-export const useRbac = () => {
+export const useJwtToken = () => {
   const auth = useAuth()
 
   const getJwtRole = (): UserRole => {

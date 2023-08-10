@@ -1,9 +1,15 @@
 export type UserRole = 'Admin' | 'Scrutiny' | 'User'
 
+export enum UserRolesEnum {
+  Admin = 'Admin',
+  Scrutiny = 'Scrutiny',
+  User = 'User',
+}
+
 export type RoleActionPermissions = {
-  user: ('create' | 'update' | 'delete')[]
-  settings: ('create' | 'update')[]
-  // ... other domains
+  user: ('create' | 'update' | 'read' | 'delete')[]
+  settings: ('create' | 'update' | 'read')[]
+  home: 'index'[]
 }
 
 export type RolePermissionsMap = {
@@ -12,19 +18,18 @@ export type RolePermissionsMap = {
 
 export const rolePermissions: RolePermissionsMap = {
   Admin: {
-    user: ['create', 'update', 'delete'],
-    settings: ['create', 'update'],
-    // ... other domains
+    user: ['create', 'update', 'delete', 'read'],
+    settings: [],
+    home: ['index'],
   },
   Scrutiny: {
-    user: ['create', 'update', 'delete'],
-    settings: ['create', 'update'],
-    // ... other domains
+    user: [],
+    settings: ['create', 'update', 'read'],
+    home: ['index'],
   },
   User: {
-    user: ['create', 'update', 'delete'],
-    settings: ['create', 'update'],
-    // ... other domains
+    user: [],
+    settings: [],
+    home: ['index'],
   },
-  // ... other roles (make sure to define the permissions for each role)
 }

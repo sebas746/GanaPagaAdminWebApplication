@@ -13,7 +13,7 @@ import {Logout} from '../modules/auth'
 import {App} from '../App'
 import {UserProvider} from '../components/User/UserContext'
 import {UserRole} from '../../types/UserRoles.types'
-import {useRbac} from '../hooks/rbac.hook'
+import {useJwtToken} from '../hooks/jwtToken.hook'
 
 /**
  * Base URL of the website.
@@ -23,7 +23,7 @@ import {useRbac} from '../hooks/rbac.hook'
 const {PUBLIC_URL} = process.env
 
 const AppRoutes: FC = () => {
-  const {getJwtRole} = useRbac()
+  const {getJwtRole} = useJwtToken()
   const userRoles: UserRole[] = [getJwtRole()] // Fetch this from your backend or token
 
   return (
