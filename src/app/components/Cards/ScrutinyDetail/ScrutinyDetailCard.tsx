@@ -1,20 +1,20 @@
-import {Card} from 'react-bootstrap'
-import {IScrutinyDetailResponse, Winner} from '../../../../types/ScrutinyDetail.types'
+import {IScrutinyDetailResponse} from '../../../../types/ScrutinyDetail.types'
 import {formatCurrency} from '../../../helpers/currency.helpers'
-import ScrutinyDetailInfoCard from './components/ScrutinyDetailInfoCurrencyCard'
-import ScrutinyDetailTable from './components/ScrutinyDetailTable'
-import ConditionalRendering from '../../../helpers/ConditionalRedering'
 import {CurrencyCode} from '../../../../types/Currency.types'
 import ScrutinyDetailInfoCurrencyCard from './components/ScrutinyDetailInfoCurrencyCard'
 import {useNavigate} from 'react-router-dom'
+import {useDownloadFiles} from '../../../hooks/downloadFiles.hook'
+import RenderLoader from '../../RenderLoader/RenderLoader'
 
 interface ScrutinyDetailCardProps {
   scrutinyDetail: IScrutinyDetailResponse
   isLoading: boolean
+  gameType: string
 }
 
-const ScrutinyDetailCard = ({scrutinyDetail, isLoading}: ScrutinyDetailCardProps) => {
+const ScrutinyDetailCard = ({scrutinyDetail, isLoading, gameType}: ScrutinyDetailCardProps) => {
   const navigate = useNavigate()
+  const {isLoadingDownloadFile, handleDownloadFileClick} = useDownloadFiles()
 
   const totalWinnersDollar =
     scrutinyDetail.scrutinies?.find((scrutiny) => scrutiny.currencyCode === CurrencyCode.USD)
@@ -28,23 +28,54 @@ const ScrutinyDetailCard = ({scrutinyDetail, isLoading}: ScrutinyDetailCardProps
   return (
     <>
       {' '}
-      <div className='btn-toolbar m-1'>
-        <button onClick={() => navigate(0)} className='btn btn-primary m-1'>
+      <div className='d-flex justify-content-between mb-3'>
+        <button onClick={() => navigate(-1)} className='btn btn-primary'>
           Regresar
         </button>
-        <button className='btn btn-primary m-1'>Imprimir</button>
+        <div className='dropdown'>
+          <button
+            className='btn btn-primary dropdown-toggle'
+            type='button'
+            id='dropdownMenuButton1'
+            data-bs-toggle='dropdown'
+            aria-expanded='false'
+            disabled={isLoadingDownloadFile}
+          >
+            <RenderLoader show={isLoadingDownloadFile} />
+            Exportar
+          </button>
+
+          <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton1'>
+            <li>
+              <button
+                className='dropdown-item'
+                onClick={() => handleDownloadFileClick(scrutinyDetail.raffleId, gameType, 'Csv')}
+              >
+                CSV
+              </button>
+            </li>
+            <li>
+              <button
+                className='dropdown-item'
+                onClick={() => handleDownloadFileClick(scrutinyDetail.raffleId, gameType, 'Pdf')}
+              >
+                PDF
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
       {!isLoading && scrutinyDetail && (
-        <div
-          className={`d-flex flex-column justify-content-between align-items-start flex-grow-1 m-2`}
-        >
-          <h4 className='d-flex'>Lotería: {scrutinyDetail.raffleName}</h4>
-          <h4 className='d-flex'>Sorteo: {raffleDate}</h4>
-          <h4 className=' d-flex'>
-            Resultado:{' '}
-            {(scrutinyDetail.raffleResultName && scrutinyDetail.raffleResultName) ||
-              scrutinyDetail.raffleResult}
-          </h4>
+        <div className='card mb-3'>
+          <div className='card-body bg-light'>
+            <h4 className='mb-2'>Lotería: {scrutinyDetail.raffleName}</h4>
+            <h4 className='mb-2'>Sorteo: {raffleDate}</h4>
+            <h4>
+              Resultado:{' '}
+              {(scrutinyDetail.raffleResultName && scrutinyDetail.raffleResultName) ||
+                scrutinyDetail.raffleResult}
+            </h4>
+          </div>
         </div>
       )}
       {!isLoading && scrutinyDetail && (

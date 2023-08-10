@@ -11,6 +11,7 @@ import {useCheckSessionStatus} from '../hooks/session.hook'
 
 const PrivateRoutes = () => {
   useCheckSessionStatus()
+
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
   const WizardsPage = lazy(() => import('../modules/wizards/WizardsPage'))
   const AccountPage = lazy(() => import('../modules/accounts/AccountPage'))

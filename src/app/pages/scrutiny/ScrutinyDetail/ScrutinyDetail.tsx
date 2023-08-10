@@ -5,6 +5,7 @@ import ConditionalRendering from '../../../helpers/ConditionalRedering'
 import ScrutinyDetailTable from '../../../components/Cards/ScrutinyDetail/components/ScrutinyDetailTable'
 import {Winner} from '../../../../types/ScrutinyDetail.types'
 import RenderLoader from '../../../components/RenderLoader/RenderLoader'
+import TicketDetail from '../../../components/Modals/TicketDetail/TicketDetail'
 
 const ScrutinyDetail = () => {
   const {scrutinyDetailState, isLoading} = useScrutinyDetail()
@@ -23,6 +24,7 @@ const ScrutinyDetail = () => {
             <ScrutinyDetailCard
               scrutinyDetail={scrutinyDetailState.scrutinyDetail}
               isLoading={isLoading}
+              gameType={scrutinyDetailState.gameType}
             />
           </ConditionalRendering>
         </div>
@@ -34,7 +36,10 @@ const ScrutinyDetail = () => {
           </ConditionalRendering>
         </div>
       </div>
-      {isLoading && <RenderLoader show={true} huge={true} />}
+      <div className='mb-10'>
+        <TicketDetail />
+      </div>
+      <div className='mb-10'>{isLoading && <RenderLoader show={true} huge={true} />}</div>
     </div>
   )
 }
