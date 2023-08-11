@@ -84,6 +84,40 @@ const SidebarMenuMain = () => {
           />
         </SidebarMenuItemWithSub>
       )}
+      {canAccessScrutiny && (
+        <SidebarMenuItemWithSub
+          to='/pages/settings'
+          title='Configuración de Juegos'
+          icon='/media/icons/duotune/coding/cod009.svg'
+          fontIcon='bi-gear'
+        >
+          <SidebarMenuItem
+            to='/pages/settings/general-settings'
+            title='Configuración general'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
+            to='/pages/settings/animalitos-settings'
+            title='Configuración animalitos'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
+            to='/pages/settings/chance-3digits-settings'
+            title='Configuración chance 3 Cifras'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
+            to='/pages/settings/chance-4digits-settings'
+            title='Configuración chance 4 cifras'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
+            to='/pages/settings/chance-zodiac-settings'
+            title='Configuración chance zodiacal'
+            hasBullet={true}
+          />
+        </SidebarMenuItemWithSub>
+      )}
 
       <SidebarMenuItemWithSub
         to='/crafted/pages'
@@ -137,6 +171,7 @@ const SidebarMenuMain = () => {
       >
         <SidebarMenuItem to='/error/404' title='Error 404' hasBullet={true} />
         <SidebarMenuItem to='/error/500' title='Error 500' hasBullet={true} />
+        <SidebarMenuItem to='/error/401' title='Error 401' hasBullet={true} />
       </SidebarMenuItemWithSub>
       <SidebarMenuItemWithSub
         to='/crafted/widgets'

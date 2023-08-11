@@ -8,6 +8,7 @@ import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
 import {WithChildren} from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 import {useCheckSessionStatus} from '../hooks/session.hook'
+import SettinsPage from '../modules/settings/SettingsPage'
 
 const PrivateRoutes = () => {
   useCheckSessionStatus()
@@ -92,6 +93,14 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <ScrutinyPage />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='pages/settings/*'
+          element={
+            <SuspensedView>
+              <SettinsPage />
             </SuspensedView>
           }
         />

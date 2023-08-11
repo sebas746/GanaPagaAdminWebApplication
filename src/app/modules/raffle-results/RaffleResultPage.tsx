@@ -5,7 +5,7 @@ import RaffleResultsAnimalitos from '../../pages/raffle-results/RaffleResultsAni
 import RaffleResultsChance3Digits from '../../pages/raffle-results/RaffleResultsChance3Digits/RaffleResultsChance3Digits'
 import RaffleResultsChance4Digits from '../../pages/raffle-results/RaffleResultsChance4Digits/RaffleResultsChance4Digits'
 import RaffleResultsChanceZodiacal from '../../pages/raffle-results/RaffleResultsChanceZodiacal/RaffleResultsChanceZodiacal'
-import {useProtectedRoute} from '../../hooks/routeProtection.hook'
+import {Resource, useHasPermission, useProtectedRoute} from '../../hooks/routeProtection.hook'
 import {UserRolesEnum} from '../../../types/UserRoles.types'
 
 const raffleResultBreadCrumbs: Array<PageLink> = [
@@ -25,10 +25,12 @@ const raffleResultBreadCrumbs: Array<PageLink> = [
 const RaffleResultPage = () => {
   const navigate = useNavigate()
   const canAccess = useProtectedRoute(UserRolesEnum.Scrutiny)
+  const resource: Resource = 'raffleResult'
+  const canApprove = useHasPermission(resource, 'approve')
 
   useEffect(() => {
     if (!canAccess) {
-      navigate('/error/404')
+      navigate('/error/401')
     }
   }, [])
 

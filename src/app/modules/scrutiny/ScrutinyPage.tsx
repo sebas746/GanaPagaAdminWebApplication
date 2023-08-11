@@ -30,7 +30,7 @@ const ScrutinyPage = () => {
 
   useEffect(() => {
     if (!canAccess) {
-      navigate('/error/404')
+      navigate('/error/401')
     }
   }, [])
   return (
