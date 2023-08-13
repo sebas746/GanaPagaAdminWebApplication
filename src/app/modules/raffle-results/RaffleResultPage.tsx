@@ -25,8 +25,7 @@ const raffleResultBreadCrumbs: Array<PageLink> = [
 const RaffleResultPage = () => {
   const navigate = useNavigate()
   const canAccess = useProtectedRoute(UserRolesEnum.Scrutiny)
-  const resource: Resource = 'raffleResult'
-  const canApprove = useHasPermission(resource, 'approve')
+  const canApprove = useHasPermission('raffleResult', 'approve')
 
   useEffect(() => {
     if (!canAccess) {

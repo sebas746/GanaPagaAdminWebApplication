@@ -4,6 +4,7 @@ import {formatCurrency} from '../../../../helpers/currency.helpers'
 import {CurrencyCode} from '../../../../../types/Currency.types'
 
 interface ScrutinyDetailInfoCardProps {
+  header: string
   title?: string
   summaryDollar?: string
   summaryBolivar?: string
@@ -11,14 +12,24 @@ interface ScrutinyDetailInfoCardProps {
 }
 
 const ScrutinyDetailInfoCurrencyCard = ({
+  header,
   title,
   summaryDollar,
   summaryBolivar,
   isLoading,
 }: ScrutinyDetailInfoCardProps) => {
   return (
-    <>
-      <Card className='bg-success m-2 text-white'>
+    <div className='col-sm-12 col-md-6' key={`card-raffle-info-${title}`}>
+      <Card>
+        <Card.Header className={`p-2 rounded-2 bg-success`}>
+          <Card.Title className={`w-100 text-white`}>
+            <div
+              className={`d-flex justify-content-between align-items-center flex-grow-1 column-gap-4`}
+            >
+              <h5 className={`text-white`}>{header}</h5>
+            </div>
+          </Card.Title>
+        </Card.Header>
         <Card.Body>
           <div className='d-flex justify-content-between align-items-start column-gap-2'>
             <div className='p-2'>
@@ -34,7 +45,7 @@ const ScrutinyDetailInfoCurrencyCard = ({
           </div>
         </Card.Body>
       </Card>
-    </>
+    </div>
   )
 }
 
