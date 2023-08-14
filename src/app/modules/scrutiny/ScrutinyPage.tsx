@@ -6,8 +6,6 @@ import ScrutinyChance3Digits from '../../pages/scrutiny/ScrutinyChance3Digits/Sc
 import ScrutinyChanceZodiacal from '../../pages/scrutiny/ScrutinyChanceZodiac/ScrutinyChanceZodiac'
 import ScrutinyChance4Digits from '../../pages/scrutiny/ScrutinyChance4Digits/ScrutinyChance4Digits'
 import ScrutinyDetail from '../../pages/scrutiny/ScrutinyDetail/ScrutinyDetail'
-import {useProtectedRoute} from '../../hooks/routeProtection.hook'
-import {UserRolesEnum} from '../../../types/UserRoles.types'
 
 const scrutinyBreadCrumbs: Array<PageLink> = [
   {
@@ -25,14 +23,7 @@ const scrutinyBreadCrumbs: Array<PageLink> = [
 ]
 const ScrutinyPage = () => {
   const location = useLocation()
-  const navigate = useNavigate()
-  const canAccess = useProtectedRoute(UserRolesEnum.Scrutiny)
 
-  useEffect(() => {
-    if (!canAccess) {
-      navigate('/error/401')
-    }
-  }, [])
   return (
     <Routes>
       <Route element={<Outlet />}>

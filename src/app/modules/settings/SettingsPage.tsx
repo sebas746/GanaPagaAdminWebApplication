@@ -1,7 +1,5 @@
 import {Outlet, Route, Routes, useNavigate} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
-import {useProtectedRoute} from '../../hooks/routeProtection.hook'
-import {UserRolesEnum} from '../../../types/UserRoles.types'
 import {useEffect} from 'react'
 import GeneralSettings from '../../pages/settings/general-settings/GeneralSettings'
 import AnimalitosSettings from '../../pages/settings/animalitos-settings/AnimalitosSettings'
@@ -26,14 +24,7 @@ const settingsBreadCrumbs: Array<PageLink> = [
 
 const SettinsPage = () => {
   const navigate = useNavigate()
-  const canAccess = useProtectedRoute(UserRolesEnum.Admin)
-  /*
-  useEffect(() => {
-    if (!canAccess) {
-      //navigate('/error/401')
-    }
-  }, [])
-  */
+
   return (
     <Routes>
       <Route element={<Outlet />}>

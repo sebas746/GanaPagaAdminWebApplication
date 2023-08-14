@@ -9,6 +9,7 @@ import {WithChildren} from '../../_metronic/helpers'
 import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 import {useCheckSessionStatus} from '../hooks/session.hook'
 import SettinsPage from '../modules/settings/SettingsPage'
+import ProtectedRoute from '../components/RouteProtection/ProtectedRoute'
 
 const PrivateRoutes = () => {
   useCheckSessionStatus()
@@ -84,7 +85,9 @@ const PrivateRoutes = () => {
           path='pages/raffle-results/*'
           element={
             <SuspensedView>
-              <RaffleResultsPage />
+              <ProtectedRoute roles={['Admin', 'Scrutiny']}>
+                <RaffleResultsPage />
+              </ProtectedRoute>
             </SuspensedView>
           }
         />
@@ -92,7 +95,9 @@ const PrivateRoutes = () => {
           path='pages/scrutiny/*'
           element={
             <SuspensedView>
-              <ScrutinyPage />
+              <ProtectedRoute roles={['Admin', 'Scrutiny']}>
+                <ScrutinyPage />
+              </ProtectedRoute>
             </SuspensedView>
           }
         />
@@ -100,7 +105,9 @@ const PrivateRoutes = () => {
           path='pages/settings/*'
           element={
             <SuspensedView>
-              <SettinsPage />
+              <ProtectedRoute roles={['Admin']}>
+                <SettinsPage />
+              </ProtectedRoute>
             </SuspensedView>
           }
         />

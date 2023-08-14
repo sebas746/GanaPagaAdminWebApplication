@@ -3,22 +3,24 @@ import React from 'react'
 import {useIntl} from 'react-intl'
 import {SidebarMenuItemWithSub} from './SidebarMenuItemWithSub'
 import {SidebarMenuItem} from './SidebarMenuItem'
-import {useProtectedRoute} from '../../../../../app/hooks/routeProtection.hook'
-import {UserRolesEnum} from '../../../../../types/UserRoles.types'
+import {useProtectedRoute} from '../../../../../app/components/RouteProtection/ProtectedRoute.hook'
 
 const SidebarMenuMain = () => {
   const intl = useIntl()
-  const canAccessScrutiny = useProtectedRoute(UserRolesEnum.Scrutiny)
-  const canAccessAdmin = useProtectedRoute(UserRolesEnum.Admin)
+  const allRolesRoutes = useProtectedRoute(['Admin', 'Scrutiny', 'User'])
+  const adminScrutinyRoutes = useProtectedRoute(['Admin', 'Scrutiny'])
+  const adminRoutes = useProtectedRoute(['Admin'])
 
   return (
     <>
-      <SidebarMenuItem
-        to='/dashboard'
-        icon='/media/icons/duotune/art/art002.svg'
-        title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
-        fontIcon='bi-app-indicator'
-      />
+      {allRolesRoutes && (
+        <SidebarMenuItem
+          to='/dashboard'
+          icon='/media/icons/duotune/art/art002.svg'
+          title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
+          fontIcon='bi-app-indicator'
+        />
+      )}
       <SidebarMenuItem
         to='/builder'
         icon='/media/icons/duotune/general/gen019.svg'
@@ -30,7 +32,7 @@ const SidebarMenuMain = () => {
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Crafted</span>
         </div>
       </div>
-      {canAccessScrutiny && (
+      {adminScrutinyRoutes && (
         <SidebarMenuItemWithSub
           to='/pages/raffle-results'
           title='Resultados Sorteos'
@@ -59,7 +61,7 @@ const SidebarMenuMain = () => {
           />
         </SidebarMenuItemWithSub>
       )}
-      {canAccessScrutiny && (
+      {adminScrutinyRoutes && (
         <SidebarMenuItemWithSub
           to='/pages/scrutiny'
           title='Escrutinio Sorteos'
@@ -84,7 +86,7 @@ const SidebarMenuMain = () => {
           />
         </SidebarMenuItemWithSub>
       )}
-      {canAccessScrutiny && (
+      {adminRoutes && (
         <SidebarMenuItemWithSub
           to='/pages/settings'
           title='Configuración de Juegos'

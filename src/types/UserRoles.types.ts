@@ -6,19 +6,17 @@ export enum UserRolesEnum {
 
 export type UserRole = 'Admin' | 'Scrutiny' | 'User'
 
-export type UserActions = 'create' | 'update' | 'read' | 'delete' | 'index'
 export type SettingsActions =
   | 'get-general-settings'
   | 'get-general-settings-by-setting-name'
   | 'update-general-settings'
-export type HomeActions = 'create' | 'update' | 'read' | 'delete' | 'index'
-export type RaffleResultActions = 'index' | 'view' | 'create' | 'update' | 'approve'
+export type RaffleResultActions = 'approve-raffle' | 'add-raffle' | 'get-raffle' | 'update-raffle'
+export type RaffleScrutinyActions = 'create-scrutiny' | 'view-scrutiny'
 
 export type RoleActionPermissions = {
-  user: UserActions[]
   settings: SettingsActions[]
-  home: HomeActions[]
   raffleResult: RaffleResultActions[]
+  raffleScrutiny: RaffleScrutinyActions[]
 }
 
 export type RolePermissionsMap = {
@@ -27,29 +25,26 @@ export type RolePermissionsMap = {
 
 export const rolePermissions: RolePermissionsMap = {
   Admin: {
-    user: ['create', 'update', 'delete', 'read'],
     settings: [
       'get-general-settings',
       'get-general-settings-by-setting-name',
       'update-general-settings',
     ],
-    home: ['index'],
-    raffleResult: ['index', 'view'],
+    raffleResult: ['get-raffle'],
+    raffleScrutiny: ['view-scrutiny'],
   },
   Scrutiny: {
-    user: [] as UserActions[],
     settings: [
       'get-general-settings',
       'get-general-settings-by-setting-name',
       'update-general-settings',
     ],
-    home: ['index'],
-    raffleResult: ['approve', 'create', 'index', 'update', 'view'],
+    raffleResult: ['approve-raffle', 'add-raffle', 'get-raffle', 'update-raffle'],
+    raffleScrutiny: ['create-scrutiny', 'view-scrutiny'],
   },
   User: {
-    user: [] as UserActions[],
     settings: [] as SettingsActions[],
     raffleResult: [] as RaffleResultActions[],
-    home: ['index'],
+    raffleScrutiny: [] as RaffleScrutinyActions[],
   },
 }
