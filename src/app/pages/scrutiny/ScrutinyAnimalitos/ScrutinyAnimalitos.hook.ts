@@ -15,7 +15,7 @@ import {enqueueSnackbar} from 'notistack'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {gameType} from '../../../constants/game-type.constants'
 
-enum ScrutinyAnimalitosAction {
+enum ScrutinyAnimalitosKind {
   SET_SCRUTINY_FORM = 'SET_SCRUTINY_FORM',
   SET_SCRUTINY_RESULTS = 'SET_SCRUTINY_RESULTS',
   SET_SCRUTINY_RESULTS_BY_LOTTERY = 'SET_SCRUTINY_RESULTS_BY_LOTTERY',
@@ -24,8 +24,8 @@ enum ScrutinyAnimalitosAction {
   SET_RAFFLE_ID_LOADING = 'SET_RAFFLE_ID_LOADING',
 }
 
-interface ScrutinyAnimalitosState {
-  type: ScrutinyAnimalitosAction
+interface ScrutinyAnimalitosAction {
+  type: ScrutinyAnimalitosKind
   payload:
     | IRaffleScrutinyAnimalitosResponse[]
     | boolean
@@ -34,7 +34,7 @@ interface ScrutinyAnimalitosState {
     | RaffleResultsForm
 }
 
-interface RaffleScrutinyAnimalitosState {
+interface ScrutinyAnimalitosState {
   animalitosLotteries: IAnimalitosLotteries[]
   isLoadingAnimalitosLotteries: boolean
   selectedTab: number
@@ -44,36 +44,36 @@ interface RaffleScrutinyAnimalitosState {
 }
 
 export const raffleResultReducer = (
-  state: RaffleScrutinyAnimalitosState,
-  action: ScrutinyAnimalitosState
+  state: ScrutinyAnimalitosState,
+  action: ScrutinyAnimalitosAction
 ) => {
   switch (action.type) {
-    case ScrutinyAnimalitosAction.SET_SCRUTINY_FORM:
+    case ScrutinyAnimalitosKind.SET_SCRUTINY_FORM:
       return {
         ...state,
         raffleResultForm: action.payload as RaffleResultsForm,
       }
-    case ScrutinyAnimalitosAction.SET_SCRUTINY_RESULTS:
+    case ScrutinyAnimalitosKind.SET_SCRUTINY_RESULTS:
       return {
         ...state,
         raffleResultsByLottery: action.payload as IRaffleScrutinyAnimalitosResponse[],
       }
-    case ScrutinyAnimalitosAction.SET_SCRUTINY_RESULTS_BY_LOTTERY:
+    case ScrutinyAnimalitosKind.SET_SCRUTINY_RESULTS_BY_LOTTERY:
       return {
         ...state,
         raffleResultsByLottery: action.payload as IRaffleScrutinyAnimalitosResponse[],
       }
-    case ScrutinyAnimalitosAction.SET_IS_LOADING_SCRUTINY_RESULTS:
+    case ScrutinyAnimalitosKind.SET_IS_LOADING_SCRUTINY_RESULTS:
       return {
         ...state,
         isLoadingAnimalitosLotteries: action.payload as boolean,
       }
-    case ScrutinyAnimalitosAction.SET_SELECTED_TAB:
+    case ScrutinyAnimalitosKind.SET_SELECTED_TAB:
       return {
         ...state,
         selectedTab: action.payload as number,
       }
-    case ScrutinyAnimalitosAction.SET_RAFFLE_ID_LOADING:
+    case ScrutinyAnimalitosKind.SET_RAFFLE_ID_LOADING:
       return {
         ...state,
         animalitosRaffleId: action.payload as number,
@@ -172,42 +172,42 @@ export const useScrutinyAnimalitos = () => {
 
   const setRaffleIdLoading = (payload: number) => {
     dispatchScrutinyAnimalitos({
-      type: ScrutinyAnimalitosAction.SET_RAFFLE_ID_LOADING,
+      type: ScrutinyAnimalitosKind.SET_RAFFLE_ID_LOADING,
       payload,
     })
   }
 
   const setScrutinyForm = (payload: RaffleResultsForm) => {
     dispatchScrutinyAnimalitos({
-      type: ScrutinyAnimalitosAction.SET_SCRUTINY_FORM,
+      type: ScrutinyAnimalitosKind.SET_SCRUTINY_FORM,
       payload,
     })
   }
 
   const setScrutinyResults = (payload: IRaffleScrutinyAnimalitosResponse[]) => {
     dispatchScrutinyAnimalitos({
-      type: ScrutinyAnimalitosAction.SET_SCRUTINY_RESULTS,
+      type: ScrutinyAnimalitosKind.SET_SCRUTINY_RESULTS,
       payload,
     })
   }
 
   const setScrutinyResultsByLottery = (payload: IRaffleScrutinyAnimalitosResponse[]) => {
     dispatchScrutinyAnimalitos({
-      type: ScrutinyAnimalitosAction.SET_SCRUTINY_RESULTS_BY_LOTTERY,
+      type: ScrutinyAnimalitosKind.SET_SCRUTINY_RESULTS_BY_LOTTERY,
       payload,
     })
   }
 
   const setIsLoadingScrutinyResults = (payload: boolean) => {
     dispatchScrutinyAnimalitos({
-      type: ScrutinyAnimalitosAction.SET_IS_LOADING_SCRUTINY_RESULTS,
+      type: ScrutinyAnimalitosKind.SET_IS_LOADING_SCRUTINY_RESULTS,
       payload,
     })
   }
 
   const setSelectedTab = (payload: number) => {
     dispatchScrutinyAnimalitos({
-      type: ScrutinyAnimalitosAction.SET_SELECTED_TAB,
+      type: ScrutinyAnimalitosKind.SET_SELECTED_TAB,
       payload,
     })
   }

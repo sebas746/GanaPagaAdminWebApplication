@@ -1,7 +1,15 @@
+import GeneralSettingForm from '../../../components/Forms/GeneralSettingsForm/GeneralSettingForm'
+import {useGeneralSettings} from './GeneralSettings.hook'
+
 const GeneralSettings = () => {
+  const {generalSettingsState, setGeneralSettingsForm} = useGeneralSettings()
   return (
     <>
-      <div>Aquí va la información de Configuración general</div>
+      <GeneralSettingForm
+        generalSettingsFormState={generalSettingsState.generalSettings.generalSettings}
+        setGeneralSettingsForm={setGeneralSettingsForm}
+        isLoadingForm={generalSettingsState.isFormLoading}
+      ></GeneralSettingForm>
     </>
   )
 }

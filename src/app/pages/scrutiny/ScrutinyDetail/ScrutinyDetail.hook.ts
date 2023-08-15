@@ -13,7 +13,7 @@ enum ScrutinyActionUrl {
   CHANCEZODIAC = '/ChanceZodiacScrutiny/get-chance-zodiac-scrutiny-by-raffle-and-currency/',
 }
 
-enum ScrutinyDetailAction {
+enum ScrutinyDetailKind {
   SET_SCRUTINY_ID = 'SET_SCRUTINY_ID',
   SET_GAME_TYPE = 'SET_GAME_TYPE',
   SET_URL = 'SET_URL',
@@ -21,12 +21,12 @@ enum ScrutinyDetailAction {
   SET_EMAIL_LIST = 'SET_EMAIL_LIST',
 }
 
-interface ScrutinyDetailState {
-  type: ScrutinyDetailAction
+interface ScrutinyDetailAction {
+  type: ScrutinyDetailKind
   payload: number | string | string | IScrutinyDetailResponse | string[]
 }
 
-interface RaffleScrutinyDetailState {
+interface ScrutinyDetailState {
   raffleId: number
   gameType: string
   url: string
@@ -34,32 +34,29 @@ interface RaffleScrutinyDetailState {
   emailList: string[]
 }
 
-export const scrutinyDetailReducer = (
-  state: RaffleScrutinyDetailState,
-  action: ScrutinyDetailState
-) => {
+export const scrutinyDetailReducer = (state: ScrutinyDetailState, action: ScrutinyDetailAction) => {
   switch (action.type) {
-    case ScrutinyDetailAction.SET_SCRUTINY_ID:
+    case ScrutinyDetailKind.SET_SCRUTINY_ID:
       return {
         ...state,
         raffleId: action.payload as number,
       }
-    case ScrutinyDetailAction.SET_GAME_TYPE:
+    case ScrutinyDetailKind.SET_GAME_TYPE:
       return {
         ...state,
         gameType: action.payload as string,
       }
-    case ScrutinyDetailAction.SET_URL:
+    case ScrutinyDetailKind.SET_URL:
       return {
         ...state,
         url: action.payload as string,
       }
-    case ScrutinyDetailAction.SET_SCRUTINY_DETAIL:
+    case ScrutinyDetailKind.SET_SCRUTINY_DETAIL:
       return {
         ...state,
         scrutinyDetail: action.payload as IScrutinyDetailResponse,
       }
-    case ScrutinyDetailAction.SET_EMAIL_LIST:
+    case ScrutinyDetailKind.SET_EMAIL_LIST:
       return {
         ...state,
         emailList: action.payload as string[],
@@ -101,7 +98,7 @@ export const useScrutinyDetail = () => {
 
   const setScrutinyDetail = (payload: IScrutinyDetailResponse) => {
     dispatchScrutinyDetail({
-      type: ScrutinyDetailAction.SET_SCRUTINY_DETAIL,
+      type: ScrutinyDetailKind.SET_SCRUTINY_DETAIL,
       payload,
     })
   }
