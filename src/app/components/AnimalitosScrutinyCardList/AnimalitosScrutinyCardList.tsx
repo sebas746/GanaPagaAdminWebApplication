@@ -51,29 +51,30 @@ const AnimalitosScrutinyCardList = ({
 
   return (
     <>
-      {raffleScrutinyResults.map((raffleResult) => (
-        <div
-          className={clsx('tab-pane', 'fade', {
-            show: selectedTab === raffleResult.animalitosLotteryId,
-            active: selectedTab === raffleResult.animalitosLotteryId,
-          })}
-          id={`pill-${raffleResult.animalitosLotteryName.toLowerCase().split(' ').join('-')}`}
-          key={`tab-content-${raffleResult.animalitosLotteryName
-            .toLowerCase()
-            .split(' ')
-            .join('-')}`}
-          role='tabpanel'
-          aria-labelledby={`pills-${raffleResult.animalitosLotteryName
-            .toLowerCase()
-            .split(' ')
-            .join('-')}-tab`}
-          tabIndex={0}
-        >
-          <div className='row row-gap-8'>
-            {renderResultCard(raffleResult.raffleResultDetailResponse)}
+      {raffleScrutinyResults.length > 0 &&
+        raffleScrutinyResults.map((raffleResult) => (
+          <div
+            className={clsx('tab-pane', 'fade', {
+              show: selectedTab === raffleResult.animalitosLotteryId,
+              active: selectedTab === raffleResult.animalitosLotteryId,
+            })}
+            id={`pill-${raffleResult.animalitosLotteryName.toLowerCase().split(' ').join('-')}`}
+            key={`tab-content-${raffleResult.animalitosLotteryName
+              .toLowerCase()
+              .split(' ')
+              .join('-')}`}
+            role='tabpanel'
+            aria-labelledby={`pills-${raffleResult.animalitosLotteryName
+              .toLowerCase()
+              .split(' ')
+              .join('-')}-tab`}
+            tabIndex={0}
+          >
+            <div className='row row-gap-8'>
+              {renderResultCard(raffleResult.raffleResultDetailResponse)}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
     </>
   )
 }
