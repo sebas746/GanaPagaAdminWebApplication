@@ -19,7 +19,7 @@ const ScrutinyDetailInfoCurrencyCard = ({
   isLoading,
 }: ScrutinyDetailInfoCardProps) => {
   return (
-    <div className='col-sm-12 col-md-6' key={`card-raffle-info-${title}`}>
+    <div className='col-sm-12 col-md-4' key={`card-raffle-info-${title}`}>
       <Card>
         <Card.Header className={`p-2 rounded-2 bg-success`}>
           <Card.Title className={`w-100 text-white`}>

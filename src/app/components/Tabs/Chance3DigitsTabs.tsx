@@ -14,19 +14,19 @@ const Chance3DigitsTabs = ({tabs, setSelectedTab, selectedTab}: IChance3DigitsTa
       {tabs.map((lottery) => {
         return (
           <li
-            className='nav-link'
+            className='nav-item'
             role='presentation'
             key={`chance-3digits-tab-${lottery.lotteryId}`}
           >
             <button
               className={clsx('nav-link', {active: selectedTab === lottery.lotteryId})}
-              id={`pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}-tab`}
+              id={`tab-${lottery.lotteryName.toLowerCase().split(' ').join('-')}-tab`}
               data-bs-toggle='pill'
-              data-bs-target={`#pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
+              data-bs-target={`#tab-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
               type='button'
               onClick={() => setSelectedTab(lottery.lotteryId)}
               role='tab'
-              aria-controls={`pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
+              aria-controls={`tab-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
               aria-selected='true'
             >
               {lottery.lotteryName}

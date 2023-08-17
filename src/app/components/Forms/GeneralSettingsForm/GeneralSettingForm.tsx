@@ -52,13 +52,16 @@ const GeneralSettingForm = ({
                       />
                     )}
                   </div>
-                  {/* Render any other fields here if needed */}
                 </div>
               ))
             : null}
-          <Button variant='primary' type='submit' disabled={!formik.dirty}>
-            Guardar <RenderLoader show={submitIsLoading} />
-          </Button>
+          <div className='row mb-3'>
+            <div className='col-sm-6 text-end'>
+              <Button variant='primary' type='submit' disabled={!formik.dirty}>
+                Guardar <RenderLoader show={submitIsLoading} />
+              </Button>
+            </div>
+          </div>
         </form>
       )}
     </div>
