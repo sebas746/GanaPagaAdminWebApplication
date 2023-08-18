@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button'
 import ConditionalRendering from '../../../helpers/ConditionalRedering'
 import AddRaffleChance3DigitsResultForm from '../../Forms/AddRaffleChance3DigitsResultForm/AddRaffleChance3DigitsResultForm'
 import {useChance3DigitsRaffleResultCard} from './Chance3DigitsRaffleResultCard.hook'
+import HasPermission from '../../HasPermissions/HasPermissions'
 
 interface Chance3DigitsRaffleResultCardProps {
   raffle: IRaffleResultChance3DigitsDetail
@@ -95,16 +96,21 @@ const Chance3DigitsRaffleResultCard = ({
         </div>
         <ConditionalRendering isTrue={!showRaffleResultForm}>
           <div className='d-flex justify-content-end align-items-center'>
-            {!!buttonText && (
-              <Button
-                className='m-1'
-                variant='primary'
-                onClick={setRaffleResultForm}
-                disabled={disableSubmitButton()}
-              >
-                {buttonText}
-              </Button>
-            )}
+            <HasPermission
+              resource='raffleResult'
+              actions={['add-raffle', 'update-raffle', 'approve-raffle']}
+            >
+              {!!buttonText && (
+                <Button
+                  className='m-1'
+                  variant='primary'
+                  onClick={setRaffleResultForm}
+                  disabled={disableSubmitButton()}
+                >
+                  {buttonText}
+                </Button>
+              )}
+            </HasPermission>
           </div>
         </ConditionalRendering>
       </Card.Body>

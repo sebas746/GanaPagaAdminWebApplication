@@ -18,17 +18,13 @@ const ScrutinyDetail = () => {
 
   return (
     <div className='container-fluid'>
-      <div className='mb-10'>
-        <div className='col-sm-12 col-md-4' key={`card-raffle-${scrutinyDetailState.raffleId}`}>
-          <ConditionalRendering isTrue={!isLoading}>
-            <ScrutinyDetailCard
-              scrutinyDetail={scrutinyDetailState.scrutinyDetail}
-              isLoading={isLoading}
-              gameType={scrutinyDetailState.gameType}
-            />
-          </ConditionalRendering>
-        </div>
-      </div>
+      <ConditionalRendering isTrue={!isLoading}>
+        <ScrutinyDetailCard
+          scrutinyDetail={scrutinyDetailState.scrutinyDetail}
+          isLoading={isLoading}
+          gameType={scrutinyDetailState.gameType}
+        />
+      </ConditionalRendering>
       <div className='mb-10'>
         <div className='col-sm-12 col-md-12' key={`card-raffle-${scrutinyDetailState.raffleId}`}>
           <ConditionalRendering isTrue={winners.length > 0}>

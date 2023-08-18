@@ -5,6 +5,7 @@ import ConditionalRendering from '../../../helpers/ConditionalRedering'
 import {useChance4DigitsRaffleResultCard} from './Chance4DigitsRaffleResultCard.hook'
 import {IRaffleResultChance4DigitsDetail} from '../../../../types/Chance4Digits.types'
 import AddRafflechance4DigitsResultForm from '../../Forms/AddRaffleChance4DigitsResultForm/AddRaffleChance4DigitsResultForm'
+import HasPermission from '../../HasPermissions/HasPermissions'
 
 interface Chance4DigitsRaffleResultCardProps {
   raffle: IRaffleResultChance4DigitsDetail
@@ -92,16 +93,21 @@ const Chance4DigitsRaffleResultCard = ({
         </div>
         <ConditionalRendering isTrue={!showRaffleResultForm}>
           <div className='d-flex justify-content-end align-items-center'>
-            {!!buttonText && (
-              <Button
-                className='m-1'
-                variant='primary'
-                onClick={setRaffleResultForm}
-                disabled={disableSubmitButton()}
-              >
-                {buttonText}
-              </Button>
-            )}
+            <HasPermission
+              resource='raffleResult'
+              actions={['add-raffle', 'update-raffle', 'approve-raffle']}
+            >
+              {!!buttonText && (
+                <Button
+                  className='m-1'
+                  variant='primary'
+                  onClick={setRaffleResultForm}
+                  disabled={disableSubmitButton()}
+                >
+                  {buttonText}
+                </Button>
+              )}
+            </HasPermission>
           </div>
         </ConditionalRendering>
       </Card.Body>

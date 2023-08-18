@@ -8,6 +8,7 @@ import {
 } from '../../../../types/Chance4Digits.types'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
 import RenderLoader from '../../RenderLoader/RenderLoader'
+import HasPermission from '../../HasPermissions/HasPermissions'
 
 interface Chance4DigitsScrutinyProps {
   addRaffleScrutinyChance4Digits: () => void
@@ -50,34 +51,38 @@ const Chance4DigitsScrutinyCard = ({
           <div className='fw-bold me-4 flex-grow-1'>
             Resultado: {raffle.chanceFourRaffleResultValue}
           </div>
-          <ConditionalRedering
-            isTrue={
-              raffle.chanceFourRaffleScrutinyStatus ===
-                Chance4DigitsRaffleScrutinyStatus.PendingResultApprove &&
-              raffle.chanceFourRaffleStatus === Chance4DigitsRaffleResultStatus.Approved
-            }
-          >
-            <button
-              className='btn btn-primary'
-              onClick={addRaffleScrutinyChance4Digits}
-              disabled={loadingAdd}
+          <HasPermission resource='raffleScrutiny' actions={['create-scrutiny']}>
+            <ConditionalRedering
+              isTrue={
+                raffle.chanceFourRaffleScrutinyStatus ===
+                  Chance4DigitsRaffleScrutinyStatus.PendingResultApprove &&
+                raffle.chanceFourRaffleStatus === Chance4DigitsRaffleResultStatus.Approved
+              }
             >
-              {buttonText}
-              {loadingAdd && (
-                <RenderLoader show={loadingAdd && raffle.chanceFourRaffleId === raffleId} />
-              )}
-            </button>
-          </ConditionalRedering>
-          <ConditionalRedering
-            isTrue={
-              raffle.chanceFourRaffleScrutinyStatus ===
-              Chance4DigitsRaffleScrutinyStatus.Scrutinized
-            }
-          >
-            <button className='btn btn-primary' onClick={onClickScrutinyChance4DigitsDetail}>
-              {buttonText}
-            </button>
-          </ConditionalRedering>
+              <button
+                className='btn btn-primary'
+                onClick={addRaffleScrutinyChance4Digits}
+                disabled={loadingAdd}
+              >
+                {buttonText}
+                {loadingAdd && (
+                  <RenderLoader show={loadingAdd && raffle.chanceFourRaffleId === raffleId} />
+                )}
+              </button>
+            </ConditionalRedering>
+          </HasPermission>
+          <HasPermission resource='raffleScrutiny' actions={['view-scrutiny']}>
+            <ConditionalRedering
+              isTrue={
+                raffle.chanceFourRaffleScrutinyStatus ===
+                Chance4DigitsRaffleScrutinyStatus.Scrutinized
+              }
+            >
+              <button className='btn btn-primary' onClick={onClickScrutinyChance4DigitsDetail}>
+                {buttonText}
+              </button>
+            </ConditionalRedering>
+          </HasPermission>
         </div>
       </Card.Body>
     </Card>

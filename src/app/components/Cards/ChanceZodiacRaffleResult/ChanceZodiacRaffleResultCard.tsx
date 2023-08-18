@@ -5,6 +5,7 @@ import ConditionalRendering from '../../../helpers/ConditionalRedering'
 import {IRaffleResultChanceZodiacDetail} from '../../../../types/ChanceZodiac.types'
 import {useChanceZodiacRaffleResultCard} from './ChanceZodiacRaffleResultCard.hook'
 import AddRaffleChanceZodiacResultForm from '../../Forms/AddRaffleChanceZodiacResultForm/AddRaffleChanceZodiacResultForm'
+import HasPermission from '../../HasPermissions/HasPermissions'
 
 interface ChanceZodiacRaffleResultCardProps {
   raffle: IRaffleResultChanceZodiacDetail
@@ -95,16 +96,21 @@ const ChanceZodiacRaffleResultCard = ({
         </div>
         <ConditionalRendering isTrue={!showRaffleResultForm}>
           <div className='d-flex justify-content-end align-items-center'>
-            {!!buttonText && (
-              <Button
-                className='m-1'
-                variant='primary'
-                onClick={setRaffleResultForm}
-                disabled={disableSubmitButton()}
-              >
-                {buttonText}
-              </Button>
-            )}
+            <HasPermission
+              resource='raffleResult'
+              actions={['add-raffle', 'update-raffle', 'approve-raffle']}
+            >
+              {!!buttonText && (
+                <Button
+                  className='m-1'
+                  variant='primary'
+                  onClick={setRaffleResultForm}
+                  disabled={disableSubmitButton()}
+                >
+                  {buttonText}
+                </Button>
+              )}
+            </HasPermission>
           </div>
         </ConditionalRendering>
       </Card.Body>

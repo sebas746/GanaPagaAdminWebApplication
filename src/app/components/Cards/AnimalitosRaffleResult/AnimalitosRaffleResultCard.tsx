@@ -5,6 +5,7 @@ import {IAnimalDetail, IRaffleResultAnimalitosDetail} from '../../../../types/An
 import Button from 'react-bootstrap/Button'
 import AddRaffleAnimalitoResultForm from '../../Forms/AddRaffleAnimalitoResultForm/AddRaffleAnimalitoResultForm'
 import ConditionalRendering from '../../../helpers/ConditionalRedering'
+import HasPermission from '../../HasPermissions/HasPermissions'
 
 interface AnimalitosRaffleResultCardProps {
   raffle: IRaffleResultAnimalitosDetail
@@ -101,16 +102,21 @@ const AnimalitosRaffleResultCard = ({
         </div>
         <ConditionalRendering isTrue={!showRaffleResultForm}>
           <div className='d-flex justify-content-end align-items-center'>
-            {!!buttonText && (
-              <Button
-                className='m-1'
-                variant='primary'
-                onClick={setRaffleResultForm}
-                disabled={disableSubmitButton()}
-              >
-                {buttonText}
-              </Button>
-            )}
+            <HasPermission
+              resource='raffleResult'
+              actions={['add-raffle', 'update-raffle', 'approve-raffle']}
+            >
+              {!!buttonText && (
+                <Button
+                  className='m-1'
+                  variant='primary'
+                  onClick={setRaffleResultForm}
+                  disabled={disableSubmitButton()}
+                >
+                  {buttonText}
+                </Button>
+              )}
+            </HasPermission>
           </div>
         </ConditionalRendering>
       </Card.Body>

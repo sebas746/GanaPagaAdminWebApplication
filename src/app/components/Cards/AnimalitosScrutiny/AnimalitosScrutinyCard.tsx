@@ -8,6 +8,7 @@ import {
 } from '../../../../types/Animalitos.types'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
 import RenderLoader from '../../RenderLoader/RenderLoader'
+import HasPermission from '../../HasPermissions/HasPermissions'
 
 interface AnimalitosScrutinyProps {
   addRaffleScrutinyAnimalitos: () => void
@@ -50,30 +51,35 @@ const AnimalitosScrutinyCard = ({
           <div className='fw-bold me-4 flex-grow-1'>
             Resultado: {raffle.animalitosRaffleResultAnimal}
           </div>
-          <ConditionalRedering
-            isTrue={
-              raffle.animalitosRaffleScrutinyStatus === RaffleScrutinyStatus.PendingResultApprove &&
-              raffle.animalitosRaffleStatus === RaffleResulStatus.Approved
-            }
-          >
-            <button
-              className='btn btn-primary'
-              onClick={addRaffleScrutinyAnimalitos}
-              disabled={loadingAdd}
+          <HasPermission resource='raffleScrutiny' actions={['create-scrutiny']}>
+            <ConditionalRedering
+              isTrue={
+                raffle.animalitosRaffleScrutinyStatus ===
+                  RaffleScrutinyStatus.PendingResultApprove &&
+                raffle.animalitosRaffleStatus === RaffleResulStatus.Approved
+              }
             >
-              {buttonText}
-              {loadingAdd && (
-                <RenderLoader show={loadingAdd && raffle.animalitosRaffleId === raffleId} />
-              )}
-            </button>
-          </ConditionalRedering>
-          <ConditionalRedering
-            isTrue={raffle.animalitosRaffleScrutinyStatus === RaffleScrutinyStatus.Scrutinized}
-          >
-            <button className='btn btn-primary' onClick={onClickScrutinyAnimalitosDetail}>
-              {buttonText}
-            </button>
-          </ConditionalRedering>
+              <button
+                className='btn btn-primary'
+                onClick={addRaffleScrutinyAnimalitos}
+                disabled={loadingAdd}
+              >
+                {buttonText}
+                {loadingAdd && (
+                  <RenderLoader show={loadingAdd && raffle.animalitosRaffleId === raffleId} />
+                )}
+              </button>
+            </ConditionalRedering>
+          </HasPermission>
+          <HasPermission resource='raffleScrutiny' actions={['view-scrutiny']}>
+            <ConditionalRedering
+              isTrue={raffle.animalitosRaffleScrutinyStatus === RaffleScrutinyStatus.Scrutinized}
+            >
+              <button className='btn btn-primary' onClick={onClickScrutinyAnimalitosDetail}>
+                {buttonText}
+              </button>
+            </ConditionalRedering>
+          </HasPermission>
         </div>
       </Card.Body>
     </Card>
