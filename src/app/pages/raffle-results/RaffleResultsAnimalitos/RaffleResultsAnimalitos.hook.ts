@@ -84,7 +84,7 @@ export const useRaffleResultsAnimalitos = () => {
   const {isFetching, refetch: getRaffleResultsByDateLottery} = useQuery<
     ReactQueryResponse<IRaffleResultAnimalitosResponse[]>
   >(
-    'get-raffle-result-results-by-lottery',
+    'get-raffle-results-by-lottery',
     async () => {
       dispatchRaffleResult({
         type: RaffleResultsAnimalitosKind.SET_IS_LOADING_ANIMALITOS_LOTTERIES,
