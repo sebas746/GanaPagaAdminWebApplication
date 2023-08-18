@@ -25,11 +25,7 @@ enum RaffleResultsAnimalitosKind {
 
 interface RaffleResultsAnimalitosAction {
   type: RaffleResultsAnimalitosKind
-  payload:
-    | boolean
-    | RaffleResultsForm
-    | number
-    | IRaffleResultAnimalitosResponse[]
+  payload: boolean | RaffleResultsForm | number | IRaffleResultAnimalitosResponse[]
 }
 
 interface RaffleResultsAnimalitosState {
@@ -88,7 +84,7 @@ export const useRaffleResultsAnimalitos = () => {
   const {isFetching, refetch: getRaffleResultsByDateLottery} = useQuery<
     ReactQueryResponse<IRaffleResultAnimalitosResponse[]>
   >(
-    'get-raffle-results-by-lottery',
+    'get-raffle-result-results-by-lottery',
     async () => {
       dispatchRaffleResult({
         type: RaffleResultsAnimalitosKind.SET_IS_LOADING_ANIMALITOS_LOTTERIES,

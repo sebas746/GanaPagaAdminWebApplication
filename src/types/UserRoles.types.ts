@@ -10,7 +10,11 @@ export type SettingsActions =
   | 'get-general-settings'
   | 'get-general-settings-by-setting-name'
   | 'update-general-settings'
-export type RaffleResultActions = 'approve-raffle' | 'add-raffle' | 'get-raffle' | 'update-raffle'
+export type RaffleResultActions =
+  | 'approve-raffle-result'
+  | 'add-raffle-result'
+  | 'get-raffle-result'
+  | 'update-raffle-result'
 export type RaffleScrutinyActions = 'create-scrutiny' | 'view-scrutiny'
 
 export type RoleActionPermissions = {
@@ -30,7 +34,7 @@ export const rolePermissions: RolePermissionsMap = {
       'get-general-settings-by-setting-name',
       'update-general-settings',
     ],
-    raffleResult: ['get-raffle'],
+    raffleResult: ['get-raffle-result'],
     raffleScrutiny: ['view-scrutiny'],
   },
   Scrutiny: {
@@ -39,7 +43,12 @@ export const rolePermissions: RolePermissionsMap = {
       'get-general-settings-by-setting-name',
       'update-general-settings',
     ],
-    raffleResult: ['approve-raffle', 'add-raffle', 'get-raffle', 'update-raffle'],
+    raffleResult: [
+      'approve-raffle-result',
+      'add-raffle-result',
+      'get-raffle-result',
+      'update-raffle-result',
+    ],
     raffleScrutiny: ['create-scrutiny', 'view-scrutiny'],
   },
   User: {
