@@ -16,7 +16,7 @@ import {useChanceZodiacLotteries} from '../../../hooks/chanceZodiacLotteries.hoo
 import {useNavigate} from 'react-router-dom'
 import {gameType} from '../../../constants/game-type.constants'
 
-enum ScrutinyChanceZodiacAction {
+enum ScrutinyChanceZodiacKind {
   SET_SCRUTINY_FORM = 'SET_SCRUTINY_FORM',
   SET_SCRUTINY_RESULTS = 'SET_SCRUTINY_RESULTS',
   SET_SCRUTINY_RESULTS_BY_LOTTERY = 'SET_SCRUTINY_RESULTS_BY_LOTTERY',
@@ -25,8 +25,8 @@ enum ScrutinyChanceZodiacAction {
   SET_RAFFLE_ID_LOADING = 'SET_RAFFLE_ID_LOADING',
 }
 
-interface ScrutinyChanceZodiacState {
-  type: ScrutinyChanceZodiacAction
+interface ScrutinyChanceZodiacAction {
+  type: ScrutinyChanceZodiacKind
   payload:
     | IRaffleScrutinyChanceZodiacResponse[]
     | boolean
@@ -35,7 +35,7 @@ interface ScrutinyChanceZodiacState {
     | RaffleResultsForm
 }
 
-interface RaffleScrutinyChanceZodiacState {
+interface ScrutinyChanceZodiacState {
   chanceZodiacLotteries: IChanceZodiacLotteries[]
   isLoadingChanceZodiacLotteries: boolean
   selectedTab: number
@@ -45,36 +45,36 @@ interface RaffleScrutinyChanceZodiacState {
 }
 
 export const raffleResultReducer = (
-  state: RaffleScrutinyChanceZodiacState,
-  action: ScrutinyChanceZodiacState
+  state: ScrutinyChanceZodiacState,
+  action: ScrutinyChanceZodiacAction
 ) => {
   switch (action.type) {
-    case ScrutinyChanceZodiacAction.SET_SCRUTINY_FORM:
+    case ScrutinyChanceZodiacKind.SET_SCRUTINY_FORM:
       return {
         ...state,
         raffleResultForm: action.payload as RaffleResultsForm,
       }
-    case ScrutinyChanceZodiacAction.SET_SCRUTINY_RESULTS:
+    case ScrutinyChanceZodiacKind.SET_SCRUTINY_RESULTS:
       return {
         ...state,
         raffleResultsByLottery: action.payload as IRaffleScrutinyChanceZodiacResponse[],
       }
-    case ScrutinyChanceZodiacAction.SET_SCRUTINY_RESULTS_BY_LOTTERY:
+    case ScrutinyChanceZodiacKind.SET_SCRUTINY_RESULTS_BY_LOTTERY:
       return {
         ...state,
         raffleResultsByLottery: action.payload as IRaffleScrutinyChanceZodiacResponse[],
       }
-    case ScrutinyChanceZodiacAction.SET_IS_LOADING_SCRUTINY_RESULTS:
+    case ScrutinyChanceZodiacKind.SET_IS_LOADING_SCRUTINY_RESULTS:
       return {
         ...state,
         isLoadingChanceZodiacLotteries: action.payload as boolean,
       }
-    case ScrutinyChanceZodiacAction.SET_SELECTED_TAB:
+    case ScrutinyChanceZodiacKind.SET_SELECTED_TAB:
       return {
         ...state,
         selectedTab: action.payload as number,
       }
-    case ScrutinyChanceZodiacAction.SET_RAFFLE_ID_LOADING:
+    case ScrutinyChanceZodiacKind.SET_RAFFLE_ID_LOADING:
       return {
         ...state,
         chanceZodiacRaffleId: action.payload as number,
@@ -172,42 +172,42 @@ export const useScrutinyChanceZodiac = () => {
 
   const setRaffleIdLoading = (payload: number) => {
     dispatchScrutinyChanceZodiac({
-      type: ScrutinyChanceZodiacAction.SET_RAFFLE_ID_LOADING,
+      type: ScrutinyChanceZodiacKind.SET_RAFFLE_ID_LOADING,
       payload,
     })
   }
 
   const setScrutinyForm = (payload: RaffleResultsForm) => {
     dispatchScrutinyChanceZodiac({
-      type: ScrutinyChanceZodiacAction.SET_SCRUTINY_FORM,
+      type: ScrutinyChanceZodiacKind.SET_SCRUTINY_FORM,
       payload,
     })
   }
 
   const setScrutinyResults = (payload: IRaffleScrutinyChanceZodiacResponse[]) => {
     dispatchScrutinyChanceZodiac({
-      type: ScrutinyChanceZodiacAction.SET_SCRUTINY_RESULTS,
+      type: ScrutinyChanceZodiacKind.SET_SCRUTINY_RESULTS,
       payload,
     })
   }
 
   const setScrutinyResultsByLottery = (payload: IRaffleScrutinyChanceZodiacResponse[]) => {
     dispatchScrutinyChanceZodiac({
-      type: ScrutinyChanceZodiacAction.SET_SCRUTINY_RESULTS_BY_LOTTERY,
+      type: ScrutinyChanceZodiacKind.SET_SCRUTINY_RESULTS_BY_LOTTERY,
       payload,
     })
   }
 
   const setIsLoadingScrutinyResults = (payload: boolean) => {
     dispatchScrutinyChanceZodiac({
-      type: ScrutinyChanceZodiacAction.SET_IS_LOADING_SCRUTINY_RESULTS,
+      type: ScrutinyChanceZodiacKind.SET_IS_LOADING_SCRUTINY_RESULTS,
       payload,
     })
   }
 
   const setSelectedTab = (payload: number) => {
     dispatchScrutinyChanceZodiac({
-      type: ScrutinyChanceZodiacAction.SET_SELECTED_TAB,
+      type: ScrutinyChanceZodiacKind.SET_SELECTED_TAB,
       payload,
     })
   }

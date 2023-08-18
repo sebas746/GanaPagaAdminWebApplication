@@ -13,16 +13,16 @@ const AnimalitosTabs = ({tabs, setSelectedTab, selectedTab}: IAnimalitosTabsProp
     <>
       {tabs.map((lottery) => {
         return (
-          <li className='nav-link' role='presentation' key={`animalitos-tab-${lottery.lotteryId}`}>
+          <li className='nav-item' role='presentation' key={`animalitos-tab-${lottery.lotteryId}`}>
             <button
               className={clsx('nav-link', {active: selectedTab === lottery.lotteryId})}
-              id={`pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}-tab`}
-              data-bs-toggle='pill'
-              data-bs-target={`#pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
+              id={`tab-${lottery.lotteryName.toLowerCase().split(' ').join('-')}-tab`}
+              data-bs-toggle='tab'
+              data-bs-target={`#tab-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
               type='button'
               onClick={() => setSelectedTab(lottery.lotteryId)}
               role='tab'
-              aria-controls={`pills-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
+              aria-controls={`tab-${lottery.lotteryName.toLowerCase().split(' ').join('-')}`}
               aria-selected='true'
             >
               {lottery.lotteryName}

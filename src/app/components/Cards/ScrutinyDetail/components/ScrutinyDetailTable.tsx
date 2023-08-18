@@ -15,7 +15,7 @@ const ScrutinyDetailTable = ({winners}: ScrutinyDetailTableProps) => {
     <>
       <div className='card-body py-3'>
         <div className='table-responsive'>
-          <table className='table table-striped align-middle gs-0 gy-3'>
+          <table className='table table-row-bordered table-row-gray-300 gy-6'>
             <thead>
               <tr className='fw-bold text-light bg-primary'>
                 <th className='text-center'>ID Tiquete</th>
@@ -32,11 +32,11 @@ const ScrutinyDetailTable = ({winners}: ScrutinyDetailTableProps) => {
               {winners.map((winner) => (
                 <tr className='fw-bold fs-6 text-gray-800' key={winner.betId}>
                   <td className='text-center'>{winner.ticketNumber}</td>
-                  <td className='text-center text-dark fw-bold text-hover-primary d-block mb-1 fs-6'>
+                  <td className='text-center text-dark fw-bold text-hover-primary'>
                     {formatCurrency(winner.betValue, winner.currencyCode)}
                   </td>
                   <td className='text-center'>{winner.currencyCode}</td>
-                  <td className='text-center text-dark fw-bold text-hover-primary d-block mb-1 fs-6'>
+                  <td className='text-center text-dark fw-bold text-hover-primary'>
                     {formatCurrency(winner.totalToPay, winner.currencyCode)}
                   </td>
                   <td className='text-center'>
@@ -51,14 +51,16 @@ const ScrutinyDetailTable = ({winners}: ScrutinyDetailTableProps) => {
                   <td className='text-center'>{'vendedor'}</td>
                   <td className='text-center'>{'punto de venta'}</td>
                   <td className='text-center'>
-                    <button
-                      className='btn btn-bg-light btn-primary btn-active-color-success btn-sm px-4 me-2'
+                    <div
                       onClick={() => setTicketId(winner.ticketNumber)}
-                      disabled={isTicketDetailLoading}
+                      style={{cursor: isTicketDetailLoading ? 'not-allowed' : 'pointer'}}
                     >
-                      {<RenderLoader show={isTicketDetailLoading} />}
-                      DETALLE
-                    </button>
+                      {isTicketDetailLoading ? (
+                        <RenderLoader show={isTicketDetailLoading} />
+                      ) : (
+                        <i className='bi bi-zoom-in text-primary fs-2x'></i>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

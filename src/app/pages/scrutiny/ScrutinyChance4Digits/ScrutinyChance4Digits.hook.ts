@@ -16,7 +16,7 @@ import {useChance4DigitsLotteries} from '../../../hooks/chance4DigitsLotteries.h
 import {useNavigate} from 'react-router-dom'
 import {gameType} from '../../../constants/game-type.constants'
 
-enum ScrutinyChance4DigitsAction {
+enum ScrutinyChance4DigitsKind {
   SET_SCRUTINY_FORM = 'SET_SCRUTINY_FORM',
   SET_SCRUTINY_RESULTS = 'SET_SCRUTINY_RESULTS',
   SET_SCRUTINY_RESULTS_BY_LOTTERY = 'SET_SCRUTINY_RESULTS_BY_LOTTERY',
@@ -25,8 +25,8 @@ enum ScrutinyChance4DigitsAction {
   SET_RAFFLE_ID_LOADING = 'SET_RAFFLE_ID_LOADING',
 }
 
-interface ScrutinyChance4DigitsState {
-  type: ScrutinyChance4DigitsAction
+interface ScrutinyChance4DigitsAction {
+  type: ScrutinyChance4DigitsKind
   payload:
     | IRaffleScrutinyChance4DigitsResponse[]
     | boolean
@@ -35,7 +35,7 @@ interface ScrutinyChance4DigitsState {
     | RaffleResultsForm
 }
 
-interface RaffleScrutinyChance4DigitsState {
+interface ScrutinyChance4DigitsState {
   Chance4DigitsLotteries: IChance4DigitsLotteries[]
   isLoadingChance4DigitsLotteries: boolean
   selectedTab: number
@@ -45,36 +45,36 @@ interface RaffleScrutinyChance4DigitsState {
 }
 
 export const raffleResultReducer = (
-  state: RaffleScrutinyChance4DigitsState,
-  action: ScrutinyChance4DigitsState
+  state: ScrutinyChance4DigitsState,
+  action: ScrutinyChance4DigitsAction
 ) => {
   switch (action.type) {
-    case ScrutinyChance4DigitsAction.SET_SCRUTINY_FORM:
+    case ScrutinyChance4DigitsKind.SET_SCRUTINY_FORM:
       return {
         ...state,
         raffleResultForm: action.payload as RaffleResultsForm,
       }
-    case ScrutinyChance4DigitsAction.SET_SCRUTINY_RESULTS:
+    case ScrutinyChance4DigitsKind.SET_SCRUTINY_RESULTS:
       return {
         ...state,
         raffleResultsByLottery: action.payload as IRaffleScrutinyChance4DigitsResponse[],
       }
-    case ScrutinyChance4DigitsAction.SET_SCRUTINY_RESULTS_BY_LOTTERY:
+    case ScrutinyChance4DigitsKind.SET_SCRUTINY_RESULTS_BY_LOTTERY:
       return {
         ...state,
         raffleResultsByLottery: action.payload as IRaffleScrutinyChance4DigitsResponse[],
       }
-    case ScrutinyChance4DigitsAction.SET_IS_LOADING_SCRUTINY_RESULTS:
+    case ScrutinyChance4DigitsKind.SET_IS_LOADING_SCRUTINY_RESULTS:
       return {
         ...state,
         isLoadingChance4DigitsLotteries: action.payload as boolean,
       }
-    case ScrutinyChance4DigitsAction.SET_SELECTED_TAB:
+    case ScrutinyChance4DigitsKind.SET_SELECTED_TAB:
       return {
         ...state,
         selectedTab: action.payload as number,
       }
-    case ScrutinyChance4DigitsAction.SET_RAFFLE_ID_LOADING:
+    case ScrutinyChance4DigitsKind.SET_RAFFLE_ID_LOADING:
       return {
         ...state,
         Chance4DigitsRaffleId: action.payload as number,
@@ -172,42 +172,42 @@ export const useScrutinyChance4Digits = () => {
 
   const setRaffleIdLoading = (payload: number) => {
     dispatchScrutinyChance4Digits({
-      type: ScrutinyChance4DigitsAction.SET_RAFFLE_ID_LOADING,
+      type: ScrutinyChance4DigitsKind.SET_RAFFLE_ID_LOADING,
       payload,
     })
   }
 
   const setScrutinyForm = (payload: RaffleResultsForm) => {
     dispatchScrutinyChance4Digits({
-      type: ScrutinyChance4DigitsAction.SET_SCRUTINY_FORM,
+      type: ScrutinyChance4DigitsKind.SET_SCRUTINY_FORM,
       payload,
     })
   }
 
   const setScrutinyResults = (payload: IRaffleScrutinyChance4DigitsResponse[]) => {
     dispatchScrutinyChance4Digits({
-      type: ScrutinyChance4DigitsAction.SET_SCRUTINY_RESULTS,
+      type: ScrutinyChance4DigitsKind.SET_SCRUTINY_RESULTS,
       payload,
     })
   }
 
   const setScrutinyResultsByLottery = (payload: IRaffleScrutinyChance4DigitsResponse[]) => {
     dispatchScrutinyChance4Digits({
-      type: ScrutinyChance4DigitsAction.SET_SCRUTINY_RESULTS_BY_LOTTERY,
+      type: ScrutinyChance4DigitsKind.SET_SCRUTINY_RESULTS_BY_LOTTERY,
       payload,
     })
   }
 
   const setIsLoadingScrutinyResults = (payload: boolean) => {
     dispatchScrutinyChance4Digits({
-      type: ScrutinyChance4DigitsAction.SET_IS_LOADING_SCRUTINY_RESULTS,
+      type: ScrutinyChance4DigitsKind.SET_IS_LOADING_SCRUTINY_RESULTS,
       payload,
     })
   }
 
   const setSelectedTab = (payload: number) => {
     dispatchScrutinyChance4Digits({
-      type: ScrutinyChance4DigitsAction.SET_SELECTED_TAB,
+      type: ScrutinyChance4DigitsKind.SET_SELECTED_TAB,
       payload,
     })
   }

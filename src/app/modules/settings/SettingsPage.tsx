@@ -1,6 +1,5 @@
 import {Outlet, Route, Routes, useNavigate} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
-import {useEffect} from 'react'
 import GeneralSettings from '../../pages/settings/general-settings/GeneralSettings'
 import AnimalitosSettings from '../../pages/settings/animalitos-settings/AnimalitosSettings'
 import Chance3DigitsSettings from '../../pages/settings/chance-3digits-settings/Chance3DigitsSettings'
@@ -23,8 +22,6 @@ const settingsBreadCrumbs: Array<PageLink> = [
 ]
 
 const SettinsPage = () => {
-  const navigate = useNavigate()
-
   return (
     <Routes>
       <Route element={<Outlet />}>

@@ -16,7 +16,7 @@ import {useChance3DigitsLotteries} from '../../../hooks/chance3DigitsLotteries.h
 import {useNavigate} from 'react-router-dom'
 import {gameType} from '../../../constants/game-type.constants'
 
-enum ScrutinyChance3DigitsAction {
+enum ScrutinyChance3DigitsKind {
   SET_SCRUTINY_FORM = 'SET_SCRUTINY_FORM',
   SET_SCRUTINY_RESULTS = 'SET_SCRUTINY_RESULTS',
   SET_SCRUTINY_RESULTS_BY_LOTTERY = 'SET_SCRUTINY_RESULTS_BY_LOTTERY',
@@ -25,8 +25,8 @@ enum ScrutinyChance3DigitsAction {
   SET_RAFFLE_ID_LOADING = 'SET_RAFFLE_ID_LOADING',
 }
 
-interface ScrutinyChance3DigitsState {
-  type: ScrutinyChance3DigitsAction
+interface ScrutinyChance3DigitsAction {
+  type: ScrutinyChance3DigitsKind
   payload:
     | IRaffleScrutinyChance3DigitsResponse[]
     | boolean
@@ -35,7 +35,7 @@ interface ScrutinyChance3DigitsState {
     | RaffleResultsForm
 }
 
-interface RaffleScrutinyChance3DigitsState {
+interface ScrutinyChance3DigitsState {
   Chance3DigitsLotteries: IChance3DigitsLotteries[]
   isLoadingChance3DigitsLotteries: boolean
   selectedTab: number
@@ -45,36 +45,36 @@ interface RaffleScrutinyChance3DigitsState {
 }
 
 export const raffleResultReducer = (
-  state: RaffleScrutinyChance3DigitsState,
-  action: ScrutinyChance3DigitsState
+  state: ScrutinyChance3DigitsState,
+  action: ScrutinyChance3DigitsAction
 ) => {
   switch (action.type) {
-    case ScrutinyChance3DigitsAction.SET_SCRUTINY_FORM:
+    case ScrutinyChance3DigitsKind.SET_SCRUTINY_FORM:
       return {
         ...state,
         raffleResultForm: action.payload as RaffleResultsForm,
       }
-    case ScrutinyChance3DigitsAction.SET_SCRUTINY_RESULTS:
+    case ScrutinyChance3DigitsKind.SET_SCRUTINY_RESULTS:
       return {
         ...state,
         raffleResultsByLottery: action.payload as IRaffleScrutinyChance3DigitsResponse[],
       }
-    case ScrutinyChance3DigitsAction.SET_SCRUTINY_RESULTS_BY_LOTTERY:
+    case ScrutinyChance3DigitsKind.SET_SCRUTINY_RESULTS_BY_LOTTERY:
       return {
         ...state,
         raffleResultsByLottery: action.payload as IRaffleScrutinyChance3DigitsResponse[],
       }
-    case ScrutinyChance3DigitsAction.SET_IS_LOADING_SCRUTINY_RESULTS:
+    case ScrutinyChance3DigitsKind.SET_IS_LOADING_SCRUTINY_RESULTS:
       return {
         ...state,
         isLoadingChance3DigitsLotteries: action.payload as boolean,
       }
-    case ScrutinyChance3DigitsAction.SET_SELECTED_TAB:
+    case ScrutinyChance3DigitsKind.SET_SELECTED_TAB:
       return {
         ...state,
         selectedTab: action.payload as number,
       }
-    case ScrutinyChance3DigitsAction.SET_RAFFLE_ID_LOADING:
+    case ScrutinyChance3DigitsKind.SET_RAFFLE_ID_LOADING:
       return {
         ...state,
         Chance3DigitsRaffleId: action.payload as number,
@@ -172,42 +172,42 @@ export const useScrutinyChance3Digits = () => {
 
   const setRaffleIdLoading = (payload: number) => {
     dispatchScrutinyChance3Digits({
-      type: ScrutinyChance3DigitsAction.SET_RAFFLE_ID_LOADING,
+      type: ScrutinyChance3DigitsKind.SET_RAFFLE_ID_LOADING,
       payload,
     })
   }
 
   const setScrutinyForm = (payload: RaffleResultsForm) => {
     dispatchScrutinyChance3Digits({
-      type: ScrutinyChance3DigitsAction.SET_SCRUTINY_FORM,
+      type: ScrutinyChance3DigitsKind.SET_SCRUTINY_FORM,
       payload,
     })
   }
 
   const setScrutinyResults = (payload: IRaffleScrutinyChance3DigitsResponse[]) => {
     dispatchScrutinyChance3Digits({
-      type: ScrutinyChance3DigitsAction.SET_SCRUTINY_RESULTS,
+      type: ScrutinyChance3DigitsKind.SET_SCRUTINY_RESULTS,
       payload,
     })
   }
 
   const setScrutinyResultsByLottery = (payload: IRaffleScrutinyChance3DigitsResponse[]) => {
     dispatchScrutinyChance3Digits({
-      type: ScrutinyChance3DigitsAction.SET_SCRUTINY_RESULTS_BY_LOTTERY,
+      type: ScrutinyChance3DigitsKind.SET_SCRUTINY_RESULTS_BY_LOTTERY,
       payload,
     })
   }
 
   const setIsLoadingScrutinyResults = (payload: boolean) => {
     dispatchScrutinyChance3Digits({
-      type: ScrutinyChance3DigitsAction.SET_IS_LOADING_SCRUTINY_RESULTS,
+      type: ScrutinyChance3DigitsKind.SET_IS_LOADING_SCRUTINY_RESULTS,
       payload,
     })
   }
 
   const setSelectedTab = (payload: number) => {
     dispatchScrutinyChance3Digits({
-      type: ScrutinyChance3DigitsAction.SET_SELECTED_TAB,
+      type: ScrutinyChance3DigitsKind.SET_SELECTED_TAB,
       payload,
     })
   }

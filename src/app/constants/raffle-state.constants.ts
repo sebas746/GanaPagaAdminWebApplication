@@ -6,7 +6,7 @@ export const mapScrutinyColorToState = {
 }
 
 export const mapColorScrutinyTextToState = {
-  PendingResultApprove: 'text-white',
+  PendingResultApprove: 'text-dark',
   PendingScrutiny: 'text-white',
   Scrutinized: 'text-white',
 }

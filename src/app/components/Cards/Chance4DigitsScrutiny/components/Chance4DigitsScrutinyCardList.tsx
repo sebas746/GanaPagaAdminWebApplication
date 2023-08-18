@@ -50,29 +50,30 @@ const Chance4DigitsScrutinyCardList = ({
 
   return (
     <>
-      {raffleScrutinyResults.map((raffleResult) => (
-        <div
-          className={clsx('tab-pane', 'fade', {
-            show: selectedTab === raffleResult.chanceFourLotteryId,
-            active: selectedTab === raffleResult.chanceFourLotteryId,
-          })}
-          id={`pill-${raffleResult.chanceFourLotteryName.toLowerCase().split(' ').join('-')}`}
-          key={`tab-content-${raffleResult.chanceFourLotteryName
-            .toLowerCase()
-            .split(' ')
-            .join('-')}`}
-          role='tabpanel'
-          aria-labelledby={`pills-${raffleResult.chanceFourLotteryName
-            .toLowerCase()
-            .split(' ')
-            .join('-')}-tab`}
-          tabIndex={0}
-        >
-          <div className='row row-gap-8'>
-            {renderResultCard(raffleResult.raffleResultDetailResponse)}
+      {raffleScrutinyResults.length > 0 &&
+        raffleScrutinyResults.map((raffleResult) => (
+          <div
+            className={clsx('tab-pane', 'fade', {
+              show: selectedTab === raffleResult.chanceFourLotteryId,
+              active: selectedTab === raffleResult.chanceFourLotteryId,
+            })}
+            id={`pill-${raffleResult.chanceFourLotteryName.toLowerCase().split(' ').join('-')}`}
+            key={`tab-content-${raffleResult.chanceFourLotteryName
+              .toLowerCase()
+              .split(' ')
+              .join('-')}`}
+            role='tabpanel'
+            aria-labelledby={`pills-${raffleResult.chanceFourLotteryName
+              .toLowerCase()
+              .split(' ')
+              .join('-')}-tab`}
+            tabIndex={0}
+          >
+            <div className='row row-gap-8'>
+              {renderResultCard(raffleResult.raffleResultDetailResponse)}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
     </>
   )
 }

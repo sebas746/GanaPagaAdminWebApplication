@@ -5,11 +5,7 @@ import Button from 'react-bootstrap/Button'
 import {Form} from 'react-bootstrap'
 import {RaffleResultsForm} from '../../../../types/Forms.types'
 import {DateTime} from 'luxon'
-import {useRaffleResultsAnimalitos} from '../../../pages/raffle-results/RaffleResultsAnimalitos/RaffleResultsAnimalitos.hook'
 import RenderLoader from '../../RenderLoader/RenderLoader'
-import {useRaffleResultsChance3Digits} from '../../../pages/raffle-results/RaffleResultsChance3Digits/RaffleResultsChance3Digits.hook'
-import {useRaffleResultsChance4Digits} from '../../../pages/raffle-results/RaffleResultsChance4Digits/RaffleResultsChance4Digits.hook'
-import {useRaffleResultsChanceZodiac} from '../../../pages/raffle-results/RaffleResultsChanceZodiacal/RaffleResultsChanceZodiacal.hook'
 
 interface RaffleResultFormProps {
   raffleFormState: RaffleResultsForm

@@ -34,7 +34,7 @@ const ScrutinyDetailCard = ({scrutinyDetail, isLoading, gameType}: ScrutinyDetai
           Regresar
         </button>
       </div>
-      <div className='row row-gap-8'>
+      <div className='row row-gap-8 pb-3'>
         {!isLoading && scrutinyDetail && (
           <div className='col-sm-12 col-md-6' key={`card-raffle-${scrutinyDetail.raffleId}`}>
             <Card>
@@ -98,6 +98,8 @@ const ScrutinyDetailCard = ({scrutinyDetail, isLoading, gameType}: ScrutinyDetai
             </Card>
           </div>
         )}
+      </div>
+      <div className='row row-gap-8'>
         {!isLoading && scrutinyDetail && (
           <ScrutinyDetailInfoCurrencyCard
             header='Total vendido por moneda'
