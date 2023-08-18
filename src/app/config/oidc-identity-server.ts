@@ -16,8 +16,7 @@ export const oidcConfig: AuthProviderProps = {
     } else {
       console.error('[ LOGIN: ERRNO ]')
     }
-
-    window.location.hash = ''
+    window.location.href = '/'
   },
   onSignOut: (options?: AuthProviderSignOutProps) => {
     window.location.hash = ''
