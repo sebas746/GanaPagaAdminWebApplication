@@ -1,4 +1,3 @@
-import {Card} from 'react-bootstrap'
 import {useScrutinyDetail} from './ScrutinyDetail.hook'
 import ScrutinyDetailCard from '../../../components/Cards/ScrutinyDetail/ScrutinyDetailCard'
 import ConditionalRendering from '../../../helpers/ConditionalRedering'
@@ -9,7 +8,7 @@ import TicketDetail from '../../../components/Modals/TicketDetail/TicketDetail'
 
 const ScrutinyDetail = () => {
   const {scrutinyDetailState, isLoading} = useScrutinyDetail()
-  var winners: Winner[] = []
+  let winners: Winner[] = [];
   if (!isLoading && scrutinyDetailState.scrutinyDetail.scrutinies) {
     winners = scrutinyDetailState.scrutinyDetail.scrutinies.flatMap(
       (scrutiny) => scrutiny.winners ?? []

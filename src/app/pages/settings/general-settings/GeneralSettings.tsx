@@ -40,7 +40,7 @@ const GeneralSettings = () => {
         setGeneralSettingsForm={setGeneralSettingsForm}
         isLoadingForm={isLoading}
         submitIsLoading={submitIsLoading}
-      ></GeneralSettingForm>
+      />
       <ConfirmDialog
         title='Configuración general'
         text='Está seguro que desea guardar la configuración?'

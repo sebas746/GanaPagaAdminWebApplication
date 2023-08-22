@@ -2,10 +2,10 @@ import {IScrutinyDetailResponse} from '../../../../types/ScrutinyDetail.types'
 import {formatCurrency} from '../../../helpers/currency.helpers'
 import {CurrencyCode} from '../../../../types/Currency.types'
 import ScrutinyDetailInfoCurrencyCard from './components/ScrutinyDetailInfoCurrencyCard'
-import {useNavigate} from 'react-router-dom'
 import {useDownloadFiles} from '../../../hooks/downloadFiles.hook'
 import RenderLoader from '../../RenderLoader/RenderLoader'
 import {Card} from 'react-bootstrap'
+import BackLink from '../../BackLink/BackLink'
 
 interface ScrutinyDetailCardProps {
   scrutinyDetail: IScrutinyDetailResponse
@@ -14,7 +14,6 @@ interface ScrutinyDetailCardProps {
 }
 
 const ScrutinyDetailCard = ({scrutinyDetail, isLoading, gameType}: ScrutinyDetailCardProps) => {
-  const navigate = useNavigate()
   const {isLoadingDownloadFile, handleDownloadFileClick} = useDownloadFiles()
 
   const totalWinnersDollar =
@@ -30,9 +29,7 @@ const ScrutinyDetailCard = ({scrutinyDetail, isLoading, gameType}: ScrutinyDetai
     <>
       {' '}
       <div className='mb-3'>
-        <button onClick={() => navigate(-1)} className='btn btn-primary'>
-          Regresar
-        </button>
+        <BackLink />
       </div>
       <div className='row row-gap-12 pb-6'>
         {!isLoading && scrutinyDetail && (

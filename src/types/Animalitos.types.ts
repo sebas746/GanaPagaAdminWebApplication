@@ -1,3 +1,5 @@
+import {CurrencyCode} from './Currency.types'
+
 export interface IAnimalitosLotteries {
   lotteryId: number
   lotteryName: string
@@ -63,3 +65,27 @@ export interface AddScrutinyAnimalitosBody {
 }
 
 export interface IRaffleScrutinyAnimalitosResponse extends IRaffleResultAnimalitosResponse {}
+
+export interface IAnimalitosLotterySetting {
+  currencyId: number
+  currencyName: string
+  currencyCode: CurrencyCode
+  maxBetByAnimal: number
+  betReturnedRate: number
+  maxAnimalsByTicket: number
+  maxOverallAnimalitoBet: number
+}
+
+export interface IAnimalitoUpdateSettings {
+  currencyCode: CurrencyCode
+  maxBetByAnimal: number
+  betReturnedRate: number
+  maxAnimalsByTicket: number
+  maxOverallAnimalitoBet: number
+}
+
+export interface ISettingsAnimalitosResponse {
+  lotteryId: number
+  lotteryName: string
+  animalitosLotterySettings: IAnimalitosLotterySetting[]
+}
