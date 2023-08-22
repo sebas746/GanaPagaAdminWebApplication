@@ -10,7 +10,7 @@ import {
   ElementAnimateUtil,
   ElementStyleUtil,
   EventHandlerUtil,
-} from '../_utils/index'
+} from '../_utils'
 
 export interface StickyOptions {
   offset: number
@@ -75,25 +75,25 @@ class StickyComponent {
     if (reverse === true) {
       // Release on reverse scroll mode
       if (st > offsetNum && this.lastScrollTop < st) {
-        if (document.body.hasAttribute(this.attributeName) === false) {
+        if (!document.body.hasAttribute(this.attributeName)) {
           this.enable()
           document.body.setAttribute(this.attributeName, 'on')
         }
 
-        if (this.eventTriggerState === true) {
+        if (this.eventTriggerState) {
           EventHandlerUtil.trigger(this.element, 'kt.sticky.on')
           EventHandlerUtil.trigger(this.element, 'kt.sticky.change')
 
           this.eventTriggerState = false
         }
       } else {
-        // Back scroll mode
+        // BackLink scroll mode
         if (document.body.hasAttribute(this.attributeName)) {
           this.disable()
           document.body.removeAttribute(this.attributeName)
         }
 
-        if (this.eventTriggerState === false) {
+        if (!this.eventTriggerState) {
           EventHandlerUtil.trigger(this.element, 'kt.sticky.off')
           EventHandlerUtil.trigger(this.element, 'kt.sticky.change')
 
@@ -107,24 +107,24 @@ class StickyComponent {
 
     // Classic scroll mode
     if (st > offsetNum) {
-      if (document.body.hasAttribute(this.attributeName) === false) {
+      if (!document.body.hasAttribute(this.attributeName)) {
         this.enable()
         document.body.setAttribute(this.attributeName, 'on')
       }
 
-      if (this.eventTriggerState === true) {
+      if (this.eventTriggerState) {
         EventHandlerUtil.trigger(this.element, 'kt.sticky.on')
         EventHandlerUtil.trigger(this.element, 'kt.sticky.change')
         this.eventTriggerState = false
       }
     } else {
       // back scroll mode
-      if (document.body.hasAttribute(this.attributeName) === true) {
+      if (document.body.hasAttribute(this.attributeName)) {
         this.disable()
         document.body.removeAttribute(this.attributeName)
       }
 
-      if (this.eventTriggerState === false) {
+      if (!this.eventTriggerState) {
         EventHandlerUtil.trigger(this.element, 'kt.sticky.off')
         EventHandlerUtil.trigger(this.element, 'kt.sticky.change')
         this.eventTriggerState = true
@@ -134,7 +134,7 @@ class StickyComponent {
 
   private getOption = (name: string) => {
     const dataStickyAttr = 'data-kt-sticky-' + name
-    if (this.element.hasAttribute(dataStickyAttr) === true) {
+    if (this.element.hasAttribute(dataStickyAttr)) {
       const attrValueInStr = this.element.getAttribute(dataStickyAttr)
       const attrValue = getAttributeValueByBreakpoint(attrValueInStr || '')
       if (attrValue !== null && String(attrValue) === 'true') {
@@ -169,7 +169,7 @@ class StickyComponent {
     let width = this.getOption('width')
     const zindex = this.getOption('zindex')
 
-    if (update !== true && this.getOption('animation') === true) {
+    if (!update && this.getOption('animation') === true) {
       ElementStyleUtil.set(this.element, 'animationDuration', this.getOption('animationSpeed'))
       ElementAnimateUtil.animateClass(this.element, 'animation ' + this.getOption('animationClass'))
     }
@@ -206,7 +206,7 @@ class StickyComponent {
   }
 
   public update = () => {
-    if (document.body.hasAttribute(this.attributeName) === true) {
+    if (document.body.hasAttribute(this.attributeName)) {
       this.disable()
       document.body.removeAttribute(this.attributeName)
       this.enable(true)

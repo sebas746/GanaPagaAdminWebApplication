@@ -20,7 +20,7 @@ const ScrutinyForm = ({raffleFormState, setRaffleForm, loading}: ScrutinyFormPro
     <div className='flex-center'>
       <form onSubmit={formik.handleSubmit}>
         <div className='d-flex align-items-end column-gap-8'>
-          <div className=''>
+          <div className='d-flex flex-column'>
             <label className='fs-6' htmlFor='date'>
               Fecha de sorteo
             </label>
