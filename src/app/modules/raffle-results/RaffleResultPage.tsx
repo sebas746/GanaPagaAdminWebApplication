@@ -8,7 +8,7 @@ import RaffleResultsChanceZodiacal from '../../pages/raffle-results/RaffleResult
 
 const raffleResultBreadCrumbs: Array<PageLink> = [
   {
-    title: 'Raffle Results',
+    title: 'Resultados de sorteos',
     path: '/pages/raffle-results/animal-game',
     isSeparator: false,
     isActive: false,

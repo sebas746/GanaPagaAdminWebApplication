@@ -10,7 +10,9 @@ const Error401: FC = () => {
       {/* end::Title */}
 
       {/* begin::Text */}
-      <div className='fw-semibold fs-6 text-gray-500 mb-7'>No tienes acceso a esta página.</div>
+      <div className='fw-semibold fs-6 text-gray-500 mb-7'>
+        El recurso al que quieres acceder no existe.
+      </div>
       {/* end::Text */}
 
       {/* begin::Illustration */}

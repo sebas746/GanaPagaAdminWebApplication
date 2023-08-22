@@ -34,7 +34,7 @@ const ScrutinyDetailCard = ({scrutinyDetail, isLoading, gameType}: ScrutinyDetai
           Regresar
         </button>
       </div>
-      <div className='row row-gap-8 pb-3'>
+      <div className='row row-gap-12 pb-6'>
         {!isLoading && scrutinyDetail && (
           <div className='col-sm-12 col-md-6' key={`card-raffle-${scrutinyDetail.raffleId}`}>
             <Card>

@@ -11,7 +11,28 @@ const GeneralSettings = () => {
     setShowModal,
     onConfirmSettingsUpdate,
     showModal,
+    currentSettings,
   } = useGeneralSettings()
+  const renderCurrentData = () => {
+    return (
+      <>
+        <div className='row mb-2 fw-bold'>
+          <div className='col-sm-6'></div>
+          <div className='col-sm-3'>Valor Anterior</div>
+          <div className='col-sm-3'>Valor Actual</div>
+        </div>
+        {currentSettings &&
+          currentSettings.length > 0 &&
+          currentSettings.map((setting, index) => (
+            <div key={index} className='row mb-3'>
+              <div className='col-sm-6'>{setting.generalSettingsLabel}</div>
+              <div className='col-sm-3'>{setting.generalSettingsCurrentValue}</div>
+              <div className='col-sm-3'>{setting.generalSettingsValue}</div>
+            </div>
+          ))}
+      </>
+    )
+  }
   return (
     <>
       <GeneralSettingForm
@@ -27,6 +48,7 @@ const GeneralSettings = () => {
         onHide={() => setShowModal(false)}
         onConfirm={() => onConfirmSettingsUpdate()}
         isLoading={submitIsLoading}
+        values={renderCurrentData}
       />
     </>
   )

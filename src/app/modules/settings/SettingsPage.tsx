@@ -8,7 +8,7 @@ import Chance4DigitsSettings from '../../pages/settings/chance-4digits-settings/
 
 const settingsBreadCrumbs: Array<PageLink> = [
   {
-    title: 'General settings',
+    title: 'Configuración general',
     path: '/pages/settings/general-settings',
     isSeparator: false,
     isActive: false,
