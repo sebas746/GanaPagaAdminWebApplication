@@ -1,6 +1,6 @@
 import {useEffect, useReducer, useState} from 'react'
 import {IGeneralSettingsResponse} from '../../../../types/GeneralSettings.types'
-import {GeneralSettingsForm} from '../../../../types/Forms.types'
+import {CurrentGeneralSettings, GeneralSettingsForm} from '../../../../types/Forms.types'
 import axios from '../../../config/http-common'
 import {ReactQueryResponse} from '../../../../types/Generics'
 import {useMutation, useQuery} from 'react-query'
@@ -53,13 +53,14 @@ export const useGeneralSettings = () => {
     isFormLoading: false,
   })
   const [showModal, setShowModal] = useState(false)
+  const [currentSettings, setCurrentSettings] = useState<CurrentGeneralSettings[]>()
 
   const {
     data: generalSettingsData,
     isFetching,
     refetch: getGeneralSettings,
   } = useQuery<ReactQueryResponse<IGeneralSettingsResponse>>('get-general-settings', async () => {
-    return await axios.get(`/GeneralSettings/get-general-settings/`)
+    return await axios.get(`/GeneralSettings/get-general-settings`)
   })
 
   const {mutate: updateGeneralSettings, isLoading: submitIsLoading} = useMutation({
@@ -68,6 +69,8 @@ export const useGeneralSettings = () => {
     },
     onSuccess(data, variables, context) {
       handleSuccessResponse(data)
+      setGeneralSettings({} as IGeneralSettingsResponse)
+      getGeneralSettings()
     },
     onError(error, variables, context) {
       handleErrorResponse()
@@ -105,6 +108,21 @@ export const useGeneralSettings = () => {
     dispatchGeneralSettings({type: GeneralSettingsKind.SET_GENERAL_SETTINGS, payload})
   }
 
+  const buildCurrentSettingsData = (data: Object): CurrentGeneralSettings[] => {
+    return Object.entries(data).map(([key, value]) => ({
+      generalSettingsName: key,
+      generalSettingsLabel:
+        generalSettingsState.generalSettings.generalSettings.find(
+          (e) => e.generalSettingsName === key
+        )?.generalSettingsLabel ?? '',
+      generalSettingsValue: value,
+      generalSettingsCurrentValue:
+        generalSettingsState.generalSettings.generalSettings.find(
+          (e) => e.generalSettingsName === key
+        )?.generalSettingsValue ?? '',
+    }))
+  }
+
   const buildGeneralSettingsJson = (data: Object): GeneralSettingsForm[] => {
     return Object.entries(data).map(([key, value]) => ({
       generalSettingsName: key,
@@ -120,6 +138,7 @@ export const useGeneralSettings = () => {
 
   const setGeneralSettingsForm = (data: any) => {
     const payload = buildGeneralSettingsJson(data)
+    setCurrentSettings(buildCurrentSettingsData(data))
     if (payload.length > 0) {
       dispatchGeneralSettings({type: GeneralSettingsKind.SET_GENERAL_SETTINGS_FORM, payload})
       setShowModal(true)
@@ -150,5 +169,6 @@ export const useGeneralSettings = () => {
     setShowModal,
     onConfirmSettingsUpdate,
     showModal,
+    currentSettings,
   }
 }

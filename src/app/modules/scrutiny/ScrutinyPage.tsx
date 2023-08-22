@@ -9,7 +9,7 @@ import ScrutinyDetail from '../../pages/scrutiny/ScrutinyDetail/ScrutinyDetail'
 
 const scrutinyBreadCrumbs: Array<PageLink> = [
   {
-    title: 'Scrutiny Results',
+    title: 'Escrutinio de sorteos',
     path: '/pages/scrutiny/animalitos',
     isSeparator: false,
     isActive: false,

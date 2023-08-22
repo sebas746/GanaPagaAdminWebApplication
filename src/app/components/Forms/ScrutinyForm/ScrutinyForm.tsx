@@ -6,6 +6,7 @@ import {Form} from 'react-bootstrap'
 import {RaffleResultsForm} from '../../../../types/Forms.types'
 import {DateTime} from 'luxon'
 import RenderLoader from '../../RenderLoader/RenderLoader'
+import './ScrutinyForm.scss'
 
 interface ScrutinyFormProps {
   raffleFormState: RaffleResultsForm

@@ -1,24 +1,37 @@
 import {Button, Modal} from 'react-bootstrap'
 import RenderLoader from '../RenderLoader/RenderLoader'
+import {ReactNode} from 'react'
 
 interface ConfirmDialogProps {
   show: boolean
   title: string
   text: string
+  values?: JSX.Element | (() => JSX.Element)
   onHide: () => void
   onConfirm: () => void
   isLoading: boolean
 }
 
-const ConfirmDialog = ({show, title, text, onHide, onConfirm, isLoading}: ConfirmDialogProps) => {
+const ConfirmDialog = ({
+  show,
+  title,
+  text,
+  values,
+  onHide,
+  onConfirm,
+  isLoading,
+}: ConfirmDialogProps) => {
   return (
     <>
       <div className='static-modal'>
-        <Modal animation={false} show={show} onHide={onHide}>
+        <Modal animation={false} show={show} onHide={onHide} size='lg'>
           <Modal.Header>
             <Modal.Title>{title}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>{text}</Modal.Body>
+          <Modal.Body>
+            <div className='mb-5'>{text}</div>
+            {typeof values === 'function' ? values() : values}
+          </Modal.Body>
           <Modal.Footer>
             <Button variant='secondary' onClick={onHide}>
               {'Cancelar'}

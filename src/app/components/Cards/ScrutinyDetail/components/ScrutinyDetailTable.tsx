@@ -17,7 +17,7 @@ const ScrutinyDetailTable = ({winners}: ScrutinyDetailTableProps) => {
         <div className='table-responsive'>
           <table className='table table-row-bordered table-row-gray-300 gy-6'>
             <thead>
-              <tr className='fw-bold text-light bg-primary'>
+              <tr className='fw-bold text-light bg-success'>
                 <th className='text-center'>ID Tiquete</th>
                 <th className='text-center'>Valor Apostado</th>
                 <th className='text-center'>Moneda</th>
