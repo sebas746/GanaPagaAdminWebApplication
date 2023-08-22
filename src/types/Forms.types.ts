@@ -12,3 +12,8 @@ export interface GeneralSettingsData {
   generalSettingsName: string
   generalSettingsValue: string
 }
+
+export interface CurrentGeneralSettings extends GeneralSettingsForm {
+  generalSettingsLabel: string
+  generalSettingsCurrentValue: string
+}

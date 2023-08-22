@@ -3,15 +3,7 @@ import {FC} from 'react'
 import {useIntl} from 'react-intl'
 import {PageTitle} from '../../../_metronic/layout/core'
 
-const DashboardPage: FC = () => (
-  <>
-
-
-
-
-    Agregar aqui Dashboard
-  </>
-)
+const DashboardPage: FC = () => <>Agregar aqui Dashboard</>
 
 const DashboardWrapper: FC = () => {
   const intl = useIntl()

@@ -6,6 +6,7 @@ import {Form} from 'react-bootstrap'
 import {RaffleResultsForm} from '../../../../types/Forms.types'
 import {DateTime} from 'luxon'
 import RenderLoader from '../../RenderLoader/RenderLoader'
+import './ScrutinyForm.scss'
 
 interface ScrutinyFormProps {
   raffleFormState: RaffleResultsForm
@@ -20,7 +21,7 @@ const ScrutinyForm = ({raffleFormState, setRaffleForm, loading}: ScrutinyFormPro
     <div className='flex-center'>
       <form onSubmit={formik.handleSubmit}>
         <div className='d-flex align-items-end column-gap-8'>
-          <div className=''>
+          <div className='datepicker-wrapper'>
             <label className='fs-6' htmlFor='date'>
               Fecha de sorteo
             </label>

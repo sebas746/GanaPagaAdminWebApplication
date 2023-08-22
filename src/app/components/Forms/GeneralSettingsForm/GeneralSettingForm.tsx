@@ -3,6 +3,7 @@ import {IGeneralSetting} from '../../../../types/GeneralSettings.types'
 import {useGeneralSettingsForm} from './GeneralSettingForm.hook'
 import {Form as BForm, Button} from 'react-bootstrap'
 import RenderLoader from '../../RenderLoader/RenderLoader'
+import {useNavigate} from 'react-router-dom'
 
 interface GeneralSettingsFormProps {
   generalSettingsFormState: IGeneralSetting[]
@@ -18,6 +19,7 @@ const GeneralSettingForm = ({
   submitIsLoading,
 }: GeneralSettingsFormProps) => {
   const {formik} = useGeneralSettingsForm(generalSettingsFormState, setGeneralSettingsForm)
+  const navigate = useNavigate()
   return (
     <div className='mb-10'>
       <RenderLoader show={isLoadingForm} huge={true}></RenderLoader>
@@ -56,7 +58,12 @@ const GeneralSettingForm = ({
               ))
             : null}
           <div className='row mb-3'>
-            <div className='col-sm-6 text-end'>
+            <div className='col-sm-6 d-flex justify-content-end'>
+              <Button variant='secondary' className='me-2' onClick={() => navigate('/dashboard')}>
+                Cancelar
+              </Button>
+
+              {/* Submit Button */}
               <Button variant='primary' type='submit' disabled={!formik.dirty}>
                 Guardar <RenderLoader show={submitIsLoading} />
               </Button>
