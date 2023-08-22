@@ -98,7 +98,7 @@ const ChanceZodiacRaffleResultCard = ({
           <div className='d-flex justify-content-end align-items-center'>
             <HasPermission
               resource='raffleResult'
-              actions={['add-raffle', 'update-raffle', 'approve-raffle']}
+              actions={['add-raffle-result', 'update-raffle-result', 'approve-raffle-result']}
             >
               {!!buttonText && (
                 <Button

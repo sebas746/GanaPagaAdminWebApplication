@@ -2,6 +2,7 @@ import {useAuth} from 'oidc-react/build/src/useAuth'
 import {useEffect, useState} from 'react'
 import {removeToken, setToken} from '../helpers/localstorage.helper'
 import {disableSplashScreen, enableSplashScreen} from '../components/RenderLoader/RenderLoader'
+import {IDENTITY_CONFIG} from '../constants/oidc-identity-server.constants'
 
 export const useCheckSessionStatus = () => {
   const auth = useAuth()
@@ -56,9 +57,16 @@ export const useRemoveSession = () => {
   const auth = useAuth()
 
   const deleteTokenAndSignOut = () => {
+    enableSplashScreen()
     removeToken()
-    auth.signOut()
-    auth.signOutRedirect()
+    auth.userManager.revokeTokens().then(() => {
+      auth.signOut()
+
+      auth.signOutRedirect({
+        post_logout_redirect_uri: IDENTITY_CONFIG.logout,
+        id_token_hint: auth.userData?.id_token,
+      })
+    })
   }
   return {
     deleteTokenAndSignOut,

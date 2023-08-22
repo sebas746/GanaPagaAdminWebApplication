@@ -25,11 +25,7 @@ enum RaffleResultsAnimalitosKind {
 
 interface RaffleResultsAnimalitosAction {
   type: RaffleResultsAnimalitosKind
-  payload:
-    | boolean
-    | RaffleResultsForm
-    | number
-    | IRaffleResultAnimalitosResponse[]
+  payload: boolean | RaffleResultsForm | number | IRaffleResultAnimalitosResponse[]
 }
 
 interface RaffleResultsAnimalitosState {
