@@ -7,6 +7,7 @@ import {
 import {Card, Col, Form, Row, Stack} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import ConfirmAnimalitosSettings from '../../Modals/ConfirmAnimalitosSettings/ConfirmAnimalitosSettings'
+import {useConfirmAnimalitosSettings} from '../../Modals/ConfirmAnimalitosSettings/ConfirmAnimalitosSettings.hook'
 
 interface IAnimalitosSettingsFormProps {
   initialValues: IAnimalitosLotterySetting[]
@@ -24,6 +25,7 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
     initialValuesVes,
     initialValuesUsd,
   } = useAnimalitosSettingsForm(initialValues, submitForm)
+  const {getAnimalitosSettingsLabel} = useConfirmAnimalitosSettings()
   return (
     <>
       <Stack className='w-100' gap={4} direction='horizontal'>
@@ -37,12 +39,14 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
             <Form>
               <Row className='mb-6'>
                 <Col>
-                  <Form.Label className={'text-dark'}>Cupo de apuestas </Form.Label>
+                  <Form.Label className={'text-dark'}>
+                    {getAnimalitosSettingsLabel('maxBetByAnimal')}
+                  </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxBetByAnimal'
-                    placeholder='Máximo Apuesta por Animal'
+                    placeholder={getAnimalitosSettingsLabel('maxBetByAnimal')}
                     value={formikVes.values.maxBetByAnimal}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.maxBetByAnimal}
@@ -51,12 +55,14 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
               </Row>
               <Row className='mb-6'>
                 <Col>
-                  <Form.Label className={'text-dark'}>Tasa de retorno de la apuesta</Form.Label>
+                  <Form.Label className={'text-dark'}>
+                    {getAnimalitosSettingsLabel('betReturnedRate')}
+                  </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='betReturnedRate'
-                    placeholder='Tasa de retorno de la apuesta'
+                    placeholder={getAnimalitosSettingsLabel('betReturnedRate')}
                     value={formikVes.values.betReturnedRate}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.betReturnedRate}
@@ -66,13 +72,13 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    Número máximo de animales por ticket
+                    {getAnimalitosSettingsLabel('maxAnimalsByTicket')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxAnimalsByTicket'
-                    placeholder='Número máximo de animales por ticket'
+                    placeholder={getAnimalitosSettingsLabel('maxAnimalsByTicket')}
                     value={formikVes.values.maxAnimalsByTicket}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.maxAnimalsByTicket}
@@ -81,12 +87,14 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
               </Row>
               <Row className='mb-6'>
                 <Col>
-                  <Form.Label className={'text-dark'}>Apuesta total máxima por ticket</Form.Label>
+                  <Form.Label className={'text-dark'}>
+                    {getAnimalitosSettingsLabel('maxOverallAnimalitoBet')}
+                  </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxOverallAnimalitoBet'
-                    placeholder='Apuesta total máxima por ticket'
+                    placeholder={getAnimalitosSettingsLabel('maxOverallAnimalitoBet')}
                     value={formikVes.values.maxOverallAnimalitoBet}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.maxOverallAnimalitoBet}
@@ -106,12 +114,14 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
             <Form>
               <Row className='mb-6'>
                 <Col>
-                  <Form.Label className={'text-dark'}>Cupo de apuestas </Form.Label>
+                  <Form.Label className={'text-dark'}>
+                    {getAnimalitosSettingsLabel('maxBetByAnimal')}
+                  </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxBetByAnimal'
-                    placeholder='Máximo Apuesta por Animal'
+                    placeholder={getAnimalitosSettingsLabel('maxBetByAnimal')}
                     value={formikUsd.values.maxBetByAnimal}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.maxBetByAnimal}
@@ -120,12 +130,14 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
               </Row>
               <Row className='mb-6'>
                 <Col>
-                  <Form.Label className={'text-dark'}>Tasa de retorno de la apuesta</Form.Label>
+                  <Form.Label className={'text-dark'}>
+                    {getAnimalitosSettingsLabel('betReturnedRate')}
+                  </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='betReturnedRate'
-                    placeholder='Tasa de retorno de la apuesta'
+                    placeholder={getAnimalitosSettingsLabel('betReturnedRate')}
                     value={formikUsd.values.betReturnedRate}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.betReturnedRate}
@@ -135,13 +147,13 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    Número máximo de animales por ticket
+                    {getAnimalitosSettingsLabel('maxAnimalsByTicket')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxAnimalsByTicket'
-                    placeholder='Número máximo de animales por ticket'
+                    placeholder={getAnimalitosSettingsLabel('maxAnimalsByTicket')}
                     value={formikUsd.values.maxAnimalsByTicket}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.maxAnimalsByTicket}
@@ -150,12 +162,14 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
               </Row>
               <Row className='mb-6'>
                 <Col>
-                  <Form.Label className={'text-dark'}>Apuesta total máxima por ticket</Form.Label>
+                  <Form.Label className={'text-dark'}>
+                    {getAnimalitosSettingsLabel('maxOverallAnimalitoBet')}
+                  </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxOverallAnimalitoBet'
-                    placeholder='Apuesta total máxima por ticket'
+                    placeholder={getAnimalitosSettingsLabel('maxOverallAnimalitoBet')}
                     value={formikUsd.values.maxOverallAnimalitoBet}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.maxOverallAnimalitoBet}
@@ -169,7 +183,9 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
       <Stack className='mt-4 justify-content-end' direction='horizontal' gap={4}>
         <Button
           variant='primary'
-          disabled={(!formikUsd.dirty && !formikVes.dirty) || !formikUsd.isValid || !formikVes.isValid}
+          disabled={
+            (!formikUsd.dirty && !formikVes.dirty) || !formikUsd.isValid || !formikVes.isValid
+          }
           onClick={showModalConfirmation}
         >
           Actualizar

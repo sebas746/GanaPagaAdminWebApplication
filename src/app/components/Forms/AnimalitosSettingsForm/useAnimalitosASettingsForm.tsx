@@ -1,5 +1,8 @@
 import {useFormik} from 'formik'
-import {IAnimalitosLotterySetting, IAnimalitoUpdateSettings} from '../../../../types/Animalitos.types'
+import {
+  IAnimalitosLotterySetting,
+  IAnimalitoUpdateSettings,
+} from '../../../../types/Animalitos.types'
 import {CurrencyCode} from '../../../../types/Currency.types'
 import * as Yup from 'yup'
 import {useState} from 'react'
@@ -17,7 +20,7 @@ export const useAnimalitosSettingsForm = (
     maxBetByAnimal: Yup.number().required('Cupo de apuestas es requerido'),
     betReturnedRate: Yup.number().required('Tasa de retorno de la apuesta es requerido'),
     maxAnimalsByTicket: Yup.number().required('Número máximo de animales por ticket es requerido'),
-    maxOverallAnimalitoBet: Yup.number().required('Máximo de apuestas animalitos es requerido')
+    maxOverallAnimalitoBet: Yup.number().required('Máximo de apuestas animalitos es requerido'),
   })
 
   initialValues.forEach((animalito) => {
@@ -54,7 +57,7 @@ export const useAnimalitosSettingsForm = (
     },
     validationSchema: settingAnimalitosSchema,
     onSubmit: () => {},
-  });
+  })
 
   const showModalConfirmation = () => {
     setIsShowingModalConfirmation(true)
@@ -79,7 +82,7 @@ export const useAnimalitosSettingsForm = (
         betReturnedRate: formikUsd.values.betReturnedRate,
         maxAnimalsByTicket: formikUsd.values.maxAnimalsByTicket,
         maxOverallAnimalitoBet: formikUsd.values.maxOverallAnimalitoBet,
-      }
+      },
     ]
     submitForm(animalitosSettings)
     hideModalConfirmation()

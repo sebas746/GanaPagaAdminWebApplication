@@ -1,3 +1,4 @@
+import {Stack} from 'react-bootstrap'
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog'
 import GeneralSettingForm from '../../../components/Forms/GeneralSettingsForm/GeneralSettingForm'
 import {useGeneralSettings} from './GeneralSettings.hook'
@@ -16,20 +17,32 @@ const GeneralSettings = () => {
   const renderCurrentData = () => {
     return (
       <>
-        <div className='row mb-2 fw-bold'>
-          <div className='col-sm-6'></div>
-          <div className='col-sm-3'>Valor Anterior</div>
-          <div className='col-sm-3'>Valor Actual</div>
-        </div>
-        {currentSettings &&
-          currentSettings.length > 0 &&
-          currentSettings.map((setting, index) => (
-            <div key={index} className='row mb-3'>
-              <div className='col-sm-6'>{setting.generalSettingsLabel}</div>
-              <div className='col-sm-3'>{setting.generalSettingsCurrentValue}</div>
-              <div className='col-sm-3'>{setting.generalSettingsValue}</div>
+        <Stack direction='vertical' gap={4}>
+          <div className='card-body py-3'>
+            <div className='table-responsive'>
+              <table className='table table-row-bordered table-row-gray-300 gy-6'>
+                <thead>
+                  <tr className='fw-bolder text-gray-800 fs-6 text-uppercase gs-0'>
+                    <th>Configuracion en Bolívares</th>
+                    <th>Valor Actual</th>
+                    <th>Nuevo Valor</th>
+                  </tr>
+                </thead>
+                <tbody className='fw-bold text-gray-600'>
+                  {currentSettings &&
+                    currentSettings.length > 0 &&
+                    currentSettings.map((setting, index) => (
+                      <tr>
+                        <td>{setting.generalSettingsLabel}</td>
+                        <td>{setting.generalSettingsCurrentValue}</td>
+                        <td>{setting.generalSettingsValue}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
             </div>
-          ))}
+          </div>
+        </Stack>
       </>
     )
   }
@@ -49,6 +62,7 @@ const GeneralSettings = () => {
         onConfirm={() => onConfirmSettingsUpdate()}
         isLoading={submitIsLoading}
         values={renderCurrentData}
+        size='lg'
       />
     </>
   )
