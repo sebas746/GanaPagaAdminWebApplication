@@ -1,9 +1,9 @@
-import {useAnimalitosSettings} from './useAnimalitosSettings'
+import {useAnimalitosSettings} from './AnimalitosSettings.hook'
 import ConditionalRendering from '../../../helpers/ConditionalRedering'
-import {useMemo} from 'react'
 import AnimalitosSettingsForm from '../../../components/Forms/AnimalitosSettingsForm/AnimalitosSettingsForm'
 import clsx from 'clsx'
 import RenderLoader from '../../../components/RenderLoader/RenderLoader'
+import {useMemo} from 'react'
 
 const AnimalitosSettings = () => {
   const {
@@ -12,7 +12,8 @@ const AnimalitosSettings = () => {
     updateLotterySettings,
     onChangeTab,
     activeTab,
-  } = useAnimalitosSettings();
+    isUpdatingSettings,
+  } = useAnimalitosSettings()
 
   const renderTabs = useMemo(() => {
     return animalitosSettings.map((animalito) => {
@@ -53,17 +54,22 @@ const AnimalitosSettings = () => {
         <AnimalitosSettingsForm
           initialValues={animalito.animalitosLotterySettings}
           submitForm={updateLotterySettings}
+          isLoading={isUpdatingSettings}
         />
       </div>
     ))
-  }, [animalitosSettings])
+  }, [animalitosSettings, isUpdatingSettings])
 
   return (
     <>
       <RenderLoader show={isFetching} huge={true} />
       <ConditionalRendering isTrue={!isFetching}>
         <>
-          <ul className='nav nav-tabs nav-line-tabs nav-line-tabs-2x mb-5 fs-6' id='pills-tab' role='tablist'>
+          <ul
+            className='nav nav-tabs nav-line-tabs nav-line-tabs-2x mb-5 fs-6'
+            id='pills-tab'
+            role='tablist'
+          >
             {renderTabs}
           </ul>
           <div className='tab-content' id='pills-content'>

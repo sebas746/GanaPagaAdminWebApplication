@@ -52,3 +52,31 @@ export interface AddScrutinyChance3DigitsBody {
 }
 
 export interface IRaffleScrutinyChance3DigitsResponse extends IRaffleResultChance3DigitsResponse {}
+
+export interface IChance3DigitsLotterySetting {
+  currencyId: number
+  currencyName: string
+  currencyCode: string
+  maxBetByChance: number
+  betReturnedRate2Digits: number
+  betReturnedRate3Digits: number
+  maxOverallChanceBet: number
+  maxDigitsByBet: number
+  minDigitsByBet: number
+}
+
+export interface IChance3DigitsUpdateSettings {
+  currencyCode: string
+  maxBetByChance: number
+  maxDigitsByBet: number
+  minDigitsByBet: number
+  maxOverallChanceBet: number
+  betReturnedRate2Digits: number
+  betReturnedRate3Digits: number
+}
+
+export interface ISettingsChance3DigitsResponse {
+  lotteryId: number
+  lotteryName: string
+  chanceThreeLotterySettings: IChance3DigitsLotterySetting[]
+}

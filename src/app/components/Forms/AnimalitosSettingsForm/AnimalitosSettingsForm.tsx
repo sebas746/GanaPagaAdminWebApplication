@@ -1,5 +1,5 @@
 import React from 'react'
-import {useAnimalitosSettingsForm} from './useAnimalitosASettingsForm'
+import {useAnimalitosSettingsForm} from './AnimalitosSettingsForm.hook'
 import {
   IAnimalitosLotterySetting,
   IAnimalitoUpdateSettings,
@@ -12,9 +12,14 @@ import {useConfirmAnimalitosSettings} from '../../Modals/ConfirmAnimalitosSettin
 interface IAnimalitosSettingsFormProps {
   initialValues: IAnimalitosLotterySetting[]
   submitForm: (animalitosSettings: IAnimalitoUpdateSettings[]) => void
+  isLoading: boolean
 }
 
-function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettingsFormProps) {
+function AnimalitosSettingsForm({
+  initialValues,
+  submitForm,
+  isLoading,
+}: IAnimalitosSettingsFormProps) {
   const {
     formikVes,
     formikUsd,
@@ -32,7 +37,7 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
         <Card className='w-100'>
           <Card.Header className={'p-2 rounded-2 bg-success'}>
             <Card.Title className={'w-100 text-white'}>
-              Configuración de Apuestas Animalitos Bolivares
+              Configuración de Apuestas Animalitos Bolívares
             </Card.Title>
           </Card.Header>
           <Card.Body>
@@ -50,7 +55,12 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
                     value={formikVes.values.maxBetByAnimal}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.maxBetByAnimal}
+                    type='number'
+                    autoComplete='off'
                   />
+                  <Form.Control.Feedback type='invalid'>
+                    {formikVes.errors.maxBetByAnimal}
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row className='mb-6'>
@@ -66,7 +76,12 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
                     value={formikVes.values.betReturnedRate}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.betReturnedRate}
+                    type='number'
+                    autoComplete='off'
                   />
+                  <Form.Control.Feedback type='invalid'>
+                    {formikVes.errors.betReturnedRate}
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row className='mb-6'>
@@ -82,7 +97,12 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
                     value={formikVes.values.maxAnimalsByTicket}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.maxAnimalsByTicket}
+                    type='number'
+                    autoComplete='off'
                   />
+                  <Form.Control.Feedback type='invalid'>
+                    {formikVes.errors.maxAnimalsByTicket}
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row className='mb-6'>
@@ -98,7 +118,12 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
                     value={formikVes.values.maxOverallAnimalitoBet}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.maxOverallAnimalitoBet}
+                    type='number'
+                    autoComplete='off'
                   />
+                  <Form.Control.Feedback type='invalid'>
+                    {formikVes.errors.maxOverallAnimalitoBet}
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
             </Form>
@@ -107,7 +132,7 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
         <Card className='w-100'>
           <Card.Header className={'p-2 rounded-2 bg-primary'}>
             <Card.Title className={'w-100 text-white'}>
-              Configuración de Apuestas Animalitos Dolares
+              Configuración de Apuestas Animalitos Dólares
             </Card.Title>
           </Card.Header>
           <Card.Body>
@@ -125,7 +150,12 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
                     value={formikUsd.values.maxBetByAnimal}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.maxBetByAnimal}
+                    type='number'
+                    autoComplete='off'
                   />
+                  <Form.Control.Feedback type='invalid'>
+                    {formikUsd.errors.maxBetByAnimal}
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row className='mb-6'>
@@ -141,7 +171,12 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
                     value={formikUsd.values.betReturnedRate}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.betReturnedRate}
+                    type='number'
+                    autoComplete='off'
                   />
+                  <Form.Control.Feedback type='invalid'>
+                    {formikUsd.errors.betReturnedRate}
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row className='mb-6'>
@@ -157,7 +192,12 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
                     value={formikUsd.values.maxAnimalsByTicket}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.maxAnimalsByTicket}
+                    type='number'
+                    autoComplete='off'
                   />
+                  <Form.Control.Feedback type='invalid'>
+                    {formikUsd.errors.maxAnimalsByTicket}
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row className='mb-6'>
@@ -173,7 +213,12 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
                     value={formikUsd.values.maxOverallAnimalitoBet}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.maxOverallAnimalitoBet}
+                    type='number'
+                    autoComplete='off'
                   />
+                  <Form.Control.Feedback type='invalid'>
+                    {formikUsd.errors.maxOverallAnimalitoBet}
+                  </Form.Control.Feedback>
                 </Col>
               </Row>
             </Form>
@@ -199,6 +244,7 @@ function AnimalitosSettingsForm({initialValues, submitForm}: IAnimalitosSettings
         initialValuesVes={initialValuesVes}
         initialValuesUsd={initialValuesUsd}
         submitForm={onSubmit}
+        isLoading={isLoading}
       />
     </>
   )

@@ -6,6 +6,7 @@ import {
 import {CurrencyCode} from '../../../../types/Currency.types'
 import * as Yup from 'yup'
 import {useState} from 'react'
+import {animalitosSettingsLimits} from '../../../constants/settings.constants'
 
 export const useAnimalitosSettingsForm = (
   initialValues: IAnimalitosLotterySetting[],
@@ -17,10 +18,50 @@ export const useAnimalitosSettingsForm = (
 
   const settingAnimalitosSchema = Yup.object().shape({
     currencyCode: Yup.string(),
-    maxBetByAnimal: Yup.number().required('Cupo de apuestas es requerido'),
-    betReturnedRate: Yup.number().required('Tasa de retorno de la apuesta es requerido'),
-    maxAnimalsByTicket: Yup.number().required('Número máximo de animales por ticket es requerido'),
-    maxOverallAnimalitoBet: Yup.number().required('Máximo de apuestas animalitos es requerido'),
+    maxBetByAnimal: Yup.number()
+      .typeError(animalitosSettingsLimits.numericValue)
+      .required('Apuesta total máxima por animal es requerido')
+      .min(
+        animalitosSettingsLimits.minBetByAnimal,
+        `Apuesta total máxima por animal debe ser superior a ${animalitosSettingsLimits.minBetByAnimal}`
+      )
+      .max(
+        animalitosSettingsLimits.maxBetByAnimal,
+        `Apuesta total máxima por animal debe ser inferior a ${animalitosSettingsLimits.maxBetByAnimal}`
+      ),
+    betReturnedRate: Yup.number()
+      .typeError(animalitosSettingsLimits.numericValue)
+      .required('Tasa de retorno de la apuesta es requerido')
+      .min(
+        animalitosSettingsLimits.minBetReturnedRate,
+        `Tasa de retorno de la apuesta debe ser superior a ${animalitosSettingsLimits.minBetReturnedRate}`
+      )
+      .max(
+        animalitosSettingsLimits.maxBetReturnedRate,
+        `Tasa de retorno de la apuesta debe ser inferior a ${animalitosSettingsLimits.maxBetReturnedRate}`
+      ),
+    maxAnimalsByTicket: Yup.number()
+      .typeError(animalitosSettingsLimits.numericValue)
+      .required('Número máximo de animales por sorteo y tiquete es requerido')
+      .min(
+        animalitosSettingsLimits.minAnimalsByTicket,
+        `Número máximo de animales por sorteo y tiquete debe ser superior a ${animalitosSettingsLimits.minAnimalsByTicket}`
+      )
+      .max(
+        animalitosSettingsLimits.maxAnimalsByTicket,
+        `Número máximo de animales por sorteo y tiquete debe ser inferior a ${animalitosSettingsLimits.maxAnimalsByTicket}`
+      ),
+    maxOverallAnimalitoBet: Yup.number()
+      .typeError(animalitosSettingsLimits.numericValue)
+      .required('Cupo de Apuesta por animalito y sorteo es requerido')
+      .min(
+        animalitosSettingsLimits.minOverallAnimalitoBet,
+        `Cupo de Apuesta por animalito y sorteo debe ser superior a ${animalitosSettingsLimits.minOverallAnimalitoBet}`
+      )
+      .max(
+        animalitosSettingsLimits.maxOverallAnimalitoBet,
+        `Cupo de Apuesta por animalito y sorteo debe ser inferior a ${animalitosSettingsLimits.maxOverallAnimalitoBet}`
+      ),
   })
 
   initialValues.forEach((animalito) => {
@@ -85,7 +126,7 @@ export const useAnimalitosSettingsForm = (
       },
     ]
     submitForm(animalitosSettings)
-    hideModalConfirmation()
+    //hideModalConfirmation()
   }
 
   return {
