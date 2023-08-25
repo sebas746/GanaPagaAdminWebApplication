@@ -3,24 +3,24 @@ import {Modal, Stack} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import {FormikProps} from 'formik'
 import ConfirmDialog from '../../ConfirmDialog/ConfirmDialog'
-import {mapChance3DigitsSettingsLabel} from '../../../constants/settings.constants'
-import {useConfirmChance3DigitsSettings} from './ConfirmChance3DigitsSettings.hook'
+import {mapChanceZodiacSettingsLabel} from '../../../constants/settings.constants'
+import {useConfirmChanceZodiacSettings} from './ConfirmChanceZodiacSettings.hook'
 import {
-  IChance3DigitsLotterySetting,
-  IChance3DigitsUpdateSettings,
-} from '../../../../types/Chance3Digits.types'
+  IChanceZodiacLotterySetting,
+  IChanceZodiacUpdateSettings,
+} from '../../../../types/ChanceZodiac.types'
 
-interface IConfirmChance3DigitsSettingsProps {
+interface IConfirmChanceZodiacSettingsProps {
   isShowingModalConfirmation: boolean
   hideModalConfirmation: () => void
-  formikVes: FormikProps<IChance3DigitsLotterySetting>
-  formikUsd: FormikProps<IChance3DigitsLotterySetting>
-  initialValuesVes: IChance3DigitsUpdateSettings
-  initialValuesUsd: IChance3DigitsUpdateSettings
+  formikVes: FormikProps<IChanceZodiacLotterySetting>
+  formikUsd: FormikProps<IChanceZodiacLotterySetting>
+  initialValuesVes: IChanceZodiacUpdateSettings
+  initialValuesUsd: IChanceZodiacUpdateSettings
   submitForm: () => void
   isLoading: boolean
 }
-function ConfirmChance3DigitsSettings({
+function ConfirmChanceZodiacSettings({
   isShowingModalConfirmation,
   hideModalConfirmation,
   formikVes,
@@ -29,8 +29,8 @@ function ConfirmChance3DigitsSettings({
   initialValuesUsd,
   submitForm,
   isLoading,
-}: IConfirmChance3DigitsSettingsProps) {
-  const {getChance3DigitsSettingsLabel} = useConfirmChance3DigitsSettings()
+}: IConfirmChanceZodiacSettingsProps) {
+  const {getChanceZodiacSettingsLabel} = useConfirmChanceZodiacSettings()
 
   const renderCurrentData = (
     <Stack direction='vertical' gap={4}>
@@ -45,14 +45,14 @@ function ConfirmChance3DigitsSettings({
               </tr>
             </thead>
             <tbody className='fw-bold text-gray-600'>
-              {Object.keys(mapChance3DigitsSettingsLabel).map((key) => {
-                const displayKey = key as keyof IChance3DigitsUpdateSettings
+              {Object.keys(mapChanceZodiacSettingsLabel).map((key) => {
+                const displayKey = key as keyof IChanceZodiacUpdateSettings
                 if (initialValuesVes[displayKey] === formikVes.values[displayKey]) {
                   return null
                 }
                 return (
                   <tr key={key}>
-                    <td>{getChance3DigitsSettingsLabel(displayKey)}</td>
+                    <td>{getChanceZodiacSettingsLabel(displayKey)}</td>
                     <td>{initialValuesVes[displayKey]}</td>
                     <td>{formikVes.values[displayKey]}</td>
                   </tr>
@@ -73,14 +73,14 @@ function ConfirmChance3DigitsSettings({
               </tr>
             </thead>
             <tbody className='fw-bold text-gray-600'>
-              {Object.keys(mapChance3DigitsSettingsLabel).map((key) => {
-                const displayKey = key as keyof IChance3DigitsUpdateSettings
+              {Object.keys(mapChanceZodiacSettingsLabel).map((key) => {
+                const displayKey = key as keyof IChanceZodiacUpdateSettings
                 if (initialValuesUsd[displayKey] === formikUsd.values[displayKey]) {
                   return null
                 }
                 return (
                   <tr key={key}>
-                    <td>{getChance3DigitsSettingsLabel(displayKey)}</td>
+                    <td>{getChanceZodiacSettingsLabel(displayKey)}</td>
                     <td>{initialValuesUsd[displayKey]}</td>
                     <td>{formikUsd.values[displayKey]}</td>
                   </tr>
@@ -94,7 +94,7 @@ function ConfirmChance3DigitsSettings({
   )
   return (
     <ConfirmDialog
-      title='Configuración chance 3 cifras'
+      title='Configuración chance zodiacal'
       text='Está seguro que desea guardar la configuración?'
       show={isShowingModalConfirmation}
       onHide={() => hideModalConfirmation()}
@@ -106,6 +106,6 @@ function ConfirmChance3DigitsSettings({
   )
 }
 
-ConfirmChance3DigitsSettings.propTypes = {}
+ConfirmChanceZodiacSettings.propTypes = {}
 
-export default ConfirmChance3DigitsSettings
+export default ConfirmChanceZodiacSettings

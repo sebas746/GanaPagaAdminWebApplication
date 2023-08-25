@@ -79,5 +79,5 @@ export interface IChance4DigitsUpdateSettings {
 export interface ISettingsChance4DigitsResponse {
   lotteryId: number
   lotteryName: string
-  animalitosLotterySettings: IChance4DigitsUpdateSettings[]
+  chanceFourLotterySettings: IChance4DigitsLotterySetting[]
 }

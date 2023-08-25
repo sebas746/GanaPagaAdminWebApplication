@@ -24,7 +24,11 @@ const {PUBLIC_URL} = process.env
 
 const AppRoutes: FC = () => {
   const {getJwtRole} = useJwtToken()
-  const userRoles: UserRole[] = [getJwtRole()] // Fetch this from your backend or token
+  const role = getJwtRole()
+  const userRoles = role ? [role] : null
+  if (!userRoles) {
+    return null
+  }
 
   return (
     <UserProvider roles={userRoles}>

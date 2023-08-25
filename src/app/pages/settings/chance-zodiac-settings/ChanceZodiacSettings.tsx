@@ -3,6 +3,7 @@ import {useChanceZodiacSettings} from './ChanceZodiacSettings.hook'
 import clsx from 'clsx'
 import RenderLoader from '../../../components/RenderLoader/RenderLoader'
 import ConditionalRendering from '../../../helpers/ConditionalRedering'
+import ChanceZodiacSettingsForm from '../../../components/Forms/ChanceZodiacSettingsForm/ChanceZodiacSettingsForm'
 
 const ChanceZodiacSettings = () => {
   const {
@@ -21,14 +22,14 @@ const ChanceZodiacSettings = () => {
           className='nav-item'
           role='presentation'
           onClick={() => onChangeTab(setting.lotteryId)}
-          key={`chanceZodiac-settings-tab-lottery-${setting.lotteryId}`}
+          key={`chance-zodiac-settings-tab-lottery-${setting.lotteryId}`}
         >
           <a
             className={clsx('nav-link text-dark', {
               active: setting.lotteryId === activeTab,
             })}
             data-bs-toggle='tab'
-            href={`#chanceZodiac-settings-lottery-${setting.lotteryId}`}
+            href={`#chance-zodiac-settings-lottery-${setting.lotteryId}`}
             role='tab'
           >
             {setting.lotteryName}
@@ -49,7 +50,13 @@ const ChanceZodiacSettings = () => {
         role='tabpanel'
         key={`chance-zodiac-settings-tabs-content-lottery-${setting.lotteryId}`}
         aria-labelledby={`chance-zodiac-settings-tabs-content-lottery-${setting.lotteryId}`}
-      ></div>
+      >
+        <ChanceZodiacSettingsForm
+          initialValues={setting.chanceZodiacLotterySettings}
+          submitForm={updateLotterySettings}
+          isLoading={isUpdatingSettings}
+        />
+      </div>
     ))
   }, [chanceZodiacSettings, isUpdatingSettings])
 

@@ -18,6 +18,7 @@ export const useRoles = () => {
   if (!context) {
     throw new Error('useRoles must be used within a UserProvider')
   }
+
   return context.roles
 }
 
@@ -30,6 +31,9 @@ export const usePermissions = (): RoleActionPermissions => {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({roles, children}) => {
+  if (!roles) {
+    return <>{children}</>
+  }
   const permissions = rolePermissions[roles[0]] // Assuming one role per user for simplicity.
 
   return <UserContext.Provider value={{roles, permissions}}>{children}</UserContext.Provider>

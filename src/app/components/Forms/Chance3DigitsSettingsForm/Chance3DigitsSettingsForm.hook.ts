@@ -34,6 +34,16 @@ export const useChance3DigitsSettingsForm = (
         `${getChance3DigitsSettingsLabel('minDigitsByBet')} apuesta debe ser inferior a ${
           chance3DigitsSettingsLimits.maxDigitsByBet
         }`
+      )
+      .test(
+        'lessThanMax',
+        `${getChance3DigitsSettingsLabel(
+          'minDigitsByBet'
+        )} debe ser menor que ${getChance3DigitsSettingsLabel('maxDigitsByBet')}`,
+        function (value) {
+          const {maxDigitsByBet} = this.parent
+          return value <= maxDigitsByBet
+        }
       ),
     maxDigitsByBet: Yup.number()
       .typeError(chance3DigitsSettingsLimits.numericValue)
@@ -169,7 +179,7 @@ export const useChance3DigitsSettingsForm = (
         betReturnedRate2Digits: formikVes.values.betReturnedRate2Digits,
         betReturnedRate3Digits: formikVes.values.betReturnedRate3Digits,
         maxOverallChanceBet: formikVes.values.maxOverallChanceBet,
-        maxBetByChance: formikVes.values.maxDigitsByBet,
+        maxBetByChance: formikVes.values.maxBetByChance,
       },
       {
         currencyCode: formikUsd.values.currencyCode,
@@ -178,7 +188,7 @@ export const useChance3DigitsSettingsForm = (
         betReturnedRate2Digits: formikUsd.values.betReturnedRate2Digits,
         betReturnedRate3Digits: formikUsd.values.betReturnedRate3Digits,
         maxOverallChanceBet: formikUsd.values.maxOverallChanceBet,
-        maxBetByChance: formikUsd.values.maxDigitsByBet,
+        maxBetByChance: formikUsd.values.maxBetByChance,
       },
     ]
     submitForm(chance3DigitsSettings)

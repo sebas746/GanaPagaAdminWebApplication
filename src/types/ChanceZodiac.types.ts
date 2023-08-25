@@ -84,5 +84,5 @@ export interface IChanceZodiacUpdateSettings {
 export interface ISettingsChanceZodiacResponse {
   lotteryId: number
   lotteryName: string
-  animalitosLotterySettings: IChanceZodiacUpdateSettings[]
+  chanceZodiacLotterySettings: IChanceZodiacLotterySetting[]
 }

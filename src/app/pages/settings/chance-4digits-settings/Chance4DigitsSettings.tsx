@@ -3,6 +3,7 @@ import {useChance4DigitsSettings} from './Chance4DigitsSettings.hook'
 import clsx from 'clsx'
 import RenderLoader from '../../../components/RenderLoader/RenderLoader'
 import ConditionalRendering from '../../../helpers/ConditionalRedering'
+import Chance4DigitsSettingsForm from '../../../components/Forms/Chance4DigitsSettingsForm/Chance4DigitsSettingsForm'
 
 const Chance4DigitsSettings = () => {
   const {
@@ -49,7 +50,13 @@ const Chance4DigitsSettings = () => {
         role='tabpanel'
         key={`chance4-settings-tabs-content-lottery-${setting.lotteryId}`}
         aria-labelledby={`chance4-settings-tabs-content-lottery-${setting.lotteryId}`}
-      ></div>
+      >
+        <Chance4DigitsSettingsForm
+          initialValues={setting.chanceFourLotterySettings}
+          submitForm={updateLotterySettings}
+          isLoading={isUpdatingSettings}
+        />
+      </div>
     ))
   }, [chance4DigitsSettings, isUpdatingSettings])
 

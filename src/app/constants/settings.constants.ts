@@ -85,6 +85,8 @@ export const chance4DigitsSettingsLimits = {
   minBetReturnedRate2Digits: 1,
   maxBetReturnedRate3Digits: 5000,
   minBetReturnedRate3Digits: 1,
+  maxBetReturnedRate4Digits: 50000,
+  minBetReturnedRate4Digits: 1,
   maxOverallChanceBet: 1000000,
   minOverallChanceBet: 1,
   maxDigitsByBet: 4,

@@ -1,26 +1,26 @@
 import React from 'react'
 import {Card, Col, Form, Row, Stack} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
-import ConfirmChance3DigitsSettings from '../../Modals/ConfirmChance3DigitsSettings/ConfirmChance3DigitsSettings'
-import {useConfirmChance3DigitsSettings} from '../../Modals/ConfirmChance3DigitsSettings/ConfirmChance3DigitsSettings.hook'
-import {useChance3DigitsSettingsForm} from './Chance3DigitsSettingsForm.hook'
+import ConfirmChanceZodiacSettings from '../../Modals/ConfirmChanceZodiacSettings/ConfirmChanceZodiacSettings'
+import {useConfirmChanceZodiacSettings} from '../../Modals/ConfirmChanceZodiacSettings/ConfirmChanceZodiacSettings.hook'
+import {useChanceZodiacSettingsForm} from './ChanceZodiacSettingsForm.hook'
 import {
-  IChance3DigitsLotterySetting,
-  IChance3DigitsUpdateSettings,
-} from '../../../../types/Chance3Digits.types'
-import {chance3DigitsSettingsLimits} from '../../../constants/settings.constants'
+  IChanceZodiacLotterySetting,
+  IChanceZodiacUpdateSettings,
+} from '../../../../types/ChanceZodiac.types'
+import {chanceZodiacSettingsLimits} from '../../../constants/settings.constants'
 
-interface IChance3DigitsSettingsFormProps {
-  initialValues: IChance3DigitsLotterySetting[]
-  submitForm: (chance3DigitsSettings: IChance3DigitsUpdateSettings[]) => void
+interface IChanceZodiacSettingsFormProps {
+  initialValues: IChanceZodiacLotterySetting[]
+  submitForm: (chanceZodiacSettings: IChanceZodiacUpdateSettings[]) => void
   isLoading: boolean
 }
 
-function Chance3DigitsSettingsForm({
+function ChanceZodiacSettingsForm({
   initialValues,
   submitForm,
   isLoading,
-}: IChance3DigitsSettingsFormProps) {
+}: IChanceZodiacSettingsFormProps) {
   const {
     formikVes,
     formikUsd,
@@ -30,8 +30,8 @@ function Chance3DigitsSettingsForm({
     hideModalConfirmation,
     initialValuesVes,
     initialValuesUsd,
-  } = useChance3DigitsSettingsForm(initialValues, submitForm)
-  const {getChance3DigitsSettingsLabel} = useConfirmChance3DigitsSettings()
+  } = useChanceZodiacSettingsForm(initialValues, submitForm)
+  const {getChanceZodiacSettingsLabel} = useConfirmChanceZodiacSettings()
   return (
     <>
       <Stack className='w-100' gap={4} direction='horizontal'>
@@ -46,19 +46,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('minDigitsByBet')}
+                    {getChanceZodiacSettingsLabel('minDigitsByBet')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='minDigitsByBet'
-                    placeholder={getChance3DigitsSettingsLabel('minDigitsByBet')}
+                    placeholder={getChanceZodiacSettingsLabel('minDigitsByBet')}
                     value={formikVes.values.minDigitsByBet}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.minDigitsByBet}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minDigitsByBet}
-                    max={chance3DigitsSettingsLimits.maxDigitsByBet}
+                    min={chanceZodiacSettingsLimits.minDigitsByBet}
+                    max={chanceZodiacSettingsLimits.maxDigitsByBet}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikVes.errors.minDigitsByBet}
@@ -68,19 +68,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('maxDigitsByBet')}
+                    {getChanceZodiacSettingsLabel('maxDigitsByBet')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxDigitsByBet'
-                    placeholder={getChance3DigitsSettingsLabel('maxDigitsByBet')}
+                    placeholder={getChanceZodiacSettingsLabel('maxDigitsByBet')}
                     value={formikVes.values.maxDigitsByBet}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.maxDigitsByBet}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minDigitsByBet}
-                    max={chance3DigitsSettingsLimits.maxDigitsByBet}
+                    min={chanceZodiacSettingsLimits.minDigitsByBet}
+                    max={chanceZodiacSettingsLimits.maxDigitsByBet}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikVes.errors.maxDigitsByBet}
@@ -90,19 +90,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('betReturnedRate2Digits')}
+                    {getChanceZodiacSettingsLabel('betReturnedRate2Digits')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='betReturnedRate2Digits'
-                    placeholder={getChance3DigitsSettingsLabel('betReturnedRate2Digits')}
+                    placeholder={getChanceZodiacSettingsLabel('betReturnedRate2Digits')}
                     value={formikVes.values.betReturnedRate2Digits}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.betReturnedRate2Digits}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minBetReturnedRate2Digits}
-                    max={chance3DigitsSettingsLimits.maxBetReturnedRate2Digits}
+                    min={chanceZodiacSettingsLimits.minBetReturnedRate2Digits}
+                    max={chanceZodiacSettingsLimits.maxBetReturnedRate2Digits}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikVes.errors.betReturnedRate2Digits}
@@ -112,19 +112,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('betReturnedRate3Digits')}
+                    {getChanceZodiacSettingsLabel('betReturnedRate3Digits')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='betReturnedRate3Digits'
-                    placeholder={getChance3DigitsSettingsLabel('betReturnedRate3Digits')}
+                    placeholder={getChanceZodiacSettingsLabel('betReturnedRate3Digits')}
                     value={formikVes.values.betReturnedRate3Digits}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.betReturnedRate3Digits}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minBetReturnedRate3Digits}
-                    max={chance3DigitsSettingsLimits.maxBetReturnedRate3Digits}
+                    min={chanceZodiacSettingsLimits.minBetReturnedRate3Digits}
+                    max={chanceZodiacSettingsLimits.maxBetReturnedRate3Digits}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikVes.errors.betReturnedRate3Digits}
@@ -134,19 +134,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('maxBetByChance')}
+                    {getChanceZodiacSettingsLabel('maxBetByChance')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxBetByChance'
-                    placeholder={getChance3DigitsSettingsLabel('maxBetByChance')}
+                    placeholder={getChanceZodiacSettingsLabel('maxBetByChance')}
                     value={formikVes.values.maxBetByChance}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.maxBetByChance}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minBetByChance}
-                    max={chance3DigitsSettingsLimits.maxBetByChance}
+                    min={chanceZodiacSettingsLimits.minBetByChance}
+                    max={chanceZodiacSettingsLimits.maxBetByChance}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikVes.errors.maxBetByChance}
@@ -156,19 +156,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('maxOverallChanceBet')}
+                    {getChanceZodiacSettingsLabel('maxOverallChanceBet')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxOverallChanceBet'
-                    placeholder={getChance3DigitsSettingsLabel('maxOverallChanceBet')}
+                    placeholder={getChanceZodiacSettingsLabel('maxOverallChanceBet')}
                     value={formikVes.values.maxOverallChanceBet}
                     onChange={formikVes.handleChange}
                     isInvalid={!!formikVes.errors.maxOverallChanceBet}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minOverallChanceBet}
-                    max={chance3DigitsSettingsLimits.maxOverallChanceBet}
+                    min={chanceZodiacSettingsLimits.minOverallChanceBet}
+                    max={chanceZodiacSettingsLimits.maxOverallChanceBet}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikVes.errors.maxOverallChanceBet}
@@ -189,19 +189,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('minDigitsByBet')}
+                    {getChanceZodiacSettingsLabel('minDigitsByBet')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='minDigitsByBet'
-                    placeholder={getChance3DigitsSettingsLabel('minDigitsByBet')}
+                    placeholder={getChanceZodiacSettingsLabel('minDigitsByBet')}
                     value={formikUsd.values.minDigitsByBet}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.minDigitsByBet}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minDigitsByBet}
-                    max={chance3DigitsSettingsLimits.maxDigitsByBet}
+                    min={chanceZodiacSettingsLimits.minDigitsByBet}
+                    max={chanceZodiacSettingsLimits.maxDigitsByBet}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikUsd.errors.minDigitsByBet}
@@ -211,19 +211,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('maxDigitsByBet')}
+                    {getChanceZodiacSettingsLabel('maxDigitsByBet')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxDigitsByBet'
-                    placeholder={getChance3DigitsSettingsLabel('maxDigitsByBet')}
+                    placeholder={getChanceZodiacSettingsLabel('maxDigitsByBet')}
                     value={formikUsd.values.maxDigitsByBet}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.maxDigitsByBet}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minDigitsByBet}
-                    max={chance3DigitsSettingsLimits.maxDigitsByBet}
+                    min={chanceZodiacSettingsLimits.minDigitsByBet}
+                    max={chanceZodiacSettingsLimits.maxDigitsByBet}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikUsd.errors.maxDigitsByBet}
@@ -233,19 +233,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('betReturnedRate2Digits')}
+                    {getChanceZodiacSettingsLabel('betReturnedRate2Digits')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='betReturnedRate2Digits'
-                    placeholder={getChance3DigitsSettingsLabel('betReturnedRate2Digits')}
+                    placeholder={getChanceZodiacSettingsLabel('betReturnedRate2Digits')}
                     value={formikUsd.values.betReturnedRate2Digits}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.betReturnedRate2Digits}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minBetReturnedRate2Digits}
-                    max={chance3DigitsSettingsLimits.maxBetReturnedRate2Digits}
+                    min={chanceZodiacSettingsLimits.minBetReturnedRate2Digits}
+                    max={chanceZodiacSettingsLimits.maxBetReturnedRate2Digits}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikUsd.errors.betReturnedRate2Digits}
@@ -255,19 +255,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('betReturnedRate3Digits')}
+                    {getChanceZodiacSettingsLabel('betReturnedRate3Digits')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='betReturnedRate3Digits'
-                    placeholder={getChance3DigitsSettingsLabel('betReturnedRate3Digits')}
+                    placeholder={getChanceZodiacSettingsLabel('betReturnedRate3Digits')}
                     value={formikUsd.values.betReturnedRate3Digits}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.betReturnedRate3Digits}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minBetReturnedRate3Digits}
-                    max={chance3DigitsSettingsLimits.maxBetReturnedRate3Digits}
+                    min={chanceZodiacSettingsLimits.minBetReturnedRate3Digits}
+                    max={chanceZodiacSettingsLimits.maxBetReturnedRate3Digits}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikUsd.errors.betReturnedRate3Digits}
@@ -277,19 +277,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('maxBetByChance')}
+                    {getChanceZodiacSettingsLabel('maxBetByChance')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxBetByChance'
-                    placeholder={getChance3DigitsSettingsLabel('maxBetByChance')}
+                    placeholder={getChanceZodiacSettingsLabel('maxBetByChance')}
                     value={formikUsd.values.maxBetByChance}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.maxBetByChance}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minBetByChance}
-                    max={chance3DigitsSettingsLimits.maxBetByChance}
+                    min={chanceZodiacSettingsLimits.minBetByChance}
+                    max={chanceZodiacSettingsLimits.maxBetByChance}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikUsd.errors.maxBetByChance}
@@ -299,19 +299,19 @@ function Chance3DigitsSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getChance3DigitsSettingsLabel('maxOverallChanceBet')}
+                    {getChanceZodiacSettingsLabel('maxOverallChanceBet')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='maxOverallChanceBet'
-                    placeholder={getChance3DigitsSettingsLabel('maxOverallChanceBet')}
+                    placeholder={getChanceZodiacSettingsLabel('maxOverallChanceBet')}
                     value={formikUsd.values.maxOverallChanceBet}
                     onChange={formikUsd.handleChange}
                     isInvalid={!!formikUsd.errors.maxOverallChanceBet}
                     type='number'
-                    min={chance3DigitsSettingsLimits.minOverallChanceBet}
-                    max={chance3DigitsSettingsLimits.maxOverallChanceBet}
+                    min={chanceZodiacSettingsLimits.minOverallChanceBet}
+                    max={chanceZodiacSettingsLimits.maxOverallChanceBet}
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikUsd.errors.maxOverallChanceBet}
@@ -333,7 +333,7 @@ function Chance3DigitsSettingsForm({
           Actualizar
         </Button>
       </Stack>
-      <ConfirmChance3DigitsSettings
+      <ConfirmChanceZodiacSettings
         isShowingModalConfirmation={isShowingModalConfirmation}
         hideModalConfirmation={hideModalConfirmation}
         formikVes={formikVes}
@@ -347,4 +347,4 @@ function Chance3DigitsSettingsForm({
   )
 }
 
-export default Chance3DigitsSettingsForm
+export default ChanceZodiacSettingsForm
