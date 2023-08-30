@@ -10,6 +10,7 @@ import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 import {useCheckSessionStatus} from '../hooks/session.hook'
 import SettinsPage from '../modules/settings/SettingsPage'
 import ProtectedRoute from '../components/RouteProtection/ProtectedRoute'
+import ScrutinySettings from '../modules/scrutiny-settings/ScrutinySettings'
 
 const PrivateRoutes = () => {
   useCheckSessionStatus()
@@ -107,6 +108,16 @@ const PrivateRoutes = () => {
             <SuspensedView>
               <ProtectedRoute roles={['Admin']}>
                 <SettinsPage />
+              </ProtectedRoute>
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='pages/scrutiny-settings/*'
+          element={
+            <SuspensedView>
+              <ProtectedRoute roles={['Admin']}>
+                <ScrutinySettings />
               </ProtectedRoute>
             </SuspensedView>
           }
