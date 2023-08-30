@@ -26,7 +26,6 @@ export const useGeneralSettingsForm = (
       const errors: any = {}
 
       for (const settingName in values) {
-        console.log(values)
         if (typeof values[settingName] === 'number') {
           const currentSetting = generalSettingsFormState.find(
             (s) => s.generalSettingsName === settingName

@@ -13,6 +13,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({roles, children}) => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    console.log(hasAccess)
     if (!hasAccess) {
       setTimeout(() => {
         navigate('/error/401') // or whatever your unauthorized redirect should be

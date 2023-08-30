@@ -58,3 +58,31 @@ export interface AddScrutinyChanceZodiacBody {
 }
 
 export interface IRaffleScrutinyChanceZodiacResponse extends IRaffleResultChanceZodiacResponse {}
+
+export interface IChanceZodiacLotterySetting {
+  currencyId: number
+  currencyName: string
+  currencyCode: string
+  maxBetByChance: number
+  betReturnedRate2Digits: number
+  betReturnedRate3Digits: number
+  maxOverallChanceBet: number
+  maxDigitsByBet: number
+  minDigitsByBet: number
+}
+
+export interface IChanceZodiacUpdateSettings {
+  currencyCode: string
+  maxBetByChance: number
+  maxDigitsByBet: number
+  minDigitsByBet: number
+  maxOverallChanceBet: number
+  betReturnedRate2Digits: number
+  betReturnedRate3Digits: number
+}
+
+export interface ISettingsChanceZodiacResponse {
+  lotteryId: number
+  lotteryName: string
+  chanceZodiacLotterySettings: IChanceZodiacLotterySetting[]
+}

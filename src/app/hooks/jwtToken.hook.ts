@@ -6,14 +6,14 @@ import {UserRole} from '../../types/UserRoles.types'
 export const useJwtToken = () => {
   const auth = useAuth()
 
-  const getJwtRole = (): UserRole => {
+  const getJwtRole = (): UserRole | null => {
     if (auth.userData?.access_token) {
       var decoded: JwtToken = jwtDecode(auth.userData?.access_token)
       if (decoded !== undefined) {
         return decoded.role
       }
     }
-    return 'User'
+    return null
   }
 
   const getJwtDecoded = (): JwtToken | undefined => {

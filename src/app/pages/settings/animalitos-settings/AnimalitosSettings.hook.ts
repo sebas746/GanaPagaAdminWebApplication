@@ -28,35 +28,29 @@ export const useAnimalitosSettings = () => {
       },
       onError: (err) => {
         console.log(err)
-      }
+      },
     }
   )
 
   useEffect(() => {
-    if(!animalitosSettings.length&& !isFetching) {
+    if (!animalitosSettings.length && !isFetching) {
       getAnimalitosSettings()
     }
   }, [])
 
   const handleSuccessResponse = () => {
-    enqueueSnackbar(
-      'Se ha actualizado correctamente',
-      {
-        variant: 'success',
-        hideIconVariant: true,
-      }
-    )
+    enqueueSnackbar('Se ha actualizado correctamente', {
+      variant: 'success',
+      hideIconVariant: true,
+    })
     getAnimalitosSettings()
   }
 
   const handleErrorResponse = (errorMessage: string) => {
-    enqueueSnackbar(
-      errorMessage,
-      {
-        variant: 'error',
-        hideIconVariant: true,
-      }
-    )
+    enqueueSnackbar(errorMessage, {
+      variant: 'error',
+      hideIconVariant: true,
+    })
   }
 
   const {mutate: updateLotterySettings, isLoading: isUpdatingSettings} = useMutation({
@@ -80,6 +74,6 @@ export const useAnimalitosSettings = () => {
     updateLotterySettings,
     isUpdatingSettings,
     onChangeTab,
-    activeTab
+    activeTab,
   }
 }

@@ -1,26 +1,26 @@
 import React from 'react'
 import {Modal, Stack} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
-import {
-  IAnimalitosLotterySetting,
-  IAnimalitoUpdateSettings,
-} from '../../../../types/Animalitos.types'
 import {FormikProps} from 'formik'
 import ConfirmDialog from '../../ConfirmDialog/ConfirmDialog'
-import {useConfirmAnimalitosSettings} from './ConfirmAnimalitosSettings.hook'
-import {mapAnimalitosSettingsLabel} from '../../../constants/settings.constants'
+import {mapChanceZodiacSettingsLabel} from '../../../constants/settings.constants'
+import {useConfirmChanceZodiacSettings} from './ConfirmChanceZodiacSettings.hook'
+import {
+  IChanceZodiacLotterySetting,
+  IChanceZodiacUpdateSettings,
+} from '../../../../types/ChanceZodiac.types'
 
-interface IConfirmAnimalitosSettingsProps {
+interface IConfirmChanceZodiacSettingsProps {
   isShowingModalConfirmation: boolean
   hideModalConfirmation: () => void
-  formikVes: FormikProps<IAnimalitosLotterySetting>
-  formikUsd: FormikProps<IAnimalitosLotterySetting>
-  initialValuesVes: IAnimalitoUpdateSettings
-  initialValuesUsd: IAnimalitoUpdateSettings
+  formikVes: FormikProps<IChanceZodiacLotterySetting>
+  formikUsd: FormikProps<IChanceZodiacLotterySetting>
+  initialValuesVes: IChanceZodiacUpdateSettings
+  initialValuesUsd: IChanceZodiacUpdateSettings
   submitForm: () => void
   isLoading: boolean
 }
-function ConfirmAnimalitosSettings({
+function ConfirmChanceZodiacSettings({
   isShowingModalConfirmation,
   hideModalConfirmation,
   formikVes,
@@ -29,8 +29,8 @@ function ConfirmAnimalitosSettings({
   initialValuesUsd,
   submitForm,
   isLoading,
-}: IConfirmAnimalitosSettingsProps) {
-  const {getAnimalitosSettingsLabel} = useConfirmAnimalitosSettings()
+}: IConfirmChanceZodiacSettingsProps) {
+  const {getChanceZodiacSettingsLabel} = useConfirmChanceZodiacSettings()
 
   const renderCurrentData = (
     <Stack direction='vertical' gap={4}>
@@ -45,14 +45,14 @@ function ConfirmAnimalitosSettings({
               </tr>
             </thead>
             <tbody className='fw-bold text-gray-600'>
-              {Object.keys(mapAnimalitosSettingsLabel).map((key) => {
-                const displayKey = key as keyof IAnimalitoUpdateSettings
+              {Object.keys(mapChanceZodiacSettingsLabel).map((key) => {
+                const displayKey = key as keyof IChanceZodiacUpdateSettings
                 if (initialValuesVes[displayKey] === formikVes.values[displayKey]) {
                   return null
                 }
                 return (
                   <tr key={key}>
-                    <td>{getAnimalitosSettingsLabel(displayKey)}</td>
+                    <td>{getChanceZodiacSettingsLabel(displayKey)}</td>
                     <td>{initialValuesVes[displayKey]}</td>
                     <td>{formikVes.values[displayKey]}</td>
                   </tr>
@@ -73,14 +73,14 @@ function ConfirmAnimalitosSettings({
               </tr>
             </thead>
             <tbody className='fw-bold text-gray-600'>
-              {Object.keys(mapAnimalitosSettingsLabel).map((key) => {
-                const displayKey = key as keyof IAnimalitoUpdateSettings
+              {Object.keys(mapChanceZodiacSettingsLabel).map((key) => {
+                const displayKey = key as keyof IChanceZodiacUpdateSettings
                 if (initialValuesUsd[displayKey] === formikUsd.values[displayKey]) {
                   return null
                 }
                 return (
                   <tr key={key}>
-                    <td>{getAnimalitosSettingsLabel(displayKey)}</td>
+                    <td>{getChanceZodiacSettingsLabel(displayKey)}</td>
                     <td>{initialValuesUsd[displayKey]}</td>
                     <td>{formikUsd.values[displayKey]}</td>
                   </tr>
@@ -94,7 +94,7 @@ function ConfirmAnimalitosSettings({
   )
   return (
     <ConfirmDialog
-      title='Configuración animalitos'
+      title='Configuración chance zodiacal'
       text='Está seguro que desea guardar la configuración?'
       show={isShowingModalConfirmation}
       onHide={() => hideModalConfirmation()}
@@ -106,6 +106,6 @@ function ConfirmAnimalitosSettings({
   )
 }
 
-ConfirmAnimalitosSettings.propTypes = {}
+ConfirmChanceZodiacSettings.propTypes = {}
 
-export default ConfirmAnimalitosSettings
+export default ConfirmChanceZodiacSettings

@@ -1,10 +1,9 @@
 export enum UserRolesEnum {
   Admin = 'Admin',
   Scrutiny = 'Scrutiny',
-  User = 'User',
 }
 
-export type UserRole = 'Admin' | 'Scrutiny' | 'User'
+export type UserRole = 'Admin' | 'Scrutiny'
 
 export type SettingsActions =
   | 'get-general-settings'
@@ -50,10 +49,5 @@ export const rolePermissions: RolePermissionsMap = {
       'update-raffle-result',
     ],
     raffleScrutiny: ['create-scrutiny', 'view-scrutiny'],
-  },
-  User: {
-    settings: [] as SettingsActions[],
-    raffleResult: [] as RaffleResultActions[],
-    raffleScrutiny: [] as RaffleScrutinyActions[],
   },
 }

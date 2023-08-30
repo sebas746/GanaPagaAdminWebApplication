@@ -10,6 +10,7 @@ interface ConfirmDialogProps {
   onHide: () => void
   onConfirm: () => void
   isLoading: boolean
+  size: 'sm' | 'lg' | 'xl'
 }
 
 const ConfirmDialog = ({
@@ -20,11 +21,12 @@ const ConfirmDialog = ({
   onHide,
   onConfirm,
   isLoading,
+  size,
 }: ConfirmDialogProps) => {
   return (
     <>
       <div className='static-modal'>
-        <Modal animation={false} show={show} onHide={onHide} size='lg'>
+        <Modal animation={false} show={show} onHide={onHide} size={size}>
           <Modal.Header>
             <Modal.Title>{title}</Modal.Title>
           </Modal.Header>
