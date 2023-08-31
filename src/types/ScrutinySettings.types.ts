@@ -3,5 +3,5 @@ export interface IEmailScrutinySettingsResponse {
   adminEmailLastName: string
   adminEmailEmail: string
   adminEmailStatus: number
-  adminEmailId: number
+  adminEmailId?: number
 }

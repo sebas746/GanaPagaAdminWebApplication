@@ -39,7 +39,7 @@ export const useAnimalitosSettings = () => {
   }, [])
 
   const handleSuccessResponse = () => {
-    enqueueSnackbar('Se ha actualizado correctamente', {
+    enqueueSnackbar('La configuración de animalitos se ha actualizado correctamente', {
       variant: 'success',
       hideIconVariant: true,
     })

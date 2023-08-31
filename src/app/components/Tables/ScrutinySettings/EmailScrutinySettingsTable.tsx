@@ -5,7 +5,7 @@ import {EmailScrutinyActions} from '../../../pages/scrutiny-settings/email-scrut
 interface EmailScrutinySettingsTableProps {
   emailScrutinySettings: IEmailScrutinySettingsResponse[]
   isDeleting: boolean
-  setEmailId: (emailId: number, action: EmailScrutinyActions) => void
+  setEmailId: (emailId: number | undefined, action: EmailScrutinyActions) => void
 }
 
 const ScrutinySettingsTable = ({

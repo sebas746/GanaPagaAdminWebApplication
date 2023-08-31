@@ -98,9 +98,22 @@ export const useEmailScrutinySettings = () => {
         `/ScrutinySettings/delete-admin-email/emailId/${emailScrutinySettingsState.emailId}`
       )
     },
-    onSuccess() {
-      handleSuccessResponse()
+    onSuccess(data) {
+      handleSuccessResponse(data)
       setShowDeleteModal(false)
+    },
+    onError(error: AxiosError<ReactQueryResponse<string>>) {
+      handleErrorResponse(error.toString())
+    },
+  })
+
+  const {mutate: createEmailScrutinySettings, isLoading: isCreatingSettings} = useMutation({
+    mutationFn: async (body: IEmailScrutinySettingsResponse) => {
+      body.adminEmailId = undefined
+      return await axios.post(`/ScrutinySettings/add-admin-email`, body)
+    },
+    onSuccess(data) {
+      handleSuccessResponse(data)
     },
     onError(error: AxiosError<ReactQueryResponse<string>>) {
       handleErrorResponse(error.toString())
@@ -109,10 +122,11 @@ export const useEmailScrutinySettings = () => {
 
   const {mutate: updateEmailScrutinySettings, isLoading: isUpdatingSettings} = useMutation({
     mutationFn: async (body: IEmailScrutinySettingsResponse) => {
-      return await axios.post(`/ScrutinySettings/update-admin-email`, body)
+      body.adminEmailId = emailScrutinySettingsState.emailId
+      return await axios.put(`/ScrutinySettings/update-admin-email`, body)
     },
-    onSuccess() {
-      handleSuccessResponse()
+    onSuccess(data) {
+      handleSuccessResponse(data)
     },
     onError(error: AxiosError<ReactQueryResponse<string>>) {
       handleErrorResponse(error.toString())
@@ -126,13 +140,32 @@ export const useEmailScrutinySettings = () => {
     })
   }
 
-  const handleSuccessResponse = () => {
-    enqueueSnackbar('Se ha eliminado correctamente el correo', {
-      variant: 'success',
-      hideIconVariant: true,
-    })
-    getEmailScrutinySettings()
+  const handleSuccessResponse = (data: any) => {
+    if (!data.data.success && data.data.errors[0]) {
+      data.data.errors[0].errorList.forEach((errorDetail: any) => {
+        enqueueSnackbar(errorDetail.description, {
+          variant: 'error',
+          hideIconVariant: true,
+        })
+      })
+    } else {
+      enqueueSnackbar(data.data.response, {
+        variant: 'success',
+        hideIconVariant: true,
+      })
+    }
+    setShowFormModal(false)
+    setTimeout(() => {
+      getEmailScrutinySettings()
+    }, 1)
   }
+
+  useEffect(() => {
+    if (!showFormModal) {
+      setEmailId(0, {} as EmailScrutinyActions)
+      setEmailScrutinySetting({} as IEmailScrutinySettingsResponse)
+    }
+  }, [showFormModal])
 
   const setEmailScrutinySetting = (payload: IEmailScrutinySettingsResponse) => {
     dispatchEmailScrutinySettings({type: EmailScrutinySettingsKind.SET_EMAIL_SETTINGS, payload})
@@ -142,9 +175,13 @@ export const useEmailScrutinySettings = () => {
     dispatchEmailScrutinySettings({type: EmailScrutinySettingsKind.SET_EMAILS_SETTINGS, payload})
   }
 
-  const setEmailId = (payload: number, action: EmailScrutinyActions) => {
-    dispatchEmailScrutinySettings({type: EmailScrutinySettingsKind.SET_EMAIL_ID, payload})
-    dispatchEmailScrutinySettings({type: EmailScrutinySettingsKind.SET_ACTION, payload: action})
+  const setEmailId = (payload: number | undefined, action: EmailScrutinyActions | undefined) => {
+    if (payload || payload === 0) {
+      dispatchEmailScrutinySettings({type: EmailScrutinySettingsKind.SET_EMAIL_ID, payload})
+    }
+    if (action) {
+      dispatchEmailScrutinySettings({type: EmailScrutinySettingsKind.SET_ACTION, payload: action})
+    }
   }
 
   const setEmail = (payload: string) => {
@@ -152,19 +189,33 @@ export const useEmailScrutinySettings = () => {
   }
 
   const handleDeleteConfirmation = () => {
-    console.log(emailScrutinySettingsState)
     if (emailScrutinySettingsState.action === 'delete') {
       deleteEmailScrutinySettings()
+    }
+  }
+
+  const handleClickForm = (body: IEmailScrutinySettingsResponse) => {
+    if (emailScrutinySettingsState.action === 'create') {
+      createEmailScrutinySettings(body)
+    } else if (emailScrutinySettingsState.action === 'update') {
+      updateEmailScrutinySettings(body)
     }
   }
 
   useEffect(() => {
     const {emailId, scrutinyEmailSettings, action} = emailScrutinySettingsState
 
-    if (emailId <= 0) return // Use a guard clause to exit early
+    if (emailId < 0) return // Use a guard clause to exit early
 
     const emailObj = scrutinyEmailSettings.find((e) => e.adminEmailId === emailId)
     const email = emailObj?.adminEmailEmail
+
+    if (emailScrutinySettingsState.action === 'create') {
+      dispatchEmailScrutinySettings({type: EmailScrutinySettingsKind.SET_EMAIL_ID, payload: 0})
+      setTimeout(() => {
+        setShowFormModal(true)
+      }, 1)
+    }
 
     if (!email || !emailObj) return
     switch (action) {
@@ -176,12 +227,7 @@ export const useEmailScrutinySettings = () => {
         setEmailScrutinySetting(emailObj)
         setTimeout(() => {
           setShowFormModal(true)
-        }, 500)
-
-        break
-      case 'create':
-        //setEmailScrutinySetting({} as IEmailScrutinySettingsResponse)
-        setShowFormModal(true)
+        }, 1)
         break
     }
   }, [emailScrutinySettingsState.emailId, emailScrutinySettingsState.action])
@@ -200,8 +246,8 @@ export const useEmailScrutinySettings = () => {
     showDeleteModal,
     setShowDeleteModal,
     handleDeleteConfirmation,
-    updateEmailScrutinySettings,
-    isSaving: isUpdatingSettings,
+    handleClickForm: handleClickForm,
+    isSaving: isUpdatingSettings || isCreatingSettings,
     showFormModal,
     setShowFormModal,
   }

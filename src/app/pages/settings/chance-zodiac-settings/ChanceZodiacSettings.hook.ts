@@ -41,7 +41,7 @@ export const useChanceZodiacSettings = () => {
   }, [])
 
   const handleSuccessResponse = () => {
-    enqueueSnackbar('Se ha actualizado correctamente', {
+    enqueueSnackbar('La configuración de chance zodiacal se ha actualizado correctamente', {
       variant: 'success',
       hideIconVariant: true,
     })

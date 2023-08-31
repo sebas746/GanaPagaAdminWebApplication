@@ -13,7 +13,7 @@ const EmailScrutinySettings = () => {
     showDeleteModal,
     handleDeleteConfirmation,
     setShowDeleteModal,
-    updateEmailScrutinySettings,
+    handleClickForm,
     isSaving,
     setShowFormModal,
     showFormModal,
@@ -42,7 +42,7 @@ const EmailScrutinySettings = () => {
       {emailScrutinySettingsState.scrutinyEmailSetting && (
         <EmailScrutinySettingsForm
           initialValues={emailScrutinySettingsState.scrutinyEmailSetting}
-          submitForm={updateEmailScrutinySettings}
+          submitForm={handleClickForm}
           isLoading={isSaving}
           showFormModal={showFormModal}
           setShowFormModal={setShowFormModal}

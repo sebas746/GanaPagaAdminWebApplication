@@ -41,7 +41,7 @@ export const useChance3DigitsSettings = () => {
   }, [])
 
   const handleSuccessResponse = () => {
-    enqueueSnackbar('Se ha actualizado correctamente', {
+    enqueueSnackbar('La configuración de chance de 3 cifras se ha actualizado correctamente', {
       variant: 'success',
       hideIconVariant: true,
     })

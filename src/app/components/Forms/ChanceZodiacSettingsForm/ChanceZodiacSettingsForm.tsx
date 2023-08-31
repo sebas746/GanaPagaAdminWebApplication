@@ -9,6 +9,7 @@ import {
   IChanceZodiacUpdateSettings,
 } from '../../../../types/ChanceZodiac.types'
 import {chanceZodiacSettingsLimits} from '../../../constants/settings.constants'
+import {useNavigate} from 'react-router-dom'
 
 interface IChanceZodiacSettingsFormProps {
   initialValues: IChanceZodiacLotterySetting[]
@@ -32,6 +33,7 @@ function ChanceZodiacSettingsForm({
     initialValuesUsd,
   } = useChanceZodiacSettingsForm(initialValues, submitForm)
   const {getChanceZodiacSettingsLabel} = useConfirmChanceZodiacSettings()
+  const navigate = useNavigate()
   return (
     <>
       <Stack className='w-100' gap={4} direction='horizontal'>
@@ -323,6 +325,9 @@ function ChanceZodiacSettingsForm({
         </Card>
       </Stack>
       <Stack className='mt-4 justify-content-end' direction='horizontal' gap={4}>
+        <Button variant='secondary' className='me-2' onClick={() => navigate('/dashboard')}>
+          Cancelar
+        </Button>
         <Button
           variant='primary'
           disabled={
