@@ -1,5 +1,5 @@
 import React from 'react'
-import {Form} from 'react-bootstrap'
+import {Col, Form, Row} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import RenderLoader from '../../RenderLoader/RenderLoader'
 import {useAddRaffleChanceZodiacResultForm} from './AddRaffleChanceZodiacResultForm.hook'
@@ -51,48 +51,58 @@ const AddRaffleChanceZodiacResultForm = ({
   }
 
   return (
-    <form className='d-flex align-items-center column-gap-4' onSubmit={formik.handleSubmit}>
-      <Form.Control
-        minLength={3}
-        maxLength={3}
-        max={999}
-        id='resultValue'
-        defaultValue={formik.values.resultValue}
-        onChange={formik.handleChange}
-        autoComplete={'off'}
-        isInvalid={!!formik.errors.resultValue}
-        isValid={formik.dirty && !formik.errors.resultValue}
-        className='col'
-      />
-      <Typeahead
-        id={'starSignId'}
-        onChange={(selectedStarSign: IStarSignDetailSelect[]) => {
-          if (selectedStarSign.length > 0) {
-            formik.handleChange({
-              target: {name: 'starSignId', value: selectedStarSign[0].id},
-            })
-          } else {
-            formik.handleChange({
-              target: {name: 'starSignId', value: undefined},
-            })
-          }
-        }}
-        options={starSignOptions}
-        key={starSignOptions.every((e) => e.id + 'typeahead_opt')}
-        defaultSelected={starSignOptionsSelected ?? undefined}
-        placeholder={'Seleccionar signo...'}
-        isInvalid={!!formik.errors.starSignId}
-        isValid={formik.dirty && !formik.errors.starSignId}
-        className='col'
-      ></Typeahead>
-      <Button variant='primary' type='submit' disabled={isLoadingState}>
-        {isLoadingState && <RenderLoader show={isLoadingState} />}
-        {!isLoadingState && submitButtonText}
-      </Button>
-      <Button type='reset' variant='danger' onClick={setRaffleResultForm}>
-        Cancelar
-      </Button>
-    </form>
+    <Form onSubmit={formik.handleSubmit}>
+      <Row className='align-items-center py-3'>
+        {/* For Form.Control */}
+        <Col className='px-1'>
+          <Form.Control
+            minLength={3}
+            maxLength={3}
+            max={999}
+            id='resultValue'
+            defaultValue={formik.values.resultValue}
+            onChange={formik.handleChange}
+            autoComplete={'off'}
+            isInvalid={!!formik.errors.resultValue}
+            isValid={formik.dirty && !formik.errors.resultValue}
+          />
+        </Col>
+
+        {/* For Typeahead */}
+        <Col className='px-1'>
+          <Typeahead
+            id={'starSignId'}
+            onChange={(selectedStarSign: IStarSignDetailSelect[]) => {
+              if (selectedStarSign.length > 0) {
+                formik.handleChange({
+                  target: {name: 'starSignId', value: selectedStarSign[0].id},
+                })
+              } else {
+                formik.handleChange({
+                  target: {name: 'starSignId', value: undefined},
+                })
+              }
+            }}
+            options={starSignOptions}
+            key={starSignOptions.every((e) => e.id + 'typeahead_opt')}
+            defaultSelected={starSignOptionsSelected ?? undefined}
+            placeholder={'Seleccionar signo...'}
+            isInvalid={!!formik.errors.starSignId}
+            isValid={formik.dirty && !formik.errors.starSignId}
+          />
+        </Col>
+
+        <Col className='px-1 d-flex gap-2'>
+          <Button variant='primary' type='submit' disabled={isLoadingState}>
+            {isLoadingState && <RenderLoader show={isLoadingState} />}
+            {!isLoadingState && submitButtonText}
+          </Button>
+          <Button type='reset' variant='danger' onClick={setRaffleResultForm}>
+            Cancelar
+          </Button>
+        </Col>
+      </Row>
+    </Form>
   )
 }
 

@@ -9,6 +9,7 @@ import {
   IChance3DigitsUpdateSettings,
 } from '../../../../types/Chance3Digits.types'
 import {chance3DigitsSettingsLimits} from '../../../constants/settings.constants'
+import {useNavigate} from 'react-router-dom'
 
 interface IChance3DigitsSettingsFormProps {
   initialValues: IChance3DigitsLotterySetting[]
@@ -32,6 +33,7 @@ function Chance3DigitsSettingsForm({
     initialValuesUsd,
   } = useChance3DigitsSettingsForm(initialValues, submitForm)
   const {getChance3DigitsSettingsLabel} = useConfirmChance3DigitsSettings()
+  const navigate = useNavigate()
   return (
     <>
       <Stack className='w-100' gap={4} direction='horizontal'>
@@ -323,6 +325,9 @@ function Chance3DigitsSettingsForm({
         </Card>
       </Stack>
       <Stack className='mt-4 justify-content-end' direction='horizontal' gap={4}>
+        <Button variant='secondary' className='me-2' onClick={() => navigate('/dashboard')}>
+          Cancelar
+        </Button>
         <Button
           variant='primary'
           disabled={

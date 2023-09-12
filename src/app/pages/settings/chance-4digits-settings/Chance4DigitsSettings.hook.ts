@@ -41,7 +41,7 @@ export const useChance4DigitsSettings = () => {
   }, [])
 
   const handleSuccessResponse = () => {
-    enqueueSnackbar('Se ha actualizado correctamente', {
+    enqueueSnackbar('La configuración de chance de 4 dígitos se ha actualizado correctamente', {
       variant: 'success',
       hideIconVariant: true,
     })

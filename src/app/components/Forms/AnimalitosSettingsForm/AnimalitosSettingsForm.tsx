@@ -8,6 +8,7 @@ import {Card, Col, Form, Row, Stack} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import ConfirmAnimalitosSettings from '../../Modals/ConfirmAnimalitosSettings/ConfirmAnimalitosSettings'
 import {useConfirmAnimalitosSettings} from '../../Modals/ConfirmAnimalitosSettings/ConfirmAnimalitosSettings.hook'
+import {useNavigate} from 'react-router-dom'
 
 interface IAnimalitosSettingsFormProps {
   initialValues: IAnimalitosLotterySetting[]
@@ -31,6 +32,7 @@ function AnimalitosSettingsForm({
     initialValuesUsd,
   } = useAnimalitosSettingsForm(initialValues, submitForm)
   const {getAnimalitosSettingsLabel} = useConfirmAnimalitosSettings()
+  const navigate = useNavigate()
   return (
     <>
       <Stack className='w-100' gap={4} direction='horizontal'>
@@ -226,6 +228,9 @@ function AnimalitosSettingsForm({
         </Card>
       </Stack>
       <Stack className='mt-4 justify-content-end' direction='horizontal' gap={4}>
+        <Button variant='secondary' className='me-2' onClick={() => navigate('/dashboard')}>
+          Cancelar
+        </Button>
         <Button
           variant='primary'
           disabled={

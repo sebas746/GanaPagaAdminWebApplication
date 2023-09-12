@@ -121,6 +121,21 @@ const SidebarMenuMain = () => {
         </SidebarMenuItemWithSub>
       )}
 
+      {adminRoutes && (
+        <SidebarMenuItemWithSub
+          to='/pages/scrutiny-settings'
+          title='Configuración escrutinios'
+          icon='/media/icons/duotune/coding/cod009.svg'
+          fontIcon='bi-gear'
+        >
+          <SidebarMenuItem
+            to='/pages/scrutiny-settings/email-scrutiny-settings'
+            title='Configuración correos escrutinios'
+            hasBullet={true}
+          />
+        </SidebarMenuItemWithSub>
+      )}
+
       <SidebarMenuItemWithSub
         to='/crafted/pages'
         title='Pages'

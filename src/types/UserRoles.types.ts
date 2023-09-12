@@ -15,11 +15,18 @@ export type RaffleResultActions =
   | 'get-raffle-result'
   | 'update-raffle-result'
 export type RaffleScrutinyActions = 'create-scrutiny' | 'view-scrutiny'
+export type ScrutinySettings =
+  | 'get-admin-emails'
+  | 'get-admin-email-by-id'
+  | 'add-admin-email'
+  | 'update-admin-email'
+  | 'delete-admin-email'
 
 export type RoleActionPermissions = {
   settings: SettingsActions[]
   raffleResult: RaffleResultActions[]
   raffleScrutiny: RaffleScrutinyActions[]
+  scrutinySettings: ScrutinySettings[]
 }
 
 export type RolePermissionsMap = {
@@ -35,6 +42,13 @@ export const rolePermissions: RolePermissionsMap = {
     ],
     raffleResult: ['get-raffle-result'],
     raffleScrutiny: ['view-scrutiny'],
+    scrutinySettings: [
+      'add-admin-email',
+      'delete-admin-email',
+      'get-admin-email-by-id',
+      'get-admin-emails',
+      'update-admin-email',
+    ],
   },
   Scrutiny: {
     settings: [
@@ -49,5 +63,6 @@ export const rolePermissions: RolePermissionsMap = {
       'update-raffle-result',
     ],
     raffleScrutiny: ['create-scrutiny', 'view-scrutiny'],
+    scrutinySettings: [] as ScrutinySettings[],
   },
 }
