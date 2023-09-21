@@ -12,6 +12,7 @@ export const useCheckSessionStatus = () => {
   // const [firstTimeRun, setFirstTimeRun] = useState(false)
 
   useEffect(() => {
+    console.log(auth)
     if (auth.userData?.expires_in !== undefined && !intervalRunning) {
       checkTokenExpiration(auth.userData?.expires_in)
     }

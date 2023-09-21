@@ -17,7 +17,7 @@ const scrutinySettingsBreadCrumbs: Array<PageLink> = [
   },
 ]
 
-const ScrutinySettings = () => {
+function ScrutinySettingsPage() {
   return (
     <Routes>
       <Route element={<Outlet />}>
@@ -37,4 +37,4 @@ const ScrutinySettings = () => {
   )
 }
 
-export default ScrutinySettings
+export default ScrutinySettingsPage

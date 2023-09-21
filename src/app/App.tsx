@@ -10,8 +10,8 @@ const App = () => {
       <I18nProvider>
         <LayoutProvider>
           {/*<AuthInit>*/}
-            <Outlet />
-            <MasterInit />
+          <Outlet />
+          <MasterInit />
           {/*</AuthInit>*/}
         </LayoutProvider>
       </I18nProvider>
