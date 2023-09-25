@@ -4,31 +4,29 @@ import {IExchangeRateSettingsResponse} from '../../../../types/ExchangeRateSetti
 import {useExchangeRateSettingsForm} from './ExchangeRateSettingsForm.hook'
 import DatePicker from 'react-datepicker'
 import {DateTime} from 'luxon'
+import './ExchangeRateSettingsForm.scss'
 
 interface ExchangeRateSettingsFormProps {
   isLoading: boolean
   initialValues: IExchangeRateSettingsResponse
   submitForm: (exchangeRateSettings: IExchangeRateSettingsResponse) => void
-  setExchangeRateDate: (date: string) => void
 }
 
 const ExchangeRateSettingsForm = ({
   isLoading,
   initialValues,
   submitForm,
-  setExchangeRateDate,
 }: ExchangeRateSettingsFormProps) => {
-  const {formik, onSubmit, handleDateChange} = useExchangeRateSettingsForm(
-    initialValues,
-    submitForm,
-    setExchangeRateDate
-  )
+  const {formik, onSubmit} = useExchangeRateSettingsForm(initialValues, submitForm)
+  console.log(formik)
   return (
     <>
       <Stack className='w-50' gap={4} direction='horizontal'>
         <Card className='w-100'>
-          <Card.Header className={'p-2 rounded-2 bg-success'}>
-            <Card.Title className={'w-100 text-white'}>Configuración Tasa de Cambio</Card.Title>
+          <Card.Header className={'p-2 rounded-2 bg-primary'}>
+            <Card.Title className={'w-100 text-white'}>
+              Configuración Tasa de Cambio de Dólares a Bolívares
+            </Card.Title>
           </Card.Header>
           <Card.Body>
             <Form>
@@ -41,34 +39,47 @@ const ExchangeRateSettingsForm = ({
                     className='form-control'
                     id='exchangeRateDate'
                     value={
-                      formik.values.exchangeRateDate
-                        ? DateTime.fromISO(formik.values.exchangeRateDate).toFormat('yyyy-MM-dd')
+                      formik.values.currencyExchangeRateDate
+                        ? DateTime.fromISO(formik.values.currencyExchangeRateDate).toFormat(
+                            'yyyy-MM-dd'
+                          )
                         : DateTime.now().toFormat('yyyy-MM-dd')
                     }
-                    onChange={handleDateChange}
+                    onChange={formik.handleChange}
                     autoComplete='off'
+                    readOnly={true}
                   />
                   <Form.Control.Feedback type='invalid'>
-                    {formik.errors.exchangeRateDate}
+                    {formik.errors.currencyExchangeRateDate}
                   </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row className='mb-6'>
                 <Col>
-                  <Form.Label className={'text-dark'}>Valor tasa de cambio</Form.Label>
+                  <Form.Label className={'text-dark'}>
+                    Valor tasa de cambio de Dólar a Bolívar
+                  </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
                     id='exchangeRateValue'
-                    placeholder={'Fecha'}
-                    value={formik.values.exchangeRateValue}
-                    onChange={formik.handleChange}
-                    isInvalid={!!formik.errors.exchangeRateValue}
-                    type='number'
+                    placeholder={'Valor de tasa de cambio'}
+                    value={formik.values.currencyExchangeRateValue.toString()}
+                    type='text'
+                    onChange={(e) => {
+                      const value = e.target.value
+                      if (/^\d*\.?\d*$/.test(value)) {
+                        formik.setFieldValue('currencyExchangeRateValue', value)
+                      }
+                    }}
+                    isInvalid={!!formik.errors.currencyExchangeRateValue}
                     autoComplete='off'
                   />
+                  <Form.Text className='text-muted'>
+                    Tasa de cambio actual: 1 USD = {formik.values.currencyExchangeRateValue} VES
+                  </Form.Text>
                   <Form.Control.Feedback type='invalid'>
-                    {formik.errors.exchangeRateValue}
+                    {formik.errors.currencyExchangeRateValue}
                   </Form.Control.Feedback>
                 </Col>
               </Row>

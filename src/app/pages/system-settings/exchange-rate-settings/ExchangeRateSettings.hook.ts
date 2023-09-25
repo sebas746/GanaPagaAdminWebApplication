@@ -44,9 +44,7 @@ export const useExchangeRateSettings = () => {
   const [exchangeRateSettingsState, dispatchExchangeRateSettings] = useReducer(
     exchangeRateSettingsReducer,
     {
-      exchangeRateSettings: {
-        exchangeRateDate: DateTime.now().toFormat('yyyy-MM-dd').toString(),
-      } as IExchangeRateSettingsResponse,
+      exchangeRateSettings: {} as IExchangeRateSettingsResponse,
       isLoadingExchangeRate: false,
     }
   )
@@ -61,11 +59,7 @@ export const useExchangeRateSettings = () => {
       const now = new Date()
       const formattedDate = now.toISOString().slice(0, 10)
       return await axios.get(
-        `/ExchangeRate/get-exchange-rate/date/${
-          DateTime.fromISO(
-            exchangeRateSettingsState.exchangeRateSettings.exchangeRateDate
-          ).toFormat('yyyy-MM-dd') ?? formattedDate
-        }`
+        `/CurrencyExchangeRate/get-currency-exchange-rate/date/${formattedDate}`
       )
     }
   )
@@ -74,22 +68,16 @@ export const useExchangeRateSettings = () => {
     dispatchExchangeRateSettings({type: ExchangeRateSettingsKind.SET_EXCHANGE_RATE, payload})
   }
 
-  const setExchangeRateDate = (date: string) => {
-    dispatchExchangeRateSettings({
-      type: ExchangeRateSettingsKind.SET_EXCHANGE_RATE,
-      payload: {exchangeRateDate: date, exchangeRateValue: 0},
-    })
-  }
-
   useEffect(() => {
     if (!isFetching && exchangeRateSettingsData) {
+      console.log('111')
       setExchangeRateSettings(exchangeRateSettingsData.data.response)
     }
   }, [exchangeRateSettingsData])
 
   const {mutate: addExchangeRateSettings, isLoading: isSavingExchangeRateSettings} = useMutation({
     mutationFn: async (body: IExchangeRateSettingsResponse) => {
-      return await axios.post(`/ExchangeRate/add-exchange-rate`, body)
+      return await axios.post(`/CurrencyExchangeRate/add-currency-exchange-rate`, body)
     },
     onSuccess(data) {
       handleSuccessResponse(data)
@@ -125,18 +113,11 @@ export const useExchangeRateSettings = () => {
     }, 1)
   }
 
-  useEffect(() => {
-    if (!isFetching) {
-      getExchangeRateSettings()
-    }
-  }, [exchangeRateSettingsState.exchangeRateSettings.exchangeRateDate])
-
   return {
     isLoading: isFetching,
     exchangeRateSettingsState,
     addExchangeRateSettings,
     isLoadingForm: isSavingExchangeRateSettings,
-    setExchangeRateDate,
   }
 }
 

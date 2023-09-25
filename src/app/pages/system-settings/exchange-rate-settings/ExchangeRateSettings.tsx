@@ -3,23 +3,17 @@ import RenderLoader from '../../../components/RenderLoader/RenderLoader'
 import {useExchangeRateSettings} from './ExchangeRateSettings.hook'
 
 const ExchangeRateSettings = () => {
-  const {
-    exchangeRateSettingsState,
-    isLoading,
-    addExchangeRateSettings,
-    isLoadingForm,
-    setExchangeRateDate,
-  } = useExchangeRateSettings()
+  const {exchangeRateSettingsState, isLoading, addExchangeRateSettings, isLoadingForm} =
+    useExchangeRateSettings()
 
   return (
     <>
       <RenderLoader show={isLoading} huge={true} />
-      {!isLoading && exchangeRateSettingsState.exchangeRateSettings.exchangeRateValue && (
+      {!isLoading && exchangeRateSettingsState.exchangeRateSettings.currencyExchangeRateValue && (
         <ExchangeRateSettingsForm
           initialValues={exchangeRateSettingsState.exchangeRateSettings}
           isLoading={isLoadingForm}
           submitForm={addExchangeRateSettings}
-          setExchangeRateDate={setExchangeRateDate}
         />
       )}
     </>

@@ -32,51 +32,54 @@ const GeneralSettingForm = ({
             <Card.Body>
               <form onSubmit={formik.handleSubmit}>
                 {generalSettingsFormState.length > 0
-                  ? generalSettingsFormState.map((setting, index) => (
-                      <div key={index} className='row mb-3'>
-                        <label className='form-label col-sm-3 col-form-label'>
-                          {setting.generalSettingsLabel}
-                        </label>
-                        <div className='col-sm-3'>
-                          <BForm.Group>
-                            {setting.generalSettingsDataType === 'number' ? (
-                              <>
-                                <BForm.Control
-                                  max={Number(setting.generalSettingsMaxValue)}
-                                  min={Number(setting.generalSettingsMinValue)}
-                                  id={setting.generalSettingsName}
-                                  name={setting.generalSettingsName}
-                                  defaultValue={Number(setting.generalSettingsValue)}
-                                  onChange={formik.handleChange}
-                                  autoComplete={'off'}
-                                  type='number'
-                                  isInvalid={!!formik.errors[setting.generalSettingsName]}
-                                />
-                                <BForm.Control.Feedback type='invalid'>
-                                  {String(formik.errors[setting.generalSettingsName])}
-                                </BForm.Control.Feedback>
-                              </>
-                            ) : (
-                              <>
-                                <BForm.Control
-                                  id={setting.generalSettingsName}
-                                  name={setting.generalSettingsName}
-                                  maxLength={setting.generalSettingsMaxValue}
-                                  defaultValue={setting.generalSettingsValue}
-                                  onChange={formik.handleChange}
-                                  autoComplete={'off'}
-                                  isInvalid={!!formik.errors[setting.generalSettingsName]}
-                                />
-                                <BForm.Control.Feedback type='invalid'>
-                                  {String(formik.errors[setting.generalSettingsName])}
-                                </BForm.Control.Feedback>
-                              </>
-                            )}
-                          </BForm.Group>
+                  ? generalSettingsFormState.map((setting, index) =>
+                      setting.generalSettingsShowInView ? (
+                        <div key={index} className='row mb-3'>
+                          <label className='form-label col-sm-3 col-form-label'>
+                            {setting.generalSettingsLabel}
+                          </label>
+                          <div className='col-sm-3'>
+                            <BForm.Group>
+                              {setting.generalSettingsDataType === 'number' ? (
+                                <>
+                                  <BForm.Control
+                                    max={Number(setting.generalSettingsMaxValue)}
+                                    min={Number(setting.generalSettingsMinValue)}
+                                    id={setting.generalSettingsName}
+                                    name={setting.generalSettingsName}
+                                    defaultValue={Number(setting.generalSettingsValue)}
+                                    onChange={formik.handleChange}
+                                    autoComplete={'off'}
+                                    type='number'
+                                    isInvalid={!!formik.errors[setting.generalSettingsName]}
+                                  />
+                                  <BForm.Control.Feedback type='invalid'>
+                                    {String(formik.errors[setting.generalSettingsName])}
+                                  </BForm.Control.Feedback>
+                                </>
+                              ) : (
+                                <>
+                                  <BForm.Control
+                                    id={setting.generalSettingsName}
+                                    name={setting.generalSettingsName}
+                                    maxLength={setting.generalSettingsMaxValue}
+                                    defaultValue={setting.generalSettingsValue}
+                                    onChange={formik.handleChange}
+                                    autoComplete={'off'}
+                                    isInvalid={!!formik.errors[setting.generalSettingsName]}
+                                  />
+                                  <BForm.Control.Feedback type='invalid'>
+                                    {String(formik.errors[setting.generalSettingsName])}
+                                  </BForm.Control.Feedback>
+                                </>
+                              )}
+                            </BForm.Group>
+                          </div>
                         </div>
-                      </div>
-                    ))
+                      ) : null
+                    )
                   : null}
+
                 <div className='row mb-3'>
                   <div className='col-sm-6 d-flex justify-content-end'>
                     <Button

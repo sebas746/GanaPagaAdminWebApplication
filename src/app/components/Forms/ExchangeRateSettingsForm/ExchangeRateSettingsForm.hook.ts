@@ -2,22 +2,28 @@ import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import {useState} from 'react'
 import {IExchangeRateSettingsResponse} from '../../../../types/ExchangeRateSettings.types'
-import {DateTime} from 'luxon'
 
 export const useExchangeRateSettingsForm = (
   initialValues: IExchangeRateSettingsResponse,
-  submitForm: (animalitosSettings: IExchangeRateSettingsResponse) => void,
-  setExchangeRateDate: (date: string) => void
+  submitForm: (exchangeRateSettings: IExchangeRateSettingsResponse) => void
 ) => {
   const [isShowingModalConfirmation, setIsShowingModalConfirmation] = useState(false)
 
   const settingExchangeRateSchema = Yup.object().shape({
-    exchangeRateValue: Yup.number().required('El valor de tasa de cambio es requerido'),
-    exchangeRateDate: Yup.date().required('La fecha es requerida'),
+    currencyExchangeRateValue: Yup.number()
+      .min(1, 'El valor de tasa de cambio debe ser superior a 1')
+      .max(5000, 'El valor de tasa de cambio máximo es 5000')
+      .required('El valor de tasa de cambio es requerido'),
   })
 
+  const now = new Date()
+  const formattedDate = now.toISOString().slice(0, 10)
+
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues: {
+      currencyExchangeRateValue: initialValues.currencyExchangeRateValue,
+      currencyExchangeRateDate: formattedDate,
+    },
     validationSchema: settingExchangeRateSchema,
     onSubmit: () => {},
     enableReinitialize: true,
@@ -33,24 +39,11 @@ export const useExchangeRateSettingsForm = (
 
   const onSubmit = () => {
     const exchangeRateSettings = {
-      exchangeRateValue: formik.values.exchangeRateValue,
-      exchangeRateDate: formik.values.exchangeRateDate,
+      currencyExchangeRateValue: formik.values.currencyExchangeRateValue,
+      currencyExchangeRateDate: formik.values.currencyExchangeRateDate,
     }
     submitForm(exchangeRateSettings)
     //hideModalConfirmation()
-  }
-
-  const handleDateChange = (date: Date) => {
-    if (date) {
-      const event = {
-        target: {
-          name: 'exchangeRateDate',
-          value: DateTime.fromISO(date.toISOString()).toISODate(),
-        },
-      }
-      formik.handleChange(event)
-      setExchangeRateDate(DateTime.fromISO(date.toISOString()).toFormat('yyyy-MM-dd'))
-    }
   }
 
   return {
@@ -60,6 +53,5 @@ export const useExchangeRateSettingsForm = (
     showModalConfirmation,
     hideModalConfirmation,
     initialValues,
-    handleDateChange,
   }
 }

@@ -1,4 +1,4 @@
 export interface IExchangeRateSettingsResponse {
-  exchangeRateValue: number
-  exchangeRateDate: string
+  currencyExchangeRateValue: number
+  currencyExchangeRateDate: string
 }
