@@ -56,11 +56,7 @@ export const useExchangeRateSettings = () => {
   } = useQuery<ReactQueryResponse<IExchangeRateSettingsResponse>>(
     'get-email-scrutiny-settings',
     async () => {
-      const now = new Date()
-      const formattedDate = now.toISOString().slice(0, 10)
-      return await axios.get(
-        `/CurrencyExchangeRate/get-currency-exchange-rate/date/${formattedDate}`
-      )
+      return await axios.get(`/CurrencyExchangeRate/get-currency-exchange-rate`)
     }
   )
 

@@ -1,0 +1,129 @@
+import {Button, Pagination} from 'react-bootstrap'
+import {IpaginationResponse} from '../../../../types/Pagination.types'
+import {IUsersResponse, UsersQueryParams} from '../../../../types/Users.types'
+import {UsersActions} from '../../../pages/users-management/users/Users.hook'
+import clsx from 'clsx'
+
+interface UsersTableProps {
+  usersPaginated: IpaginationResponse<IUsersResponse>
+  setEmail: (emailId: string | undefined, action: UsersActions) => void
+  params: UsersQueryParams
+  handleFilterChange: (filterName: keyof UsersQueryParams, value: any) => void
+}
+
+const UsersTable = ({usersPaginated, setEmail, params, handleFilterChange}: UsersTableProps) => {
+  return (
+    <>
+      <div className='card-body py-3'>
+        <div className='mb-3'>
+          <Button variant='primary' onClick={() => setEmail('', 'create')}>
+            {'Agregar Correo'}
+          </Button>
+        </div>
+        {/* Filter Section */}
+        <div className='mb-4'>
+          <div className='row'>
+            <div className='col-md-3'>
+              <input
+                type='text'
+                className='form-control'
+                placeholder='Name'
+                onChange={(e) => handleFilterChange('name', e.target.value)}
+                value={params.name}
+              />
+            </div>
+            <div className='col-md-3'>
+              <input
+                type='email'
+                className='form-control'
+                placeholder='Email'
+                onChange={(e) => handleFilterChange('email', e.target.value)}
+                value={params.email}
+              />
+            </div>
+            <div className='col-md-3'>
+              <select
+                className='form-control'
+                onChange={(e) => handleFilterChange('roleName', e.target.value)}
+                value={params.roleName}
+              >
+                <option value=''>Todos</option>
+                <option value='Seller'>Vendedor</option>
+                <option value='Scrutiny'>Escrutinio</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className='table-responsive'>
+          <table className='table table-row-bordered table-row-gray-300 gy-6'>
+            <thead>
+              <tr className='fw-bold text-light bg-success'>
+                <th className='text-center'>Nombres</th>
+                <th className='text-center'>Apellidos</th>
+                <th className='text-center'>Usuario</th>
+                <th className='text-center'>Tipo Documento</th>
+                <th className='text-center'># Documento</th>
+                <th className='text-center'>Tipo</th>
+                <th className='text-center'>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {usersPaginated.totalCount > 0 &&
+                usersPaginated.items.map((user, index) => (
+                  <tr
+                    className='fw-bold fs-6 text-gray-800'
+                    key={`${user.documentNumber}-${index}`}
+                  >
+                    <td className='text-center'>{user.lastName}</td>
+                    <td className='text-center'>{user.roleName}</td>
+                    <td className='text-center'>{user.username}</td>
+                    <td className='text-center'>{user.documentType}</td>
+                    <td className='text-center'>{user.documentNumber}</td>
+                    <td className='text-center'>{user.roleName}</td>
+                    <td className='text-center'>
+                      <div className='d-flex align-items-center justify-content-center'>
+                        <div
+                          onClick={() => setEmail(user.email, 'update')}
+                          style={{cursor: 'pointer'}}
+                        >
+                          <i className='bi bi-pencil text-primary fs-2x'></i>
+                        </div>
+                        <div
+                          onClick={() => setEmail(user.email, 'delete')}
+                          style={{cursor: 'pointer'}}
+                        >
+                          <i className='bi bi-trash text-danger fs-2x'></i>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              {usersPaginated.items.length === 0 && (
+                <tr>
+                  <td colSpan={7} className='text-center'>
+                    No results...
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <Pagination>
+          {Array.from({length: Math.ceil(usersPaginated.totalCount / params.pageSize)}).map(
+            (_, index) => (
+              <Pagination.Item
+                key={index + 1}
+                active={index === params.pageIndex}
+                onClick={() => handleFilterChange('pageIndex', index)}
+              >
+                {index + 1}
+              </Pagination.Item>
+            )
+          )}
+        </Pagination>
+      </div>
+    </>
+  )
+}
+
+export default UsersTable
