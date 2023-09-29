@@ -7,15 +7,13 @@ const Users = () => {
 
   return (
     <>
-      <RenderLoader show={isLoading} huge={true} />
-      {!isLoading && usersState.usersPaginated && usersState.usersPaginated.totalCount > 0 && (
-        <UsersTable
-          usersPaginated={usersState.usersPaginated}
-          setEmail={setEmail}
-          params={usersState.params}
-          handleFilterChange={handleFilterChange}
-        />
-      )}
+      <UsersTable
+        usersPaginated={usersState.usersPaginated}
+        setEmail={setEmail}
+        params={usersState.params}
+        handleFilterChange={handleFilterChange}
+        isLoading={isLoading}
+      />
     </>
   )
 }

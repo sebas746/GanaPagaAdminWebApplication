@@ -3,21 +3,29 @@ import {IpaginationResponse} from '../../../../types/Pagination.types'
 import {IUsersResponse, UsersQueryParams} from '../../../../types/Users.types'
 import {UsersActions} from '../../../pages/users-management/users/Users.hook'
 import clsx from 'clsx'
+import RenderLoader from '../../RenderLoader/RenderLoader'
 
 interface UsersTableProps {
   usersPaginated: IpaginationResponse<IUsersResponse>
   setEmail: (emailId: string | undefined, action: UsersActions) => void
   params: UsersQueryParams
   handleFilterChange: (filterName: keyof UsersQueryParams, value: any) => void
+  isLoading: boolean
 }
 
-const UsersTable = ({usersPaginated, setEmail, params, handleFilterChange}: UsersTableProps) => {
+const UsersTable = ({
+  usersPaginated,
+  setEmail,
+  params,
+  handleFilterChange,
+  isLoading,
+}: UsersTableProps) => {
   return (
     <>
       <div className='card-body py-3'>
         <div className='mb-3'>
           <Button variant='primary' onClick={() => setEmail('', 'create')}>
-            {'Agregar Correo'}
+            {'Crear Usuario'}
           </Button>
         </div>
         {/* Filter Section */}
@@ -27,7 +35,7 @@ const UsersTable = ({usersPaginated, setEmail, params, handleFilterChange}: User
               <input
                 type='text'
                 className='form-control'
-                placeholder='Name'
+                placeholder='Nombres'
                 onChange={(e) => handleFilterChange('name', e.target.value)}
                 value={params.name}
               />
@@ -36,7 +44,7 @@ const UsersTable = ({usersPaginated, setEmail, params, handleFilterChange}: User
               <input
                 type='email'
                 className='form-control'
-                placeholder='Email'
+                placeholder='Correo'
                 onChange={(e) => handleFilterChange('email', e.target.value)}
                 value={params.email}
               />
@@ -54,73 +62,78 @@ const UsersTable = ({usersPaginated, setEmail, params, handleFilterChange}: User
             </div>
           </div>
         </div>
-        <div className='table-responsive'>
-          <table className='table table-row-bordered table-row-gray-300 gy-6'>
-            <thead>
-              <tr className='fw-bold text-light bg-success'>
-                <th className='text-center'>Nombres</th>
-                <th className='text-center'>Apellidos</th>
-                <th className='text-center'>Usuario</th>
-                <th className='text-center'>Tipo Documento</th>
-                <th className='text-center'># Documento</th>
-                <th className='text-center'>Tipo</th>
-                <th className='text-center'>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usersPaginated.totalCount > 0 &&
-                usersPaginated.items.map((user, index) => (
-                  <tr
-                    className='fw-bold fs-6 text-gray-800'
-                    key={`${user.documentNumber}-${index}`}
-                  >
-                    <td className='text-center'>{user.lastName}</td>
-                    <td className='text-center'>{user.roleName}</td>
-                    <td className='text-center'>{user.username}</td>
-                    <td className='text-center'>{user.documentType}</td>
-                    <td className='text-center'>{user.documentNumber}</td>
-                    <td className='text-center'>{user.roleName}</td>
-                    <td className='text-center'>
-                      <div className='d-flex align-items-center justify-content-center'>
-                        <div
-                          onClick={() => setEmail(user.email, 'update')}
-                          style={{cursor: 'pointer'}}
-                        >
-                          <i className='bi bi-pencil text-primary fs-2x'></i>
+        {isLoading && <RenderLoader show={isLoading} huge={true} />}
+        {!isLoading && usersPaginated && usersPaginated.totalCount > 0 && (
+          <div className='table-responsive'>
+            <table className='table table-row-bordered table-row-gray-300 gy-6'>
+              <thead>
+                <tr className='fw-bold text-light bg-success'>
+                  <th className='text-center'>Nombres</th>
+                  <th className='text-center'>Apellidos</th>
+                  <th className='text-center'>Usuario</th>
+                  <th className='text-center'>Tipo Documento</th>
+                  <th className='text-center'># Documento</th>
+                  <th className='text-center'>Tipo</th>
+                  <th className='text-center'>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {usersPaginated.totalCount > 0 &&
+                  usersPaginated.items.map((user, index) => (
+                    <tr
+                      className='fw-bold fs-6 text-gray-800'
+                      key={`${user.documentNumber}-${index}`}
+                    >
+                      <td className='text-center'>{user.lastName}</td>
+                      <td className='text-center'>{user.roleName}</td>
+                      <td className='text-center'>{user.username}</td>
+                      <td className='text-center'>{user.documentType}</td>
+                      <td className='text-center'>{user.documentNumber}</td>
+                      <td className='text-center'>{user.roleName}</td>
+                      <td className='text-center'>
+                        <div className='d-flex align-items-center justify-content-center'>
+                          <div
+                            onClick={() => setEmail(user.email, 'update')}
+                            style={{cursor: 'pointer'}}
+                          >
+                            <i className='bi bi-pencil text-primary'></i>
+                          </div>
+                          <div
+                            onClick={() => setEmail(user.email, 'delete')}
+                            style={{cursor: 'pointer'}}
+                          >
+                            <i className='bi bi-trash text-danger'></i>
+                          </div>
                         </div>
-                        <div
-                          onClick={() => setEmail(user.email, 'delete')}
-                          style={{cursor: 'pointer'}}
-                        >
-                          <i className='bi bi-trash text-danger fs-2x'></i>
-                        </div>
-                      </div>
+                      </td>
+                    </tr>
+                  ))}
+                {usersPaginated.items.length === 0 && (
+                  <tr>
+                    <td colSpan={7} className='text-center'>
+                      No results...
                     </td>
                   </tr>
-                ))}
-              {usersPaginated.items.length === 0 && (
-                <tr>
-                  <td colSpan={7} className='text-center'>
-                    No results...
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <Pagination>
-          {Array.from({length: Math.ceil(usersPaginated.totalCount / params.pageSize)}).map(
-            (_, index) => (
-              <Pagination.Item
-                key={index + 1}
-                active={index === params.pageIndex}
-                onClick={() => handleFilterChange('pageIndex', index)}
-              >
-                {index + 1}
-              </Pagination.Item>
-            )
-          )}
-        </Pagination>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {!isLoading && usersPaginated && usersPaginated.totalCount > 0 && (
+          <Pagination>
+            {Array.from({length: Math.ceil(usersPaginated.totalCount / params.pageSize)}).map(
+              (_, index) => (
+                <Pagination.Item
+                  key={index + 1}
+                  active={index === params.pageIndex}
+                  onClick={() => handleFilterChange('pageIndex', index)}
+                >
+                  {index + 1}
+                </Pagination.Item>
+              )
+            )}
+          </Pagination>
+        )}
       </div>
     </>
   )
