@@ -1,10 +1,12 @@
 import {useEffect, useReducer, useState} from 'react'
 import {IpaginationResponse} from '../../../../types/Pagination.types'
-import {IUsersResponse, UsersQueryParams} from '../../../../types/Users.types'
+import {IUsersForm, IUsersResponse, UsersQueryParams} from '../../../../types/Users.types'
 import axios from '../../../config/http-users-common'
 import {ReactQueryResponse} from '../../../../types/Generics'
-import {useQuery} from 'react-query'
+import {useMutation, useQuery} from 'react-query'
 import {buildUrl} from '../../../helpers/urlBuilder.helpers'
+import {AxiosError} from 'axios'
+import {enqueueSnackbar} from 'notistack'
 
 enum UsersKind {
   SET_USERS = 'SET_USERS',
@@ -84,6 +86,8 @@ export const useUsers = () => {
     documentNumber: '',
     roleName: '',
   })
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showFormModal, setShowFormModal] = useState(false)
 
   const {
     data: usersPaginatedData,
@@ -112,6 +116,67 @@ export const useUsers = () => {
     if (action) {
       dispatchUsers({type: UsersKind.SET_ACTION, payload: action})
     }
+  }
+
+  const handleClickForm = (body: IUsersForm) => {
+    if (usersState.action === 'create') {
+      createUser(body)
+    } else if (usersState.action === 'update') {
+      updateUser(body)
+    }
+  }
+
+  const {mutate: createUser, isLoading: isCreatingUser} = useMutation({
+    mutationFn: async (body: IUsersForm) => {
+      //body.email = undefined
+      return await axios.post(`/User/add-user`, body)
+    },
+    onSuccess(data) {
+      handleSuccessResponse(data)
+    },
+    onError(error: AxiosError<ReactQueryResponse<string>>) {
+      handleErrorResponse(error.toString())
+    },
+  })
+
+  const {mutate: updateUser, isLoading: isUpdatingUser} = useMutation({
+    mutationFn: async (body: IUsersForm) => {
+      body.email = usersState.email
+      return await axios.put(`/User/update-user`, body)
+    },
+    onSuccess(data) {
+      handleSuccessResponse(data)
+    },
+    onError(error: AxiosError<ReactQueryResponse<string>>) {
+      handleErrorResponse(error.toString())
+    },
+  })
+
+  const handleErrorResponse = (errorMessage: string) => {
+    enqueueSnackbar(errorMessage, {
+      variant: 'error',
+      hideIconVariant: true,
+    })
+  }
+
+  const handleSuccessResponse = (data: any) => {
+    if (!data.data.success && data.data.errors[0]) {
+      data.data.errors[0].errorList.forEach((errorDetail: any) => {
+        enqueueSnackbar(errorDetail.description, {
+          variant: 'error',
+          hideIconVariant: true,
+        })
+      })
+    } else {
+      enqueueSnackbar(data.data.response, {
+        variant: 'success',
+        hideIconVariant: true,
+      })
+    }
+    setShowFormModal(false)
+    setTimeout(() => {
+      getUsers()
+    }, 1)
   }
 
   useEffect(() => {
@@ -180,6 +245,10 @@ export const useUsers = () => {
     setUsersParams,
     tempFilters,
     resetFilters,
+    showFormModal,
+    setShowFormModal,
+    isFormLoading: isCreatingUser || isUpdatingUser,
+    handleClickForm,
   }
 }
 

@@ -12,6 +12,10 @@ const Users = () => {
     setUsersParams,
     tempFilters,
     resetFilters,
+    setShowFormModal,
+    showFormModal,
+    isFormLoading,
+    handleClickForm,
   } = useUsers()
 
   return (
@@ -27,7 +31,15 @@ const Users = () => {
         tempFilters={tempFilters}
         resetFilters={resetFilters}
       />
-      {usersState.currentUser && <UsersForm initialValues={usersState.currentUser} />}
+      {usersState.currentUser && (
+        <UsersForm
+          initialValues={usersState.currentUser}
+          setShowFormModal={setShowFormModal}
+          showFormModal={showFormModal}
+          isLoading={isFormLoading}
+          submitForm={handleClickForm}
+        />
+      )}
     </>
   )
 }
