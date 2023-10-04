@@ -1,4 +1,4 @@
-import {useEffect, useReducer} from 'react'
+import {useEffect, useReducer, useState} from 'react'
 import {IpaginationResponse} from '../../../../types/Pagination.types'
 import {IUsersResponse, UsersQueryParams} from '../../../../types/Users.types'
 import axios from '../../../config/http-users-common'
@@ -11,13 +11,19 @@ enum UsersKind {
   SET_EMAIL = 'SET_EMAIL',
   SET_ACTION = 'SET_ACTION',
   SET_PARAMS = 'SET_PARAMS',
+  SET_CURRENT_USER = 'SET_CURRENT_USER',
 }
 
 export type UsersActions = 'create' | 'update' | 'delete'
 
 interface UsersStateAction {
   type: UsersKind
-  payload: IpaginationResponse<IUsersResponse> | string | UsersActions | UsersQueryParams
+  payload:
+    | IpaginationResponse<IUsersResponse>
+    | string
+    | UsersActions
+    | UsersQueryParams
+    | IUsersResponse
 }
 
 interface UsersState {
@@ -25,6 +31,7 @@ interface UsersState {
   email: string
   action: UsersActions
   params: UsersQueryParams
+  currentUser: IUsersResponse
 }
 
 export const usersReducer = (state: UsersState, action: UsersStateAction) => {
@@ -52,6 +59,11 @@ export const usersReducer = (state: UsersState, action: UsersStateAction) => {
           ...(action.payload as UsersQueryParams),
         },
       }
+    case UsersKind.SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: action.payload as IUsersResponse,
+      }
   }
 }
 
@@ -61,15 +73,16 @@ export const useUsers = () => {
     email: '',
     action: {} as UsersActions,
     params: {baseUrl: '/User/get-users', pageIndex: 0, pageSize: 5} as UsersQueryParams,
+    currentUser: {} as IUsersResponse,
   })
-
-  const url = buildUrl(usersState.params.baseUrl, {
-    pageIndex: usersState.params.pageIndex,
-    pageSize: usersState.params.pageSize,
-    email: usersState.params.email,
-    name: usersState.params.name,
-    documentNumber: usersState.params.documentNumber,
-    roleName: usersState.params.roleName,
+  const [tempFilters, setTempFilters] = useState<UsersQueryParams>({
+    baseUrl: usersState.params.baseUrl,
+    pageIndex: 0,
+    pageSize: 10,
+    email: '',
+    name: '',
+    documentNumber: '',
+    roleName: '',
   })
 
   const {
@@ -77,6 +90,14 @@ export const useUsers = () => {
     isFetching,
     refetch: getUsers,
   } = useQuery<ReactQueryResponse<IpaginationResponse<IUsersResponse>>>('get-users', async () => {
+    const url = buildUrl(usersState.params.baseUrl, {
+      pageIndex: usersState.params.pageIndex,
+      pageSize: usersState.params.pageSize,
+      email: usersState.params.email,
+      name: usersState.params.name,
+      documentNumber: usersState.params.documentNumber,
+      roleName: usersState.params.roleName,
+    })
     return await axios.get(url)
   })
 
@@ -93,8 +114,42 @@ export const useUsers = () => {
     }
   }
 
-  const setUsersParams = (payload: UsersQueryParams) => {
-    dispatchUsers({type: UsersKind.SET_PARAMS, payload})
+  useEffect(() => {
+    if (!isFetching && usersState.email) {
+      const currentUser = findUserByEmail(usersState.email)
+      setCurrentUser(currentUser)
+    }
+  }, [usersState.email])
+
+  const findUserByEmail = (emailToFind: string): IUsersResponse | null => {
+    const user = usersState.usersPaginated.items.find((user) => user.email === emailToFind)
+    console.log(user)
+    return user || null
+  }
+
+  const setCurrentUser = (payload: IUsersResponse | null) => {
+    if (payload) {
+      dispatchUsers({type: UsersKind.SET_CURRENT_USER, payload})
+    }
+  }
+
+  const setUsersParams = () => {
+    dispatchUsers({type: UsersKind.SET_PARAMS, payload: tempFilters})
+  }
+
+  const resetFilters = () => {
+    const resetValues = {
+      baseUrl: usersState.params.baseUrl,
+      pageIndex: 0,
+      pageSize: 10,
+      email: '',
+      name: '',
+      documentNumber: '',
+      roleName: '',
+    }
+
+    setTempFilters(resetValues)
+    dispatchUsers({type: UsersKind.SET_PARAMS, payload: resetValues})
   }
 
   const handleFilterChange = (filterName: keyof UsersQueryParams, value: any) => {
@@ -121,6 +176,10 @@ export const useUsers = () => {
     isLoading: isFetching,
     setEmail,
     handleFilterChange,
+    setTempFilters,
+    setUsersParams,
+    tempFilters,
+    resetFilters,
   }
 }
 

@@ -1,6 +1,6 @@
 import {Button, Pagination} from 'react-bootstrap'
 import {IpaginationResponse} from '../../../../types/Pagination.types'
-import {IUsersResponse, UsersQueryParams} from '../../../../types/Users.types'
+import {IUsersResponse, UsersQueryParams, roleTranslations} from '../../../../types/Users.types'
 import {UsersActions} from '../../../pages/users-management/users/Users.hook'
 import clsx from 'clsx'
 import RenderLoader from '../../RenderLoader/RenderLoader'
@@ -11,6 +11,10 @@ interface UsersTableProps {
   params: UsersQueryParams
   handleFilterChange: (filterName: keyof UsersQueryParams, value: any) => void
   isLoading: boolean
+  setTempFilters: React.Dispatch<React.SetStateAction<UsersQueryParams>>
+  setUsersParams: () => void
+  tempFilters: UsersQueryParams
+  resetFilters: () => void
 }
 
 const UsersTable = ({
@@ -19,6 +23,10 @@ const UsersTable = ({
   params,
   handleFilterChange,
   isLoading,
+  setTempFilters,
+  setUsersParams,
+  tempFilters,
+  resetFilters,
 }: UsersTableProps) => {
   return (
     <>
@@ -28,32 +36,65 @@ const UsersTable = ({
             {'Crear Usuario'}
           </Button>
         </div>
-        {/* Filter Section */}
         <div className='mb-4'>
-          <div className='row'>
+          <div className='row mb-2'>
+            {/* Name Input */}
             <div className='col-md-3'>
+              <label htmlFor='nameInput' className='form-label'>
+                Nombres
+              </label>
               <input
+                id='nameInput'
                 type='text'
                 className='form-control'
                 placeholder='Nombres'
-                onChange={(e) => handleFilterChange('name', e.target.value)}
-                value={params.name}
+                onChange={(e) => setTempFilters((prev) => ({...prev, name: e.target.value}))}
+                value={tempFilters.name}
               />
             </div>
+
+            {/* Document Number Input */}
             <div className='col-md-3'>
+              <label htmlFor='docNumberInput' className='form-label'>
+                # Documento
+              </label>
               <input
+                id='docNumberInput'
+                type='text'
+                className='form-control'
+                placeholder='# Documento'
+                onChange={(e) =>
+                  setTempFilters((prev) => ({...prev, documentNumber: e.target.value}))
+                }
+                value={tempFilters.documentNumber}
+              />
+            </div>
+
+            {/* Email Input */}
+            <div className='col-md-3'>
+              <label htmlFor='emailInput' className='form-label'>
+                Correo
+              </label>
+              <input
+                id='emailInput'
                 type='email'
                 className='form-control'
                 placeholder='Correo'
-                onChange={(e) => handleFilterChange('email', e.target.value)}
-                value={params.email}
+                onChange={(e) => setTempFilters((prev) => ({...prev, email: e.target.value}))}
+                value={tempFilters.email}
               />
             </div>
+
+            {/* Role Selector */}
             <div className='col-md-3'>
+              <label htmlFor='roleSelector' className='form-label'>
+                Rol
+              </label>
               <select
+                id='roleSelector'
                 className='form-control'
-                onChange={(e) => handleFilterChange('roleName', e.target.value)}
-                value={params.roleName}
+                onChange={(e) => setTempFilters((prev) => ({...prev, roleName: e.target.value}))}
+                value={tempFilters.roleName}
               >
                 <option value=''>Todos</option>
                 <option value='Seller'>Vendedor</option>
@@ -61,7 +102,21 @@ const UsersTable = ({
               </select>
             </div>
           </div>
+
+          <div className='row mb-3'>
+            <div className='col-md-12'>
+              <div className='btn-group'>
+                <button className='btn btn-primary' onClick={() => setUsersParams()}>
+                  Buscar
+                </button>
+                <button className='btn btn-secondary' onClick={resetFilters}>
+                  Limpiar
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
+
         {isLoading && <RenderLoader show={isLoading} huge={true} />}
         {!isLoading && usersPaginated && usersPaginated.totalCount > 0 && (
           <div className='table-responsive'>
@@ -89,20 +144,22 @@ const UsersTable = ({
                       <td className='text-center'>{user.username}</td>
                       <td className='text-center'>{user.documentType}</td>
                       <td className='text-center'>{user.documentNumber}</td>
-                      <td className='text-center'>{user.roleName}</td>
+                      <td className='text-center'>
+                        {roleTranslations[user.roleName] || user.roleName}
+                      </td>
                       <td className='text-center'>
                         <div className='d-flex align-items-center justify-content-center'>
                           <div
                             onClick={() => setEmail(user.email, 'update')}
-                            style={{cursor: 'pointer'}}
+                            style={{cursor: 'pointer', marginRight: '10px'}}
                           >
-                            <i className='bi bi-pencil text-primary'></i>
+                            <i className='bi bi-pencil text-primary btn-lg'></i>
                           </div>
                           <div
                             onClick={() => setEmail(user.email, 'delete')}
                             style={{cursor: 'pointer'}}
                           >
-                            <i className='bi bi-trash text-danger'></i>
+                            <i className='bi bi-trash text-danger btn-lg'></i>
                           </div>
                         </div>
                       </td>
