@@ -180,15 +180,32 @@ export const useUsers = () => {
   }
 
   useEffect(() => {
+    if (!isFetching && usersState.action === 'create') {
+      dispatchUsers({type: UsersKind.SET_CURRENT_USER, payload: {} as IUsersResponse})
+      setTimeout(() => {
+        setShowFormModal(true)
+      }, 1)
+    }
     if (!isFetching && usersState.email) {
       const currentUser = findUserByEmail(usersState.email)
+
+      if (!currentUser) return
       setCurrentUser(currentUser)
+      switch (usersState.action) {
+        case 'delete':
+          setShowDeleteModal(true)
+          break
+        case 'update':
+          setTimeout(() => {
+            setShowFormModal(true)
+          }, 1)
+          break
+      }
     }
-  }, [usersState.email])
+  }, [usersState.email, usersState.action])
 
   const findUserByEmail = (emailToFind: string): IUsersResponse | null => {
     const user = usersState.usersPaginated.items.find((user) => user.email === emailToFind)
-    console.log(user)
     return user || null
   }
 
@@ -249,6 +266,8 @@ export const useUsers = () => {
     setShowFormModal,
     isFormLoading: isCreatingUser || isUpdatingUser,
     handleClickForm,
+    showDeleteModal,
+    setShowDeleteModal,
   }
 }
 

@@ -1,3 +1,4 @@
+import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog'
 import UsersForm from '../../../components/Forms/UsersForm/UsersForm'
 import UsersTable from '../../../components/Tables/UsersTable/UsersTable'
 import {useUsers} from './Users.hook'

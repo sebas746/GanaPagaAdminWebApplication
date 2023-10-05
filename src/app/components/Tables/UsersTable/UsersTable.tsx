@@ -155,12 +155,6 @@ const UsersTable = ({
                           >
                             <i className='bi bi-pencil text-primary btn-lg'></i>
                           </div>
-                          <div
-                            onClick={() => setEmail(user.email, 'delete')}
-                            style={{cursor: 'pointer'}}
-                          >
-                            <i className='bi bi-trash text-danger btn-lg'></i>
-                          </div>
                         </div>
                       </td>
                     </tr>
