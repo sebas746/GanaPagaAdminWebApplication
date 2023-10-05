@@ -1,11 +1,16 @@
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import {IUsersForm, IUsersResponse, RoleIds, documentTypeNames} from '../../../../types/Users.types'
+import {useState} from 'react'
 
 export const useUsersForm = (
   initialValues: IUsersResponse,
   submitForm: (usersForm: IUsersForm) => void
 ) => {
+  const [currentStep, setCurrentStep] = useState(0)
+
+  const steps = ['Información personal', 'Información cuenta']
+
   const defaultInitialValues = {
     firstName: '',
     lastName: '',
@@ -35,10 +40,12 @@ export const useUsersForm = (
     lastName: Yup.string()
       .required('El apellido es requerido.')
       .max(100, 'El apellido no debe tener más de 100 dígitos.'),
-    email: Yup.string().required('El correo es requerido.').email('Ingrese un correo válido.'),
+    email: Yup.string()
+      .required('El usuario es requerido.')
+      .email('El usuario debe ser un correo válido.'),
     phoneNumber: Yup.string()
-      .required('El apellido es requerido.')
-      .max(30, 'El apellido no debe tener más de 30 dígitos.'),
+      .required('El teléfono es requerido.')
+      .max(30, 'El teléfono no debe tener más de 30 dígitos.'),
     password: passwordValidation,
     passwordConfirm: Yup.string()
       .required('La confirmación de la contraseña es requerida.')
@@ -51,9 +58,7 @@ export const useUsersForm = (
       Object.values(['CC', 'CE', 'PA']) as documentTypeNames[],
       'El tipo de documento no es válido'
     ),
-    documentNumber: Yup.string()
-      .required('El apellido es requerido.')
-      .max(30, 'El apellido no debe tener más de 30 dígitos.'),
+    documentNumber: Yup.string().required('El número de documento es requerido.'),
   })
 
   const formik = useFormik({
@@ -82,9 +87,27 @@ export const useUsersForm = (
     //hideModalConfirmation()
   }
 
+  const handleNext = () => {
+    setCurrentStep(currentStep + 1)
+  }
+
+  const handlePrevious = () => {
+    setCurrentStep(currentStep - 1)
+  }
+
+  const handleSubmit = () => {
+    // Submit the form data here
+  }
+
   return {
     formik,
     onSubmit,
     initialValues,
+    steps,
+    setCurrentStep,
+    handleNext,
+    handlePrevious,
+    handleSubmit,
+    currentStep,
   }
 }

@@ -80,7 +80,7 @@ export const useUsers = () => {
   const [tempFilters, setTempFilters] = useState<UsersQueryParams>({
     baseUrl: usersState.params.baseUrl,
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 5,
     email: '',
     name: '',
     documentNumber: '',

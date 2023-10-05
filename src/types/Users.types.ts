@@ -6,6 +6,8 @@ export interface IUsersResponse {
   roleName: RoleNames
   documentType: string
   documentNumber: string
+  password?: string
+  passwordConfirm?: string
 }
 
 export interface UsersQueryParams {
@@ -44,3 +46,8 @@ export const roleIdToName: Record<RoleIds, RoleNames> = {
 }
 
 export type documentTypeNames = 'CC' | 'CE' | 'PA'
+export const documentTypeToName: Record<documentTypeNames, string> = {
+  CC: 'Cédula de ciudadanía',
+  CE: 'Cédula de extranjería',
+  PA: 'Pasaporte',
+}

@@ -1,4 +1,4 @@
-import {Button, Pagination} from 'react-bootstrap'
+import {Button, Form, Pagination} from 'react-bootstrap'
 import {IpaginationResponse} from '../../../../types/Pagination.types'
 import {IUsersResponse, UsersQueryParams, roleTranslations} from '../../../../types/Users.types'
 import {UsersActions} from '../../../pages/users-management/users/Users.hook'
@@ -47,9 +47,24 @@ const UsersTable = ({
                 id='nameInput'
                 type='text'
                 className='form-control'
-                placeholder='Nombres'
+                placeholder='Nombre'
                 onChange={(e) => setTempFilters((prev) => ({...prev, name: e.target.value}))}
                 value={tempFilters.name}
+              />
+            </div>
+
+            {/* Email Input */}
+            <div className='col-md-3'>
+              <label htmlFor='emailInput' className='form-label'>
+                Usuario
+              </label>
+              <input
+                id='emailInput'
+                type='email'
+                className='form-control'
+                placeholder='Usuario'
+                onChange={(e) => setTempFilters((prev) => ({...prev, email: e.target.value}))}
+                value={tempFilters.email}
               />
             </div>
 
@@ -70,27 +85,12 @@ const UsersTable = ({
               />
             </div>
 
-            {/* Email Input */}
-            <div className='col-md-3'>
-              <label htmlFor='emailInput' className='form-label'>
-                Correo
-              </label>
-              <input
-                id='emailInput'
-                type='email'
-                className='form-control'
-                placeholder='Correo'
-                onChange={(e) => setTempFilters((prev) => ({...prev, email: e.target.value}))}
-                value={tempFilters.email}
-              />
-            </div>
-
             {/* Role Selector */}
             <div className='col-md-3'>
               <label htmlFor='roleSelector' className='form-label'>
                 Rol
               </label>
-              <select
+              <Form.Select
                 id='roleSelector'
                 className='form-control'
                 onChange={(e) => setTempFilters((prev) => ({...prev, roleName: e.target.value}))}
@@ -99,7 +99,7 @@ const UsersTable = ({
                 <option value=''>Todos</option>
                 <option value='Seller'>Vendedor</option>
                 <option value='Scrutiny'>Escrutinio</option>
-              </select>
+              </Form.Select>
             </div>
           </div>
 
@@ -128,7 +128,7 @@ const UsersTable = ({
                   <th className='text-center'>Usuario</th>
                   <th className='text-center'>Tipo Documento</th>
                   <th className='text-center'># Documento</th>
-                  <th className='text-center'>Tipo</th>
+                  <th className='text-center'>Rol</th>
                   <th className='text-center'>Acciones</th>
                 </tr>
               </thead>
