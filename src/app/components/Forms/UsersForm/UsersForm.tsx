@@ -7,8 +7,10 @@ import {
   documentTypeToName,
   roleIdToName,
 } from '../../../../types/Users.types'
-import {useUsersForm} from './UsersForm.hook'
-import StepWizard from 'react-step-wizard'
+import UsersWizardStep1 from './WizardSteps/UsersWizardStep1'
+import UsersWizardStep2 from './WizardSteps/UsersWizardStep2'
+import UsersWizard from './WizardSteps/UsersWizard'
+import {useWizard} from 'react-use-wizard'
 
 interface UsersFormProps {
   isLoading: boolean
@@ -25,40 +27,32 @@ const UsersForm = ({
   showFormModal,
   setShowFormModal,
 }: UsersFormProps) => {
-  const {formik, onSubmit, setCurrentStep, handleNext, handlePrevious, handleSubmit, currentStep} =
-    useUsersForm(initialValues, submitForm)
-  const steps = [
-    {
-      title: 'Step 1',
-      content: () => (
-        <div>
-          <h2>Step 1</h2>
-          <p>This is the content of step 1.</p>
-        </div>
-      ),
-    },
-    {
-      title: 'Step 2',
-      content: () => (
-        <div>
-          <h2>Step 2</h2>
-          <p>This is the content of step 2.</p>
-        </div>
-      ),
-    },
-    {
-      title: 'Step 3',
-      content: () => (
-        <div>
-          <h2>Step 3</h2>
-          <p>This is the content of step 3.</p>
-        </div>
-      ),
-    },
-  ]
   return (
     <>
-      <StepWizard></StepWizard>
+      <div className='static-modal'>
+        <Modal
+          animation={false}
+          show={showFormModal}
+          onHide={() => setShowFormModal(false)}
+          size='lg' // Changed from lg to md for a more compact modal
+        >
+          <Modal.Header>
+            <Modal.Title>{'Usuarios'}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <UsersWizard
+              initialValues={initialValues}
+              submitForm={submitForm}
+              isLoading={isLoading}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant='secondary' onClick={() => setShowFormModal(false)}>
+              {'Cerrar'}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     </>
   )
 }

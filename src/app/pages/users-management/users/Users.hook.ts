@@ -74,13 +74,13 @@ export const useUsers = () => {
     usersPaginated: {} as IpaginationResponse<IUsersResponse>,
     email: '',
     action: {} as UsersActions,
-    params: {baseUrl: '/User/get-users', pageIndex: 0, pageSize: 5} as UsersQueryParams,
+    params: {baseUrl: '/User/get-users', pageIndex: 0, pageSize: 10} as UsersQueryParams,
     currentUser: {} as IUsersResponse,
   })
   const [tempFilters, setTempFilters] = useState<UsersQueryParams>({
     baseUrl: usersState.params.baseUrl,
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 10,
     email: '',
     name: '',
     documentNumber: '',

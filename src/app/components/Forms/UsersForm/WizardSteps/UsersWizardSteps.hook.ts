@@ -1,23 +1,29 @@
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
-import {IUsersForm, IUsersResponse, RoleIds, documentTypeNames} from '../../../../types/Users.types'
+import {
+  IUsersResponse,
+  IUsersForm,
+  documentTypeNames,
+  RoleIds,
+  roleIdToName,
+} from '../../../../../types/Users.types'
 import {useState} from 'react'
 
-export const useUsersForm = (
+export const useUsersWizardSteps = (
   initialValues: IUsersResponse,
-  submitForm: (usersForm: IUsersForm) => void
+  submitForm: (usersForm: IUsersForm) => void,
+  currentStep: number,
+  nextStep: () => Promise<void>,
+  setCompleteFormData: React.Dispatch<React.SetStateAction<IUsersForm>>,
+  completeFormData: IUsersForm
 ) => {
-  const [currentStep, setCurrentStep] = useState(0)
-
-  const steps = ['Información personal', 'Información cuenta']
-
   const defaultInitialValues = {
     firstName: '',
     lastName: '',
     email: '',
     phoneNumber: '',
     password: '',
-    rolId: 0,
+    rolId: '',
     documentType: '',
     documentNumber: '',
   }
@@ -33,27 +39,16 @@ export const useUsersForm = (
     .matches(/[a-z]/, 'La contraseña debe tener al menos una minúscula.')
     .matches(/[A-Z]/, 'La contraseña debe tener al menos una mayúscula.')
 
-  const emailScrutinySettingsFormSchema = Yup.object().shape({
+  const personalInformationSchema = Yup.object().shape({
     firstName: Yup.string()
       .required('El nombre es requerido.')
       .max(100, 'El nombre no debe tener más de 100 dígitos.'),
     lastName: Yup.string()
       .required('El apellido es requerido.')
       .max(100, 'El apellido no debe tener más de 100 dígitos.'),
-    email: Yup.string()
-      .required('El usuario es requerido.')
-      .email('El usuario debe ser un correo válido.'),
     phoneNumber: Yup.string()
       .required('El teléfono es requerido.')
       .max(30, 'El teléfono no debe tener más de 30 dígitos.'),
-    password: passwordValidation,
-    passwordConfirm: Yup.string()
-      .required('La confirmación de la contraseña es requerida.')
-      .oneOf([Yup.ref('password')], 'Las contraseñas deben coincidir.'),
-    roleId: Yup.number().oneOf(
-      Object.values([1, 2]) as RoleIds[],
-      'El rol selecionado no es válido'
-    ),
     documentType: Yup.string().oneOf(
       Object.values(['CC', 'CE', 'PA']) as documentTypeNames[],
       'El tipo de documento no es válido'
@@ -61,53 +56,63 @@ export const useUsersForm = (
     documentNumber: Yup.string().required('El número de documento es requerido.'),
   })
 
+  const accountInformationSchema = Yup.object().shape({
+    email: Yup.string()
+      .required('El usuario es requerido.')
+      .email('El usuario debe ser un correo válido.'),
+    password: passwordValidation,
+    passwordConfirm: Yup.string()
+      .required('La confirmación de la contraseña es requerida.')
+      .oneOf([Yup.ref('password')], 'Las contraseñas deben coincidir.'),
+    roleId: Yup.string()
+      .required('El rol es requerido.')
+      .oneOf(Object.keys(roleIdToName) as RoleIds[], 'El rol seleccionado no es válido'),
+  })
+
   const formik = useFormik({
     initialValues: combinedInitialValues,
-    validationSchema: emailScrutinySettingsFormSchema,
+    validationSchema: currentStep === 0 ? personalInformationSchema : accountInformationSchema,
     onSubmit: () => {},
     enableReinitialize: true,
   })
 
+  console.log(completeFormData)
+
   const onSubmit = () => {
-    const emailScrutinySettings = {
+    const usersForm = {
       firstName: formik.values.firstName,
       lastName: formik.values.lastName,
       email: formik.values.email,
       phoneNumber: formik.values.phoneNumber,
       password: formik.values.password,
-      rolId: formik.values.rolId,
-      documentType: formik.values.documentType,
+      rolId: Number(formik.values.rolId),
+      documentType: formik.values.documentType ?? 'CC',
       documentNumber: formik.values.documentNumber,
     }
 
     if (!formik.isValid || !formik.dirty) {
       return
     }
-    submitForm(emailScrutinySettings)
+    if (currentStep === 0) {
+      const step1Data = {
+        firstName: formik.values.firstName,
+        lastName: formik.values.lastName,
+        phoneNumber: formik.values.phoneNumber,
+        documentType: formik.values.documentType,
+        documentNumber: formik.values.documentNumber,
+      }
+      setCompleteFormData((prevState) => ({...prevState, ...step1Data}))
+      nextStep()
+    } else {
+      submitForm(usersForm)
+    }
+
     //hideModalConfirmation()
-  }
-
-  const handleNext = () => {
-    setCurrentStep(currentStep + 1)
-  }
-
-  const handlePrevious = () => {
-    setCurrentStep(currentStep - 1)
-  }
-
-  const handleSubmit = () => {
-    // Submit the form data here
   }
 
   return {
     formik,
     onSubmit,
     initialValues,
-    steps,
-    setCurrentStep,
-    handleNext,
-    handlePrevious,
-    handleSubmit,
-    currentStep,
   }
 }

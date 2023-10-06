@@ -3,6 +3,7 @@ export interface IUsersResponse {
   lastName: string
   username: string
   email: string
+  rolId: string
   roleName: RoleNames
   documentType: string
   documentNumber: string
@@ -39,10 +40,10 @@ export const roleTranslations: Record<RoleNames, string> = {
   Seller: 'Vendedor',
 }
 
-export type RoleIds = 1 | 2
+export type RoleIds = '1' | '2'
 export const roleIdToName: Record<RoleIds, RoleNames> = {
-  1: 'Scrutiny',
-  2: 'Seller',
+  '1': 'Scrutiny',
+  '2': 'Seller',
 }
 
 export type documentTypeNames = 'CC' | 'CE' | 'PA'
