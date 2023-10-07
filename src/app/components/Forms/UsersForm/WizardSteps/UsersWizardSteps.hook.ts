@@ -8,6 +8,7 @@ import {
   roleIdToName,
 } from '../../../../../types/Users.types'
 import {useState} from 'react'
+import {UsersActions} from '../../../../pages/users-management/users/Users.hook'
 
 export const useUsersWizardSteps = (
   initialValues: IUsersResponse,
@@ -15,7 +16,8 @@ export const useUsersWizardSteps = (
   currentStep: number,
   nextStep: () => Promise<void>,
   setCompleteFormData: React.Dispatch<React.SetStateAction<IUsersForm>>,
-  completeFormData: IUsersForm
+  completeFormData: IUsersForm,
+  action: UsersActions
 ) => {
   const defaultInitialValues = {
     firstName: '',
@@ -23,9 +25,10 @@ export const useUsersWizardSteps = (
     email: '',
     phoneNumber: '',
     password: '',
-    rolId: '',
+    rolId: 0,
     documentType: '',
     documentNumber: '',
+    isActive: true,
   }
 
   const combinedInitialValues = {
@@ -55,19 +58,61 @@ export const useUsersWizardSteps = (
     ),
     documentNumber: Yup.string().required('El número de documento es requerido.'),
   })
+  let accountInformationSchema
 
-  const accountInformationSchema = Yup.object().shape({
-    email: Yup.string()
-      .required('El usuario es requerido.')
-      .email('El usuario debe ser un correo válido.'),
-    password: passwordValidation,
-    passwordConfirm: Yup.string()
-      .required('La confirmación de la contraseña es requerida.')
-      .oneOf([Yup.ref('password')], 'Las contraseñas deben coincidir.'),
-    roleId: Yup.string()
-      .required('El rol es requerido.')
-      .oneOf(Object.keys(roleIdToName) as RoleIds[], 'El rol seleccionado no es válido'),
-  })
+  if (action === 'create') {
+    accountInformationSchema = Yup.object().shape({
+      email: Yup.string()
+        .required('El usuario es requerido.')
+        .email('El usuario debe ser un correo válido.'),
+      password: passwordValidation,
+      passwordConfirm: Yup.string()
+        .required('La confirmación de la contraseña es requerida.')
+        .oneOf([Yup.ref('password')], 'Las contraseñas deben coincidir.'),
+      rolId: Yup.string()
+        .required('El rol es requerido.')
+        .oneOf(Object.keys(roleIdToName) as RoleIds[], 'El rol seleccionado no es válido'),
+    })
+  } else {
+    accountInformationSchema = Yup.object().shape({
+      email: Yup.string()
+        .required('El usuario es requerido.')
+        .email('El usuario debe ser un correo válido.'),
+      password: Yup.string()
+        .nullable()
+        .test('conditional-required', 'La contraseña es requerida.', function (value) {
+          const {passwordConfirm} = this.parent
+          if (!value && passwordConfirm) {
+            return false
+          }
+          return true
+        })
+        .matches(/[^A-Za-z0-9]/, 'La contraseña debe tener al menos un carácter no alfanumérico.')
+        .matches(/[a-z]/, 'La contraseña debe tener al menos una minúscula.')
+        .matches(/[A-Z]/, 'La contraseña debe tener al menos una mayúscula.'),
+      passwordConfirm: Yup.string()
+        .nullable()
+        .test(
+          'conditional-required',
+          'La confirmación de la contraseña es requerida.',
+          function (value) {
+            const {password} = this.parent
+            if (!value && password) {
+              return false
+            }
+            if (value !== password) {
+              return this.createError({
+                message: 'Las contraseñas deben coincidir.',
+              })
+            }
+            return true
+          }
+        ),
+      rolId: Yup.string()
+        .required('El rol es requerido.')
+        .oneOf(Object.keys(roleIdToName) as RoleIds[], 'El rol seleccionado no es válido'),
+    })
+  }
 
   const formik = useFormik({
     initialValues: combinedInitialValues,
@@ -76,21 +121,12 @@ export const useUsersWizardSteps = (
     enableReinitialize: true,
   })
 
-  console.log(completeFormData)
-
   const onSubmit = () => {
-    const usersForm = {
-      firstName: formik.values.firstName,
-      lastName: formik.values.lastName,
-      email: formik.values.email,
-      phoneNumber: formik.values.phoneNumber,
-      password: formik.values.password,
-      rolId: Number(formik.values.rolId),
-      documentType: formik.values.documentType ?? 'CC',
-      documentNumber: formik.values.documentNumber,
-    }
-
-    if (!formik.isValid || !formik.dirty) {
+    console.log(formik.isValid)
+    if (
+      (!formik.isValid && action === 'update') ||
+      (!formik.isValid && action === 'create' && !formik.dirty)
+    ) {
       return
     }
     if (currentStep === 0) {
@@ -104,7 +140,15 @@ export const useUsersWizardSteps = (
       setCompleteFormData((prevState) => ({...prevState, ...step1Data}))
       nextStep()
     } else {
-      submitForm(usersForm)
+      const step2Data = {
+        email: formik.values.email,
+        password: formik.values.password,
+        rolId: Number(formik.values.rolId),
+        isActive: formik.values.isActive,
+      }
+      console.log(formik.values)
+      const dataForm = {...completeFormData, ...step2Data}
+      submitForm(dataForm)
     }
 
     //hideModalConfirmation()

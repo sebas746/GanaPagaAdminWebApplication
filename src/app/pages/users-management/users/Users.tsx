@@ -17,6 +17,8 @@ const Users = () => {
     showFormModal,
     isFormLoading,
     handleClickForm,
+    setShowPasswordModal,
+    showPasswordModal,
   } = useUsers()
 
   return (
@@ -39,6 +41,7 @@ const Users = () => {
           showFormModal={showFormModal}
           isLoading={isFormLoading}
           submitForm={handleClickForm}
+          action={usersState.action}
         />
       )}
     </>

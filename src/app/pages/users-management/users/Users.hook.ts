@@ -1,6 +1,11 @@
 import {useEffect, useReducer, useState} from 'react'
 import {IpaginationResponse} from '../../../../types/Pagination.types'
-import {IUsersForm, IUsersResponse, UsersQueryParams} from '../../../../types/Users.types'
+import {
+  IUsersForm,
+  IUsersPasswordForm,
+  IUsersResponse,
+  UsersQueryParams,
+} from '../../../../types/Users.types'
 import axios from '../../../config/http-users-common'
 import {ReactQueryResponse} from '../../../../types/Generics'
 import {useMutation, useQuery} from 'react-query'
@@ -14,9 +19,10 @@ enum UsersKind {
   SET_ACTION = 'SET_ACTION',
   SET_PARAMS = 'SET_PARAMS',
   SET_CURRENT_USER = 'SET_CURRENT_USER',
+  SET_PASSWORD = 'SET_PASSWORD',
 }
 
-export type UsersActions = 'create' | 'update' | 'delete'
+export type UsersActions = 'create' | 'update' | 'password'
 
 interface UsersStateAction {
   type: UsersKind
@@ -26,6 +32,7 @@ interface UsersStateAction {
     | UsersActions
     | UsersQueryParams
     | IUsersResponse
+    | IUsersPasswordForm
 }
 
 interface UsersState {
@@ -34,6 +41,7 @@ interface UsersState {
   action: UsersActions
   params: UsersQueryParams
   currentUser: IUsersResponse
+  password: IUsersPasswordForm
 }
 
 export const usersReducer = (state: UsersState, action: UsersStateAction) => {
@@ -66,6 +74,11 @@ export const usersReducer = (state: UsersState, action: UsersStateAction) => {
         ...state,
         currentUser: action.payload as IUsersResponse,
       }
+    case UsersKind.SET_PASSWORD:
+      return {
+        ...state,
+        password: action.payload as IUsersPasswordForm,
+      }
   }
 }
 
@@ -76,6 +89,7 @@ export const useUsers = () => {
     action: {} as UsersActions,
     params: {baseUrl: '/User/get-users', pageIndex: 0, pageSize: 10} as UsersQueryParams,
     currentUser: {} as IUsersResponse,
+    password: {} as IUsersPasswordForm,
   })
   const [tempFilters, setTempFilters] = useState<UsersQueryParams>({
     baseUrl: usersState.params.baseUrl,
@@ -86,7 +100,7 @@ export const useUsers = () => {
     documentNumber: '',
     roleName: '',
   })
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [showFormModal, setShowFormModal] = useState(false)
 
   const {
@@ -126,12 +140,17 @@ export const useUsers = () => {
     }
   }
 
+  const handlePasswordClickForm = (body: IUsersPasswordForm) => {
+    updatePassword(body)
+  }
+
   const {mutate: createUser, isLoading: isCreatingUser} = useMutation({
     mutationFn: async (body: IUsersForm) => {
       //body.email = undefined
       return await axios.post(`/User/add-user`, body)
     },
     onSuccess(data) {
+      setCurrentUser({} as IUsersResponse)
       handleSuccessResponse(data)
     },
     onError(error: AxiosError<ReactQueryResponse<string>>) {
@@ -142,9 +161,24 @@ export const useUsers = () => {
   const {mutate: updateUser, isLoading: isUpdatingUser} = useMutation({
     mutationFn: async (body: IUsersForm) => {
       body.email = usersState.email
-      return await axios.put(`/User/update-user`, body)
+      return await axios.post(`/User/update-user`, body)
     },
     onSuccess(data) {
+      setCurrentUser({} as IUsersResponse)
+      handleSuccessResponse(data)
+    },
+    onError(error: AxiosError<ReactQueryResponse<string>>) {
+      handleErrorResponse(error.toString())
+    },
+  })
+
+  const {mutate: updatePassword, isLoading: isUpdatingPassword} = useMutation({
+    mutationFn: async (body: IUsersPasswordForm) => {
+      body.email = usersState.email
+      return await axios.post(`/User/user-change-password`, body)
+    },
+    onSuccess(data) {
+      setCurrentUser({} as IUsersResponse)
       handleSuccessResponse(data)
     },
     onError(error: AxiosError<ReactQueryResponse<string>>) {
@@ -192,8 +226,8 @@ export const useUsers = () => {
       if (!currentUser) return
       setCurrentUser(currentUser)
       switch (usersState.action) {
-        case 'delete':
-          setShowDeleteModal(true)
+        case 'password':
+          setShowPasswordModal(true)
           break
         case 'update':
           setTimeout(() => {
@@ -253,6 +287,12 @@ export const useUsers = () => {
     }
   }, [usersPaginatedData])
 
+  useEffect(() => {
+    if (!showFormModal) {
+      setCurrentUser({} as IUsersResponse)
+    }
+  }, [showFormModal])
+
   return {
     usersState,
     isLoading: isFetching,
@@ -266,8 +306,9 @@ export const useUsers = () => {
     setShowFormModal,
     isFormLoading: isCreatingUser || isUpdatingUser,
     handleClickForm,
-    showDeleteModal,
-    setShowDeleteModal,
+    showPasswordModal,
+    setShowPasswordModal,
+    handlePasswordClickForm,
   }
 }
 

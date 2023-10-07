@@ -1,16 +1,7 @@
-import {Modal, Button, Col, Form, Row} from 'react-bootstrap'
-import RenderLoader from '../../RenderLoader/RenderLoader'
-import {useEffect} from 'react'
-import {
-  IUsersForm,
-  IUsersResponse,
-  documentTypeToName,
-  roleIdToName,
-} from '../../../../types/Users.types'
-import UsersWizardStep1 from './WizardSteps/UsersWizardStep1'
-import UsersWizardStep2 from './WizardSteps/UsersWizardStep2'
+import {Modal, Button} from 'react-bootstrap'
+import {IUsersForm, IUsersResponse} from '../../../../types/Users.types'
 import UsersWizard from './WizardSteps/UsersWizard'
-import {useWizard} from 'react-use-wizard'
+import {UsersActions} from '../../../pages/users-management/users/Users.hook'
 
 interface UsersFormProps {
   isLoading: boolean
@@ -18,6 +9,7 @@ interface UsersFormProps {
   submitForm: (users: IUsersForm) => void
   showFormModal: boolean
   setShowFormModal: (show: boolean) => void
+  action: UsersActions
 }
 
 const UsersForm = ({
@@ -26,6 +18,7 @@ const UsersForm = ({
   submitForm,
   showFormModal,
   setShowFormModal,
+  action,
 }: UsersFormProps) => {
   return (
     <>
@@ -44,6 +37,7 @@ const UsersForm = ({
               initialValues={initialValues}
               submitForm={submitForm}
               isLoading={isLoading}
+              action={action}
             />
           </Modal.Body>
           <Modal.Footer>

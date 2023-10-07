@@ -139,8 +139,8 @@ const UsersTable = ({
                       className='fw-bold fs-6 text-gray-800'
                       key={`${user.documentNumber}-${index}`}
                     >
+                      <td className='text-center'>{user.firstName}</td>
                       <td className='text-center'>{user.lastName}</td>
-                      <td className='text-center'>{user.roleName}</td>
                       <td className='text-center'>{user.username}</td>
                       <td className='text-center'>{user.documentType}</td>
                       <td className='text-center'>{user.documentNumber}</td>

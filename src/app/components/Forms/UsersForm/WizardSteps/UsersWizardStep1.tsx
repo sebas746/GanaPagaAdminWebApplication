@@ -8,6 +8,7 @@ import {
 import RenderLoader from '../../../RenderLoader/RenderLoader'
 import {useWizard} from 'react-use-wizard'
 import {useUsersWizardSteps} from './UsersWizardSteps.hook'
+import {UsersActions} from '../../../../pages/users-management/users/Users.hook'
 
 interface UsersWizardStep1Props {
   initialValues: IUsersResponse
@@ -15,6 +16,7 @@ interface UsersWizardStep1Props {
   isLoading: boolean
   setCompleteFormData: React.Dispatch<React.SetStateAction<IUsersForm>>
   completeFormData: IUsersForm
+  action: UsersActions
 }
 
 const UsersWizardStep1 = ({
@@ -23,6 +25,7 @@ const UsersWizardStep1 = ({
   isLoading,
   setCompleteFormData,
   completeFormData,
+  action,
 }: UsersWizardStep1Props) => {
   const {activeStep, nextStep} = useWizard()
   const {formik, onSubmit} = useUsersWizardSteps(
@@ -31,7 +34,8 @@ const UsersWizardStep1 = ({
     activeStep,
     nextStep,
     setCompleteFormData,
-    completeFormData
+    completeFormData,
+    action
   )
 
   return (
@@ -136,7 +140,11 @@ const UsersWizardStep1 = ({
             <Button
               variant='primary'
               onClick={onSubmit}
-              disabled={isLoading || !formik.isValid || !formik.dirty}
+              disabled={
+                isLoading ||
+                (!formik.isValid && action === 'update') ||
+                (!formik.isValid && action === 'create' && !formik.dirty)
+              }
             >
               {'Siguiente'} <RenderLoader show={isLoading} />
             </Button>

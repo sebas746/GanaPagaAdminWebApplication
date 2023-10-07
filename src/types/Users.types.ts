@@ -3,12 +3,13 @@ export interface IUsersResponse {
   lastName: string
   username: string
   email: string
-  rolId: string
+  rolId: number
   roleName: RoleNames
   documentType: string
   documentNumber: string
   password?: string
   passwordConfirm?: string
+  isActive: boolean
 }
 
 export interface UsersQueryParams {
@@ -31,6 +32,13 @@ export interface IUsersForm {
   rolId: number
   documentType: string
   documentNumber: string
+  isActive: boolean
+}
+
+export interface IUsersPasswordForm {
+  email: string
+  password: string
+  newPassword: string
 }
 
 type RoleNames = 'Scrutiny' | 'Seller'
@@ -40,10 +48,10 @@ export const roleTranslations: Record<RoleNames, string> = {
   Seller: 'Vendedor',
 }
 
-export type RoleIds = '1' | '2'
+export type RoleIds = '2' | '3'
 export const roleIdToName: Record<RoleIds, RoleNames> = {
-  '1': 'Scrutiny',
   '2': 'Seller',
+  '3': 'Scrutiny',
 }
 
 export type documentTypeNames = 'CC' | 'CE' | 'PA'
