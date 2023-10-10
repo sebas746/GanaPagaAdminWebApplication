@@ -11,4 +11,5 @@ export interface IGeneralSetting {
   generalSettingsMinValue: number
   generalSettingsLabel: string
   generalSettingsDescription: string
+  generalSettingsShowInView: boolean
 }

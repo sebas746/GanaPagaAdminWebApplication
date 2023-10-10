@@ -1,6 +1,6 @@
 import {Stack} from 'react-bootstrap'
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog'
-import GeneralSettingForm from '../../../components/Forms/GeneralSettingsForm/GeneralSettingForm'
+import GeneralSettingForm from '../../../components/Forms/ExchangeRateSettingsForm/GeneralSettingForm'
 import {useGeneralSettings} from './GeneralSettings.hook'
 
 const GeneralSettings = () => {

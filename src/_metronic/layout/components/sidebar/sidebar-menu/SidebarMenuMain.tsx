@@ -136,6 +136,21 @@ const SidebarMenuMain = () => {
         </SidebarMenuItemWithSub>
       )}
 
+      {adminRoutes && (
+        <SidebarMenuItemWithSub
+          to='/pages/system-settings'
+          title='Configuración sistema'
+          icon='/media/icons/duotune/coding/cod009.svg'
+          fontIcon='bi-gear'
+        >
+          <SidebarMenuItem
+            to='/pages/system-settings/exchange-rate-settings'
+            title='Configuración tasa de cambio'
+            hasBullet={true}
+          />
+        </SidebarMenuItemWithSub>
+      )}
+
       <SidebarMenuItemWithSub
         to='/crafted/pages'
         title='Pages'

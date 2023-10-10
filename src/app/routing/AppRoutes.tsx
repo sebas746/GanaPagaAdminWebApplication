@@ -29,7 +29,6 @@ const AppRoutes: FC = () => {
   if (!userRoles) {
     return null
   }
-
   return (
     <UserProvider roles={userRoles}>
       <BrowserRouter basename={PUBLIC_URL}>
