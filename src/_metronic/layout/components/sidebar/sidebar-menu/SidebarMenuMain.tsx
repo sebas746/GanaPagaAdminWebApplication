@@ -151,6 +151,17 @@ const SidebarMenuMain = () => {
         </SidebarMenuItemWithSub>
       )}
 
+      {adminRoutes && (
+        <SidebarMenuItemWithSub
+          to='/pages/users-management'
+          title='Gestión Usuarios'
+          icon='/media/icons/duotune/general/gen049.svg'
+          fontIcon='bi-person'
+        >
+          <SidebarMenuItem to='/pages/users-management/users' title='Usuarios' hasBullet={true} />
+        </SidebarMenuItemWithSub>
+      )}
+
       <SidebarMenuItemWithSub
         to='/crafted/pages'
         title='Pages'

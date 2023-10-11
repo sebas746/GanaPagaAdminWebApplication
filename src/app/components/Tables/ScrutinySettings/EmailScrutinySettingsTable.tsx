@@ -51,15 +51,15 @@ const ScrutinySettingsTable = ({
                     <div className='d-flex align-items-center justify-content-center'>
                       <div
                         onClick={() => setEmailId(email.adminEmailId, 'update')}
-                        style={{cursor: 'pointer'}}
+                        style={{cursor: 'pointer', marginRight: '10px'}}
                       >
-                        <i className='bi bi-pencil text-primary fs-2x'></i>
+                        <i className='bi bi-pencil text-primary btn-lg'></i>
                       </div>
                       <div
                         onClick={() => setEmailId(email.adminEmailId, 'delete')}
                         style={{cursor: 'pointer'}}
                       >
-                        <i className='bi bi-trash text-danger fs-2x'></i>
+                        <i className='bi bi-trash text-danger btn-lg'></i>
                       </div>
                     </div>
                   </td>
