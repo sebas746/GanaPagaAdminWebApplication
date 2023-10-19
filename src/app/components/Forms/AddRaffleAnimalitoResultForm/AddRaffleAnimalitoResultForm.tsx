@@ -72,7 +72,11 @@ const AddRaffleAnimalitoResultForm = ({
         isInvalid={!!formik.errors.animalitoId}
         isValid={formik.dirty && !formik.errors.animalitoId}
       />
-      <Button variant='primary' type='submit' disabled={isLoadingState}>
+      <Button
+        variant='primary'
+        type='submit'
+        disabled={isLoadingState || !!formik.errors.animalitoId}
+      >
         {isLoadingState && <RenderLoader show={isLoadingState} />}
         {!isLoadingState && submitButtonText}
       </Button>

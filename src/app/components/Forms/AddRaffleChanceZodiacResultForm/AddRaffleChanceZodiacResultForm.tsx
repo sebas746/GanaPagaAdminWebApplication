@@ -93,7 +93,11 @@ const AddRaffleChanceZodiacResultForm = ({
         </Col>
 
         <Col className='px-1 d-flex gap-2'>
-          <Button variant='primary' type='submit' disabled={isLoadingState}>
+          <Button
+            variant='primary'
+            type='submit'
+            disabled={isLoadingState || !!formik.errors.resultValue || !!formik.errors.starSignId}
+          >
             {isLoadingState && <RenderLoader show={isLoadingState} />}
             {!isLoadingState && submitButtonText}
           </Button>
