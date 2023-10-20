@@ -9,7 +9,7 @@ interface ScrutinyDetailTableProps {
 }
 
 const ScrutinyDetailTable = ({winners}: ScrutinyDetailTableProps) => {
-  const {setTicketId, isTicketDetailLoading} = useTicketDetail()
+  const {setTicketId, isTicketDetailLoading, ticketDetailState} = useTicketDetail()
 
   return (
     <>
@@ -53,10 +53,22 @@ const ScrutinyDetailTable = ({winners}: ScrutinyDetailTableProps) => {
                   <td className='text-center'>
                     <div
                       onClick={() => setTicketId(winner.ticketNumber)}
-                      style={{cursor: isTicketDetailLoading ? 'not-allowed' : 'pointer'}}
+                      style={{
+                        cursor:
+                          isTicketDetailLoading &&
+                          winner.ticketNumber === ticketDetailState.ticketId
+                            ? 'not-allowed'
+                            : 'pointer',
+                      }}
                     >
                       {isTicketDetailLoading ? (
-                        <RenderLoader show={isTicketDetailLoading} />
+                        <RenderLoader
+                          key={winner.ticketNumber}
+                          show={
+                            isTicketDetailLoading &&
+                            winner.ticketNumber === ticketDetailState.ticketId
+                          }
+                        />
                       ) : (
                         <i className='bi bi-zoom-in text-primary fs-2x'></i>
                       )}

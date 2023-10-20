@@ -35,7 +35,11 @@ const AddRafflechance4DigitsResultForm = ({
         isInvalid={!!formik.errors.resultValue}
         isValid={formik.dirty && !formik.errors.resultValue}
       />
-      <Button variant='primary' type='submit' disabled={isLoadingState}>
+      <Button
+        variant='primary'
+        type='submit'
+        disabled={isLoadingState || !!formik.errors.resultValue}
+      >
         {isLoadingState && <RenderLoader show={isLoadingState} />}
         {!isLoadingState && submitButtonText}
       </Button>

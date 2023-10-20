@@ -40,7 +40,7 @@ function ChanceZodiacSettingsForm({
         <Card className='w-100'>
           <Card.Header className={'p-2 rounded-2 bg-success'}>
             <Card.Title className={'w-100 text-white'}>
-              Configuración de Apuestas Chance 3 Cifras Bolívares
+              Configuración de Apuestas Chance Zodiacal Bolívares
             </Card.Title>
           </Card.Header>
           <Card.Body>
@@ -183,7 +183,7 @@ function ChanceZodiacSettingsForm({
         <Card className='w-100'>
           <Card.Header className={'p-2 rounded-2 bg-primary'}>
             <Card.Title className={'w-100 text-white'}>
-              Configuración de Apuestas Chance 3 Dígitos Dólares
+              Configuración de Apuestas Chance Zodiacal Dólares
             </Card.Title>
           </Card.Header>
           <Card.Body>

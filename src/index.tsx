@@ -21,7 +21,8 @@ import {AppRoutes} from './app/routing/AppRoutes'
 import {setupAxios} from './app/modules/auth'
 import {oidcConfig} from './app/config/oidc-identity-server'
 import {AuthProvider} from 'oidc-react'
-import {SnackbarProvider} from 'notistack'
+import {SnackbarProvider, closeSnackbar} from 'notistack'
+import {Button} from 'react-bootstrap'
 /**
  * Creates `axios-mock-adapter` instance for provided `axios` instance, add
  * basic Metronic mocks and returns it.
@@ -61,6 +62,13 @@ if (container) {
           }}
           maxSnack={10}
           autoHideDuration={10000}
+          action={(key) => (
+            <i
+              className='bi bi-x'
+              style={{cursor: 'pointer', fontSize: '1.5rem', color: 'white'}}
+              onClick={() => closeSnackbar(key)}
+            ></i>
+          )}
         >
           <MetronicI18nProvider>
             <AppRoutes />
