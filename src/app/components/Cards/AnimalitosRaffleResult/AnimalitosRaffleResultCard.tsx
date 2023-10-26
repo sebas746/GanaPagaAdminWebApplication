@@ -1,7 +1,11 @@
 import React from 'react'
 import {Card} from 'react-bootstrap'
 import {useRaffleResultCard} from './AnimalitosRaffleResultCard.hook'
-import {IAnimalDetail, IRaffleResultAnimalitosDetail} from '../../../../types/Animalitos.types'
+import {
+  IAnimalDetail,
+  IAnimalitosLotteries,
+  IRaffleResultAnimalitosDetail,
+} from '../../../../types/Animalitos.types'
 import Button from 'react-bootstrap/Button'
 import AddRaffleAnimalitoResultForm from '../../Forms/AddRaffleAnimalitoResultForm/AddRaffleAnimalitoResultForm'
 import ConditionalRendering from '../../../helpers/ConditionalRedering'
@@ -13,6 +17,7 @@ interface AnimalitosRaffleResultCardProps {
   addRaffleAnimalitosResult: (selectedAnimal: string) => void
   isLoadingState: boolean
   createdBy: string
+  selectedLottery: IAnimalitosLotteries | undefined
 }
 
 const AnimalitosRaffleResultCard = ({
@@ -21,6 +26,7 @@ const AnimalitosRaffleResultCard = ({
   animalOptions,
   isLoadingState,
   createdBy,
+  selectedLottery,
 }: AnimalitosRaffleResultCardProps) => {
   const {
     colorState,
@@ -86,17 +92,26 @@ const AnimalitosRaffleResultCard = ({
                 animalOptions.find(
                   (ap) => ap.animalId.toString() === raffle.animalitosRaffleResultValue
                 )?.animalName
-              }{' '}
+              }
+              {selectedLottery?.animalitosLotteryFruitCombined &&
+              raffle.animalitosRaffleResultFruitValue
+                ? '-' +
+                  (animalOptions.find(
+                    (ap) => ap.animalId.toString() === raffle.animalitosRaffleResultFruitValue
+                  )?.animalName || '')
+                : ''}
             </span>
           </ConditionalRendering>
           <ConditionalRendering isTrue={showRaffleResultForm}>
             <AddRaffleAnimalitoResultForm
               options={animalOptions}
               selectedOption={raffle.animalitosRaffleResultValue ?? ''}
+              selectedFruitOption={raffle.animalitosRaffleResultFruitValue ?? ''}
               addRaffleAnimalitosResult={addRaffleAnimalitosResultWrapper}
               setRaffleResultForm={setRaffleResultForm}
               wrappedGetSubmitButtonText={wrappedGetSubmitButtonText}
               isLoadingState={isLoadingState}
+              selectedLottery={selectedLottery}
             />
           </ConditionalRendering>
         </div>

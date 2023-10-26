@@ -19,6 +19,10 @@ const RaffleResultsAnimalitos = () => {
     createdBy,
   } = useRaffleResultsAnimalitos()
 
+  const selectedLottery = animalitosLotteriesState.animalitosLotteries.find(
+    (a) => a.lotteryId === raffleResultState.selectedTab
+  )
+
   const renderResultCard = (
     raffles: IRaffleResultAnimalitosDetail[],
     animalOptions: IAnimalDetail[]
@@ -39,6 +43,7 @@ const RaffleResultsAnimalitos = () => {
             addRaffleAnimalitosResult={wrapAddRaffleAnimalitosResult}
             isLoadingState={isLoadingState}
             createdBy={createdBy ?? ''}
+            selectedLottery={selectedLottery}
           />
         </div>
       )

@@ -50,6 +50,7 @@ const AnimalitosScrutinyCard = ({
         <div className='d-flex align-items-center'>
           <div className='fw-bold me-4 flex-grow-1'>
             Resultado: {raffle.animalitosRaffleResultAnimal}
+            {raffle.animalitosRaffleResultFruit ? `-${raffle?.animalitosRaffleResultFruit}` : ''}
           </div>
           <HasPermission resource='raffleScrutiny' actions={['create-scrutiny']}>
             <ConditionalRedering
