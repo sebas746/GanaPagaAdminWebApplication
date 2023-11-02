@@ -3,6 +3,7 @@ import {CurrencyCode} from './Currency.types'
 export interface IAnimalitosLotteries {
   lotteryId: number
   lotteryName: string
+  animalitosLotteryFruitCombined?: boolean
 }
 
 export interface IAnimalDetail {
@@ -10,6 +11,7 @@ export interface IAnimalDetail {
   animalUserId: string
   animalName: string
   animalImageUrl: string
+  animalIsFruit: boolean
 }
 
 export interface IAnimalDetailSelect {
@@ -46,11 +48,14 @@ export interface IRaffleResultAnimalitosDetail extends RaffleStatus, ScrutinySta
   animalitosRaffleResultCreatedBy: string
   animalitosRaffleResultLastUpdatedBy: string
   animalitosRaffleResultApprovedBy: string
+  animalitosRaffleResultFruitValue: string
+  animalitosRaffleResultFruit: string
 }
 
 export interface IRaffleResultAnimalitosResponse {
   animalitosLotteryId: number
   animalitosLotteryName: string
+  animalitosLotteryFruitCombined: boolean
   animalDetails: IAnimalDetail[]
   raffleResultDetailResponse: IRaffleResultAnimalitosDetail[]
 }

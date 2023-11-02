@@ -203,6 +203,9 @@ export const useRaffleResultsAnimalitos = () => {
     animalitoSelected: string
   ) => {
     try {
+      const selectedLottery = animalitosLotteriesState.animalitosLotteries.find(
+        (a) => a.lotteryId === raffleResultState.selectedTab
+      )
       switch (raffleDetail.animalitosRaffleStatus) {
         case 'PendingResult':
           await addRaffleAnimalitosResultMutation({
@@ -211,7 +214,12 @@ export const useRaffleResultsAnimalitos = () => {
           })
           break
         case 'PendingApprove':
-          if (animalitoSelected === raffleDetail.animalitosRaffleResultValue) {
+          if (
+            animalitoSelected === raffleDetail.animalitosRaffleResultValue ||
+            (selectedLottery?.animalitosLotteryFruitCombined &&
+              animalitoSelected ===
+                `${raffleDetail.animalitosRaffleResultValue}-${raffleDetail.animalitosRaffleResultFruitValue}`)
+          ) {
             await approveRaffleAnimalitosResultMutation({
               raffleId: Number(raffleDetail.animalitosRaffleId),
               raffleResultValue: animalitoSelected,
