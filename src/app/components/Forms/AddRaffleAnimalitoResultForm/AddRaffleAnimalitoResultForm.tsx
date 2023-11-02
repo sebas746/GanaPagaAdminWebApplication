@@ -65,7 +65,10 @@ const AddRaffleAnimalitoResultForm = ({
   let fruitIdSelected: number | undefined
   let fruitSelected: string | undefined
   let fruitOptionsSelected: IAnimalDetailSelect[] = []
-  if (selectedLottery?.animalitosLotteryFruitCombined) {
+  if (
+    selectedLottery?.animalitosLotteryFruitCombined ||
+    selectedLottery?.lotteryName === 'FruitaGana'
+  ) {
     fruitOptions = options
       .filter((option) => option.animalIsFruit)
       .map((option) => {
@@ -85,30 +88,33 @@ const AddRaffleAnimalitoResultForm = ({
       fruitOptionsSelected.push({id: fruitIdSelected, label: fruitSelected})
     }
   }
-
   return (
     <form className='d-flex align-items-center column-gap-4' onSubmit={formik.handleSubmit}>
-      <Typeahead
-        id={'animalitoId'}
-        onChange={(selectedAnimal: IAnimalDetailSelect[]) => {
-          if (selectedAnimal.length > 0) {
-            formik.handleChange({
-              target: {name: 'animalitoId', value: selectedAnimal[0].id},
-            })
-          } else {
-            formik.handleChange({
-              target: {name: 'animalitoId', value: undefined},
-            })
-          }
-        }}
-        options={animalOptions}
-        key={animalOptions.every((e) => e.id + 'typeahead_opt')}
-        defaultSelected={animalOptionsSelected ?? undefined}
-        placeholder={'Seleccionar animalito...'}
-        isInvalid={!!formik.errors.animalitoId}
-        isValid={formik.dirty && !formik.errors.animalitoId}
-      />
-      {selectedLottery?.animalitosLotteryFruitCombined && (
+      {selectedLottery?.lotteryName !== 'FruitaGana' && (
+        <Typeahead
+          id={'animalitoId'}
+          onChange={(selectedAnimal: IAnimalDetailSelect[]) => {
+            if (selectedAnimal.length > 0) {
+              formik.handleChange({
+                target: {name: 'animalitoId', value: selectedAnimal[0].id},
+              })
+            } else {
+              formik.handleChange({
+                target: {name: 'animalitoId', value: undefined},
+              })
+            }
+          }}
+          options={animalOptions}
+          key={animalOptions.every((e) => e.id + 'typeahead_opt')}
+          defaultSelected={animalOptionsSelected ?? undefined}
+          placeholder={'Seleccionar animalito...'}
+          isInvalid={!!formik.errors.animalitoId}
+          isValid={formik.dirty && !formik.errors.animalitoId}
+        />
+      )}
+
+      {(selectedLottery?.animalitosLotteryFruitCombined ||
+        selectedLottery?.lotteryName === 'FruitaGana') && (
         <Typeahead
           id={'fruitId'}
           onChange={(selectedFruit: IAnimalDetailSelect[]) => {
@@ -125,7 +131,7 @@ const AddRaffleAnimalitoResultForm = ({
           options={fruitOptions}
           key={fruitOptions.every((e) => e.id + 'typeahead_opt')}
           defaultSelected={fruitOptionsSelected ?? undefined}
-          placeholder={'Seleccionar fruita...'}
+          placeholder={'Seleccionar fruta...'}
           isInvalid={!!formik.errors.fruitId}
           isValid={formik.dirty && !formik.errors.fruitId}
         />
