@@ -1,16 +1,24 @@
 import {KTSVG} from '../../../../../_metronic/helpers'
 import {Winner} from '../../../../../types/ScrutinyDetail.types'
 import {formatCurrency} from '../../../../helpers/currency.helpers'
-import {useTicketDetail} from '../../../Modals/TicketDetail/TicketDetail.hook'
+import TicketDetail from '../../../Modals/TicketDetail/TicketDetail'
 import RenderLoader from '../../../RenderLoader/RenderLoader'
+import {useScrutinyDetail} from './ScrutinyDetailTable.hook'
 
 interface ScrutinyDetailTableProps {
   winners: Winner[]
+  setTicketId: (payload: string) => void
+  ticketId: string
 }
 
-const ScrutinyDetailTable = ({winners}: ScrutinyDetailTableProps) => {
-  const {setTicketId, isTicketDetailLoading, ticketDetailState} = useTicketDetail()
-
+const ScrutinyDetailTable = ({winners, setTicketId, ticketId}: ScrutinyDetailTableProps) => {
+  const {
+    isTicketDetailLoading,
+    ticketDetailState,
+    handleCloseTicketModal,
+    refreshCount,
+    setTicketModalShow,
+  } = useScrutinyDetail(ticketId)
   return (
     <>
       <div className='card-body py-3'>
@@ -55,8 +63,7 @@ const ScrutinyDetailTable = ({winners}: ScrutinyDetailTableProps) => {
                       onClick={() => setTicketId(winner.ticketNumber)}
                       style={{
                         cursor:
-                          isTicketDetailLoading &&
-                          winner.ticketNumber === ticketDetailState.ticketId
+                          isTicketDetailLoading && winner.ticketNumber === ticketId
                             ? 'not-allowed'
                             : 'pointer',
                       }}
@@ -64,10 +71,7 @@ const ScrutinyDetailTable = ({winners}: ScrutinyDetailTableProps) => {
                       {isTicketDetailLoading ? (
                         <RenderLoader
                           key={winner.ticketNumber}
-                          show={
-                            isTicketDetailLoading &&
-                            winner.ticketNumber === ticketDetailState.ticketId
-                          }
+                          show={isTicketDetailLoading && winner.ticketNumber === ticketId}
                         />
                       ) : (
                         <i className='bi bi-zoom-in text-primary fs-2x'></i>
@@ -79,6 +83,18 @@ const ScrutinyDetailTable = ({winners}: ScrutinyDetailTableProps) => {
             </tbody>
           </table>
         </div>
+      </div>
+      <div className='mb-10'>
+        {ticketId && (
+          <TicketDetail
+            ticketId={ticketId}
+            currentTicket={ticketDetailState.ticketDetail}
+            handleCloseTicketModal={handleCloseTicketModal}
+            refreshCount={refreshCount}
+            setTicketModalShow={setTicketModalShow}
+            ticketModalShow={ticketDetailState.ticketModalShow}
+          />
+        )}
       </div>
     </>
   )

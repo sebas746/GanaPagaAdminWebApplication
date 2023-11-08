@@ -1,18 +1,30 @@
 import {useEffect, useRef} from 'react'
-import {useTicketDetail} from './TicketDetail.hook'
+
 import {Modal} from 'bootstrap'
 import {formatCurrency} from '../../../helpers/currency.helpers'
 import {DateTime} from 'luxon'
 import {usePdfCreator} from '../../DocumentRender/Pdf/PdfCreator.hook'
+import {useScrutinyDetail} from '../../Cards/ScrutinyDetail/components/ScrutinyDetailTable.hook'
+import {ITicketResponse} from '../../../../types/Ticket.types'
 
-const TicketDetail = () => {
-  const {
-    ticketDetailState,
-    setTicketModalShow,
-    handleCloseTicketModal,
-    refreshCount,
-    isTicketDetailLoading,
-  } = useTicketDetail()
+interface TicketDetailProps {
+  ticketId: string
+  ticketModalShow: boolean
+  refreshCount: number
+  setTicketModalShow: (payload: boolean) => void
+  handleCloseTicketModal: () => void
+  currentTicket: ITicketResponse
+}
+
+const TicketDetail = ({
+  ticketId,
+  ticketModalShow,
+  refreshCount,
+  setTicketModalShow,
+  handleCloseTicketModal,
+  currentTicket,
+}: TicketDetailProps) => {
+  const {ticketDetailState, isTicketDetailLoading} = useScrutinyDetail(ticketId)
   const {exportTicketPDF} = usePdfCreator()
   const modalRef = useRef<HTMLDivElement | null>(null) // correct way to create the ref
 
@@ -20,25 +32,25 @@ const TicketDetail = () => {
     if (modalRef.current) {
       const bsModal = new Modal(modalRef.current)
       modalRef.current.addEventListener('hidden.bs.modal', handleCloseTicketModal)
-      if (ticketDetailState.ticketModalShow) {
+      if (ticketModalShow) {
         bsModal.show()
       } else {
         bsModal.hide()
       }
     }
-  }, [ticketDetailState.ticketModalShow, refreshCount])
+  }, [ticketModalShow, refreshCount])
 
-  const createdAt = ticketDetailState.ticketDetail.ticketCreatedAt
-    ? new Date(ticketDetailState.ticketDetail.ticketCreatedAt).toISOString()
+  const createdAt = currentTicket.ticketCreatedAt
+    ? new Date(currentTicket.ticketCreatedAt).toISOString()
     : ''
 
-  const dueDate = ticketDetailState.ticketDetail.ticketDueDate
-    ? new Date(ticketDetailState.ticketDetail.ticketDueDate).toISOString().split('T')[0]
+  const dueDate = currentTicket.ticketDueDate
+    ? new Date(currentTicket.ticketDueDate).toISOString().split('T')[0]
     : ''
 
   return (
     <>
-      {!isTicketDetailLoading && ticketDetailState.ticketDetail.bets && (
+      {!isTicketDetailLoading && currentTicket.bets && (
         <div
           className='modal fade'
           id='ticketDetailModal'
@@ -54,7 +66,7 @@ const TicketDetail = () => {
             >
               <div className='modal-header' style={{backgroundColor: '#f8f9fa'}}>
                 <h5 className='modal-title' id='exampleModalLabel' style={{fontWeight: '600'}}>
-                  Detalle del tiquete # {ticketDetailState.ticketDetail.ticketId}
+                  Detalle del tiquete # {ticketId}
                 </h5>
                 <button
                   type='button'
@@ -65,27 +77,23 @@ const TicketDetail = () => {
               </div>
               <div className='modal-body' style={{fontSize: '15px', color: '#333'}}>
                 <h4 style={{fontWeight: '600', marginBottom: '15px'}}>
-                  {ticketDetailState.ticketDetail.ticketCompanyName}
+                  {currentTicket.ticketCompanyName}
                 </h4>
                 <p>
                   Fecha:{' '}
-                  {DateTime.fromISO(ticketDetailState.ticketDetail.ticketCreatedAt).toLocaleString(
+                  {DateTime.fromISO(currentTicket.ticketCreatedAt).toLocaleString(
                     DateTime.DATETIME_SHORT
                   )}
                 </p>
-                <p>Código: {ticketDetailState.ticketDetail.ticketNumber}</p>
+                <p>Código: {currentTicket.ticketNumber}</p>
                 <p>Valido hasta: {dueDate}</p>
-                <p>Moneda: {ticketDetailState.ticketDetail.currencyCode}</p>
+                <p>Moneda: {currentTicket.currencyCode}</p>
                 <p>
-                  Total:{' '}
-                  {formatCurrency(
-                    ticketDetailState.ticketDetail.ticketTotal,
-                    ticketDetailState.ticketDetail.currencyCode
-                  )}
+                  Total: {formatCurrency(currentTicket.ticketTotal, currentTicket.currencyCode)}
                 </p>
                 <div>
                   <h4>Resumen Apuestas</h4>
-                  {ticketDetailState.ticketDetail.bets.map((bet, index) => (
+                  {currentTicket.bets.map((bet, index) => (
                     <div key={index}>
                       <h6 style={{fontWeight: '600', marginTop: '15px'}}>
                         {bet.lotteryName} - {bet.raffleName}
@@ -94,10 +102,7 @@ const TicketDetail = () => {
                         {bet.betDetail.map((detail, index) => (
                           <li key={index}>
                             {detail.betValue},{' '}
-                            {formatCurrency(
-                              detail.betTotal,
-                              ticketDetailState.ticketDetail.currencyCode
-                            )}
+                            {formatCurrency(detail.betTotal, currentTicket.currencyCode)}
                           </li>
                         ))}
                       </ul>
@@ -109,7 +114,7 @@ const TicketDetail = () => {
                 <button
                   type='button'
                   className='btn btn-primary'
-                  onClick={() => exportTicketPDF(ticketDetailState.ticketDetail)}
+                  onClick={() => exportTicketPDF(currentTicket)}
                   style={{fontWeight: '600'}}
                 >
                   Exportar

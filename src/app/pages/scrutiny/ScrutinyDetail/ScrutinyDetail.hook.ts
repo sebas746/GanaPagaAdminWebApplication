@@ -19,6 +19,7 @@ enum ScrutinyDetailKind {
   SET_URL = 'SET_URL',
   SET_SCRUTINY_DETAIL = 'SET_SCRUTINY_DETAIL',
   SET_EMAIL_LIST = 'SET_EMAIL_LIST',
+  SET_TICKET_ID = 'SET_TICKET_ID',
 }
 
 interface ScrutinyDetailAction {
@@ -32,6 +33,7 @@ interface ScrutinyDetailState {
   url: string
   scrutinyDetail: IScrutinyDetailResponse
   emailList: string[]
+  ticketId: string
 }
 
 export const scrutinyDetailReducer = (state: ScrutinyDetailState, action: ScrutinyDetailAction) => {
@@ -60,6 +62,11 @@ export const scrutinyDetailReducer = (state: ScrutinyDetailState, action: Scruti
       return {
         ...state,
         emailList: action.payload as string[],
+      }
+    case ScrutinyDetailKind.SET_TICKET_ID:
+      return {
+        ...state,
+        ticketId: action.payload as string,
       }
     default:
       return state
@@ -94,11 +101,19 @@ export const useScrutinyDetail = () => {
     url: setEndpointUrl(location.state.gameType),
     scrutinyDetail: {} as IScrutinyDetailResponse,
     emailList: [],
+    ticketId: '',
   })
 
   const setScrutinyDetail = (payload: IScrutinyDetailResponse) => {
     dispatchScrutinyDetail({
       type: ScrutinyDetailKind.SET_SCRUTINY_DETAIL,
+      payload,
+    })
+  }
+
+  const setTicketId = (payload: string) => {
+    dispatchScrutinyDetail({
+      type: ScrutinyDetailKind.SET_TICKET_ID,
       payload,
     })
   }
@@ -126,5 +141,5 @@ export const useScrutinyDetail = () => {
     }
   }, [isFetching, animalitosScrutinyDetailData])
 
-  return {scrutinyDetailState, isLoading: isFetching}
+  return {scrutinyDetailState, isLoading: isFetching, setTicketId}
 }

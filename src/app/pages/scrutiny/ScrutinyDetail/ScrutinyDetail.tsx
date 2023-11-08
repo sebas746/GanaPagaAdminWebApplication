@@ -7,8 +7,8 @@ import RenderLoader from '../../../components/RenderLoader/RenderLoader'
 import TicketDetail from '../../../components/Modals/TicketDetail/TicketDetail'
 
 const ScrutinyDetail = () => {
-  const {scrutinyDetailState, isLoading} = useScrutinyDetail()
-  let winners: Winner[] = [];
+  const {scrutinyDetailState, isLoading, setTicketId} = useScrutinyDetail()
+  let winners: Winner[] = []
   if (!isLoading && scrutinyDetailState.scrutinyDetail.scrutinies) {
     winners = scrutinyDetailState.scrutinyDetail.scrutinies.flatMap(
       (scrutiny) => scrutiny.winners ?? []
@@ -27,12 +27,13 @@ const ScrutinyDetail = () => {
       <div className='mb-10'>
         <div className='col-sm-12 col-md-12' key={`card-raffle-${scrutinyDetailState.raffleId}`}>
           <ConditionalRendering isTrue={winners.length > 0}>
-            <ScrutinyDetailTable winners={winners} />
+            <ScrutinyDetailTable
+              winners={winners}
+              setTicketId={setTicketId}
+              ticketId={scrutinyDetailState.ticketId}
+            />
           </ConditionalRendering>
         </div>
-      </div>
-      <div className='mb-10'>
-        <TicketDetail />
       </div>
       <div className='mb-10'>{isLoading && <RenderLoader show={true} huge={true} />}</div>
     </div>
