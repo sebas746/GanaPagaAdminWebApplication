@@ -28,4 +28,5 @@ export interface Winner {
   totalToPay: number
   isPaid: boolean
   currencyCode: string
+  gameTypeLabel?: string
 }

@@ -31,6 +31,7 @@ const ScrutinyDetailTable = ({winners, setTicketId, ticketId}: ScrutinyDetailTab
                 <th className='text-center'>Moneda</th>
                 <th className='text-center'>Valor Ganado</th>
                 <th className='text-center'>Pagado</th>
+                <th className='text-center'>Tipo de Juego</th>
                 <th className='text-center'>Vendedor</th>
                 <th className='text-center'>Punto de venta</th>
                 <th className='text-center'>Acciones</th>
@@ -56,6 +57,7 @@ const ScrutinyDetailTable = ({winners, setTicketId, ticketId}: ScrutinyDetailTab
                       {winner.isPaid ? 'SI' : 'NO'}
                     </span>
                   </td>
+                  <td className='text-center'>{winner.gameTypeLabel}</td>
                   <td className='text-center'>{'vendedor'}</td>
                   <td className='text-center'>{'punto de venta'}</td>
                   <td className='text-center'>
