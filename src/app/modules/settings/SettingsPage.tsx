@@ -5,6 +5,7 @@ import AnimalitosSettings from '../../pages/settings/animalitos-settings/Animali
 import Chance3DigitsSettings from '../../pages/settings/chance-3digits-settings/Chance3DigitsSettings'
 import ChanceZodiacSettings from '../../pages/settings/chance-zodiac-settings/ChanceZodiacSettings'
 import Chance4DigitsSettings from '../../pages/settings/chance-4digits-settings/Chance4DigitsSettings'
+import AnimalitosGeneralSettings from '../../pages/settings/animalitos-general-settings/AnimalitosGeneralSettings'
 
 const settingsBreadCrumbs: Array<PageLink> = [
   {
@@ -40,6 +41,17 @@ const SettinsPage = () => {
             <>
               <PageTitle breadcrumbs={settingsBreadCrumbs}>Configuración animalitos</PageTitle>
               <AnimalitosSettings />
+            </>
+          }
+        />
+        <Route
+          path='animalitos-general-settings'
+          element={
+            <>
+              <PageTitle breadcrumbs={settingsBreadCrumbs}>
+                Configuración general animalitos
+              </PageTitle>
+              <AnimalitosGeneralSettings />
             </>
           }
         />

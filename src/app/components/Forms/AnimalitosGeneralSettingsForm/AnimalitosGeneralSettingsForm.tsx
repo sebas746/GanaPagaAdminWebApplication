@@ -1,22 +1,23 @@
 import React from 'react'
-import {useAnimalitosSettingsForm} from './AnimalitosSettingsForm.hook'
+
 import {
-  IAnimalitosLotterySetting,
-  IAnimalitoUpdateSettings,
+  IAnimalitosLotteryGeneralSetting,
+  IAnimalitoUpdateGeneralSettings,
 } from '../../../../types/Animalitos.types'
 import {Card, Col, Form, Row, Stack} from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
-import ConfirmAnimalitosSettings from '../../Modals/ConfirmAnimalitosSettings/ConfirmAnimalitosSettings'
-import {useConfirmAnimalitosSettings} from '../../Modals/ConfirmAnimalitosSettings/ConfirmAnimalitosSettings.hook'
 import {useNavigate} from 'react-router-dom'
+import {useAnimalitosGeneralSettingsForm} from './AnimalitosGeneralSettingsForm.hook'
+import {useConfirmAnimalitosGeneralSettings} from '../../Modals/ConfirmAnimalitosGeneralSettings/ConfirmAnimalitosGeneralSettings.hook'
+import ConfirmAnimalitosGeneralSettings from '../../Modals/ConfirmAnimalitosGeneralSettings/ConfirmAnimalitosGeneralSettings'
 
 interface IAnimalitosSettingsFormProps {
-  initialValues: IAnimalitosLotterySetting[]
-  submitForm: (animalitosSettings: IAnimalitoUpdateSettings[]) => void
+  initialValues: IAnimalitosLotteryGeneralSetting[]
+  submitForm: (animalitosSettings: IAnimalitoUpdateGeneralSettings[]) => void
   isLoading: boolean
 }
 
-function AnimalitosSettingsForm({
+function AnimalitosGeneralSettingsForm({
   initialValues,
   submitForm,
   isLoading,
@@ -30,8 +31,8 @@ function AnimalitosSettingsForm({
     hideModalConfirmation,
     initialValuesVes,
     initialValuesUsd,
-  } = useAnimalitosSettingsForm(initialValues, submitForm)
-  const {getAnimalitosSettingsLabel} = useConfirmAnimalitosSettings()
+  } = useAnimalitosGeneralSettingsForm(initialValues, submitForm)
+  const {getAnimalitosGeneralSettingsLabel} = useConfirmAnimalitosGeneralSettings()
   const navigate = useNavigate()
   return (
     <>
@@ -39,7 +40,7 @@ function AnimalitosSettingsForm({
         <Card className='w-100'>
           <Card.Header className={'p-2 rounded-2 bg-success'}>
             <Card.Title className={'w-100 text-white'}>
-              Configuración General de Apuestas Animalitos Bolívares
+              Configuración de Apuestas Animalitos Bolívares
             </Card.Title>
           </Card.Header>
           <Card.Body>
@@ -47,42 +48,42 @@ function AnimalitosSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getAnimalitosSettingsLabel('betReturnedRate')}
+                    {getAnimalitosGeneralSettingsLabel('maxBetByAnimal')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
-                    id='betReturnedRate'
-                    placeholder={getAnimalitosSettingsLabel('betReturnedRate')}
-                    value={formikVes.values.betReturnedRate}
+                    id='maxBetByAnimal'
+                    placeholder={getAnimalitosGeneralSettingsLabel('maxBetByAnimal')}
+                    value={formikVes.values.maxBetByAnimal}
                     onChange={formikVes.handleChange}
-                    isInvalid={!!formikVes.errors.betReturnedRate}
+                    isInvalid={!!formikVes.errors.maxBetByAnimal}
                     type='number'
                     autoComplete='off'
                   />
                   <Form.Control.Feedback type='invalid'>
-                    {formikVes.errors.betReturnedRate}
+                    {formikVes.errors.maxBetByAnimal}
                   </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getAnimalitosSettingsLabel('maxOverallAnimalitoBet')}
+                    {getAnimalitosGeneralSettingsLabel('maxAnimalsByTicket')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
-                    id='maxOverallAnimalitoBet'
-                    placeholder={getAnimalitosSettingsLabel('maxOverallAnimalitoBet')}
-                    value={formikVes.values.maxOverallAnimalitoBet}
+                    id='maxAnimalsByTicket'
+                    placeholder={getAnimalitosGeneralSettingsLabel('maxAnimalsByTicket')}
+                    value={formikVes.values.maxAnimalsByTicket}
                     onChange={formikVes.handleChange}
-                    isInvalid={!!formikVes.errors.maxOverallAnimalitoBet}
+                    isInvalid={!!formikVes.errors.maxAnimalsByTicket}
                     type='number'
                     autoComplete='off'
                   />
                   <Form.Control.Feedback type='invalid'>
-                    {formikVes.errors.maxOverallAnimalitoBet}
+                    {formikVes.errors.maxAnimalsByTicket}
                   </Form.Control.Feedback>
                 </Col>
               </Row>
@@ -92,7 +93,7 @@ function AnimalitosSettingsForm({
         <Card className='w-100'>
           <Card.Header className={'p-2 rounded-2 bg-primary'}>
             <Card.Title className={'w-100 text-white'}>
-              Configuración General de Apuestas Animalitos Dólares
+              Configuración de Apuestas Animalitos Dólares
             </Card.Title>
           </Card.Header>
           <Card.Body>
@@ -100,42 +101,42 @@ function AnimalitosSettingsForm({
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getAnimalitosSettingsLabel('betReturnedRate')}
+                    {getAnimalitosGeneralSettingsLabel('maxBetByAnimal')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
-                    id='betReturnedRate'
-                    placeholder={getAnimalitosSettingsLabel('betReturnedRate')}
-                    value={formikUsd.values.betReturnedRate}
+                    id='maxBetByAnimal'
+                    placeholder={getAnimalitosGeneralSettingsLabel('maxBetByAnimal')}
+                    value={formikUsd.values.maxBetByAnimal}
                     onChange={formikUsd.handleChange}
-                    isInvalid={!!formikUsd.errors.betReturnedRate}
+                    isInvalid={!!formikUsd.errors.maxBetByAnimal}
                     type='number'
                     autoComplete='off'
                   />
                   <Form.Control.Feedback type='invalid'>
-                    {formikUsd.errors.betReturnedRate}
+                    {formikUsd.errors.maxBetByAnimal}
                   </Form.Control.Feedback>
                 </Col>
               </Row>
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
-                    {getAnimalitosSettingsLabel('maxOverallAnimalitoBet')}
+                    {getAnimalitosGeneralSettingsLabel('maxAnimalsByTicket')}
                   </Form.Label>
                 </Col>
                 <Col>
                   <Form.Control
-                    id='maxOverallAnimalitoBet'
-                    placeholder={getAnimalitosSettingsLabel('maxOverallAnimalitoBet')}
-                    value={formikUsd.values.maxOverallAnimalitoBet}
+                    id='maxAnimalsByTicket'
+                    placeholder={getAnimalitosGeneralSettingsLabel('maxAnimalsByTicket')}
+                    value={formikUsd.values.maxAnimalsByTicket}
                     onChange={formikUsd.handleChange}
-                    isInvalid={!!formikUsd.errors.maxOverallAnimalitoBet}
+                    isInvalid={!!formikUsd.errors.maxAnimalsByTicket}
                     type='number'
                     autoComplete='off'
                   />
                   <Form.Control.Feedback type='invalid'>
-                    {formikUsd.errors.maxOverallAnimalitoBet}
+                    {formikUsd.errors.maxAnimalsByTicket}
                   </Form.Control.Feedback>
                 </Col>
               </Row>
@@ -157,7 +158,7 @@ function AnimalitosSettingsForm({
           Actualizar
         </Button>
       </Stack>
-      <ConfirmAnimalitosSettings
+      <ConfirmAnimalitosGeneralSettings
         isShowingModalConfirmation={isShowingModalConfirmation}
         hideModalConfirmation={hideModalConfirmation}
         formikVes={formikVes}
@@ -171,4 +172,4 @@ function AnimalitosSettingsForm({
   )
 }
 
-export default AnimalitosSettingsForm
+export default AnimalitosGeneralSettingsForm
