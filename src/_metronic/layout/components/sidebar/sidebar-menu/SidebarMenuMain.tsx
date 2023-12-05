@@ -99,6 +99,11 @@ const SidebarMenuMain = () => {
             hasBullet={true}
           />
           <SidebarMenuItem
+            to='/pages/settings/animalitos-general-settings'
+            title='Configuración general animalitos'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
             to='/pages/settings/animalitos-settings'
             title='Configuración animalitos'
             hasBullet={true}

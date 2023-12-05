@@ -75,22 +75,38 @@ export interface IAnimalitosLotterySetting {
   currencyId: number
   currencyName: string
   currencyCode: CurrencyCode
-  maxBetByAnimal: number
   betReturnedRate: number
-  maxAnimalsByTicket: number
   maxOverallAnimalitoBet: number
+}
+
+export interface IAnimalitosLotteryGeneralSetting {
+  currencyId: number
+  currencyName: string
+  currencyCode: CurrencyCode
+  maxBetByAnimal: number
+  maxAnimalsByTicket: number
 }
 
 export interface IAnimalitoUpdateSettings {
   currencyCode: CurrencyCode
-  maxBetByAnimal: number
   betReturnedRate: number
-  maxAnimalsByTicket: number
   maxOverallAnimalitoBet: number
+}
+
+export interface IAnimalitoUpdateGeneralSettings {
+  currencyCode: CurrencyCode
+  maxBetByAnimal: number
+  maxAnimalsByTicket: number
 }
 
 export interface ISettingsAnimalitosResponse {
   lotteryId: number
   lotteryName: string
   animalitosLotterySettings: IAnimalitosLotterySetting[]
+}
+
+export interface IGeneralSettingsAnimalitosResponse {
+  lotteryId: number
+  lotteryName: string
+  animalitosLotterySettings: IAnimalitosLotteryGeneralSetting[]
 }

@@ -1,13 +1,21 @@
-import {IAnimalitoUpdateSettings} from '../../types/Animalitos.types'
+import {
+  IAnimalitoUpdateGeneralSettings,
+  IAnimalitoUpdateSettings,
+} from '../../types/Animalitos.types'
 import {IChance3DigitsUpdateSettings} from '../../types/Chance3Digits.types'
 import {IChance4DigitsUpdateSettings} from '../../types/Chance4Digits.types'
 import {IChanceZodiacUpdateSettings} from '../../types/ChanceZodiac.types'
 
 export const mapAnimalitosSettingsLabel: {[K in keyof IAnimalitoUpdateSettings]?: string} = {
   betReturnedRate: 'Tasa de retorno de la apuesta',
+  maxOverallAnimalitoBet: 'Cupo máximo de Apuesta por animalito y sorteo',
+}
+
+export const mapAnimalitosGeneralSettingsLabel: {
+  [K in keyof IAnimalitoUpdateGeneralSettings]?: string
+} = {
   maxAnimalsByTicket: 'Número máximo de animales por ticket',
   maxBetByAnimal: 'Apuesta total máxima por animal',
-  maxOverallAnimalitoBet: 'Cupo máximo de Apuesta por animalito y sorteo',
 }
 
 export const animalitosSettingsLimits = {

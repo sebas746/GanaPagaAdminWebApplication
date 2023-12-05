@@ -1,44 +1,44 @@
 import {useFormik} from 'formik'
 import {
-  IAnimalitosLotterySetting,
-  IAnimalitoUpdateSettings,
+  IAnimalitosLotteryGeneralSetting,
+  IAnimalitoUpdateGeneralSettings,
 } from '../../../../types/Animalitos.types'
 import {CurrencyCode} from '../../../../types/Currency.types'
 import * as Yup from 'yup'
 import {useState} from 'react'
 import {animalitosSettingsLimits} from '../../../constants/settings.constants'
 
-export const useAnimalitosSettingsForm = (
-  initialValues: IAnimalitosLotterySetting[],
-  submitForm: (animalitosSettings: IAnimalitoUpdateSettings[]) => void
+export const useAnimalitosGeneralSettingsForm = (
+  initialValues: IAnimalitosLotteryGeneralSetting[],
+  submitForm: (animalitosSettings: IAnimalitoUpdateGeneralSettings[]) => void
 ) => {
   const [isShowingModalConfirmation, setIsShowingModalConfirmation] = useState(false)
-  let initialValuesVes = {} as IAnimalitosLotterySetting
-  let initialValuesUsd = {} as IAnimalitosLotterySetting
+  let initialValuesVes = {} as IAnimalitosLotteryGeneralSetting
+  let initialValuesUsd = {} as IAnimalitosLotteryGeneralSetting
 
   const settingAnimalitosSchema = Yup.object().shape({
     currencyCode: Yup.string(),
-    betReturnedRate: Yup.number()
+    maxBetByAnimal: Yup.number()
       .typeError(animalitosSettingsLimits.numericValue)
-      .required('Tasa de retorno de la apuesta es requerido')
+      .required('Apuesta total máxima por animal es requerido')
       .min(
-        animalitosSettingsLimits.minBetReturnedRate,
-        `Tasa de retorno de la apuesta debe ser superior a ${animalitosSettingsLimits.minBetReturnedRate}`
+        animalitosSettingsLimits.minBetByAnimal,
+        `Apuesta total máxima por animal debe ser superior a ${animalitosSettingsLimits.minBetByAnimal}`
       )
       .max(
-        animalitosSettingsLimits.maxBetReturnedRate,
-        `Tasa de retorno de la apuesta debe ser inferior a ${animalitosSettingsLimits.maxBetReturnedRate}`
+        animalitosSettingsLimits.maxBetByAnimal,
+        `Apuesta total máxima por animal debe ser inferior a ${animalitosSettingsLimits.maxBetByAnimal}`
       ),
-    maxOverallAnimalitoBet: Yup.number()
+    maxAnimalsByTicket: Yup.number()
       .typeError(animalitosSettingsLimits.numericValue)
-      .required('Cupo de Apuesta por animalito y sorteo es requerido')
+      .required('Número máximo de animales por sorteo y tiquete es requerido')
       .min(
-        animalitosSettingsLimits.minOverallAnimalitoBet,
-        `Cupo de Apuesta por animalito y sorteo debe ser superior a ${animalitosSettingsLimits.minOverallAnimalitoBet}`
+        animalitosSettingsLimits.minAnimalsByTicket,
+        `Número máximo de animales por sorteo y tiquete debe ser superior a ${animalitosSettingsLimits.minAnimalsByTicket}`
       )
       .max(
-        animalitosSettingsLimits.maxOverallAnimalitoBet,
-        `Cupo de Apuesta por animalito y sorteo debe ser inferior a ${animalitosSettingsLimits.maxOverallAnimalitoBet}`
+        animalitosSettingsLimits.maxAnimalsByTicket,
+        `Número máximo de animales por sorteo y tiquete debe ser inferior a ${animalitosSettingsLimits.maxAnimalsByTicket}`
       ),
   })
 
@@ -55,8 +55,8 @@ export const useAnimalitosSettingsForm = (
       currencyId: initialValuesVes.currencyId,
       currencyName: initialValuesVes.currencyName,
       currencyCode: initialValuesVes.currencyCode,
-      betReturnedRate: initialValuesVes.betReturnedRate,
-      maxOverallAnimalitoBet: initialValuesVes.maxOverallAnimalitoBet,
+      maxBetByAnimal: initialValuesVes.maxBetByAnimal,
+      maxAnimalsByTicket: initialValuesVes.maxAnimalsByTicket,
     },
     validationSchema: settingAnimalitosSchema,
     onSubmit: () => {},
@@ -67,8 +67,8 @@ export const useAnimalitosSettingsForm = (
       currencyId: initialValuesUsd.currencyId,
       currencyName: initialValuesUsd.currencyName,
       currencyCode: initialValuesUsd.currencyCode,
-      betReturnedRate: initialValuesUsd.betReturnedRate,
-      maxOverallAnimalitoBet: initialValuesUsd.maxOverallAnimalitoBet,
+      maxBetByAnimal: initialValuesUsd.maxBetByAnimal,
+      maxAnimalsByTicket: initialValuesUsd.maxAnimalsByTicket,
     },
     validationSchema: settingAnimalitosSchema,
     onSubmit: () => {},
@@ -86,13 +86,13 @@ export const useAnimalitosSettingsForm = (
     const animalitosSettings = [
       {
         currencyCode: formikVes.values.currencyCode,
-        betReturnedRate: formikVes.values.betReturnedRate,
-        maxOverallAnimalitoBet: formikVes.values.maxOverallAnimalitoBet,
+        maxBetByAnimal: formikVes.values.maxBetByAnimal,
+        maxAnimalsByTicket: formikVes.values.maxAnimalsByTicket,
       },
       {
         currencyCode: formikUsd.values.currencyCode,
-        betReturnedRate: formikUsd.values.betReturnedRate,
-        maxOverallAnimalitoBet: formikUsd.values.maxOverallAnimalitoBet,
+        maxBetByAnimal: formikUsd.values.maxBetByAnimal,
+        maxAnimalsByTicket: formikUsd.values.maxAnimalsByTicket,
       },
     ]
     submitForm(animalitosSettings)
