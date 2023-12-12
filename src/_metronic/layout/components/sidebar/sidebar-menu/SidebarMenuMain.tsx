@@ -158,6 +158,26 @@ const SidebarMenuMain = () => {
 
       {adminRoutes && (
         <SidebarMenuItemWithSub
+          to='/pages/sales-reports'
+          title='Reportes de ventas'
+          icon='/media/icons/duotune/coding/cod009.svg'
+          fontIcon='bi-gear'
+        >
+          <SidebarMenuItem
+            to='/pages/sales-reports/sales-seller-report'
+            title='Reporte vendedores'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
+            to='/pages/sales-reports/sales-salepoint-report'
+            title='Reporte Puntos de Venta'
+            hasBullet={true}
+          />
+        </SidebarMenuItemWithSub>
+      )}
+
+      {adminRoutes && (
+        <SidebarMenuItemWithSub
           to='/pages/users-management'
           title='Gestión Usuarios'
           icon='/media/icons/duotune/general/gen049.svg'
