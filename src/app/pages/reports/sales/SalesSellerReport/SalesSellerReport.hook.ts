@@ -128,8 +128,8 @@ export const useSalesSellerReport = () => {
       baseUrl: salesSellerReportState.params.baseUrl,
       pageIndex: 0,
       pageSize: 10,
-      initialDate: '',
-      endDate: '',
+      initialDate: formattedDate,
+      endDate: formattedDate,
       sellerId: '',
     }
 
@@ -154,23 +154,28 @@ export const useSalesSellerReport = () => {
   useEffect(() => {
     if (!isFetching && salesSellerReportPaginatedData) {
       setSalesSellerReportPaginated(salesSellerReportPaginatedData.data.response)
-      const uniqueSellerIds = new Set<number>()
+      if (
+        salesSellerReportState.sellers === undefined ||
+        salesSellerReportState.sellers.length === 0
+      ) {
+        const uniqueSellerIds = new Set<number>()
 
-      const sellers: ISellerResponse[] = salesSellerReportPaginatedData.data.response.items
-        .filter((salesSeller) => {
-          if (uniqueSellerIds.has(salesSeller.seller.sellerId)) {
-            return false
-          }
-          uniqueSellerIds.add(salesSeller.seller.sellerId)
-          return true
-        })
-        .map((salesSeller) => ({
-          sellerId: salesSeller.seller.sellerId,
-          sellerFirstName: salesSeller.seller.sellerFirstName,
-          sellerLastName: salesSeller.seller.sellerLastName,
-          sellerEmail: salesSeller.seller.sellerEmail,
-        }))
-      setSellers(sellers)
+        const sellers: ISellerResponse[] = salesSellerReportPaginatedData.data.response.items
+          .filter((salesSeller) => {
+            if (uniqueSellerIds.has(salesSeller.seller.sellerId)) {
+              return false
+            }
+            uniqueSellerIds.add(salesSeller.seller.sellerId)
+            return true
+          })
+          .map((salesSeller) => ({
+            sellerId: salesSeller.seller.sellerId,
+            sellerFirstName: salesSeller.seller.sellerFirstName,
+            sellerLastName: salesSeller.seller.sellerLastName,
+            sellerEmail: salesSeller.seller.sellerEmail,
+          }))
+        setSellers(sellers)
+      }
     }
   }, [salesSellerReportPaginatedData])
 

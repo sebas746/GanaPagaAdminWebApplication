@@ -5,7 +5,6 @@ import {
   ISalesSellerResponse,
   ISellerResponse,
 } from '../../../../../types/SalesSellerReport.types'
-import {UsersQueryParams} from '../../../../../types/Users.types'
 import RenderLoader from '../../../RenderLoader/RenderLoader'
 import {formatCurrency} from '../../../../helpers/currency.helpers'
 import {DateTime} from 'luxon'
@@ -17,7 +16,7 @@ interface SalesSellerReportTableProps {
   isLoading: boolean
   setTempFilters: React.Dispatch<React.SetStateAction<ISalesSellerReportQueryParams>>
   setSalesSellerReportParams: () => void
-  tempFilters: UsersQueryParams
+  tempFilters: ISalesSellerReportQueryParams
   resetFilters: () => void
   sellers: ISellerResponse[]
 }
@@ -92,7 +91,11 @@ const SalesSellerReportTable = ({
           <div className='row mb-3'>
             <div className='col-md-12'>
               <div className='btn-group'>
-                <button className='btn btn-primary' onClick={() => setSalesSellerReportParams()}>
+                <button
+                  className='btn btn-primary'
+                  disabled={isLoading}
+                  onClick={() => setSalesSellerReportParams()}
+                >
                   Buscar
                 </button>
                 <button className='btn btn-secondary' onClick={resetFilters}>
@@ -102,10 +105,12 @@ const SalesSellerReportTable = ({
             </div>
           </div>
         </div>
-
         {isLoading && <RenderLoader show={isLoading} huge={true} />}
         {!isLoading && salesSellerReportPaginated && salesSellerReportPaginated.totalCount > 0 && (
           <>
+            <div className='table-title text-center'>
+              <h2>Reporte por vendedores</h2>
+            </div>
             <div className='table-responsive'>
               <table className='table table-row-bordered table-row-gray-300 gy-6'>
                 <thead>
@@ -149,6 +154,9 @@ const SalesSellerReportTable = ({
                 </tbody>
               </table>
             </div>
+            <div className='table-title text-center'>
+              <h2>Reporte general</h2>
+            </div>
             <div className='table-responsive'>
               <table className='table table-row-bordered table-row-gray-300 gy-6'>
                 <thead>
@@ -156,7 +164,7 @@ const SalesSellerReportTable = ({
                     <th className='text-center'>Moneda</th>
                     <th className='text-center'>Total Ventas</th>
                     <th className='text-center'>Total Pagos</th>
-                    <th className='text-center'>Total Ganancias</th>
+                    <th className='text-center'>Total Balance</th>
                   </tr>
                 </thead>
                 <tbody>

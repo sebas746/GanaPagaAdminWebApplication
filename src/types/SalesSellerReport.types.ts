@@ -17,12 +17,6 @@ export interface ISellerResponse {
   sellerEmail: string
 }
 
-export interface ISalePointResponse {
-  salePointId: number
-  salePointName: string
-  salePointAddress: string
-}
-
 export interface ISalesSellerReportQueryParams {
   baseUrl: string
   pageIndex: number

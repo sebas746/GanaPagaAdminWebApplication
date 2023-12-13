@@ -14,7 +14,7 @@ import ScrutinySettingsPage from '../modules/scrutiny-settings/ScrutinySettingsP
 import SystemSettingsPage from '../modules/system-settings/SystemSettingsPage'
 import ExchangeRateSettings from '../pages/system-settings/exchange-rate-settings/ExchangeRateSettings'
 import UsersManagementPage from '../modules/users-management/UsersManagementPage'
-import SalesSellerReportPage from '../modules/reports/SalesSellerReportPage'
+import SalesSellerReportPage from '../modules/reports/SalesReportPage'
 
 const PrivateRoutes = () => {
   useCheckSessionStatus()

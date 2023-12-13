@@ -2,11 +2,12 @@ import {Outlet, Route, Routes} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
 import ExchangeRateSettings from '../../pages/system-settings/exchange-rate-settings/ExchangeRateSettings'
 import SalesSellerReport from '../../pages/reports/sales/SalesSellerReport/SalesSellerReport'
+import SalesSalePointReport from '../../pages/reports/sales/SalesSalePointReport/SalesSalePointReport'
 
 const salesSellerReportBreadCrumbs: Array<PageLink> = [
   {
     title: 'Reporte de ventas por vendedor',
-    path: '/pages/sales-report/exchange-rate-settings',
+    path: '/pages/sales-report/sales-seller-report',
     isSeparator: false,
     isActive: false,
   },
@@ -30,6 +31,17 @@ function SalesSellerReportPage() {
                 Reporte de ventas por vendedor
               </PageTitle>
               <SalesSellerReport />
+            </>
+          }
+        />
+        <Route
+          path='sales-salepoint-report'
+          element={
+            <>
+              <PageTitle breadcrumbs={salesSellerReportBreadCrumbs}>
+                Reporte de ventas por punto de venta
+              </PageTitle>
+              <SalesSalePointReport />
             </>
           }
         />

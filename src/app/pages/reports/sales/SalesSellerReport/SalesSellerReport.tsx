@@ -1,3 +1,4 @@
+import RenderLoader from '../../../../components/RenderLoader/RenderLoader'
 import SalesSellerReportTable from '../../../../components/Tables/Reports/Sales/SalesSellerReportTable'
 import {useSalesSellerReport} from './SalesSellerReport.hook'
 
