@@ -14,6 +14,7 @@ import ScrutinySettingsPage from '../modules/scrutiny-settings/ScrutinySettingsP
 import SystemSettingsPage from '../modules/system-settings/SystemSettingsPage'
 import ExchangeRateSettings from '../pages/system-settings/exchange-rate-settings/ExchangeRateSettings'
 import UsersManagementPage from '../modules/users-management/UsersManagementPage'
+import SalesSellerReportPage from '../modules/reports/SalesReportPage'
 
 const PrivateRoutes = () => {
   useCheckSessionStatus()
@@ -131,6 +132,16 @@ const PrivateRoutes = () => {
             <SuspensedView>
               <ProtectedRoute roles={['Admin']}>
                 <SystemSettingsPage />
+              </ProtectedRoute>
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='pages/sales-reports/*'
+          element={
+            <SuspensedView>
+              <ProtectedRoute roles={['Admin']}>
+                <SalesSellerReportPage />
               </ProtectedRoute>
             </SuspensedView>
           }
