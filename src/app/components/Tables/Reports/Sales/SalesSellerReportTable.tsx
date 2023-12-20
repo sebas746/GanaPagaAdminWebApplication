@@ -36,7 +36,7 @@ const SalesSellerReportTable = ({
     <>
       <div className='card-body py-3'>
         <div className='mb-4'>
-          <div className='row mb-2'>
+          <div className='row mb-4'>
             {/* Initial Date Input */}
             <div className='col-md-3'>
               <label htmlFor='initialDate' className='form-label'>
@@ -45,7 +45,7 @@ const SalesSellerReportTable = ({
               <input
                 id='initialDate'
                 type='date'
-                className='form-control'
+                className='form-control mb-2'
                 placeholder='Fecha inicial'
                 onChange={(e) => setTempFilters((prev) => ({...prev, initialDate: e.target.value}))}
                 value={tempFilters.initialDate}
@@ -60,7 +60,7 @@ const SalesSellerReportTable = ({
               <input
                 id='endDate'
                 type='date'
-                className='form-control'
+                className='form-control mb-2'
                 placeholder='Fecha final'
                 onChange={(e) => setTempFilters((prev) => ({...prev, endDate: e.target.value}))}
                 value={tempFilters.endDate}
@@ -74,7 +74,7 @@ const SalesSellerReportTable = ({
               </label>
               <Form.Select
                 id='sellerId'
-                className='form-control'
+                className='form-control mb-2'
                 onChange={(e) => setTempFilters((prev) => ({...prev, sellerId: e.target.value}))}
                 value={tempFilters.sellerId}
               >
@@ -105,29 +105,44 @@ const SalesSellerReportTable = ({
             </div>
           </div>
         </div>
+        <div style={{borderTop: '1px solid #ddd', margin: '20px 0'}}></div>
         {isLoading && <RenderLoader show={isLoading} huge={true} />}
         {!isLoading && salesSellerReportPaginated && salesSellerReportPaginated.totalCount > 0 && (
           <>
-            <div className='table-title text-center'>
+            <div className='table-title text-left'>
               <h2>Reporte por vendedores</h2>
             </div>
             <div className='table-responsive'>
-              <table className='table table-row-bordered table-row-gray-300 gy-6'>
+              <table className='table table-bordered table-row-bordered table-row-gray-300 gy-6 table-hover'>
                 <thead>
                   <tr className='fw-bold text-light bg-success'>
-                    <th className='text-center'>Fecha</th>
-                    <th className='text-center'>Moneda</th>
-                    <th className='text-center'>Vendedor</th>
-                    <th className='text-center'>Usuario</th>
-                    <th className='text-center'>Total Ventas</th>
-                    <th className='text-center'>Total Pagos</th>
+                    <th className='text-center fs-4' style={{color: 'white'}}>
+                      Fecha
+                    </th>
+                    <th className='text-center fs-4' style={{color: 'white'}}>
+                      Moneda
+                    </th>
+                    <th className='text-center fs-4' style={{color: 'white'}}>
+                      Vendedor
+                    </th>
+                    <th className='text-center fs-4' style={{color: 'white'}}>
+                      Usuario
+                    </th>
+                    <th className='text-center fs-4' style={{color: 'white'}}>
+                      Total Ventas
+                    </th>
+                    <th className='text-center fs-4' style={{color: 'white'}}>
+                      Total Pagos
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {salesSellerReportPaginated.totalCount > 0 &&
                     salesSellerReportPaginated.items.map((sale, index) => (
                       <tr
-                        className='fw-bold fs-6 text-gray-800'
+                        className={`fw-bold fs-6 text-gray-800 text-center ${
+                          index % 2 === 0 ? 'bg-white' : 'bg-gray-200'
+                        }`}
                         key={`${sale.currentDate}-${index}`}
                       >
                         <td className='text-center'>
@@ -154,24 +169,52 @@ const SalesSellerReportTable = ({
                 </tbody>
               </table>
             </div>
-            <div className='table-title text-center'>
+            <div style={{borderTop: '1px solid #ddd', margin: '20px 0'}}></div>
+            {!isLoading &&
+              salesSellerReportPaginated &&
+              salesSellerReportPaginated.totalCount > 0 && (
+                <Pagination>
+                  {Array.from({
+                    length: Math.ceil(salesSellerReportPaginated.totalCount / params.pageSize),
+                  }).map((_, index) => (
+                    <Pagination.Item
+                      key={index + 1}
+                      active={index === params.pageIndex}
+                      onClick={() => handleFilterChange('pageIndex', index)}
+                    >
+                      {index + 1}
+                    </Pagination.Item>
+                  ))}
+                </Pagination>
+              )}
+            <div className='table-title text-left'>
               <h2>Reporte general</h2>
             </div>
             <div className='table-responsive'>
-              <table className='table table-row-bordered table-row-gray-300 gy-6'>
+              <table className='table table-bordered table-row-bordered table-row-gray-300 gy-6'>
                 <thead>
                   <tr className='fw-bold text-light bg-primary'>
-                    <th className='text-center'>Moneda</th>
-                    <th className='text-center'>Total Ventas</th>
-                    <th className='text-center'>Total Pagos</th>
-                    <th className='text-center'>Total Balance</th>
+                    <th className='text-center fs-4' style={{color: 'white'}}>
+                      Moneda
+                    </th>
+                    <th className='text-center fs-4' style={{color: 'white'}}>
+                      Total Ventas
+                    </th>
+                    <th className='text-center fs-4' style={{color: 'white'}}>
+                      Total Pagos
+                    </th>
+                    <th className='text-center fs-4' style={{color: 'white'}}>
+                      Total Balance
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {salesSellerReportPaginated.totalCount > 0 &&
                     salesSellerReportPaginated.salesTotals.map((sale, index) => (
                       <tr
-                        className='fw-bold fs-6 text-gray-800'
+                        className={`fw-bold fs-6 text-gray-800 ${
+                          index % 2 === 0 ? 'bg-white' : 'bg-gray-200'
+                        }`}
                         key={`${sale.currencyCode}-${index}`}
                       >
                         <td className='text-center'>{sale.currencyCode}</td>
@@ -197,21 +240,6 @@ const SalesSellerReportTable = ({
               </table>
             </div>
           </>
-        )}
-        {!isLoading && salesSellerReportPaginated && salesSellerReportPaginated.totalCount > 0 && (
-          <Pagination>
-            {Array.from({
-              length: Math.ceil(salesSellerReportPaginated.totalCount / params.pageSize),
-            }).map((_, index) => (
-              <Pagination.Item
-                key={index + 1}
-                active={index === params.pageIndex}
-                onClick={() => handleFilterChange('pageIndex', index)}
-              >
-                {index + 1}
-              </Pagination.Item>
-            ))}
-          </Pagination>
         )}
       </div>
     </>

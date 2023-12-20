@@ -110,7 +110,7 @@ const SalesSellerReportTable = ({
           salesSalePointReportPaginated &&
           salesSalePointReportPaginated.totalCount > 0 && (
             <>
-              <div className='table-title text-center'>
+              <div className='table-title text-left'>
                 <h2>Reporte por puntos de venta</h2>
               </div>
               <div className='table-responsive'>
@@ -152,7 +152,7 @@ const SalesSellerReportTable = ({
                   </tbody>
                 </table>
               </div>
-              <div className='table-title text-center'>
+              <div className='table-title text-left'>
                 <h2>Reporte general</h2>
               </div>
               <div className='table-responsive'>
