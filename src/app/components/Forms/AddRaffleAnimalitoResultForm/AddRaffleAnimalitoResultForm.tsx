@@ -3,13 +3,10 @@ import {
   IAnimalDetail,
   IAnimalDetailSelect,
   IAnimalitosLotteries,
-  IRaffleResultAnimalitosDetail,
 } from '../../../../types/Animalitos.types'
-import {Form} from 'react-bootstrap'
 import {useAddRaffleAnimalitoResultForm} from './AddRaffleAnimalitosResultForm.hook'
 import Button from 'react-bootstrap/Button'
 import RenderLoader from '../../RenderLoader/RenderLoader'
-import {Typeahead} from 'react-bootstrap-typeahead'
 
 interface AddRaffleAnimalitoResultFormProps {
   options: IAnimalDetail[]
@@ -86,8 +83,6 @@ const AddRaffleAnimalitoResultForm = ({
       fruitOptionsSelected.push({id: fruitIdSelected, label: fruitSelected})
     }
   }
-  console.log(animalOptionsSelected)
-  console.log(fruitOptionsSelected)
   const selectedAnimalFruit = selectedLottery?.animalitosLotteryFruitCombined
     ? fruitOptionsSelected
     : animalOptionsSelected
