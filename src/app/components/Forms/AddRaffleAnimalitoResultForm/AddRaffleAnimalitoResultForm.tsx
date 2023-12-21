@@ -3,13 +3,11 @@ import {
   IAnimalDetail,
   IAnimalDetailSelect,
   IAnimalitosLotteries,
-  IRaffleResultAnimalitosDetail,
 } from '../../../../types/Animalitos.types'
-import {Form} from 'react-bootstrap'
 import {useAddRaffleAnimalitoResultForm} from './AddRaffleAnimalitosResultForm.hook'
 import Button from 'react-bootstrap/Button'
 import RenderLoader from '../../RenderLoader/RenderLoader'
-import {Typeahead} from 'react-bootstrap-typeahead'
+import {LOTTERY_FRUITA_GANA_ID} from '../../../constants/localstorage.constants'
 
 interface AddRaffleAnimalitoResultFormProps {
   options: IAnimalDetail[]
@@ -36,7 +34,8 @@ const AddRaffleAnimalitoResultForm = ({
     addRaffleAnimalitosResult,
     selectedOption,
     selectedFruitOption,
-    selectedLottery?.animalitosLotteryFruitCombined
+    selectedLottery?.animalitosLotteryFruitCombined,
+    selectedLottery?.lotteryId
   )
   const submitButtonText = wrappedGetSubmitButtonText(formik.values.animalitoId)
   var Typeahead = require('react-bootstrap-typeahead').Typeahead // CommonJS
@@ -67,7 +66,7 @@ const AddRaffleAnimalitoResultForm = ({
   let fruitOptionsSelected: IAnimalDetailSelect[] = []
   if (
     selectedLottery?.animalitosLotteryFruitCombined ||
-    selectedLottery?.lotteryName === 'FruitaGana'
+    selectedLottery?.lotteryId === LOTTERY_FRUITA_GANA_ID
   ) {
     fruitOptions = options
       .filter((option) => option.animalIsFruit)
@@ -88,9 +87,12 @@ const AddRaffleAnimalitoResultForm = ({
       fruitOptionsSelected.push({id: fruitIdSelected, label: fruitSelected})
     }
   }
+  const selectedAnimalFruit = selectedLottery?.animalitosLotteryFruitCombined
+    ? fruitOptionsSelected
+    : animalOptionsSelected
   return (
     <form className='d-flex align-items-center column-gap-4' onSubmit={formik.handleSubmit}>
-      {selectedLottery?.lotteryName !== 'FruitaGana' && (
+      {selectedLottery?.lotteryId !== LOTTERY_FRUITA_GANA_ID && (
         <Typeahead
           id={'animalitoId'}
           onChange={(selectedAnimal: IAnimalDetailSelect[]) => {
@@ -114,7 +116,7 @@ const AddRaffleAnimalitoResultForm = ({
       )}
 
       {(selectedLottery?.animalitosLotteryFruitCombined ||
-        selectedLottery?.lotteryName === 'FruitaGana') && (
+        selectedLottery?.lotteryId === LOTTERY_FRUITA_GANA_ID) && (
         <Typeahead
           id={'fruitId'}
           onChange={(selectedFruit: IAnimalDetailSelect[]) => {
@@ -130,17 +132,13 @@ const AddRaffleAnimalitoResultForm = ({
           }}
           options={fruitOptions}
           key={fruitOptions.every((e) => e.id + 'typeahead_opt')}
-          defaultSelected={fruitOptionsSelected ?? undefined}
+          defaultSelected={selectedAnimalFruit ?? undefined}
           placeholder={'Seleccionar fruta...'}
           isInvalid={!!formik.errors.fruitId}
           isValid={formik.dirty && !formik.errors.fruitId}
         />
       )}
-      <Button
-        variant='primary'
-        type='submit'
-        disabled={isLoadingState || !!formik.errors.animalitoId}
-      >
+      <Button variant='primary' type='submit' disabled={isLoadingState || !!formik.errors.fruitId}>
         {isLoadingState && <RenderLoader show={isLoadingState} />}
         {!isLoadingState && submitButtonText}
       </Button>

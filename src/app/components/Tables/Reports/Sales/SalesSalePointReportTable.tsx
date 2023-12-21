@@ -110,18 +110,18 @@ const SalesSellerReportTable = ({
           salesSalePointReportPaginated &&
           salesSalePointReportPaginated.totalCount > 0 && (
             <>
-              <div className='table-title text-center'>
+              <div className='table-title text-left'>
                 <h2>Reporte por puntos de venta</h2>
               </div>
               <div className='table-responsive'>
                 <table className='table table-row-bordered table-row-gray-300 gy-6'>
                   <thead>
                     <tr className='fw-bold text-light bg-success'>
-                      <th className='text-center'>Fecha</th>
-                      <th className='text-center'>Moneda</th>
-                      <th className='text-center'>Punto de venta</th>
-                      <th className='text-center'>Dirección</th>
-                      <th className='text-center'>Total Ventas</th>
+                      <th className='text-center fs-4 text-white'>Fecha</th>
+                      <th className='text-center fs-4 text-white'>Moneda</th>
+                      <th className='text-center fs-4 text-white'>Punto de venta</th>
+                      <th className='text-center fs-4 text-white'>Dirección</th>
+                      <th className='text-center fs-4 text-white'>Total Ventas</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -152,15 +152,15 @@ const SalesSellerReportTable = ({
                   </tbody>
                 </table>
               </div>
-              <div className='table-title text-center'>
+              <div className='table-title text-left'>
                 <h2>Reporte general</h2>
               </div>
               <div className='table-responsive'>
                 <table className='table table-row-bordered table-row-gray-300 gy-6'>
                   <thead>
                     <tr className='fw-bold text-light bg-primary'>
-                      <th className='text-center'>Moneda</th>
-                      <th className='text-center'>Total Ventas</th>
+                      <th className='text-center fs-4 text-white'>Moneda</th>
+                      <th className='text-center fs-4 text-white'>Total Ventas</th>
                     </tr>
                   </thead>
                   <tbody>
