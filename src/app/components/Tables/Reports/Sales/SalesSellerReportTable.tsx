@@ -8,7 +8,6 @@ import {
 import RenderLoader from '../../../RenderLoader/RenderLoader'
 import {formatCurrency} from '../../../../helpers/currency.helpers'
 import {DateTime} from 'luxon'
-import './SalesReportsStyle.scss'
 
 interface SalesSellerReportTableProps {
   salesSellerReportPaginated: IpaginationSalesReportResponse<ISalesSellerResponse>
@@ -117,14 +116,14 @@ const SalesSellerReportTable = ({
               <table className='table table-bordered table-row-bordered table-row-gray-300 gy-6 table-hover'>
                 <thead>
                   <tr className='fw-bold text-light bg-success'>
-                    <th className='text-center fs-4 color-white-th' style={{color: 'white'}}>
+                    <th className='text-center fs-4 text-white' style={{color: 'white'}}>
                       Fecha
                     </th>
-                    <th className='text-center fs-4 color-white-th'>Moneda</th>
-                    <th className='text-center fs-4 color-white-th'>Vendedor</th>
-                    <th className='text-center fs-4 color-white-th'>Usuario</th>
-                    <th className='text-center fs-4 color-white-th'>Total Ventas</th>
-                    <th className='text-center fs-4 color-white-th'>Total Pagos</th>
+                    <th className='text-center fs-4 text-white'>Moneda</th>
+                    <th className='text-center fs-4 text-white'>Vendedor</th>
+                    <th className='text-center fs-4 text-white'>Usuario</th>
+                    <th className='text-center fs-4 text-white'>Total Ventas</th>
+                    <th className='text-center fs-4 text-white'>Total Pagos</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -185,10 +184,10 @@ const SalesSellerReportTable = ({
               <table className='table table-bordered table-row-bordered table-row-gray-300 gy-6'>
                 <thead>
                   <tr className='fw-bold text-light bg-primary'>
-                    <th className='text-center fs-4 color-white-th'>Moneda</th>
-                    <th className='text-center fs-4 color-white-th'>Total Ventas</th>
-                    <th className='text-center fs-4 color-white-th'>Total Pagos</th>
-                    <th className='text-center fs-4 color-white-th'>Total Balance</th>
+                    <th className='text-center fs-4 text-white'>Moneda</th>
+                    <th className='text-center fs-4 text-white'>Total Ventas</th>
+                    <th className='text-center fs-4 text-white'>Total Pagos</th>
+                    <th className='text-center fs-4 text-white'>Total Balance</th>
                   </tr>
                 </thead>
                 <tbody>

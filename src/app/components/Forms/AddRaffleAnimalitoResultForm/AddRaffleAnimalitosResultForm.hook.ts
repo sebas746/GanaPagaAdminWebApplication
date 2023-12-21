@@ -30,7 +30,8 @@ export const useAddRaffleAnimalitoResultForm = (
       const errors = {} as any
 
       if (!values.animalitoId && (lotteryId !== LOTTERY_FRUITA_GANA_ID || !values.fruitId)) {
-        errors[lotteryId === 3 ? 'fruitId' : 'animalitoId'] = 'Parámetro requerido'
+        errors[lotteryId === LOTTERY_FRUITA_GANA_ID ? 'fruitId' : 'animalitoId'] =
+          'Parámetro requerido'
       }
 
       if (isLotteryFruitCombined && !values.fruitId) {

@@ -92,7 +92,7 @@ const AddRaffleAnimalitoResultForm = ({
     : animalOptionsSelected
   return (
     <form className='d-flex align-items-center column-gap-4' onSubmit={formik.handleSubmit}>
-      {selectedLottery?.lotteryId !== 3 && (
+      {selectedLottery?.lotteryId !== LOTTERY_FRUITA_GANA_ID && (
         <Typeahead
           id={'animalitoId'}
           onChange={(selectedAnimal: IAnimalDetailSelect[]) => {
