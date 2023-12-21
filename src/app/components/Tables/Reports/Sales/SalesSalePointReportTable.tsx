@@ -8,6 +8,7 @@ import {
   ISalesSalePointReportQueryParams,
 } from '../../../../../types/SalesSalePointReport.types'
 import {IpaginationSalesReportResponse} from '../../../../../types/Pagination.types'
+import './SalesReportsStyle.scss'
 
 interface SalesSalePointReportTableProps {
   salesSalePointReportPaginated: IpaginationSalesReportResponse<ISalesSalePointReport>
@@ -117,11 +118,11 @@ const SalesSellerReportTable = ({
                 <table className='table table-row-bordered table-row-gray-300 gy-6'>
                   <thead>
                     <tr className='fw-bold text-light bg-success'>
-                      <th className='text-center'>Fecha</th>
-                      <th className='text-center'>Moneda</th>
-                      <th className='text-center'>Punto de venta</th>
-                      <th className='text-center'>Dirección</th>
-                      <th className='text-center'>Total Ventas</th>
+                      <th className='text-center fs-4 color-white-th'>Fecha</th>
+                      <th className='text-center fs-4 color-white-th'>Moneda</th>
+                      <th className='text-center fs-4 color-white-th'>Punto de venta</th>
+                      <th className='text-center fs-4 color-white-th'>Dirección</th>
+                      <th className='text-center fs-4 color-white-th'>Total Ventas</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -159,8 +160,8 @@ const SalesSellerReportTable = ({
                 <table className='table table-row-bordered table-row-gray-300 gy-6'>
                   <thead>
                     <tr className='fw-bold text-light bg-primary'>
-                      <th className='text-center'>Moneda</th>
-                      <th className='text-center'>Total Ventas</th>
+                      <th className='text-center fs-4 color-white-th'>Moneda</th>
+                      <th className='text-center fs-4 color-white-th'>Total Ventas</th>
                     </tr>
                   </thead>
                   <tbody>

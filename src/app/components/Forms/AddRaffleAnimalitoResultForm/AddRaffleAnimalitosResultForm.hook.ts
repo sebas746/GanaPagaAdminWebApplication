@@ -1,4 +1,5 @@
 import {useFormik} from 'formik'
+import {LOTTERY_FRUITA_GANA_ID} from '../../../constants/localstorage.constants'
 
 export const useAddRaffleAnimalitoResultForm = (
   addRaffleAnimalitosResult: (selectedAnimal: string) => void,
@@ -15,7 +16,7 @@ export const useAddRaffleAnimalitoResultForm = (
     onSubmit: (values) => {
       if (!isLotteryFruitCombined && lotteryId !== 3) {
         addRaffleAnimalitosResult(values.animalitoId.toString())
-      } else if (!isLotteryFruitCombined && lotteryId === 3) {
+      } else if (!isLotteryFruitCombined && lotteryId === LOTTERY_FRUITA_GANA_ID) {
         if (values.animalitoId) {
           addRaffleAnimalitosResult(values.animalitoId.toString())
         } else if (values.fruitId) {
@@ -28,7 +29,7 @@ export const useAddRaffleAnimalitoResultForm = (
     validate: (values) => {
       const errors = {} as any
 
-      if (!values.animalitoId && (lotteryId !== 3 || !values.fruitId)) {
+      if (!values.animalitoId && (lotteryId !== LOTTERY_FRUITA_GANA_ID || !values.fruitId)) {
         errors[lotteryId === 3 ? 'fruitId' : 'animalitoId'] = 'Parámetro requerido'
       }
 

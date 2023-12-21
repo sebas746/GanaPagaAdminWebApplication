@@ -7,6 +7,7 @@ import {
 import {useAddRaffleAnimalitoResultForm} from './AddRaffleAnimalitosResultForm.hook'
 import Button from 'react-bootstrap/Button'
 import RenderLoader from '../../RenderLoader/RenderLoader'
+import {LOTTERY_FRUITA_GANA_ID} from '../../../constants/localstorage.constants'
 
 interface AddRaffleAnimalitoResultFormProps {
   options: IAnimalDetail[]
@@ -63,7 +64,10 @@ const AddRaffleAnimalitoResultForm = ({
   let fruitIdSelected: number | undefined
   let fruitSelected: string | undefined
   let fruitOptionsSelected: IAnimalDetailSelect[] = []
-  if (selectedLottery?.animalitosLotteryFruitCombined || selectedLottery?.lotteryId === 3) {
+  if (
+    selectedLottery?.animalitosLotteryFruitCombined ||
+    selectedLottery?.lotteryId === LOTTERY_FRUITA_GANA_ID
+  ) {
     fruitOptions = options
       .filter((option) => option.animalIsFruit)
       .map((option) => {
@@ -111,7 +115,8 @@ const AddRaffleAnimalitoResultForm = ({
         />
       )}
 
-      {(selectedLottery?.animalitosLotteryFruitCombined || selectedLottery?.lotteryId === 3) && (
+      {(selectedLottery?.animalitosLotteryFruitCombined ||
+        selectedLottery?.lotteryId === LOTTERY_FRUITA_GANA_ID) && (
         <Typeahead
           id={'fruitId'}
           onChange={(selectedFruit: IAnimalDetailSelect[]) => {
