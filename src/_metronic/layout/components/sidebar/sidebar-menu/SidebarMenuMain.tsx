@@ -173,6 +173,11 @@ const SidebarMenuMain = () => {
             title='Reporte Puntos de Venta'
             hasBullet={true}
           />
+          <SidebarMenuItem
+            to='/pages/sales-reports/ticket-report'
+            title='Reporte Tiquetes'
+            hasBullet={true}
+          />
         </SidebarMenuItemWithSub>
       )}
 

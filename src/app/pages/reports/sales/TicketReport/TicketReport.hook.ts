@@ -22,6 +22,7 @@ enum TicketReportKind {
   SET_PARAMS = 'SET_PARAMS',
   SET_SELLERS = 'SET_SELLERS',
   SET_SELLER_ID = 'SET_SELLER_ID',
+  SET_TICKET_ID = 'SET_TICKET_ID',
 }
 
 interface TicketReportAction {
@@ -38,7 +39,7 @@ interface TicketReportState {
   sellerEmail: string | undefined
 }
 
-export const salesSellerReportReducer = (state: TicketReportState, action: TicketReportAction) => {
+export const ticketReportReducer = (state: TicketReportState, action: TicketReportAction) => {
   switch (action.type) {
     case TicketReportKind.SET_USD_TICKETS:
       return {
@@ -63,6 +64,11 @@ export const salesSellerReportReducer = (state: TicketReportState, action: Ticke
         ...state,
         sellers: action.payload as string[],
       }
+    case TicketReportKind.SET_TICKET_ID:
+      return {
+        ...state,
+        ticketId: action.payload as string,
+      }
     case TicketReportKind.SET_SELLER_ID:
       return {
         ...state,
@@ -71,9 +77,9 @@ export const salesSellerReportReducer = (state: TicketReportState, action: Ticke
   }
 }
 
-export const useSalesSellerReport = () => {
+export const useTicketReport = () => {
   const formattedDate = DateTime.now().toFormat('yyyy-MM-dd').toString()
-  const [ticketReportState, dispatchSalesSellerReport] = useReducer(salesSellerReportReducer, {
+  const [ticketReportState, dispatchTicketReport] = useReducer(ticketReportReducer, {
     ticketReportUsdPaginated: {} as ITicketReportResponse,
     ticketReportVesPaginated: {} as ITicketReportResponse,
     params: {
@@ -117,15 +123,15 @@ export const useSalesSellerReport = () => {
   )
 
   const setUsdTicketReportPaginated = (payload: ITicketReportResponse) => {
-    dispatchSalesSellerReport({type: TicketReportKind.SET_USD_TICKETS, payload})
+    dispatchTicketReport({type: TicketReportKind.SET_USD_TICKETS, payload})
   }
 
   const setVesTicketReportPaginated = (payload: ITicketReportResponse) => {
-    dispatchSalesSellerReport({type: TicketReportKind.SET_VES_TICKETS, payload})
+    dispatchTicketReport({type: TicketReportKind.SET_VES_TICKETS, payload})
   }
 
   const handleFilterChange = (filterName: keyof ITicketReportQueryParams, value: any) => {
-    dispatchSalesSellerReport({
+    dispatchTicketReport({
       type: TicketReportKind.SET_PARAMS,
       payload: {[filterName]: value} as ITicketReportQueryParams,
     })
@@ -142,15 +148,19 @@ export const useSalesSellerReport = () => {
     }
 
     setTempFilters(resetValues)
-    dispatchSalesSellerReport({type: TicketReportKind.SET_PARAMS, payload: resetValues})
+    dispatchTicketReport({type: TicketReportKind.SET_PARAMS, payload: resetValues})
   }
 
   const setSalesSellerReportParams = () => {
-    dispatchSalesSellerReport({type: TicketReportKind.SET_PARAMS, payload: tempFilters})
+    dispatchTicketReport({type: TicketReportKind.SET_PARAMS, payload: tempFilters})
   }
 
   const setSellers = (payload: string[]) => {
-    dispatchSalesSellerReport({type: TicketReportKind.SET_SELLERS, payload})
+    dispatchTicketReport({type: TicketReportKind.SET_SELLERS, payload})
+  }
+
+  const setTicketId = (payload: string) => {
+    dispatchTicketReport({type: TicketReportKind.SET_TICKET_ID, payload})
   }
 
   useEffect(() => {
@@ -194,11 +204,12 @@ export const useSalesSellerReport = () => {
 
   return {
     isLoading: isFetching,
-    salesSellerReportState: ticketReportState,
+    ticketReportState,
     setTempFilters,
     resetFilters,
     setSalesSellerReportParams,
     handleFilterChange,
     tempFilters,
+    setTicketId,
   }
 }

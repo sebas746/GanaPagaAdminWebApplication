@@ -3,6 +3,7 @@ import {PageLink, PageTitle} from '../../../_metronic/layout/core'
 import ExchangeRateSettings from '../../pages/system-settings/exchange-rate-settings/ExchangeRateSettings'
 import SalesSellerReport from '../../pages/reports/sales/SalesSellerReport/SalesSellerReport'
 import SalesSalePointReport from '../../pages/reports/sales/SalesSalePointReport/SalesSalePointReport'
+import TicketReport from '../../pages/reports/sales/TicketReport/TicketReport'
 
 const salesSellerReportBreadCrumbs: Array<PageLink> = [
   {
@@ -42,6 +43,17 @@ function SalesSellerReportPage() {
                 Reporte de ventas por punto de venta
               </PageTitle>
               <SalesSalePointReport />
+            </>
+          }
+        />
+        <Route
+          path='ticket-report'
+          element={
+            <>
+              <PageTitle breadcrumbs={salesSellerReportBreadCrumbs}>
+                Reporte de ventas por tiquete
+              </PageTitle>
+              <TicketReport />
             </>
           }
         />
