@@ -118,7 +118,8 @@ export const useTicketReport = () => {
   })
 
   const [selectedTab, setSelectedTab] = useState(currencies[0].currencyId)
-  const [shouldFetchData, setShouldFetchData] = useState(false)
+  const [shouldFetchDataUsd, setShouldFetchDataUsd] = useState(false)
+  const [shouldFetchDataVes, setShouldFetchDataVes] = useState(false)
 
   const fetchUsdData = async () => {
     const url = buildUrl(ticketReportUsdState.params.baseUrl, {
@@ -140,7 +141,7 @@ export const useTicketReport = () => {
     isFetching: isFetchingUsd,
     refetch: getUsdTicketsReport,
   } = useQuery<ReactQueryResponse<ITicketReportResponse>>('get-usd-tickets-report', fetchUsdData, {
-    enabled: shouldFetchData, // Only fetch data when shouldFetchData is true
+    enabled: shouldFetchDataUsd, // Only fetch data when shouldFetchData is true
   })
 
   const fetchVesData = async () => {
@@ -163,7 +164,7 @@ export const useTicketReport = () => {
     isFetching: isFetchingVes,
     refetch: getVesTicketsReport,
   } = useQuery<ReactQueryResponse<ITicketReportResponse>>('get-ves-tickets-report', fetchVesData, {
-    enabled: shouldFetchData, // Only fetch data when shouldFetchData is true
+    enabled: shouldFetchDataVes, // Only fetch data when shouldFetchData is true
   })
 
   const setTicketReportPaginated = (payload: ITicketReportResponse) => {
@@ -221,10 +222,11 @@ export const useTicketReport = () => {
   }
 
   const setTicketReportParams = () => {
-    setShouldFetchData(true)
     if (selectedTab === CurrencyId.USD) {
+      setShouldFetchDataUsd(true)
       dispatchUsdTicketReport({type: TicketReportKind.SET_PARAMS, payload: tempFiltersUsd})
     } else if (selectedTab === CurrencyId.VES) {
+      setShouldFetchDataVes(true)
       dispatchVesTicketReport({type: TicketReportKind.SET_PARAMS, payload: tempFiltersVes})
     }
   }
@@ -253,13 +255,13 @@ export const useTicketReport = () => {
   }
 
   useEffect(() => {
-    if (!isFetchingUsd && shouldFetchData) {
+    if (!isFetchingUsd && shouldFetchDataUsd) {
       getUsdTicketsReport()
     }
   }, [ticketReportUsdState.params])
 
   useEffect(() => {
-    if (!isFetchingVes && shouldFetchData) {
+    if (!isFetchingVes && shouldFetchDataUsd) {
       getVesTicketsReport()
     }
   }, [ticketReportVesState.params])

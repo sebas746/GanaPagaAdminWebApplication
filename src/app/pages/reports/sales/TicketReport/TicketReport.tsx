@@ -1,4 +1,4 @@
-import {CurrencyId, currencies} from '../../../../../types/Currency.types'
+import {CurrencyCode, CurrencyId, currencies} from '../../../../../types/Currency.types'
 import {useScrutinyDetail} from '../../../../components/Cards/ScrutinyDetail/components/ScrutinyDetailTable.hook'
 import TicketDetail from '../../../../components/Modals/TicketDetail/TicketDetail'
 import TicketReportTable from '../../../../components/Tables/Reports/Ticket/TicketReportTable'
@@ -49,7 +49,7 @@ const TicketReport = () => {
               aria-controls={`tab-${currency.currencyName.toLowerCase()}`}
               aria-selected={selectedTab === currency.currencyId ? 'true' : 'false'}
             >
-              {currency.currencyName}
+              Reporte tiquetes {currency.currencyCode.toLocaleUpperCase()}
             </button>
           </li>
         ))}
@@ -63,42 +63,44 @@ const TicketReport = () => {
             aria-labelledby={`tab-${currency.currencyCode.toLowerCase()}-tab`}
             key={`currency-content-${currency.currencyId}`}
           >
-            {currency.currencyId === CurrencyId.USD && (
-              <TicketReportTable
-                key={currency.currencyId}
-                isLoading={isLoading}
-                handleFilterChange={handleUsdFilterChange}
-                resetFilters={resetUsdFilters}
-                ticketReportPaginated={ticketReportUsdState.ticketReportPaginated}
-                params={ticketReportUsdState.params}
-                setTicketReportParams={setTicketReportParams}
-                setTempFilters={setTempFiltersUsd}
-                tempFilters={tempFiltersUsd}
-                sellers={ticketReportUsdState.sellers}
-                setTicketId={setUsdTicketId}
-                ticketId={ticketReportUsdState?.ticketId ?? ''}
-                isTicketDetailLoading={isTicketDetailLoading}
-                currencyCode={currency.currencyCode}
-              />
-            )}
-            {currency.currencyId === CurrencyId.VES && (
-              <TicketReportTable
-                key={currency.currencyId}
-                isLoading={isLoadingVes}
-                handleFilterChange={handleVesFilterChange}
-                resetFilters={resetVesFilters}
-                ticketReportPaginated={ticketReportVesState.ticketReportPaginated}
-                params={ticketReportVesState.params}
-                setTicketReportParams={setTicketReportParams}
-                setTempFilters={setTempFiltersVes}
-                tempFilters={tempFiltersVes}
-                sellers={ticketReportVesState.sellers}
-                setTicketId={setVesTicketId}
-                ticketId={ticketReportVesState?.ticketId ?? ''}
-                isTicketDetailLoading={isTicketDetailLoading}
-                currencyCode={currency.currencyCode}
-              />
-            )}
+            {currency.currencyId === CurrencyId.USD &&
+              ticketReportUsdState.ticketReportPaginated && (
+                <TicketReportTable
+                  key={currency.currencyId}
+                  isLoading={isLoading}
+                  handleFilterChange={handleUsdFilterChange}
+                  resetFilters={resetUsdFilters}
+                  ticketReportPaginated={ticketReportUsdState.ticketReportPaginated}
+                  params={ticketReportUsdState.params}
+                  setTicketReportParams={setTicketReportParams}
+                  setTempFilters={setTempFiltersUsd}
+                  tempFilters={tempFiltersUsd}
+                  sellers={ticketReportUsdState.sellers}
+                  setTicketId={setUsdTicketId}
+                  ticketId={ticketReportUsdState?.ticketId ?? ''}
+                  isTicketDetailLoading={isTicketDetailLoading}
+                  currencyCode={CurrencyCode.USD}
+                />
+              )}
+            {currency.currencyId === CurrencyId.VES &&
+              ticketReportVesState.ticketReportPaginated && (
+                <TicketReportTable
+                  key={currency.currencyId}
+                  isLoading={isLoadingVes}
+                  handleFilterChange={handleVesFilterChange}
+                  resetFilters={resetVesFilters}
+                  ticketReportPaginated={ticketReportVesState.ticketReportPaginated}
+                  params={ticketReportVesState.params}
+                  setTicketReportParams={setTicketReportParams}
+                  setTempFilters={setTempFiltersVes}
+                  tempFilters={tempFiltersVes}
+                  sellers={ticketReportVesState.sellers}
+                  setTicketId={setVesTicketId}
+                  ticketId={ticketReportVesState?.ticketId ?? ''}
+                  isTicketDetailLoading={isTicketDetailLoading}
+                  currencyCode={CurrencyCode.VES}
+                />
+              )}
           </div>
         ))}
       </div>

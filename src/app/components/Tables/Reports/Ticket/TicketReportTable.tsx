@@ -29,17 +29,26 @@ interface TicketReportTableProps {
 interface TicketSummaryCardProps {
   totalTickets: number
   totalAmount: number
-  currencyCode: string // Add the currencyCode prop type
+  currencyCodeSummary: string
+  totalCancelledTickets: number
 }
 
-const TicketSummaryCard = ({totalTickets, totalAmount, currencyCode}: TicketSummaryCardProps) => {
+const TicketSummaryCard = ({
+  totalTickets,
+  totalAmount,
+  currencyCodeSummary,
+  totalCancelledTickets,
+}: TicketSummaryCardProps) => {
   return (
     <div className='card mb-3' style={{maxWidth: '18rem'}}>
       <div className='card-body'>
         <h5 className='card-title'>Resumen</h5>
         <>
           <p className='card-text'>Total Tiquetes vendidos: {totalTickets}</p>
-          <p className='card-text'>Total Vendido: {formatCurrency(totalAmount, currencyCode)}</p>
+          <p className='card-text'>
+            Total Vendido: {formatCurrency(totalAmount, currencyCodeSummary)}
+          </p>
+          <p className='card-text'>Total Tiquetes anulados: {totalCancelledTickets}</p>
         </>
       </div>
     </div>
@@ -151,14 +160,15 @@ const TicketReportTable = ({
         <div style={{borderTop: '1px solid #ddd', margin: '20px 0'}}></div>
         {isLoading && <RenderLoader show={isLoading} huge={true} />}
         {!isLoading &&
-          ticketReportPaginated.currencyCode === currencyCode &&
           ticketReportPaginated &&
+          ticketReportPaginated.currencyCode === currencyCode &&
           ticketReportPaginated.ticketsCount > 0 && (
             <>
               <TicketSummaryCard
                 totalTickets={ticketReportPaginated.ticketsCount}
-                currencyCode={ticketReportPaginated.currencyCode}
+                currencyCodeSummary={ticketReportPaginated.currencyCode}
                 totalAmount={ticketReportPaginated.totalSales}
+                totalCancelledTickets={ticketReportPaginated.ticketCancelledCount}
               />
               <div className='table-responsive'>
                 <table className='table table-bordered table-row-bordered table-row-gray-300 gy-6 table-hover'>
