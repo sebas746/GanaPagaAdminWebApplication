@@ -8,11 +8,10 @@ import {
 } from '../../../../../types/TicketReport.types'
 import TicketDetail from '../../../Modals/TicketDetail/TicketDetail'
 import {useScrutinyDetail} from '../../../Cards/ScrutinyDetail/components/ScrutinyDetailTable.hook'
-import TicketDetailReportTable from './TicketDetailReportTable/TicketDetailReportTable'
+import {CURRENCY_USD} from '../../../../constants/reports.constants'
 
 interface TicketReportTableProps {
-  ticketReportPaginatedUsd: ITicketReportResponse
-  ticketReportPaginatedVes: ITicketReportResponse
+  ticketReportPaginated: ITicketReportResponse
   params: ITicketReportQueryParams
   handleFilterChange: (filterName: keyof ITicketReportQueryParams, value: any) => void
   isLoading: boolean
@@ -23,11 +22,32 @@ interface TicketReportTableProps {
   sellers: string[]
   setTicketId: (ticketId: string) => void
   ticketId: string
+  isTicketDetailLoading: boolean
+  currencyCode: string
+}
+
+interface TicketSummaryCardProps {
+  totalTickets: number
+  totalAmount: number
+  currencyCode: string // Add the currencyCode prop type
+}
+
+const TicketSummaryCard = ({totalTickets, totalAmount, currencyCode}: TicketSummaryCardProps) => {
+  return (
+    <div className='card mb-3' style={{maxWidth: '18rem'}}>
+      <div className='card-body'>
+        <h5 className='card-title'>Resumen</h5>
+        <>
+          <p className='card-text'>Total Tiquetes vendidos: {totalTickets}</p>
+          <p className='card-text'>Total Vendido: {formatCurrency(totalAmount, currencyCode)}</p>
+        </>
+      </div>
+    </div>
+  )
 }
 
 const TicketReportTable = ({
-  ticketReportPaginatedUsd,
-  ticketReportPaginatedVes,
+  ticketReportPaginated,
   params,
   handleFilterChange,
   isLoading,
@@ -38,14 +58,9 @@ const TicketReportTable = ({
   sellers,
   setTicketId,
   ticketId,
+  isTicketDetailLoading,
+  currencyCode,
 }: TicketReportTableProps) => {
-  const {
-    ticketDetailState,
-    isTicketDetailLoading,
-    handleCloseTicketModal,
-    refreshCount,
-    setTicketModalShow,
-  } = useScrutinyDetail(ticketId)
   return (
     <>
       <div className='card-body py-3'>
@@ -67,6 +82,7 @@ const TicketReportTable = ({
             </div>
 
             {/* End Date Input */}
+
             <div className='col-md-3'>
               <label htmlFor='endDate' className='form-label'>
                 Fecha Final
@@ -78,6 +94,19 @@ const TicketReportTable = ({
                 placeholder='Fecha final'
                 onChange={(e) => setTempFilters((prev) => ({...prev, endDate: e.target.value}))}
                 value={tempFilters.endDate}
+              />
+            </div>
+
+            <div className='col-md-3'>
+              <label htmlFor='ticketId' className='form-label'>
+                ID Tiquete
+              </label>
+              <input
+                id='ticketId'
+                className='form-control'
+                placeholder='ID Tiquete'
+                onChange={(e) => setTempFilters((prev) => ({...prev, ticketId: e.target.value}))}
+                value={tempFilters.ticketId}
               />
             </div>
 
@@ -119,38 +148,96 @@ const TicketReportTable = ({
             </div>
           </div>
         </div>
+        <div style={{borderTop: '1px solid #ddd', margin: '20px 0'}}></div>
         {isLoading && <RenderLoader show={isLoading} huge={true} />}
-        <TicketDetailReportTable
-          ticketReportPaginated={ticketReportPaginatedUsd}
-          currencyCode={ticketReportPaginatedUsd.currencyCode}
-          handleFilterChange={handleFilterChange}
-          isLoading={isLoading}
-          isTicketDetailLoading={isTicketDetailLoading}
-          params={params}
-          setTicketId={setTicketId}
-          ticketId={ticketId}
-        />
-        <TicketDetailReportTable
-          ticketReportPaginated={ticketReportPaginatedVes}
-          currencyCode={ticketReportPaginatedVes.currencyCode}
-          handleFilterChange={handleFilterChange}
-          isLoading={isLoading}
-          isTicketDetailLoading={isTicketDetailLoading}
-          params={params}
-          setTicketId={setTicketId}
-          ticketId={ticketId}
-        />
-      </div>
-      <div className='mb-10'>
-        {ticketId && (
-          <TicketDetail
-            ticketId={ticketId}
-            currentTicket={ticketDetailState.ticketDetail}
-            handleCloseTicketModal={handleCloseTicketModal}
-            refreshCount={refreshCount}
-            setTicketModalShow={setTicketModalShow}
-            ticketModalShow={ticketDetailState.ticketModalShow}
-          />
+        {!isLoading &&
+          ticketReportPaginated.currencyCode === currencyCode &&
+          ticketReportPaginated &&
+          ticketReportPaginated.ticketsCount > 0 && (
+            <>
+              <TicketSummaryCard
+                totalTickets={ticketReportPaginated.ticketsCount}
+                currencyCode={ticketReportPaginated.currencyCode}
+                totalAmount={ticketReportPaginated.totalSales}
+              />
+              <div className='table-responsive'>
+                <table className='table table-bordered table-row-bordered table-row-gray-300 gy-6 table-hover'>
+                  <thead>
+                    <tr
+                      className={`fw-bold text-light ${
+                        currencyCode === CURRENCY_USD ? 'bg-success' : 'bg-danger'
+                      }`}
+                    >
+                      <th className='text-center fs-4 text-white'>Fecha</th>
+                      <th className='text-center fs-4 text-white'>ID Tiquete</th>
+                      <th className='text-center fs-4 text-white'>Total</th>
+                      <th className='text-center fs-4 text-white'>Vendedor</th>
+                      <th className='text-center fs-4 text-white'>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {ticketReportPaginated.ticketsCount > 0 &&
+                      ticketReportPaginated.tickets.map((ticket, index) => (
+                        <tr
+                          className='fw-bold fs-6 text-gray-800'
+                          key={`${ticket.ticketCreatedAt}-${index}`}
+                        >
+                          <td className='text-center'>
+                            {DateTime.fromISO(ticket.ticketCreatedAt).toFormat('yyyy-MM-dd')}
+                          </td>
+                          <td className='text-center'>{ticket.ticketId}</td>
+                          <td className='text-center'>{ticket.ticketSoldByUserId}</td>
+                          <td className='text-center'>
+                            {formatCurrency(ticket.ticketTotal, currencyCode)}
+                          </td>
+                          <td className='text-center'>
+                            <div
+                              onClick={() => setTicketId(ticket.ticketId)}
+                              style={{
+                                cursor:
+                                  isTicketDetailLoading && ticket.ticketId === ticketId
+                                    ? 'not-allowed'
+                                    : 'pointer',
+                              }}
+                            >
+                              {isTicketDetailLoading ? (
+                                <RenderLoader
+                                  key={ticket.ticketNumber}
+                                  show={isTicketDetailLoading && ticket.ticketId === ticketId}
+                                />
+                              ) : (
+                                <i className='bi bi-zoom-in text-primary fs-2x'></i>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    {ticketReportPaginated.tickets.length === 0 && (
+                      <tr>
+                        <td colSpan={7} className='text-center'>
+                          No results...
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        {!isLoading && ticketReportPaginated && ticketReportPaginated.ticketsCount > 0 && (
+          <Pagination>
+            {Array.from({
+              length: Math.ceil(ticketReportPaginated.ticketsCount / params.pageSize),
+            }).map((_, index) => (
+              <Pagination.Item
+                key={index + 1}
+                active={index === params.pageIndex}
+                onClick={() => handleFilterChange('pageIndex', index)}
+              >
+                {index + 1}
+              </Pagination.Item>
+            ))}
+          </Pagination>
         )}
       </div>
     </>

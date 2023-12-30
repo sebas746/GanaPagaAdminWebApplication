@@ -20,6 +20,7 @@ export interface ITicketReportQueryParams {
   pageSize: number
   initialDate: string
   endDate: string
+  currency: string
   ticketId?: string
   sellerEmail?: string
 }

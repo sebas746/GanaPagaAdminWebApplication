@@ -1,10 +1,5 @@
 import {useEffect, useReducer, useState} from 'react'
 import {IpaginationResponse} from '../../../../../types/Pagination.types'
-import {
-  ISalesSellerReportQueryParams,
-  ISalesSellerResponse,
-  ISellerResponse,
-} from '../../../../../types/SalesSellerReport.types'
 import {ReactQueryResponse} from '../../../../../types/Generics'
 import {useQuery} from 'react-query'
 import {buildUrl} from '../../../../helpers/urlBuilder.helpers'
@@ -15,10 +10,10 @@ import {
   ITicketReportResponse,
 } from '../../../../../types/TicketReport.types'
 import {CURRENCY_USD, CURRENCY_VES} from '../../../../constants/reports.constants'
+import {CurrencyCode, CurrencyId, currencies} from '../../../../../types/Currency.types'
 
 enum TicketReportKind {
-  SET_USD_TICKETS = 'SET_USD_TICKETS',
-  SET_VES_TICKETS = 'SET_VES_TICKETS',
+  SET_TICKET_REPORT = 'SET_TICKET_REPORT',
   SET_PARAMS = 'SET_PARAMS',
   SET_SELLERS = 'SET_SELLERS',
   SET_SELLER_ID = 'SET_SELLER_ID',
@@ -31,8 +26,7 @@ interface TicketReportAction {
 }
 
 interface TicketReportState {
-  ticketReportUsdPaginated: ITicketReportResponse
-  ticketReportVesPaginated: ITicketReportResponse
+  ticketReportPaginated: ITicketReportResponse
   params: ITicketReportQueryParams
   sellers: string[]
   ticketId: string | undefined
@@ -41,15 +35,10 @@ interface TicketReportState {
 
 export const ticketReportReducer = (state: TicketReportState, action: TicketReportAction) => {
   switch (action.type) {
-    case TicketReportKind.SET_USD_TICKETS:
+    case TicketReportKind.SET_TICKET_REPORT:
       return {
         ...state,
-        ticketReportUsdPaginated: action.payload as ITicketReportResponse,
-      }
-    case TicketReportKind.SET_VES_TICKETS:
-      return {
-        ...state,
-        ticketReportVesPaginated: action.payload as ITicketReportResponse,
+        ticketReportPaginated: action.payload as ITicketReportResponse,
       }
     case TicketReportKind.SET_PARAMS:
       return {
@@ -79,116 +68,218 @@ export const ticketReportReducer = (state: TicketReportState, action: TicketRepo
 
 export const useTicketReport = () => {
   const formattedDate = DateTime.now().toFormat('yyyy-MM-dd').toString()
-  const [ticketReportState, dispatchTicketReport] = useReducer(ticketReportReducer, {
-    ticketReportUsdPaginated: {} as ITicketReportResponse,
-    ticketReportVesPaginated: {} as ITicketReportResponse,
+  const [ticketReportUsdState, dispatchUsdTicketReport] = useReducer(ticketReportReducer, {
+    ticketReportPaginated: {} as ITicketReportResponse,
     params: {
       baseUrl: '/TicketReport/get-tickets-report',
       pageIndex: 0,
       pageSize: 10,
       initialDate: formattedDate,
       endDate: formattedDate,
+      currency: CURRENCY_USD,
     } as ITicketReportQueryParams,
     sellers: [] as string[],
     ticketId: undefined,
     sellerEmail: undefined,
   })
-  const [tempFilters, setTempFilters] = useState<ITicketReportQueryParams>({
-    baseUrl: ticketReportState.params.baseUrl,
+  const [ticketReportVesState, dispatchVesTicketReport] = useReducer(ticketReportReducer, {
+    ticketReportPaginated: {} as ITicketReportResponse,
+    params: {
+      baseUrl: '/TicketReport/get-tickets-report',
+      pageIndex: 0,
+      pageSize: 10,
+      initialDate: formattedDate,
+      endDate: formattedDate,
+      currency: CURRENCY_VES,
+    } as ITicketReportQueryParams,
+    sellers: [] as string[],
+    ticketId: undefined,
+    sellerEmail: undefined,
+  })
+  const [tempFiltersUsd, setTempFiltersUsd] = useState<ITicketReportQueryParams>({
+    baseUrl: ticketReportUsdState.params.baseUrl,
     pageIndex: 0,
     pageSize: 10,
     initialDate: formattedDate,
     endDate: formattedDate,
+    currency: CURRENCY_USD,
+    ticketId: undefined,
+    sellerEmail: undefined,
+  })
+  const [tempFiltersVes, setTempFiltersVes] = useState<ITicketReportQueryParams>({
+    baseUrl: ticketReportVesState.params.baseUrl,
+    pageIndex: 0,
+    pageSize: 10,
+    initialDate: formattedDate,
+    endDate: formattedDate,
+    currency: CURRENCY_VES,
     ticketId: undefined,
     sellerEmail: undefined,
   })
 
+  const [selectedTab, setSelectedTab] = useState(currencies[0].currencyId)
+  const [shouldFetchData, setShouldFetchData] = useState(false)
+
+  const fetchUsdData = async () => {
+    const url = buildUrl(ticketReportUsdState.params.baseUrl, {
+      pageIndex: ticketReportUsdState.params.pageIndex,
+      pageSize: ticketReportUsdState.params.pageSize,
+      initialDate: ticketReportUsdState.params.initialDate,
+      endDate: ticketReportUsdState.params.endDate,
+      currency: ticketReportUsdState.params.currency,
+      ticketId: ticketReportUsdState.params.ticketId,
+      sellerEmail: ticketReportUsdState.params.sellerEmail,
+    })
+
+    const response = await axios.get(url)
+    return response
+  }
+
   const {
-    data: ticketReportPaginatedData,
-    isFetching,
-    refetch: getTicketsReport,
-  } = useQuery<ReactQueryResponse<IpaginationResponse<ITicketReportResponse>>>(
-    'get-tickets-report',
-    async () => {
-      const url = buildUrl(ticketReportState.params.baseUrl, {
-        pageIndex: ticketReportState.params.pageIndex,
-        pageSize: ticketReportState.params.pageSize,
-        initialDate: ticketReportState.params.initialDate,
-        endDate: ticketReportState.params.endDate,
-        ticketId: ticketReportState.params.ticketId,
-        sellerEmail: ticketReportState.params.sellerEmail,
-      })
-      return await axios.get(url)
+    data: ticketReportUsdPaginatedData,
+    isFetching: isFetchingUsd,
+    refetch: getUsdTicketsReport,
+  } = useQuery<ReactQueryResponse<ITicketReportResponse>>('get-usd-tickets-report', fetchUsdData, {
+    enabled: shouldFetchData, // Only fetch data when shouldFetchData is true
+  })
+
+  const fetchVesData = async () => {
+    const url = buildUrl(ticketReportVesState.params.baseUrl, {
+      pageIndex: ticketReportVesState.params.pageIndex,
+      pageSize: ticketReportVesState.params.pageSize,
+      initialDate: ticketReportVesState.params.initialDate,
+      endDate: ticketReportVesState.params.endDate,
+      currency: ticketReportVesState.params.currency,
+      ticketId: ticketReportVesState.params.ticketId,
+      sellerEmail: ticketReportVesState.params.sellerEmail,
+    })
+
+    const response = await axios.get(url)
+    return response
+  }
+
+  const {
+    data: ticketReportVesPaginatedData,
+    isFetching: isFetchingVes,
+    refetch: getVesTicketsReport,
+  } = useQuery<ReactQueryResponse<ITicketReportResponse>>('get-ves-tickets-report', fetchVesData, {
+    enabled: shouldFetchData, // Only fetch data when shouldFetchData is true
+  })
+
+  const setTicketReportPaginated = (payload: ITicketReportResponse) => {
+    if (selectedTab === CurrencyId.USD) {
+      dispatchUsdTicketReport({type: TicketReportKind.SET_TICKET_REPORT, payload})
+    } else if (selectedTab === CurrencyId.VES) {
+      dispatchVesTicketReport({type: TicketReportKind.SET_TICKET_REPORT, payload})
     }
-  )
-
-  const setUsdTicketReportPaginated = (payload: ITicketReportResponse) => {
-    dispatchTicketReport({type: TicketReportKind.SET_USD_TICKETS, payload})
   }
 
-  const setVesTicketReportPaginated = (payload: ITicketReportResponse) => {
-    dispatchTicketReport({type: TicketReportKind.SET_VES_TICKETS, payload})
-  }
-
-  const handleFilterChange = (filterName: keyof ITicketReportQueryParams, value: any) => {
-    dispatchTicketReport({
+  const handleUsdFilterChange = (filterName: keyof ITicketReportQueryParams, value: any) => {
+    dispatchUsdTicketReport({
       type: TicketReportKind.SET_PARAMS,
       payload: {[filterName]: value} as ITicketReportQueryParams,
     })
   }
 
-  const resetFilters = () => {
+  const handleVesFilterChange = (filterName: keyof ITicketReportQueryParams, value: any) => {
+    dispatchVesTicketReport({
+      type: TicketReportKind.SET_PARAMS,
+      payload: {[filterName]: value} as ITicketReportQueryParams,
+    })
+  }
+
+  const resetUsdFilters = () => {
     const resetValues = {
-      baseUrl: ticketReportState.params.baseUrl,
+      baseUrl: ticketReportUsdState.params.baseUrl,
       pageIndex: 0,
       pageSize: 10,
       initialDate: formattedDate,
       endDate: formattedDate,
+      currency: CURRENCY_USD,
       sellerId: '',
+      ticketId: '',
     }
 
-    setTempFilters(resetValues)
-    dispatchTicketReport({type: TicketReportKind.SET_PARAMS, payload: resetValues})
+    setTempFiltersUsd(resetValues)
+    dispatchUsdTicketReport({type: TicketReportKind.SET_PARAMS, payload: resetValues})
   }
 
-  const setSalesSellerReportParams = () => {
-    dispatchTicketReport({type: TicketReportKind.SET_PARAMS, payload: tempFilters})
+  const resetVesFilters = () => {
+    const resetValues = {
+      baseUrl: ticketReportUsdState.params.baseUrl,
+      pageIndex: 0,
+      pageSize: 10,
+      initialDate: formattedDate,
+      endDate: formattedDate,
+      currency: CURRENCY_USD,
+      sellerId: '',
+      ticketId: '',
+    }
+
+    setTempFiltersVes(resetValues)
+    dispatchVesTicketReport({type: TicketReportKind.SET_PARAMS, payload: resetValues})
   }
 
-  const setSellers = (payload: string[]) => {
-    dispatchTicketReport({type: TicketReportKind.SET_SELLERS, payload})
+  const setTicketReportParams = () => {
+    setShouldFetchData(true)
+    if (selectedTab === CurrencyId.USD) {
+      dispatchUsdTicketReport({type: TicketReportKind.SET_PARAMS, payload: tempFiltersUsd})
+    } else if (selectedTab === CurrencyId.VES) {
+      dispatchVesTicketReport({type: TicketReportKind.SET_PARAMS, payload: tempFiltersVes})
+    }
   }
 
-  const setTicketId = (payload: string) => {
-    dispatchTicketReport({type: TicketReportKind.SET_TICKET_ID, payload})
+  const setUsdSellers = (payload: string[]) => {
+    dispatchUsdTicketReport({type: TicketReportKind.SET_SELLERS, payload})
+  }
+
+  const setVesSellers = (payload: string[]) => {
+    dispatchVesTicketReport({type: TicketReportKind.SET_SELLERS, payload})
+  }
+
+  const setUsdTicketId = (payload: string) => {
+    dispatchUsdTicketReport({type: TicketReportKind.SET_TICKET_ID, payload})
+  }
+
+  const setVesTicketId = (payload: string) => {
+    dispatchVesTicketReport({type: TicketReportKind.SET_TICKET_ID, payload})
+  }
+
+  const setCurrencyChange = (newCurrency: string) => {
+    setTempFiltersUsd((prevFilters) => ({
+      ...prevFilters,
+      currency: newCurrency,
+    }))
   }
 
   useEffect(() => {
-    if (!isFetching) {
-      getTicketsReport()
+    if (!isFetchingUsd && shouldFetchData) {
+      getUsdTicketsReport()
     }
-  }, [ticketReportState.params])
+  }, [ticketReportUsdState.params])
 
   useEffect(() => {
-    if (!isFetching && ticketReportPaginatedData) {
-      const ticketUsdData = ticketReportPaginatedData.data.response.items.find(
-        (t) => t.currencyCode === CURRENCY_USD
-      )
-      if (ticketUsdData) {
-        setUsdTicketReportPaginated(ticketUsdData)
-      }
-      const ticketVesData = ticketReportPaginatedData.data.response.items.find(
-        (t) => t.currencyCode === CURRENCY_VES
-      )
-      if (ticketVesData) {
-        setVesTicketReportPaginated(ticketVesData)
-      }
+    if (!isFetchingVes && shouldFetchData) {
+      getVesTicketsReport()
+    }
+  }, [ticketReportVesState.params])
 
-      if (ticketReportState.sellers === undefined || ticketReportState.sellers.length === 0) {
+  useEffect(() => {
+    if (selectedTab === CurrencyId.USD) {
+      setCurrencyChange(CurrencyCode.USD)
+    } else {
+      setCurrencyChange(CurrencyCode.VES)
+    }
+  }, [selectedTab])
+
+  useEffect(() => {
+    if (!isFetchingUsd && ticketReportUsdPaginatedData) {
+      setTicketReportPaginated(ticketReportUsdPaginatedData.data.response)
+
+      if (ticketReportUsdState.sellers === undefined || ticketReportUsdState.sellers.length === 0) {
         const uniqueSellerIds = new Set<string>()
 
-        const sellers: string[] = ticketReportPaginatedData.data.response.items
-          .flatMap((item) => item.tickets)
+        const sellers: string[] = ticketReportUsdPaginatedData.data.response.tickets
           .filter((ticket) => {
             if (uniqueSellerIds.has(ticket.ticketSoldByUserId)) {
               return false
@@ -197,19 +288,49 @@ export const useTicketReport = () => {
             return true
           })
           .map((ticket) => ticket.ticketSoldByUserId)
-        setSellers(sellers)
+        setUsdSellers(sellers)
       }
     }
-  }, [ticketReportPaginatedData])
+  }, [ticketReportUsdPaginatedData])
+
+  useEffect(() => {
+    if (!isFetchingVes && ticketReportVesPaginatedData) {
+      setTicketReportPaginated(ticketReportVesPaginatedData.data.response)
+
+      if (ticketReportVesState.sellers === undefined || ticketReportVesState.sellers.length === 0) {
+        const uniqueSellerIds = new Set<string>()
+
+        const sellers: string[] = ticketReportVesPaginatedData.data.response.tickets
+          .filter((ticket) => {
+            if (uniqueSellerIds.has(ticket.ticketSoldByUserId)) {
+              return false
+            }
+            uniqueSellerIds.add(ticket.ticketSoldByUserId)
+            return true
+          })
+          .map((ticket) => ticket.ticketSoldByUserId)
+        setVesSellers(sellers)
+      }
+    }
+  }, [ticketReportVesPaginatedData])
 
   return {
-    isLoading: isFetching,
-    ticketReportState,
-    setTempFilters,
-    resetFilters,
-    setSalesSellerReportParams,
-    handleFilterChange,
-    tempFilters,
-    setTicketId,
+    isLoading: isFetchingUsd,
+    isLoadingVes: isFetchingVes,
+    ticketReportUsdState,
+    ticketReportVesState,
+    setTempFiltersUsd,
+    setTempFiltersVes,
+    resetUsdFilters,
+    resetVesFilters,
+    setTicketReportParams,
+    handleUsdFilterChange,
+    handleVesFilterChange,
+    tempFiltersUsd,
+    tempFiltersVes,
+    setUsdTicketId,
+    setVesTicketId,
+    selectedTab,
+    setSelectedTab,
   }
 }
