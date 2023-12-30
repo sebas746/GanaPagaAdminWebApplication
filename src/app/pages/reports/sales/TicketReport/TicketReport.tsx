@@ -49,7 +49,7 @@ const TicketReport = () => {
               aria-controls={`tab-${currency.currencyName.toLowerCase()}`}
               aria-selected={selectedTab === currency.currencyId ? 'true' : 'false'}
             >
-              Reporte tiquetes {currency.currencyCode.toLocaleUpperCase()}
+              Reporte tiquetes en {currency.currencyName}
             </button>
           </li>
         ))}

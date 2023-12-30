@@ -29,27 +29,35 @@ interface TicketReportTableProps {
 interface TicketSummaryCardProps {
   totalTickets: number
   totalAmount: number
-  currencyCodeSummary: string
+  currencyCode: string
   totalCancelledTickets: number
 }
 
 const TicketSummaryCard = ({
   totalTickets,
   totalAmount,
-  currencyCodeSummary,
+  currencyCode,
   totalCancelledTickets,
 }: TicketSummaryCardProps) => {
   return (
-    <div className='card mb-3' style={{maxWidth: '18rem'}}>
+    <div className='card mb-3' style={{maxWidth: '20rem'}}>
+      <div
+        className={`card-header text-white ${
+          currencyCode === CURRENCY_USD ? 'bg-success' : 'bg-danger'
+        }`}
+      >
+        <h4 className='card-title text-white fw-bold'>Resultados</h4>
+      </div>
       <div className='card-body'>
-        <h5 className='card-title'>Resumen</h5>
-        <>
-          <p className='card-text'>Total Tiquetes vendidos: {totalTickets}</p>
-          <p className='card-text'>
-            Total Vendido: {formatCurrency(totalAmount, currencyCodeSummary)}
-          </p>
-          <p className='card-text'>Total Tiquetes anulados: {totalCancelledTickets}</p>
-        </>
+        <p className='card-text fw-bold fs-6 text-gray-800'>
+          Total Tiquetes vendidos: {totalTickets}
+        </p>
+        <p className='card-text fw-bold fs-6 text-gray-800'>
+          Total Vendido {currencyCode}: {formatCurrency(totalAmount, currencyCode)}
+        </p>
+        <p className='card-text fw-bold fs-6 text-gray-800'>
+          Total Tiquetes anulados: {totalCancelledTickets}
+        </p>
       </div>
     </div>
   )
@@ -166,7 +174,7 @@ const TicketReportTable = ({
             <>
               <TicketSummaryCard
                 totalTickets={ticketReportPaginated.ticketsCount}
-                currencyCodeSummary={ticketReportPaginated.currencyCode}
+                currencyCode={ticketReportPaginated.currencyCode}
                 totalAmount={ticketReportPaginated.totalSales}
                 totalCancelledTickets={ticketReportPaginated.ticketCancelledCount}
               />
@@ -180,8 +188,9 @@ const TicketReportTable = ({
                     >
                       <th className='text-center fs-4 text-white'>Fecha</th>
                       <th className='text-center fs-4 text-white'>ID Tiquete</th>
-                      <th className='text-center fs-4 text-white'>Total</th>
                       <th className='text-center fs-4 text-white'>Vendedor</th>
+                      <th className='text-center fs-4 text-white'>Moneda</th>
+                      <th className='text-center fs-4 text-white'>Total</th>
                       <th className='text-center fs-4 text-white'>Acciones</th>
                     </tr>
                   </thead>
@@ -197,6 +206,7 @@ const TicketReportTable = ({
                           </td>
                           <td className='text-center'>{ticket.ticketId}</td>
                           <td className='text-center'>{ticket.ticketSoldByUserId}</td>
+                          <td className='text-center'>{currencyCode}</td>
                           <td className='text-center'>
                             {formatCurrency(ticket.ticketTotal, currencyCode)}
                           </td>
