@@ -175,6 +175,25 @@ const SidebarMenuMain = () => {
           <SidebarMenuItem to='/pages/users-management/users' title='Usuarios' hasBullet={true} />
         </SidebarMenuItemWithSub>
       )}
+      {adminRoutes && (
+        <SidebarMenuItemWithSub
+          to='/pages/personalized-quota'
+          title='Personalizar Cupo'
+          icon='/media/icons/duotune/general/gen049.svg'
+          fontIcon='bi-person'
+        >
+          <SidebarMenuItem
+            to='/pages/personalized-quota/overview'
+            title='Lista cupos personalizados'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
+            to='/pages/personalized-quota/create'
+            title='Crear Cupo Personalizada'
+            hasBullet={true}
+            />
+        </SidebarMenuItemWithSub>
+        )}
     </>
   )
 }
