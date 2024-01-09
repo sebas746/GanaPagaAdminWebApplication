@@ -103,7 +103,6 @@ export const useCreatePersonalizedQuota = () => {
     {
       refetchOnWindowFocus: false,
       enabled: false,
-      onError: (err) => {},
     }
   )
 
@@ -111,7 +110,7 @@ export const useCreatePersonalizedQuota = () => {
     mutationFn: async (body: ISetAnimalQuota) => {
       return await axios.post('/AnimalitosMaxOverallBet/insert-animalitos-max-overall', body)
     },
-    onSuccess(data, variables, context) {
+    onSuccess() {
       enqueueSnackbar('Se ha guardado correctamente el cupo', {
         variant: 'success',
         hideIconVariant: true,

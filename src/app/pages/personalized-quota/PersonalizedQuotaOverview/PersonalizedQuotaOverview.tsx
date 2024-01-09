@@ -10,7 +10,6 @@ interface OverviewProps {}
 
 const PersonalizedQuotaOverview = ({}: OverviewProps) => {
   const {
-    deletePersonalizedQuota,
     handleDeleteAnimalitosQuota,
     isDeletingQuota,
     isFetching,
@@ -27,13 +26,6 @@ const PersonalizedQuotaOverview = ({}: OverviewProps) => {
     setPageIndex,
     showModal,
   } = usePersonalizedQuotaOverview()
-
-  const onHandleDelete = (lotteryId: number, animalitoId: number) => {
-    deletePersonalizedQuota({
-      lotteryId,
-      animalitoId,
-    })
-  }
 
   const renderRows = useMemo(() => {
     return listPersonalizedAnimalitosQuota?.items?.map((personalizedQuota) => {
