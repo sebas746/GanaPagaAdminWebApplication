@@ -6,13 +6,12 @@ import {ReactQueryResponse} from '../../../../types/Generics'
 import {
   IAnimalitosByLottery,
   IAnimalitosLotteries,
-  IRaffleResultAnimalitosResponse,
   ISetAnimalQuota,
 } from '../../../../types/Animalitos.types'
 
 import axios from '../../../config/http-common'
 import {enqueueSnackbar} from 'notistack'
-import {useLocation, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 
 
 const isNumber = (value: string) => {
@@ -48,6 +47,7 @@ export const useCreatePersonalizedQuota = () => {
   }
 
   const onChangeQuotaUsd = (event: ChangeEvent<HTMLInputElement>) => {
+    debugger
     const value = event.target.value
     if (value === '') {
       setQuotaUsd('')
@@ -58,6 +58,7 @@ export const useCreatePersonalizedQuota = () => {
   }
 
   const onChangeQuotaVes = (event: ChangeEvent<HTMLInputElement>) => {
+    debugger
     const value = event.target.value
     if (value === '') {
       setQuotaVes('')
@@ -84,9 +85,6 @@ export const useCreatePersonalizedQuota = () => {
     async () => {
       return await axios.get(`/Lottery/get-lottery-by-game-type/gameType/Animalitos`)
     },
-    {
-      onError: (err) => {},
-    }
   )
 
   const {
@@ -120,7 +118,7 @@ export const useCreatePersonalizedQuota = () => {
       })
       resetState()
     },
-    onError(error, variables, context) {
+    onError() {
       enqueueSnackbar(
         'Se ha presentado un error, por favor recargue la página o consulte con el administrador.',
         {
@@ -149,6 +147,7 @@ export const useCreatePersonalizedQuota = () => {
   }
 
   useEffect(() => {
+    debugger
     if (selectedLottery > 0 && selectedLottery !== currentSelectedLottery) {
       getAnimalitosByLottery()
       setCurrentSelectedLottery(selectedLottery)
@@ -161,11 +160,18 @@ export const useCreatePersonalizedQuota = () => {
   }, [selectedLottery])
 
   useEffect(() => {
-    if (selectedAnimal > 0) {
+    debugger
+    if (selectedAnimal > 0 && overallAnimalQuota.animalId > 0) {
       setQuotaUsd(String(overallAnimalQuota.overallQuotaUsd ?? 0))
       setQuotaVes(String(overallAnimalQuota.overallQuotaVes ?? 0))
     }
-  }, [selectedAnimal])
+  }, [selectedAnimal, animalitos])
+
+  useEffect(() => {
+    return () => {
+      resetState()
+    }
+  }, [])
 
   return {
     lotteryData: lotteries ? lotteries?.data?.response : [],

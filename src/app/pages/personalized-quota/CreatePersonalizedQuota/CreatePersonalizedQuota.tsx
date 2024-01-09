@@ -13,7 +13,6 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
     selectedLottery,
     isFetching,
     mappedAnimalitosByLottery,
-    overallAnimalQuota,
     onChangeAnimal,
     onChangeQuotaUsd,
     onChangeQuotaVes,
@@ -30,8 +29,6 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
   const onBack = () => {
     navigate(-1)
   }
-
-  console.log({selectedAnimal})
 
   return (
     <div className='container-fluid'>

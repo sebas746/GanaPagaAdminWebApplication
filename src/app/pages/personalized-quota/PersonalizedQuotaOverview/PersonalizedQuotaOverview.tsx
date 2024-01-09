@@ -18,7 +18,6 @@ const PersonalizedQuotaOverview = ({}: OverviewProps) => {
     lotteries,
     onChangeDeleteAnimalitosQuota,
     onChangeLottery,
-    onChangePageIndex,
     onChangePageSizes,
     onHandleCloseModal,
     pageIndex,
@@ -81,7 +80,7 @@ const PersonalizedQuotaOverview = ({}: OverviewProps) => {
               ))}
             </select>
           </div>
-          <div className={`col-2`}>
+          <div className={`col-3`}>
             <label className='form-label'>Número de elementos por página</label>
             <select className='form-select' onChange={onChangePageSizes}>
               {pageSizeArray.map((size) => (
@@ -92,27 +91,35 @@ const PersonalizedQuotaOverview = ({}: OverviewProps) => {
             </select>
           </div>
         </div>
+        <div className='d-flex justify-content-end mb-8'>
+          <Link to={`/pages/personalized-quota/create`}>
+            <Button variant={'success'}>
+              Agregar Cupo Personalizado
+            </Button>
+          </Link>
+        </div>
         <ConditionalRedering isTrue={!isFetching}>
           <div className='bg-white'>
             <table className='table table-hover table-bordered'>
               <thead className='text-center align-middle'>
-                <tr>
-                  <th colSpan={5} className='text-center'>
-                    Resumen
-                  </th>
-                </tr>
-                <tr>
-                  <th>Loteria</th>
-                  <th>Animalito</th>
-                  <th>Cupo USD</th>
-                  <th>Cupo VES</th>
-                  <th>Acciones</th>
-                </tr>
+              <tr>
+                <th colSpan={5} className='text-center'>
+                  Resumen
+                </th>
+              </tr>
+              <tr>
+                <th>Loteria</th>
+                <th>Animalito</th>
+                <th>Cupo USD</th>
+                <th>Cupo VES</th>
+                <th>Acciones</th>
+              </tr>
               </thead>
               <tbody className='text-center align-middle'>{renderRows}</tbody>
             </table>
           </div>
         </ConditionalRedering>
+
         <ConditionalRedering isTrue={isFetching}>
           <div className='d-flex justify-content-center mb-8'>
             <Spinner className='fs-1' />
