@@ -141,7 +141,7 @@ export const useTicketReport = () => {
     isFetching: isFetchingUsd,
     refetch: getUsdTicketsReport,
   } = useQuery<ReactQueryResponse<ITicketReportResponse>>('get-usd-tickets-report', fetchUsdData, {
-    enabled: shouldFetchDataUsd, // Only fetch data when shouldFetchData is true
+    enabled: shouldFetchDataUsd,
   })
 
   const fetchVesData = async () => {
@@ -164,7 +164,7 @@ export const useTicketReport = () => {
     isFetching: isFetchingVes,
     refetch: getVesTicketsReport,
   } = useQuery<ReactQueryResponse<ITicketReportResponse>>('get-ves-tickets-report', fetchVesData, {
-    enabled: shouldFetchDataVes, // Only fetch data when shouldFetchData is true
+    enabled: shouldFetchDataVes,
   })
 
   const setTicketReportPaginated = (payload: ITicketReportResponse) => {

@@ -1,4 +1,4 @@
-import {Form, Pagination} from 'react-bootstrap'
+import {Card, Col, Form, Pagination, Row} from 'react-bootstrap'
 import RenderLoader from '../../../RenderLoader/RenderLoader'
 import {formatCurrency} from '../../../../helpers/currency.helpers'
 import {DateTime} from 'luxon'
@@ -9,6 +9,7 @@ import {
 import TicketDetail from '../../../Modals/TicketDetail/TicketDetail'
 import {useScrutinyDetail} from '../../../Cards/ScrutinyDetail/components/ScrutinyDetailTable.hook'
 import {CURRENCY_USD} from '../../../../constants/reports.constants'
+import ConditionalRendering from '../../../../helpers/ConditionalRedering'
 
 interface TicketReportTableProps {
   ticketReportPaginated: ITicketReportResponse
@@ -78,33 +79,37 @@ const TicketReportTable = ({
   isTicketDetailLoading,
   currencyCode,
 }: TicketReportTableProps) => {
+  console.log(typeof ticketId)
+  const showPagination =
+    !isLoading && ticketReportPaginated && ticketReportPaginated.ticketsCount > 0
+  const showSummaryCard =
+    !isLoading &&
+    ticketReportPaginated &&
+    ticketReportPaginated.currencyCode === currencyCode &&
+    ticketReportPaginated.ticketsCount > 0
   return (
     <>
-      <div className='card-body py-3'>
+      <Card.Body className='py-3'>
         <div className='mb-4'>
-          <div className='row mb-2'>
+          <Row className='mb-2'>
             {/* Initial Date Input */}
-            <div className='col-md-3'>
-              <label htmlFor='initialDate' className='form-label'>
-                Fecha Inicial
-              </label>
-              <input
+            <Col md={3}>
+              <Form.Label htmlFor='initialDate'>Fecha Inicial</Form.Label>
+              <Form.Control
                 id='initialDate'
                 type='date'
-                className='form-control'
                 placeholder='Fecha inicial'
                 onChange={(e) => setTempFilters((prev) => ({...prev, initialDate: e.target.value}))}
                 value={tempFilters.initialDate}
               />
-            </div>
+            </Col>
 
             {/* End Date Input */}
 
-            <div className='col-md-3'>
-              <label htmlFor='endDate' className='form-label'>
-                Fecha Final
-              </label>
-              <input
+            <Col md={3}>
+              <Form.Label htmlFor='endDate'>Fecha Final</Form.Label>
+
+              <Form.Control
                 id='endDate'
                 type='date'
                 className='form-control'
@@ -112,26 +117,22 @@ const TicketReportTable = ({
                 onChange={(e) => setTempFilters((prev) => ({...prev, endDate: e.target.value}))}
                 value={tempFilters.endDate}
               />
-            </div>
+            </Col>
 
-            <div className='col-md-3'>
-              <label htmlFor='ticketId' className='form-label'>
-                ID Tiquete
-              </label>
-              <input
+            <Col md={3}>
+              <Form.Label htmlFor='ticketId'>ID Tiquete</Form.Label>
+              <Form.Control
                 id='ticketId'
                 className='form-control'
                 placeholder='ID Tiquete'
                 onChange={(e) => setTempFilters((prev) => ({...prev, ticketId: e.target.value}))}
                 value={tempFilters.ticketId}
               />
-            </div>
+            </Col>
 
             {/* Role Selector */}
-            <div className='col-md-3'>
-              <label htmlFor='roleSelector' className='form-label'>
-                Vendedor
-              </label>
+            <Col md={3}>
+              <Form.Label htmlFor='roleSelector'>Vendedor</Form.Label>
               <Form.Select
                 id='sellerEmail'
                 className='form-control'
@@ -145,11 +146,11 @@ const TicketReportTable = ({
                   </option>
                 ))}
               </Form.Select>
-            </div>
-          </div>
+            </Col>
+          </Row>
 
-          <div className='row mb-3'>
-            <div className='col-md-12'>
+          <Row className='mb-3'>
+            <Col md={12}>
               <div className='btn-group'>
                 <button
                   className='btn btn-primary'
@@ -162,89 +163,88 @@ const TicketReportTable = ({
                   Limpiar
                 </button>
               </div>
-            </div>
-          </div>
+            </Col>
+          </Row>
         </div>
         <div style={{borderTop: '1px solid #ddd', margin: '20px 0'}}></div>
-        {isLoading && <RenderLoader show={isLoading} huge={true} />}
-        {!isLoading &&
-          ticketReportPaginated &&
-          ticketReportPaginated.currencyCode === currencyCode &&
-          ticketReportPaginated.ticketsCount > 0 && (
-            <>
-              <TicketSummaryCard
-                totalTickets={ticketReportPaginated.ticketsCount}
-                currencyCode={ticketReportPaginated.currencyCode}
-                totalAmount={ticketReportPaginated.totalSales}
-                totalCancelledTickets={ticketReportPaginated.ticketCancelledCount}
-              />
-              <div className='table-responsive'>
-                <table className='table table-bordered table-row-bordered table-row-gray-300 gy-6 table-hover'>
-                  <thead>
-                    <tr
-                      className={`fw-bold text-light ${
-                        currencyCode === CURRENCY_USD ? 'bg-success' : 'bg-danger'
-                      }`}
-                    >
-                      <th className='text-center fs-4 text-white'>Fecha</th>
-                      <th className='text-center fs-4 text-white'>ID Tiquete</th>
-                      <th className='text-center fs-4 text-white'>Vendedor</th>
-                      <th className='text-center fs-4 text-white'>Moneda</th>
-                      <th className='text-center fs-4 text-white'>Total</th>
-                      <th className='text-center fs-4 text-white'>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ticketReportPaginated.ticketsCount > 0 &&
-                      ticketReportPaginated.tickets.map((ticket, index) => (
-                        <tr
-                          className='fw-bold fs-6 text-gray-800'
-                          key={`${ticket.ticketCreatedAt}-${index}`}
-                        >
-                          <td className='text-center'>
-                            {DateTime.fromISO(ticket.ticketCreatedAt).toFormat('yyyy-MM-dd')}
-                          </td>
-                          <td className='text-center'>{ticket.ticketId}</td>
-                          <td className='text-center'>{ticket.ticketSoldByUserId}</td>
-                          <td className='text-center'>{currencyCode}</td>
-                          <td className='text-center'>
-                            {formatCurrency(ticket.ticketTotal, currencyCode)}
-                          </td>
-                          <td className='text-center'>
-                            <div
-                              onClick={() => setTicketId(ticket.ticketId)}
-                              style={{
-                                cursor:
-                                  isTicketDetailLoading && ticket.ticketId === ticketId
-                                    ? 'not-allowed'
-                                    : 'pointer',
-                              }}
-                            >
-                              {isTicketDetailLoading ? (
-                                <RenderLoader
-                                  key={ticket.ticketNumber}
-                                  show={isTicketDetailLoading && ticket.ticketId === ticketId}
-                                />
-                              ) : (
-                                <i className='bi bi-zoom-in text-primary fs-2x'></i>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    {ticketReportPaginated.tickets.length === 0 && (
-                      <tr>
-                        <td colSpan={7} className='text-center'>
-                          No results...
+        <ConditionalRendering isTrue={isLoading}>
+          <RenderLoader show={isLoading} huge={true} />
+        </ConditionalRendering>
+        {showSummaryCard && (
+          <>
+            <TicketSummaryCard
+              totalTickets={ticketReportPaginated.ticketsCount}
+              currencyCode={ticketReportPaginated.currencyCode}
+              totalAmount={ticketReportPaginated.totalSales}
+              totalCancelledTickets={ticketReportPaginated.ticketCancelledCount}
+            />
+            <div className='table-responsive'>
+              <table className='table table-bordered table-row-bordered table-row-gray-300 gy-6 table-hover'>
+                <thead>
+                  <tr
+                    className={`fw-bold text-light ${
+                      currencyCode === CURRENCY_USD ? 'bg-success' : 'bg-danger'
+                    }`}
+                  >
+                    <th className='text-center fs-4 text-white'>Fecha</th>
+                    <th className='text-center fs-4 text-white'>ID Tiquete</th>
+                    <th className='text-center fs-4 text-white'>Vendedor</th>
+                    <th className='text-center fs-4 text-white'>Moneda</th>
+                    <th className='text-center fs-4 text-white'>Total</th>
+                    <th className='text-center fs-4 text-white'>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ticketReportPaginated.ticketsCount > 0 &&
+                    ticketReportPaginated.tickets.map((ticket, index) => (
+                      <tr
+                        className='fw-bold fs-6 text-gray-800'
+                        key={`${ticket.ticketCreatedAt}-${index}`}
+                      >
+                        <td className='text-center'>
+                          {DateTime.fromISO(ticket.ticketCreatedAt).toFormat('yyyy-MM-dd')}
+                        </td>
+                        <td className='text-center'>{ticket.ticketId}</td>
+                        <td className='text-center'>{ticket.ticketSoldByUserId}</td>
+                        <td className='text-center'>{currencyCode}</td>
+                        <td className='text-center'>
+                          {formatCurrency(ticket.ticketTotal, currencyCode)}
+                        </td>
+                        <td className='text-center'>
+                          <div
+                            onClick={() => setTicketId(ticket.ticketId)}
+                            style={{
+                              cursor:
+                                isTicketDetailLoading && ticket.ticketId === ticketId
+                                  ? 'not-allowed'
+                                  : 'pointer',
+                            }}
+                          >
+                            {isTicketDetailLoading ? (
+                              <RenderLoader
+                                key={ticket.ticketNumber}
+                                show={isTicketDetailLoading && ticket.ticketId === ticketId}
+                              />
+                            ) : (
+                              <i className='bi bi-zoom-in text-primary fs-2x'></i>
+                            )}
+                          </div>
                         </td>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )}
-        {!isLoading && ticketReportPaginated && ticketReportPaginated.ticketsCount > 0 && (
+                    ))}
+                  {ticketReportPaginated.tickets.length === 0 && (
+                    <tr>
+                      <td colSpan={7} className='text-center'>
+                        No results...
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+        {showPagination && (
           <Pagination>
             {Array.from({
               length: Math.ceil(ticketReportPaginated.ticketsCount / params.pageSize),
@@ -259,7 +259,7 @@ const TicketReportTable = ({
             ))}
           </Pagination>
         )}
-      </div>
+      </Card.Body>
     </>
   )
 }
