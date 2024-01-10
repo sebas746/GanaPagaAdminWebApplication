@@ -21,7 +21,7 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
     selectedAnimal,
     saveAnimalQuota,
     animalitosData,
-    isInsertingQuota
+    isInsertingQuota,
   } = useCreatePersonalizedQuota()
 
   const navigate = useNavigate()
@@ -39,7 +39,9 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
             <select className='form-select' onChange={onChangeLottery} value={selectedLottery}>
               <option value='0'>Seleccione una loteria</option>
               {lotteryData.map((lottery) => (
-                <option value={lottery.lotteryId} key={`lottery-${lottery.lotteryId}`}>{lottery.lotteryName}</option>
+                <option value={lottery.lotteryId} key={`lottery-${lottery.lotteryId}`}>
+                  {lottery.lotteryName}
+                </option>
               ))}
             </select>
           </div>
@@ -48,19 +50,29 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
             <select className='form-select' onChange={onChangeAnimal} value={selectedAnimal}>
               <option value='0'>Seleccione un animalito</option>
               {mappedAnimalitosByLottery.map((animal) => (
-                <option value={animal.animalId} key={`list-animal-${animal.animalId}`}>{animal.animalName}</option>
+                <option value={animal.animalId} key={`list-animal-${animal.animalId}`}>
+                  {animal.animalName}
+                </option>
               ))}
             </select>
           </div>
           <div className='col-4'>
             <div className='d-flex flex-column gap-8'>
               <div className='border border-1 border-dark p-3 pb-0 rounded bg-white'>
-                <p className='fs-4'>Cupo general: {animalitosData[0]?.animalitosMaxOverallUsd ?? 0}</p>
-                <p className='fs-4'>Tope por apuesta: {}</p>
+                <p className='fs-4'>
+                  Cupo general: {animalitosData[0]?.animalitosMaxOverallUsd ?? 0}
+                </p>
+                <p className='fs-4'>
+                  Tope por apuesta: {animalitosData[0]?.maxBetByAnimalUsd ?? 0}
+                </p>
               </div>
               <div className='border border-1 border-dark p-3 pb-0 rounded bg-white'>
-                <p className='fs-4'>Cupo general: {animalitosData[0]?.animalitosMaxOverallVes ?? 0}</p>
-                <p className='fs-4'>Tope por apuesta: {}</p>
+                <p className='fs-4'>
+                  Cupo general: {animalitosData[0]?.animalitosMaxOverallVes ?? 0}
+                </p>
+                <p className='fs-4'>
+                  Tope por apuesta: {animalitosData[0]?.maxBetByAnimalVes ?? 0}
+                </p>
               </div>
             </div>
           </div>
@@ -91,9 +103,19 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
           <div className='d-flex'>
             <div className='col-4 offset-sm-8'>
               <div className='d-flex justify-content-between gap-10'>
-                <button className='btn btn-secondary w-50' onClick={onBack} disabled={isInsertingQuota}>Regresar</button>
-                <button className='btn btn-primary w-50' onClick={saveAnimalQuota} disabled={isInsertingQuota}>
-                  {isInsertingQuota && (<Spinner />)}
+                <button
+                  className='btn btn-secondary w-50'
+                  onClick={onBack}
+                  disabled={isInsertingQuota}
+                >
+                  Regresar
+                </button>
+                <button
+                  className='btn btn-primary w-50'
+                  onClick={saveAnimalQuota}
+                  disabled={isInsertingQuota}
+                >
+                  {isInsertingQuota && <Spinner />}
                   {!isInsertingQuota && 'Guardar'}
                 </button>
               </div>

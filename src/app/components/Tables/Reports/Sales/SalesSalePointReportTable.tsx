@@ -117,19 +117,11 @@ const SalesSellerReportTable = ({
                 <table className='table table-row-bordered table-row-gray-300 gy-6'>
                   <thead>
                     <tr className='fw-bold text-light bg-success'>
-<<<<<<< HEAD
-                      <th className='text-center fs-4'>Fecha</th>
-                      <th className='text-center fs-4'>Moneda</th>
-                      <th className='text-center fs-4'>Punto de venta</th>
-                      <th className='text-center fs-4'>Dirección</th>
-                      <th className='text-center fs-4'>Total Ventas</th>
-=======
                       <th className='text-center fs-4 text-white'>Fecha</th>
                       <th className='text-center fs-4 text-white'>Moneda</th>
                       <th className='text-center fs-4 text-white'>Punto de venta</th>
                       <th className='text-center fs-4 text-white'>Dirección</th>
                       <th className='text-center fs-4 text-white'>Total Ventas</th>
->>>>>>> 958feca1ca6c63dfd62d932ab3b9452c8c9aea34
                     </tr>
                   </thead>
                   <tbody>

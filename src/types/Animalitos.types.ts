@@ -122,6 +122,8 @@ export interface IAnimalitosByLottery {
   animalitosLotteryName: string
   animalitosMaxOverallUsd: number
   animalitosMaxOverallVes: number
+  maxBetByAnimalUsd: number
+  maxBetByAnimalVes: number
   animalDetails: IAnimalitosDetailByLottery[]
 }
 

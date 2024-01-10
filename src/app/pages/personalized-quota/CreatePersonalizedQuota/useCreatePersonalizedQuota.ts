@@ -13,7 +13,6 @@ import axios from '../../../config/http-common'
 import {enqueueSnackbar} from 'notistack'
 import {useParams} from 'react-router-dom'
 
-
 const isNumber = (value: string) => {
   // create regex to check if string is a number
   const regex = /^[0-9]+$/
@@ -84,7 +83,7 @@ export const useCreatePersonalizedQuota = () => {
     'get-all-lotteries',
     async () => {
       return await axios.get(`/Lottery/get-lottery-by-game-type/gameType/Animalitos`)
-    },
+    }
   )
 
   const {
@@ -146,7 +145,6 @@ export const useCreatePersonalizedQuota = () => {
   }
 
   useEffect(() => {
-    debugger
     if (selectedLottery > 0 && selectedLottery !== currentSelectedLottery) {
       getAnimalitosByLottery()
       setCurrentSelectedLottery(selectedLottery)
@@ -159,7 +157,6 @@ export const useCreatePersonalizedQuota = () => {
   }, [selectedLottery])
 
   useEffect(() => {
-    debugger
     if (selectedAnimal > 0 && overallAnimalQuota.animalId > 0) {
       setQuotaUsd(String(overallAnimalQuota.overallQuotaUsd ?? 0))
       setQuotaVes(String(overallAnimalQuota.overallQuotaVes ?? 0))
