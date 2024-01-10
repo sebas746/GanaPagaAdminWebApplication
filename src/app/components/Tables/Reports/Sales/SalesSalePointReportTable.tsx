@@ -159,8 +159,8 @@ const SalesSellerReportTable = ({
                 <table className='table table-row-bordered table-row-gray-300 gy-6'>
                   <thead>
                     <tr className='fw-bold text-light bg-primary'>
-                      <th className='text-center'>Moneda</th>
-                      <th className='text-center'>Total Ventas</th>
+                      <th className='text-center fs-4 text-white'>Moneda</th>
+                      <th className='text-center fs-4 text-white'>Total Ventas</th>
                     </tr>
                   </thead>
                   <tbody>
