@@ -35,7 +35,7 @@ export function HeaderWrapper() {
               </div>
               <div className='d-flex align-items-center flex-grow-1 flex-lg-grow-0'>
                 <Link to='/dashboard' className='d-lg-none'>
-                  <img alt='Logo' src='./assets/media/logos/default-small.svg' className='h-30px' />
+                  <img alt='Logo' src='./assets/media/logos/ganapaga-dark.svg' className='h-30px' />
                 </Link>
               </div>
             </div>
@@ -48,19 +48,19 @@ export function HeaderWrapper() {
               {config.layoutType !== 'dark-header' ? (
                 <img
                   alt='Logo'
-                  src={toAbsoluteUrl('/media/logos/default-dark.svg')}
+                  src={toAbsoluteUrl('/media/logos/ganapaga-dark.svg')}
                   className='h-20px h-lg-30px app-sidebar-logo-default'
                 />
               ) : (
                 <>
                   <img
                     alt='Logo'
-                    src={toAbsoluteUrl('/media/logos/default.svg')}
+                    src={toAbsoluteUrl('/media/logos/ganapaga.svg')}
                     className='h-20px h-lg-30px app-sidebar-logo-default theme-light-show'
                   />
                   <img
                     alt='Logo'
-                    src={toAbsoluteUrl('/media/logos/default-dark.svg')}
+                    src={toAbsoluteUrl('/media/logos/ganapaga-dark.svg')}
                     className='h-20px h-lg-30px app-sidebar-logo-default theme-dark-show'
                   />
                 </>
