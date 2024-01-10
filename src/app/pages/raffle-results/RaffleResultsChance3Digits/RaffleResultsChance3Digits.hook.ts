@@ -10,7 +10,6 @@ import {
 import {QueryResponse, ReactQueryResponse} from '../../../../types/Generics'
 import {RaffleResultsForm} from '../../../../types/Forms.types'
 import {DateTime} from 'luxon'
-import {batch} from '@preact/signals-react'
 import {enqueueSnackbar} from 'notistack'
 import {useAuth} from 'oidc-react'
 import {useChance3DigitsLotteries} from '../../../hooks/chance3DigitsLotteries.hook'

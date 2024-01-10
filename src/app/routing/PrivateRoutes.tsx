@@ -27,6 +27,7 @@ const PrivateRoutes = () => {
   const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'))
   const RaffleResultsPage = lazy(() => import('../modules/raffle-results/RaffleResultPage'))
   const ScrutinyPage = lazy(() => import('../modules/scrutiny/ScrutinyPage'))
+  const PersonalizedQuota = lazy(() => import('../modules/personalized-quota/PersonalizedQuotaPage'))
 
   return (
     <Routes>
@@ -152,6 +153,16 @@ const PrivateRoutes = () => {
             <SuspensedView>
               <ProtectedRoute roles={['Admin']}>
                 <UsersManagementPage />
+              </ProtectedRoute>
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='pages/personalized-quota/*'
+          element={
+            <SuspensedView>
+              <ProtectedRoute roles={['Admin']}>
+                <PersonalizedQuota />
               </ProtectedRoute>
             </SuspensedView>
           }

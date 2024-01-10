@@ -36,7 +36,7 @@ export const useCheckSessionStatus = () => {
     }
   }
 
-  const renewUserToken = (intervalId: NodeJS.Timer) => {
+  const renewUserToken = (intervalId: NodeJS.Timeout) => {
     const expiresIn = auth.userData?.expires_in
     if (Number(expiresIn) < expirationRenewSeconds) {
       try {

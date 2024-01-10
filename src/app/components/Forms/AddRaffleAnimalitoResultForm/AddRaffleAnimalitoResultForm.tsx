@@ -3,13 +3,11 @@ import {
   IAnimalDetail,
   IAnimalDetailSelect,
   IAnimalitosLotteries,
-  IRaffleResultAnimalitosDetail,
 } from '../../../../types/Animalitos.types'
-import {Form} from 'react-bootstrap'
 import {useAddRaffleAnimalitoResultForm} from './AddRaffleAnimalitosResultForm.hook'
 import Button from 'react-bootstrap/Button'
 import RenderLoader from '../../RenderLoader/RenderLoader'
-import {Typeahead} from 'react-bootstrap-typeahead'
+import {LOTTERY_FRUITA_GANA_ID} from '../../../constants/localstorage.constants'
 
 interface AddRaffleAnimalitoResultFormProps {
   options: IAnimalDetail[]
@@ -66,7 +64,10 @@ const AddRaffleAnimalitoResultForm = ({
   let fruitIdSelected: number | undefined
   let fruitSelected: string | undefined
   let fruitOptionsSelected: IAnimalDetailSelect[] = []
-  if (selectedLottery?.animalitosLotteryFruitCombined || selectedLottery?.lotteryId === 3) {
+  if (
+    selectedLottery?.animalitosLotteryFruitCombined ||
+    selectedLottery?.lotteryId === LOTTERY_FRUITA_GANA_ID
+  ) {
     fruitOptions = options
       .filter((option) => option.animalIsFruit)
       .map((option) => {
@@ -86,14 +87,12 @@ const AddRaffleAnimalitoResultForm = ({
       fruitOptionsSelected.push({id: fruitIdSelected, label: fruitSelected})
     }
   }
-  console.log(animalOptionsSelected)
-  console.log(fruitOptionsSelected)
   const selectedAnimalFruit = selectedLottery?.animalitosLotteryFruitCombined
     ? fruitOptionsSelected
     : animalOptionsSelected
   return (
     <form className='d-flex align-items-center column-gap-4' onSubmit={formik.handleSubmit}>
-      {selectedLottery?.lotteryId !== 3 && (
+      {selectedLottery?.lotteryId !== LOTTERY_FRUITA_GANA_ID && (
         <Typeahead
           id={'animalitoId'}
           onChange={(selectedAnimal: IAnimalDetailSelect[]) => {
@@ -116,7 +115,8 @@ const AddRaffleAnimalitoResultForm = ({
         />
       )}
 
-      {(selectedLottery?.animalitosLotteryFruitCombined || selectedLottery?.lotteryId === 3) && (
+      {(selectedLottery?.animalitosLotteryFruitCombined ||
+        selectedLottery?.lotteryId === LOTTERY_FRUITA_GANA_ID) && (
         <Typeahead
           id={'fruitId'}
           onChange={(selectedFruit: IAnimalDetailSelect[]) => {
