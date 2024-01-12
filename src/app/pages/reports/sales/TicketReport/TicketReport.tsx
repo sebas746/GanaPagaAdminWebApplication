@@ -81,7 +81,14 @@ const TicketReport = () => {
         )}
       </div>
     ))
-  }, [currencies, selectedTab, ticketReportUsdState, ticketReportVesState, isTicketDetailLoading])
+  }, [
+    currencies,
+    selectedTab,
+    ticketReportUsdState,
+    ticketReportVesState,
+    isTicketDetailLoading,
+    setTicketReportParams,
+  ])
 
   return (
     <>
