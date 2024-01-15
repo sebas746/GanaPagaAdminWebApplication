@@ -79,7 +79,6 @@ const TicketReportTable = ({
   isTicketDetailLoading,
   currencyCode,
 }: TicketReportTableProps) => {
-  console.log(typeof ticketId)
   const showPagination =
     !isLoading && ticketReportPaginated && ticketReportPaginated.ticketsCount > 0
   const showSummaryCard =

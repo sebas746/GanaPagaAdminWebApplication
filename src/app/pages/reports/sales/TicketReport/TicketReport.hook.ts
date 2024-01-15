@@ -222,6 +222,8 @@ export const useTicketReport = () => {
   }
 
   const setTicketReportParams = () => {
+    console.log(selectedTab)
+    console.log(tempFiltersUsd)
     if (selectedTab === CurrencyId.USD) {
       setShouldFetchDataUsd(true)
       dispatchUsdTicketReport({type: TicketReportKind.SET_PARAMS, payload: tempFiltersUsd})
@@ -230,6 +232,8 @@ export const useTicketReport = () => {
       dispatchVesTicketReport({type: TicketReportKind.SET_PARAMS, payload: tempFiltersVes})
     }
   }
+
+  console.log(tempFiltersUsd)
 
   const setUsdSellers = (payload: string[]) => {
     dispatchUsdTicketReport({type: TicketReportKind.SET_SELLERS, payload})
