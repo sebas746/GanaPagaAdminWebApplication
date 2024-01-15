@@ -7,7 +7,7 @@ import {WithChildren} from '../../../helpers'
  * React portal based on https://stackoverflow.com/a/59154364
  * @param children Child elements
  * @param className CSS classname
- * @param el HTML element to create.  default: div
+ * @param el HTML element to personalizedBet.  default: div
  */
 const Portal: FC<{className?: string} & WithChildren> = ({children, className = ''}) => {
   const [container] = useState(document.createElement('div'))

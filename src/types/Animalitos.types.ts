@@ -110,3 +110,45 @@ export interface IGeneralSettingsAnimalitosResponse {
   lotteryName: string
   animalitosLotterySettings: IAnimalitosLotteryGeneralSetting[]
 }
+
+export interface IAnimalitosDetailByLottery extends IAnimalDetail {
+  animalHasOverallLimit: boolean
+  animalitosOverallBetUsdValue: number
+  animalitosOverallBetVesValue: number
+}
+
+export interface IAnimalitosByLottery {
+  animalitosLotteryId: number
+  animalitosLotteryName: string
+  animalitosMaxOverallUsd: number
+  animalitosMaxOverallVes: number
+  maxBetByAnimalUsd: number
+  maxBetByAnimalVes: number
+  animalDetails: IAnimalitosDetailByLottery[]
+}
+
+export interface ISetAnimalQuota {
+  animalitosAnimalId: number
+  animalitosOverallBetUsdValue: number
+  animalitosOverallBetVesValue: number
+  animalitosLotteryId: number
+}
+
+export interface IAllAnimalitosQuotaResponse {
+  items: IAnimalitosQuota[]
+  totalCount: number
+}
+
+export interface IAnimalitosQuota {
+  animalitosLotteryId: number
+  animalitosLotteryName: string
+  animalitosAnimalName: string
+  animalitosAnimalId: number
+  animalitosOverallBetUsdValue: number
+  animalitosOverallBetVesValue: number
+}
+
+export interface IDeleteAnimalitosQuota {
+  lotteryId: number
+  animalitoId: number
+}
