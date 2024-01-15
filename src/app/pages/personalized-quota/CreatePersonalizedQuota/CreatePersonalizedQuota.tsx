@@ -3,6 +3,7 @@ import {useCreatePersonalizedQuota} from './useCreatePersonalizedQuota'
 import {Spinner} from 'react-bootstrap'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
 import {useNavigate} from 'react-router-dom'
+import { formatCurrency } from '../../../helpers/currency.helpers'
 
 interface CreatePersonalizedBetProps {}
 
@@ -60,18 +61,18 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
             <div className='d-flex flex-column gap-8'>
               <div className='border border-1 border-dark p-3 pb-0 rounded bg-white'>
                 <p className='fs-4'>
-                  Cupo general: {animalitosData[0]?.animalitosMaxOverallUsd ?? 0}
+                  Cupo general en Dólares: {formatCurrency(animalitosData[0]?.animalitosMaxOverallUsd ?? 0, 'USD') }
                 </p>
                 <p className='fs-4'>
-                  Tope por apuesta: {animalitosData[0]?.maxBetByAnimalUsd ?? 0}
+                  Tope por apuesta en Dólares: {formatCurrency(animalitosData[0]?.maxBetByAnimalUsd ?? 0, 'USD')}
                 </p>
               </div>
               <div className='border border-1 border-dark p-3 pb-0 rounded bg-white'>
                 <p className='fs-4'>
-                  Cupo general: {animalitosData[0]?.animalitosMaxOverallVes ?? 0}
+                  Cupo general en Bolívares: {formatCurrency(animalitosData[0]?.animalitosMaxOverallVes ?? 0, 'VES')}
                 </p>
                 <p className='fs-4'>
-                  Tope por apuesta: {animalitosData[0]?.maxBetByAnimalVes ?? 0}
+                  Tope por apuesta en Bolívares: {formatCurrency(animalitosData[0]?.maxBetByAnimalVes ?? 0, 'VES')}
                 </p>
               </div>
             </div>

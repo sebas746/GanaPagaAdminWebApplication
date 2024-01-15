@@ -93,7 +93,7 @@ const TicketReportTable = ({
           <Row className='mb-2'>
             {/* Initial Date Input */}
             <Col md={3}>
-              <Form.Label htmlFor='initialDate'>Fecha Inicial</Form.Label>
+              <Form.Label htmlFor='initialDate'>Fecha Inicial {currencyCode}</Form.Label>
               <Form.Control
                 id='initialDate'
                 type='date'

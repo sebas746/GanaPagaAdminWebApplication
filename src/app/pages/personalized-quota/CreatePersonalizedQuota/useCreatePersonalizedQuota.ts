@@ -46,7 +46,6 @@ export const useCreatePersonalizedQuota = () => {
   }
 
   const onChangeQuotaUsd = (event: ChangeEvent<HTMLInputElement>) => {
-    debugger
     const value = event.target.value
     if (value === '') {
       setQuotaUsd('')
@@ -57,7 +56,6 @@ export const useCreatePersonalizedQuota = () => {
   }
 
   const onChangeQuotaVes = (event: ChangeEvent<HTMLInputElement>) => {
-    debugger
     const value = event.target.value
     if (value === '') {
       setQuotaVes('')
