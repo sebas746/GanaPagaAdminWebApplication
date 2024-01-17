@@ -53,10 +53,10 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
             <div className='border border-1 p-3 pb-0 rounded usdPersonalizedBox'>
               <p className='fs-4'>
                 Cupo general:{' '}
-                {formatCurrency(animalitosData[0]?.animalitosMaxOverallUsd ?? 0, 'USD')}
+                {formatCurrency(animalitosData[0]?.animalitosMaxOverallUsd ?? 0, 'USD')} USD
               </p>
               <p className='fs-4'>
-                Tope por apuesta: {formatCurrency(animalitosData[0]?.maxBetByAnimalUsd ?? 0, 'USD')}
+                Tope por apuesta: {formatCurrency(animalitosData[0]?.maxBetByAnimalUsd ?? 0, 'USD')} USD
               </p>
             </div>
           </div>
@@ -64,10 +64,10 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
             <div className='border border-1 p-3 pb-0 rounded vesPersonalizedBox'>
               <p className='fs-4'>
                 Cupo general:{' '}
-                {formatCurrency(animalitosData[0]?.animalitosMaxOverallVes ?? 0, 'VES')}
+                {formatCurrency(animalitosData[0]?.animalitosMaxOverallVes ?? 0, 'VES')} VES
               </p>
               <p className='fs-4'>
-                Tope por apuesta: {formatCurrency(animalitosData[0]?.maxBetByAnimalVes ?? 0, 'VES')}
+                Tope por apuesta: {formatCurrency(animalitosData[0]?.maxBetByAnimalVes ?? 0, 'VES')} VES
               </p>
             </div>
           </div>
