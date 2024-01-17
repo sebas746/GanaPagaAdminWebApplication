@@ -3,6 +3,9 @@ import {useCreatePersonalizedQuota} from './useCreatePersonalizedQuota'
 import {Spinner} from 'react-bootstrap'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
 import {useNavigate} from 'react-router-dom'
+import {formatCurrency} from '../../../helpers/currency.helpers'
+
+import './createPersonalizedQuota.scss'
 
 interface CreatePersonalizedBetProps {}
 
@@ -31,10 +34,10 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
   }
 
   return (
-    <div className='container-fluid'>
+    <div className='container-fluid CreatePersonalizedQuota'>
       <div className='mb-10'>
-        <div className='d-flex gap-3'>
-          <div className='col-4 '>
+        <div className='d-flex gap-3 mb-10'>
+          <div className='col-4'>
             <label className='form-label'>Seleccione la loteria</label>
             <select className='form-select' onChange={onChangeLottery} value={selectedLottery}>
               <option value='0'>Seleccione una loteria</option>
@@ -45,6 +48,31 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
               ))}
             </select>
           </div>
+
+          <div className='col-4'>
+            <div className='border border-1 p-3 pb-0 rounded usdPersonalizedBox'>
+              <p className='fs-4'>
+                Cupo general:{' '}
+                {formatCurrency(animalitosData[0]?.animalitosMaxOverallUsd ?? 0, 'USD')}
+              </p>
+              <p className='fs-4'>
+                Tope por apuesta: {formatCurrency(animalitosData[0]?.maxBetByAnimalUsd ?? 0, 'USD')}
+              </p>
+            </div>
+          </div>
+          <div className='col-4'>
+            <div className='border border-1 p-3 pb-0 rounded vesPersonalizedBox'>
+              <p className='fs-4'>
+                Cupo general:{' '}
+                {formatCurrency(animalitosData[0]?.animalitosMaxOverallVes ?? 0, 'VES')}
+              </p>
+              <p className='fs-4'>
+                Tope por apuesta: {formatCurrency(animalitosData[0]?.maxBetByAnimalVes ?? 0, 'VES')}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className='d-flex gap-3 mb-10'>
           <div className='col-4'>
             <label className='form-label'>Seleccione el animalito</label>
             <select className='form-select' onChange={onChangeAnimal} value={selectedAnimal}>
@@ -56,49 +84,30 @@ const CreatePersonalizedQuota = ({}: CreatePersonalizedBetProps) => {
               ))}
             </select>
           </div>
-          <div className='col-4'>
-            <div className='d-flex flex-column gap-8'>
-              <div className='border border-1 border-dark p-3 pb-0 rounded bg-white'>
-                <p className='fs-4'>
-                  Cupo general: {animalitosData[0]?.animalitosMaxOverallUsd ?? 0}
-                </p>
-                <p className='fs-4'>
-                  Tope por apuesta: {animalitosData[0]?.maxBetByAnimalUsd ?? 0}
-                </p>
+          <ConditionalRedering isTrue={selectedAnimal !== 0}>
+            <>
+              <div className='col-4'>
+                <label className='form-label'>Cupo personalizado USD</label>
+                <input
+                  type='text'
+                  className='form-control'
+                  onChange={onChangeQuotaUsd}
+                  value={quotaUsd}
+                />
               </div>
-              <div className='border border-1 border-dark p-3 pb-0 rounded bg-white'>
-                <p className='fs-4'>
-                  Cupo general: {animalitosData[0]?.animalitosMaxOverallVes ?? 0}
-                </p>
-                <p className='fs-4'>
-                  Tope por apuesta: {animalitosData[0]?.maxBetByAnimalVes ?? 0}
-                </p>
+              <div className='col-4'>
+                <label className='form-label'>Cupo personalizado VES</label>
+                <input
+                  type='text'
+                  className='form-control'
+                  onChange={onChangeQuotaVes}
+                  value={quotaVes}
+                />
               </div>
-            </div>
-          </div>
+            </>
+          </ConditionalRedering>
         </div>
-        <ConditionalRedering isTrue={selectedAnimal !== 0}>
-          <div className='d-flex gap-3 mb-10'>
-            <div className='col-4'>
-              <label className='form-label'>Cupo personalizado USD</label>
-              <input
-                type='text'
-                className='form-control'
-                onChange={onChangeQuotaUsd}
-                value={quotaUsd}
-              />
-            </div>
-            <div className='col-4'>
-              <label className='form-label'>Cupo personalizado VES</label>
-              <input
-                type='text'
-                className='form-control'
-                onChange={onChangeQuotaVes}
-                value={quotaVes}
-              />
-            </div>
-          </div>
-        </ConditionalRedering>
+
         <ConditionalRedering isTrue={selectedAnimal !== 0}>
           <div className='d-flex'>
             <div className='col-4 offset-sm-8'>
