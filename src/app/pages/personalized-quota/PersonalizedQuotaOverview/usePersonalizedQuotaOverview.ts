@@ -7,8 +7,9 @@ import {
   IAnimalitosLotteries,
   IDeleteAnimalitosQuota,
 } from '../../../../types/Animalitos.types'
-import {ReactQueryResponse} from '../../../../types/Generics'
+import {QueryResponse, ReactQueryResponse} from '../../../../types/Generics'
 import {enqueueSnackbar} from 'notistack'
+import {AxiosResponse} from 'axios'
 
 export const usePersonalizedQuotaOverview = () => {
   const {
@@ -74,13 +75,18 @@ export const usePersonalizedQuotaOverview = () => {
     refetchOnWindowFocus: false,
   })
 
-  const {mutate: deletePersonalizedQuota, isLoading} = useMutation({
-    mutationFn: async (body: IDeleteAnimalitosQuota) => {
+  const {mutate: deletePersonalizedQuota, isLoading} = useMutation<
+    AxiosResponse<QueryResponse<string>>,
+    QueryResponse<string>,
+    IDeleteAnimalitosQuota
+  >({
+    mutationFn: async (body) => {
       return await axios.delete(
         `/AnimalitosMaxOverallBet/delete-animalitos-max-overall/lotteryId/${body.lotteryId}/animalitoId/${body.animalitoId}`
       )
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
+      debugger
       onHandleCloseModal()
       if (pageIndex === 0) {
         getAllAnimalitosPersonalizedQuota()
@@ -88,17 +94,18 @@ export const usePersonalizedQuotaOverview = () => {
         setPageIndex(0)
       }
 
-      enqueueSnackbar('El cupo ha sido eliminado correctamente.', {
+      enqueueSnackbar(response.data.response, {
         variant: 'success',
         hideIconVariant: true,
       })
     },
     onError: () => {
+      debugger
       enqueueSnackbar('Ha ocurrido un error al eliminar el cupo.', {
         variant: 'error',
         hideIconVariant: true,
       })
-    }
+    },
   })
 
   useEffect(() => {
