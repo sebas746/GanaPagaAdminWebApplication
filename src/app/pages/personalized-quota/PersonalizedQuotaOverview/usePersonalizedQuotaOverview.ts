@@ -92,7 +92,6 @@ export const usePersonalizedQuotaOverview = () => {
       )
     },
     onSuccess: (response) => {
-      debugger
       onHandleCloseModal()
       if (pageIndex === 0) {
         getAllAnimalitosPersonalizedQuota()
@@ -106,8 +105,7 @@ export const usePersonalizedQuotaOverview = () => {
       })
     },
     onError: () => {
-      debugger
-      enqueueSnackbar('Ha ocurrido un error al eliminar el cupo.', {
+        enqueueSnackbar('Ha ocurrido un error al eliminar el cupo.', {
         variant: 'error',
         hideIconVariant: true,
       })
