@@ -25,12 +25,14 @@ const PersonalizedQuotaOverview = ({}: OverviewProps) => {
     selectedLottery,
     setPageIndex,
     showModal,
+    personalizedQuotaAnimalName,
+    personalizedQuotaLotteryName
   } = usePersonalizedQuotaOverview()
 
   const renderRows = useMemo(() => {
     return listPersonalizedAnimalitosQuota?.items?.map((personalizedQuota) => {
       const onClickWrapper = () =>
-        onChangeDeleteAnimalitosQuota(personalizedQuota.animalitosLotteryId, personalizedQuota.animalitosAnimalId)
+        onChangeDeleteAnimalitosQuota(personalizedQuota.animalitosLotteryId, personalizedQuota.animalitosAnimalId, personalizedQuota.animalitosLotteryName, personalizedQuota.animalitosAnimalName)
       return (
         <tr
           key={`personalizede-quota-${personalizedQuota.animalitosAnimalId}-${personalizedQuota.animalitosLotteryId}`}
@@ -136,7 +138,7 @@ const PersonalizedQuotaOverview = ({}: OverviewProps) => {
           </Modal.Header>
 
           <Modal.Body>
-            <p>Esta seguro de ejecutar la acción?</p>
+            <p>Esta seguro de eliminar el cupo de la loteria {personalizedQuotaLotteryName} y el animal {personalizedQuotaAnimalName}?</p>
           </Modal.Body>
 
           <Modal.Footer>

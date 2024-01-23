@@ -25,6 +25,9 @@ export const usePersonalizedQuotaOverview = () => {
     {} as IDeleteAnimalitosQuota
   )
 
+  const [personalizedQuotaAnimalName, setPersonalizedQuotaAnimalName] = useState<string>('')
+  const [personalizedQuotaLotteryName, setPersonalizedQuotaLotteryName] = useState<string>('')
+
   const [showModal, setShowModal] = useState<boolean>(false)
 
   const pageSizeArray = [10, 25, 50, 100]
@@ -46,11 +49,14 @@ export const usePersonalizedQuotaOverview = () => {
     setShowModal(false)
   }
 
-  const onChangeDeleteAnimalitosQuota = (lotteryId: number, animalitoId: number) => {
+  const onChangeDeleteAnimalitosQuota = (lotteryId: number, animalitoId: number, lotteryName: string, animalName: string) => {
     setDeleteAnimalitosQuota({
       lotteryId,
       animalitoId,
     })
+    setPersonalizedQuotaAnimalName(animalName)
+    setPersonalizedQuotaLotteryName(lotteryName)
+
     onShowModal()
   }
 
@@ -138,5 +144,7 @@ export const usePersonalizedQuotaOverview = () => {
     setPageIndex,
     setPageSize,
     showModal,
+    personalizedQuotaAnimalName,
+    personalizedQuotaLotteryName,
   }
 }
