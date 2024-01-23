@@ -7,8 +7,9 @@ import {
   IAnimalitosLotteries,
   IDeleteAnimalitosQuota,
 } from '../../../../types/Animalitos.types'
-import {ReactQueryResponse} from '../../../../types/Generics'
+import {QueryResponse, ReactQueryResponse} from '../../../../types/Generics'
 import {enqueueSnackbar} from 'notistack'
+import {AxiosResponse} from 'axios'
 
 export const usePersonalizedQuotaOverview = () => {
   const {
@@ -23,6 +24,9 @@ export const usePersonalizedQuotaOverview = () => {
   const [deleteAnimalitosQuota, setDeleteAnimalitosQuota] = useState<IDeleteAnimalitosQuota>(
     {} as IDeleteAnimalitosQuota
   )
+
+  const [personalizedQuotaAnimalName, setPersonalizedQuotaAnimalName] = useState<string>('')
+  const [personalizedQuotaLotteryName, setPersonalizedQuotaLotteryName] = useState<string>('')
 
   const [showModal, setShowModal] = useState<boolean>(false)
 
@@ -45,11 +49,14 @@ export const usePersonalizedQuotaOverview = () => {
     setShowModal(false)
   }
 
-  const onChangeDeleteAnimalitosQuota = (lotteryId: number, animalitoId: number) => {
+  const onChangeDeleteAnimalitosQuota = (lotteryId: number, animalitoId: number, lotteryName: string, animalName: string) => {
     setDeleteAnimalitosQuota({
       lotteryId,
       animalitoId,
     })
+    setPersonalizedQuotaAnimalName(animalName)
+    setPersonalizedQuotaLotteryName(lotteryName)
+
     onShowModal()
   }
 
@@ -74,13 +81,17 @@ export const usePersonalizedQuotaOverview = () => {
     refetchOnWindowFocus: false,
   })
 
-  const {mutate: deletePersonalizedQuota, isLoading} = useMutation({
-    mutationFn: async (body: IDeleteAnimalitosQuota) => {
+  const {mutate: deletePersonalizedQuota, isLoading} = useMutation<
+    AxiosResponse<QueryResponse<string>>,
+    QueryResponse<string>,
+    IDeleteAnimalitosQuota
+  >({
+    mutationFn: async (body) => {
       return await axios.delete(
         `/AnimalitosMaxOverallBet/delete-animalitos-max-overall/lotteryId/${body.lotteryId}/animalitoId/${body.animalitoId}`
       )
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
       onHandleCloseModal()
       if (pageIndex === 0) {
         getAllAnimalitosPersonalizedQuota()
@@ -88,17 +99,17 @@ export const usePersonalizedQuotaOverview = () => {
         setPageIndex(0)
       }
 
-      enqueueSnackbar('El cupo ha sido eliminado correctamente.', {
+      enqueueSnackbar(response.data.message, {
         variant: 'success',
         hideIconVariant: true,
       })
     },
     onError: () => {
-      enqueueSnackbar('Ha ocurrido un error al eliminar el cupo.', {
+        enqueueSnackbar('Ha ocurrido un error al eliminar el cupo.', {
         variant: 'error',
         hideIconVariant: true,
       })
-    }
+    },
   })
 
   useEffect(() => {
@@ -131,5 +142,7 @@ export const usePersonalizedQuotaOverview = () => {
     setPageIndex,
     setPageSize,
     showModal,
+    personalizedQuotaAnimalName,
+    personalizedQuotaLotteryName,
   }
 }

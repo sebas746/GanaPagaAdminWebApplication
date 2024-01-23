@@ -1,7 +1,7 @@
 import {ChangeEvent, useEffect, useState} from 'react'
 import {useMutation, useQuery} from 'react-query'
 
-import {ReactQueryResponse} from '../../../../types/Generics'
+import {QueryResponse, ReactQueryResponse} from '../../../../types/Generics'
 
 import {
   IAnimalitosByLottery,
@@ -12,6 +12,7 @@ import {
 import axios from '../../../config/http-common'
 import {enqueueSnackbar} from 'notistack'
 import {useParams} from 'react-router-dom'
+import {AxiosResponse} from 'axios'
 
 const isNumber = (value: string) => {
   // create regex to check if string is a number
@@ -46,7 +47,6 @@ export const useCreatePersonalizedQuota = () => {
   }
 
   const onChangeQuotaUsd = (event: ChangeEvent<HTMLInputElement>) => {
-    debugger
     const value = event.target.value
     if (value === '') {
       setQuotaUsd('')
@@ -57,7 +57,6 @@ export const useCreatePersonalizedQuota = () => {
   }
 
   const onChangeQuotaVes = (event: ChangeEvent<HTMLInputElement>) => {
-    debugger
     const value = event.target.value
     if (value === '') {
       setQuotaVes('')
@@ -83,7 +82,7 @@ export const useCreatePersonalizedQuota = () => {
     'get-all-lotteries',
     async () => {
       return await axios.get(`/Lottery/get-lottery-by-game-type/gameType/Animalitos`)
-    }
+    },
   )
 
   const {
@@ -95,22 +94,25 @@ export const useCreatePersonalizedQuota = () => {
     'get-animalitos-by-lottery',
     async () => {
       return await axios.get(
-        `/AnimalitosMaxOverallBet/get-animalitos-lottery-animals/${selectedLottery}`
+        `/AnimalitosMaxOverallBet/get-animalitos-lottery-animals/${selectedLottery}`,
       )
     },
 
     {
       refetchOnWindowFocus: false,
       enabled: false,
-    }
+    },
   )
 
-  const {mutate: setAnimalQuota, isLoading: isInsertingQuota} = useMutation({
-    mutationFn: async (body: ISetAnimalQuota) => {
+  const {
+    mutate: setAnimalQuota,
+    isLoading: isInsertingQuota,
+  } = useMutation<AxiosResponse<QueryResponse<string>>, AxiosResponse<QueryResponse<string>>, ISetAnimalQuota>({
+    mutationFn: async (body) => {
       return await axios.post('/AnimalitosMaxOverallBet/insert-animalitos-max-overall', body)
     },
-    onSuccess() {
-      enqueueSnackbar('Se ha guardado correctamente el cupo', {
+    onSuccess(response) {
+      enqueueSnackbar(response.data.message, {
         variant: 'success',
         hideIconVariant: true,
       })
@@ -122,7 +124,7 @@ export const useCreatePersonalizedQuota = () => {
         {
           variant: 'error',
           hideIconVariant: true,
-        }
+        },
       )
     },
   })
@@ -136,7 +138,7 @@ export const useCreatePersonalizedQuota = () => {
     })) ?? []
 
   const overallAnimalQuota = mappedAnimalitosByLottery.find(
-    (animal) => animal.animalId === selectedAnimal
+    (animal) => animal.animalId === selectedAnimal,
   ) ?? {
     animalId: 0,
     animalName: '',
