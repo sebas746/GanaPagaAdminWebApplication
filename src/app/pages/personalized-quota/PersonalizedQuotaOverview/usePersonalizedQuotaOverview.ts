@@ -100,7 +100,7 @@ export const usePersonalizedQuotaOverview = () => {
         setPageIndex(0)
       }
 
-      enqueueSnackbar(response.data.response, {
+      enqueueSnackbar(response.data.message, {
         variant: 'success',
         hideIconVariant: true,
       })
