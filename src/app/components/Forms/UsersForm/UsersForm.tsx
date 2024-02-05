@@ -1,7 +1,10 @@
 import {Modal, Button} from 'react-bootstrap'
 import {IUsersForm, IUsersResponse} from '../../../../types/Users.types'
-import UsersWizard from './WizardSteps/UsersWizard'
 import {UsersActions} from '../../../pages/users-management/users/Users.hook'
+import {useState} from 'react'
+import {useUsersWizardSteps} from './WizardSteps/UsersWizardSteps.hook'
+import UsersWizard from './WizardSteps/UsersWizard'
+import {IpaginationUsersResponse} from '../../../../types/Pagination.types'
 
 interface UsersFormProps {
   isLoading: boolean
@@ -10,6 +13,7 @@ interface UsersFormProps {
   showFormModal: boolean
   setShowFormModal: (show: boolean) => void
   action: UsersActions
+  usersPaginated: IpaginationUsersResponse<IUsersResponse>
 }
 
 const UsersForm = ({
@@ -19,7 +23,29 @@ const UsersForm = ({
   showFormModal,
   setShowFormModal,
   action,
+  usersPaginated,
 }: UsersFormProps) => {
+  const [completeFormData, setCompleteFormData] = useState<IUsersForm>({
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    documentType: '',
+    documentNumber: '',
+    email: '',
+    password: '',
+    rolId: 0,
+    isActive: true,
+  })
+  const [currentStep, setCurrentStep] = useState<number>(0)
+  const {formik, onSubmit} = useUsersWizardSteps(
+    initialValues,
+    submitForm,
+    setCompleteFormData,
+    completeFormData,
+    action,
+    setCurrentStep,
+    currentStep
+  )
   return (
     <>
       <div className='static-modal'>
@@ -34,10 +60,13 @@ const UsersForm = ({
           </Modal.Header>
           <Modal.Body>
             <UsersWizard
-              initialValues={initialValues}
-              submitForm={submitForm}
-              isLoading={isLoading}
+              formik={formik}
               action={action}
+              isLoading={isLoading}
+              onSubmit={onSubmit}
+              setCurrentStep={setCurrentStep}
+              currentStep={currentStep}
+              usersPaginated={usersPaginated}
             />
           </Modal.Body>
           <Modal.Footer>

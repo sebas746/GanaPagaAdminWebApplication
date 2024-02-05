@@ -1,46 +1,47 @@
-import {useState} from 'react'
-import {Wizard, useWizard} from 'react-use-wizard'
-import {IUsersForm, IUsersResponse} from '../../../../../types/Users.types'
+import {Wizard} from 'react-use-wizard'
 import UsersWizardStep1 from './UsersWizardStep1'
 import UsersWizardStep2 from './UsersWizardStep2'
 import {UsersActions} from '../../../../pages/users-management/users/Users.hook'
+import {IpaginationUsersResponse} from '../../../../../types/Pagination.types'
+import {IUsersResponse} from '../../../../../types/Users.types'
 
 interface UsersWizardStep1Props {
-  initialValues: IUsersResponse
-  submitForm: (users: IUsersForm) => void
+  formik: any
+  onSubmit: (nextStep: () => Promise<void>, currentStepSubmit: number) => void
   isLoading: boolean
   action: UsersActions
+  setCurrentStep: (currentStep: number) => void
+  currentStep: number
+  usersPaginated: IpaginationUsersResponse<IUsersResponse>
 }
 
-const UsersWizard = ({initialValues, submitForm, isLoading, action}: UsersWizardStep1Props) => {
-  const [completeFormData, setCompleteFormData] = useState<IUsersForm>({
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    documentType: '',
-    documentNumber: '',
-    email: '',
-    password: '',
-    rolId: 0,
-    isActive: true,
-  })
+const UsersWizard = ({
+  formik,
+  onSubmit,
+  isLoading,
+  action,
+  setCurrentStep,
+  currentStep,
+  usersPaginated,
+}: UsersWizardStep1Props) => {
   return (
     <Wizard>
       <UsersWizardStep1
-        initialValues={initialValues}
+        formik={formik}
         isLoading={isLoading}
-        submitForm={submitForm}
-        setCompleteFormData={setCompleteFormData}
-        completeFormData={completeFormData}
+        onSubmit={onSubmit}
         action={action}
+        setCurrentStep={setCurrentStep}
+        currentStep={currentStep}
       />
       <UsersWizardStep2
-        initialValues={initialValues}
+        formik={formik}
         isLoading={isLoading}
-        submitForm={submitForm}
-        setCompleteFormData={setCompleteFormData}
-        completeFormData={completeFormData}
+        onSubmit={onSubmit}
         action={action}
+        setCurrentStep={setCurrentStep}
+        currentStep={currentStep}
+        usersPaginated={usersPaginated}
       />
     </Wizard>
   )

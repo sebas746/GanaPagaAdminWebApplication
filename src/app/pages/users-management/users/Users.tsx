@@ -42,6 +42,7 @@ const Users = () => {
           isLoading={isFormLoading}
           submitForm={handleClickForm}
           action={usersState.action}
+          usersPaginated={usersState.usersPaginated}
         />
       )}
     </>
