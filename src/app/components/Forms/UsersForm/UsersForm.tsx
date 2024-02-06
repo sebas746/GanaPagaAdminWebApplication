@@ -25,7 +25,7 @@ const UsersForm = ({
   action,
   usersPaginated,
 }: UsersFormProps) => {
-  const [completeFormData, setCompleteFormData] = useState<IUsersForm>({
+  const initialFormData = {
     firstName: '',
     lastName: '',
     phoneNumber: '',
@@ -35,7 +35,14 @@ const UsersForm = ({
     password: '',
     rolId: 0,
     isActive: true,
-  })
+  }
+
+  const [completeFormData, setCompleteFormData] = useState<IUsersForm>(initialFormData)
+
+  const resetFormData = () => {
+    setCompleteFormData(initialFormData)
+  }
+
   const [currentStep, setCurrentStep] = useState<number>(0)
   const {formik, onSubmit} = useUsersWizardSteps(
     initialValues,
@@ -44,7 +51,8 @@ const UsersForm = ({
     completeFormData,
     action,
     setCurrentStep,
-    currentStep
+    currentStep,
+    resetFormData
   )
   return (
     <>

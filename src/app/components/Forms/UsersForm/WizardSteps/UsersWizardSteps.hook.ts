@@ -16,7 +16,8 @@ export const useUsersWizardSteps = (
   completeFormData: IUsersForm,
   action: UsersActions,
   setCurrentStep: (currentStep: number) => void,
-  currentStep: number
+  currentStep: number,
+  resetFormData: () => void
 ) => {
   const defaultInitialValues = {
     firstName: '',
@@ -143,7 +144,7 @@ export const useUsersWizardSteps = (
       }
       setCompleteFormData((prevState) => ({ ...prevState, ...step1Data }))
       nextStep()
-      setCurrentStep(currentStepSubmit)
+      setCurrentStep(1)
       
     } else {
       const step2Data = {
@@ -156,6 +157,8 @@ export const useUsersWizardSteps = (
       }
       const dataForm = { ...completeFormData, ...step2Data }
       submitForm(dataForm)
+      resetFormData()
+      setCurrentStep(0)
     }
   }
 

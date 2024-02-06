@@ -22,7 +22,7 @@ enum UsersKind {
   SET_PASSWORD = 'SET_PASSWORD',
 }
 
-export type UsersActions = 'create' | 'update' | 'password'
+export type UsersActions = 'create' | 'update' | 'password' | 'close'
 
 interface UsersStateAction {
   type: UsersKind
@@ -127,12 +127,22 @@ export const useUsers = () => {
   }
 
   const setEmail = (payload: string | null, action: UsersActions | undefined) => {
-    dispatchUsers({ type: UsersKind.SET_EMAIL, payload });
-
+    if(action === 'close') {
+      setShowFormModal(false)
+      dispatchUsers({ type: UsersKind.SET_EMAIL, payload: '' })
+    } else {
+      dispatchUsers({ type: UsersKind.SET_EMAIL, payload })
+    }
     if (action) {
       dispatchUsers({ type: UsersKind.SET_ACTION, payload: action });
     }
   };
+
+  useEffect(() => {
+    if(!showFormModal) {
+      setEmail('', 'close')
+    }
+  }, [showFormModal])
 
   const handleClickForm = (body: IUsersForm) => {
     if (usersState.action === 'create') {
