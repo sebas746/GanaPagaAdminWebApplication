@@ -1,13 +1,14 @@
 import {Button, Form, Pagination} from 'react-bootstrap'
-import {IpaginationResponse} from '../../../../types/Pagination.types'
-import {IUsersResponse, UsersQueryParams, roleTranslations} from '../../../../types/Users.types'
+import {IpaginationResponse, IpaginationUsersResponse} from '../../../../types/Pagination.types'
+import {IUsersResponse, RoleNames, UsersQueryParams, roleTranslations} from '../../../../types/Users.types'
 import {UsersActions} from '../../../pages/users-management/users/Users.hook'
 import clsx from 'clsx'
 import RenderLoader from '../../RenderLoader/RenderLoader'
+import { useMemo } from 'react'
 
 interface UsersTableProps {
-  usersPaginated: IpaginationResponse<IUsersResponse>
-  setEmail: (emailId: string | undefined, action: UsersActions) => void
+  usersPaginated: IpaginationUsersResponse<IUsersResponse>
+  setEmail: (emailId: string | null, action: UsersActions) => void
   params: UsersQueryParams
   handleFilterChange: (filterName: keyof UsersQueryParams, value: any) => void
   isLoading: boolean
@@ -28,18 +29,32 @@ const UsersTable = ({
   tempFilters,
   resetFilters,
 }: UsersTableProps) => {
+  const isPromoterListReady = !isLoading && !!usersPaginated.promoterList
+  const isUsersListReady = !isLoading && !!usersPaginated
+
+  const memoizedPromoterListOptions = useMemo(() => {
+    if (isPromoterListReady && usersPaginated.promoterList) {
+      return usersPaginated.promoterList.map((promoter, index) => (
+        <option key={index} value={promoter.promoterId}>
+          {promoter.promoterName}
+        </option>
+      ));
+    }
+
+    return [];
+  }, [isPromoterListReady, usersPaginated.promoterList]);
   return (
     <>
       <div className='card-body py-3'>
         <div className='mb-3'>
-          <Button variant='primary' onClick={() => setEmail('', 'create')}>
+          <Button variant='primary' onClick={() => setEmail(null, 'create')} disabled={isLoading}>
             {'Crear Usuario'}
           </Button>
         </div>
         <div className='mb-4'>
           <div className='row mb-2'>
             {/* Name Input */}
-            <div className='col-md-3'>
+            <div className='col-md-2'>
               <label htmlFor='nameInput' className='form-label'>
                 Nombres
               </label>
@@ -54,7 +69,7 @@ const UsersTable = ({
             </div>
 
             {/* Email Input */}
-            <div className='col-md-3'>
+            <div className='col-md-2'>
               <label htmlFor='emailInput' className='form-label'>
                 Usuario
               </label>
@@ -69,7 +84,7 @@ const UsersTable = ({
             </div>
 
             {/* Document Number Input */}
-            <div className='col-md-3'>
+            <div className='col-md-2'>
               <label htmlFor='docNumberInput' className='form-label'>
                 # Documento
               </label>
@@ -86,7 +101,7 @@ const UsersTable = ({
             </div>
 
             {/* Role Selector */}
-            <div className='col-md-3'>
+            <div className='col-md-2'>
               <label htmlFor='roleSelector' className='form-label'>
                 Rol
               </label>
@@ -97,13 +112,32 @@ const UsersTable = ({
                 value={tempFilters.roleName}
               >
                 <option value=''>Todos</option>
-                <option value='Seller'>Vendedor</option>
-                <option value='Scrutiny'>Escrutinio</option>
+                {Object.keys(roleTranslations).map((roleKey) => (
+                  <option key={roleKey} value={roleKey as RoleNames}>
+                    {roleTranslations[roleKey as RoleNames]}
+                  </option>
+                ))} 
+              </Form.Select>
+            </div>
+
+            {/* Promoter Selector */}
+            <div className='col-md-2'>
+              <label htmlFor='promoterSelector' className='form-label'>
+                Promotor
+              </label>
+              <Form.Select
+                id='promoterSelector'
+                className='form-control'
+                onChange={(e) => setTempFilters((prev) => ({...prev, promoterId: e.target.value}))}
+                value={tempFilters.promoterId}
+              >
+                <option value=''>Todos</option>
+                {memoizedPromoterListOptions} 
               </Form.Select>
             </div>
           </div>
 
-          <div className='row mb-3'>
+          <div className='row mb-2'>
             <div className='col-md-12'>
               <div className='btn-group'>
                 <button className='btn btn-primary' onClick={() => setUsersParams()}>
@@ -118,7 +152,7 @@ const UsersTable = ({
         </div>
 
         {isLoading && <RenderLoader show={isLoading} huge={true} />}
-        {!isLoading && usersPaginated && usersPaginated.totalCount > 0 && (
+        {isUsersListReady && usersPaginated.totalCount > 0 && (
           <div className='table-responsive'>
             <table className='table table-row-bordered table-row-gray-300 gy-6'>
               <thead>
@@ -158,19 +192,21 @@ const UsersTable = ({
                         </div>
                       </td>
                     </tr>
-                  ))}
-                {usersPaginated.items.length === 0 && (
-                  <tr>
-                    <td colSpan={7} className='text-center'>
-                      No results...
-                    </td>
-                  </tr>
-                )}
+                  ))}                
               </tbody>
             </table>
           </div>
         )}
-        {!isLoading && usersPaginated && usersPaginated.totalCount > 0 && (
+        <div>
+        {isUsersListReady && usersPaginated.totalCount === 0 && (
+                  <tr>
+                    <td colSpan={7} className='text-center'>
+                      No hay resultados...
+                    </td>
+                  </tr>
+                )}
+        </div>
+        {isUsersListReady && usersPaginated.totalCount > 0 && (
           <Pagination>
             {Array.from({length: Math.ceil(usersPaginated.totalCount / params.pageSize)}).map(
               (_, index) => (

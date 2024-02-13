@@ -1,5 +1,5 @@
-import {useEffect, useReducer, useState} from 'react'
-import {IpaginationResponse} from '../../../../types/Pagination.types'
+import { useEffect, useReducer, useState } from 'react'
+import {  IpaginationUsersResponse } from '../../../../types/Pagination.types'
 import {
   IUsersForm,
   IUsersPasswordForm,
@@ -7,11 +7,11 @@ import {
   UsersQueryParams,
 } from '../../../../types/Users.types'
 import axios from '../../../config/http-users-common'
-import {ReactQueryResponse} from '../../../../types/Generics'
-import {useMutation, useQuery} from 'react-query'
-import {buildUrl} from '../../../helpers/urlBuilder.helpers'
-import {AxiosError} from 'axios'
-import {enqueueSnackbar} from 'notistack'
+import { ReactQueryResponse } from '../../../../types/Generics'
+import { useMutation, useQuery } from 'react-query'
+import { buildUrl } from '../../../helpers/urlBuilder.helpers'
+import { AxiosError } from 'axios'
+import { enqueueSnackbar } from 'notistack'
 
 enum UsersKind {
   SET_USERS = 'SET_USERS',
@@ -22,22 +22,23 @@ enum UsersKind {
   SET_PASSWORD = 'SET_PASSWORD',
 }
 
-export type UsersActions = 'create' | 'update' | 'password'
+export type UsersActions = 'create' | 'update' | 'password' | 'close'
 
 interface UsersStateAction {
   type: UsersKind
   payload:
-    | IpaginationResponse<IUsersResponse>
-    | string
-    | UsersActions
-    | UsersQueryParams
-    | IUsersResponse
-    | IUsersPasswordForm
+  | IpaginationUsersResponse<IUsersResponse>
+  | string
+  | UsersActions
+  | UsersQueryParams
+  | IUsersResponse
+  | IUsersPasswordForm
+  | null
 }
 
 interface UsersState {
-  usersPaginated: IpaginationResponse<IUsersResponse>
-  email: string
+  usersPaginated: IpaginationUsersResponse<IUsersResponse>
+  email: string | null
   action: UsersActions
   params: UsersQueryParams
   currentUser: IUsersResponse
@@ -49,12 +50,12 @@ export const usersReducer = (state: UsersState, action: UsersStateAction) => {
     case UsersKind.SET_USERS:
       return {
         ...state,
-        usersPaginated: action.payload as IpaginationResponse<IUsersResponse>,
+        usersPaginated: action.payload as IpaginationUsersResponse<IUsersResponse>,
       }
     case UsersKind.SET_EMAIL:
       return {
         ...state,
-        email: action.payload as string,
+        email: action.payload as string | null,
       }
     case UsersKind.SET_ACTION:
       return {
@@ -84,10 +85,10 @@ export const usersReducer = (state: UsersState, action: UsersStateAction) => {
 
 export const useUsers = () => {
   const [usersState, dispatchUsers] = useReducer(usersReducer, {
-    usersPaginated: {} as IpaginationResponse<IUsersResponse>,
+    usersPaginated: {} as IpaginationUsersResponse<IUsersResponse>,
     email: '',
     action: {} as UsersActions,
-    params: {baseUrl: '/User/get-users', pageIndex: 0, pageSize: 10} as UsersQueryParams,
+    params: { baseUrl: '/User/get-users', pageIndex: 0, pageSize: 10 } as UsersQueryParams,
     currentUser: {} as IUsersResponse,
     password: {} as IUsersPasswordForm,
   })
@@ -99,6 +100,7 @@ export const useUsers = () => {
     name: '',
     documentNumber: '',
     roleName: '',
+    promoterId: ''
   })
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [showFormModal, setShowFormModal] = useState(false)
@@ -107,7 +109,7 @@ export const useUsers = () => {
     data: usersPaginatedData,
     isFetching,
     refetch: getUsers,
-  } = useQuery<ReactQueryResponse<IpaginationResponse<IUsersResponse>>>('get-users', async () => {
+  } = useQuery<ReactQueryResponse<IpaginationUsersResponse<IUsersResponse>>>('get-users', async () => {
     const url = buildUrl(usersState.params.baseUrl, {
       pageIndex: usersState.params.pageIndex,
       pageSize: usersState.params.pageSize,
@@ -115,22 +117,32 @@ export const useUsers = () => {
       name: usersState.params.name,
       documentNumber: usersState.params.documentNumber,
       roleName: usersState.params.roleName,
+      promoterId: usersState.params.promoterId
     })
     return await axios.get(url)
   })
 
-  const setUsersPaginated = (payload: IpaginationResponse<IUsersResponse>) => {
-    dispatchUsers({type: UsersKind.SET_USERS, payload})
+  const setUsersPaginated = (payload: IpaginationUsersResponse<IUsersResponse>) => {
+    dispatchUsers({ type: UsersKind.SET_USERS, payload })
   }
 
-  const setEmail = (payload: string | undefined, action: UsersActions | undefined) => {
-    if (payload !== undefined && payload !== '') {
-      dispatchUsers({type: UsersKind.SET_EMAIL, payload})
+  const setEmail = (payload: string | null, action: UsersActions | undefined) => {
+    if(action === 'close') {
+      setShowFormModal(false)
+      dispatchUsers({ type: UsersKind.SET_EMAIL, payload: '' })
+    } else {
+      dispatchUsers({ type: UsersKind.SET_EMAIL, payload })
     }
     if (action) {
-      dispatchUsers({type: UsersKind.SET_ACTION, payload: action})
+      dispatchUsers({ type: UsersKind.SET_ACTION, payload: action });
     }
-  }
+  };
+
+  useEffect(() => {
+    if(!showFormModal) {
+      setEmail('', 'close')
+    }
+  }, [showFormModal])
 
   const handleClickForm = (body: IUsersForm) => {
     if (usersState.action === 'create') {
@@ -144,7 +156,7 @@ export const useUsers = () => {
     updatePassword(body)
   }
 
-  const {mutate: createUser, isLoading: isCreatingUser} = useMutation({
+  const { mutate: createUser, isLoading: isCreatingUser } = useMutation({
     mutationFn: async (body: IUsersForm) => {
       //body.email = undefined
       return await axios.post(`/User/add-user`, body)
@@ -158,10 +170,12 @@ export const useUsers = () => {
     },
   })
 
-  const {mutate: updateUser, isLoading: isUpdatingUser} = useMutation({
+  const { mutate: updateUser, isLoading: isUpdatingUser } = useMutation({
     mutationFn: async (body: IUsersForm) => {
-      body.email = usersState.email
-      return await axios.post(`/User/update-user`, body)
+      if (usersState.email) {
+        body.email = usersState.email
+        return await axios.post(`/User/update-user`, body)
+      }
     },
     onSuccess(data) {
       setCurrentUser({} as IUsersResponse)
@@ -172,10 +186,12 @@ export const useUsers = () => {
     },
   })
 
-  const {mutate: updatePassword, isLoading: isUpdatingPassword} = useMutation({
+  const { mutate: updatePassword, isLoading: isUpdatingPassword } = useMutation({
     mutationFn: async (body: IUsersPasswordForm) => {
-      body.email = usersState.email
-      return await axios.post(`/User/user-change-password`, body)
+      if (usersState.email) {
+        body.email = usersState.email
+        return await axios.post(`/User/user-change-password`, body)
+      }
     },
     onSuccess(data) {
       setCurrentUser({} as IUsersResponse)
@@ -215,7 +231,7 @@ export const useUsers = () => {
 
   useEffect(() => {
     if (!isFetching && usersState.action === 'create') {
-      dispatchUsers({type: UsersKind.SET_CURRENT_USER, payload: {} as IUsersResponse})
+      dispatchUsers({ type: UsersKind.SET_CURRENT_USER, payload: {} as IUsersResponse })
       setTimeout(() => {
         setShowFormModal(true)
       }, 1)
@@ -245,12 +261,12 @@ export const useUsers = () => {
 
   const setCurrentUser = (payload: IUsersResponse | null) => {
     if (payload) {
-      dispatchUsers({type: UsersKind.SET_CURRENT_USER, payload})
+      dispatchUsers({ type: UsersKind.SET_CURRENT_USER, payload })
     }
   }
 
   const setUsersParams = () => {
-    dispatchUsers({type: UsersKind.SET_PARAMS, payload: tempFilters})
+    dispatchUsers({ type: UsersKind.SET_PARAMS, payload: tempFilters })
   }
 
   const resetFilters = () => {
@@ -262,16 +278,17 @@ export const useUsers = () => {
       name: '',
       documentNumber: '',
       roleName: '',
+      promoterId: ''
     }
 
     setTempFilters(resetValues)
-    dispatchUsers({type: UsersKind.SET_PARAMS, payload: resetValues})
+    dispatchUsers({ type: UsersKind.SET_PARAMS, payload: resetValues })
   }
 
   const handleFilterChange = (filterName: keyof UsersQueryParams, value: any) => {
     dispatchUsers({
       type: UsersKind.SET_PARAMS,
-      payload: {[filterName]: value} as UsersQueryParams,
+      payload: { [filterName]: value } as UsersQueryParams,
     })
   }
 
@@ -312,4 +329,4 @@ export const useUsers = () => {
   }
 }
 
-export {}
+export { }
