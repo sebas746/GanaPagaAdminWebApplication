@@ -60,7 +60,7 @@ export const useGeneralSettings = () => {
     isFetching,
     refetch: getGeneralSettings,
   } = useQuery<ReactQueryResponse<IGeneralSettingsResponse>>('get-general-settings', async () => {
-    return await axios.get(`/GeneralSettings/get-general-settings`)
+    return await axios.get(`/GeneralSettings/get-general-settings/promoterId/1`)
   })
 
   const {mutate: updateGeneralSettings, isLoading: submitIsLoading} = useMutation({
@@ -153,7 +153,7 @@ export const useGeneralSettings = () => {
     if (!isFetching && !generalSettingsData) {
       getGeneralSettings()
     }
-  })
+  }, [])
 
   useEffect(() => {
     if (!isFetching && generalSettingsData) {
