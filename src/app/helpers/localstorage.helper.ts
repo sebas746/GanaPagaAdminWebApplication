@@ -18,11 +18,11 @@ export const removeToken = () => {
   localStorage.removeItem(AUTH_TOKEN);
 };
 
-export const setPromoterId = (promoterId: string) => {
+export const setStoragePromoterId = (promoterId: string) => {
   localStorage.setItem(PROMOTER_ID, promoterId)
 }
 
-export const getPromoterId = () => {
+export const getStoragePromoterId = () => {
   return localStorage.getItem(PROMOTER_ID)
 }
 

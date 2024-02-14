@@ -8,6 +8,11 @@ export interface GeneralSettingsForm {
   generalSettingsValue: string
 }
 
+export interface GeneralSettingsPromoterForm {
+  promoterId: string
+  settings: GeneralSettingsForm[]
+}
+
 export interface GeneralSettingsData {
   generalSettingsName: string
   generalSettingsValue: string

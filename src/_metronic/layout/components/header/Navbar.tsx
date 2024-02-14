@@ -2,10 +2,11 @@ import clsx from 'clsx'
 import {KTSVG, toAbsoluteUrl} from '../../../helpers'
 import {HeaderNotificationsMenu, HeaderUserMenu, Search, ThemeModeSwitcher} from '../../../partials'
 import {useLayout} from '../../core'
-import {setPromoterId, getPromoterId} from '../../../../app/helpers/localstorage.helper'
+import {getStoragePromoterId} from '../../../../app/helpers/localstorage.helper'
 import {usePromoterList} from '../../../../app/hooks/promoterList.hook'
 import {Form} from 'react-bootstrap'
 import {IPromoter} from '../../../../types/Promoter.types'
+import RenderLoader from '../../../../app/components/RenderLoader/RenderLoader'
 
 const itemClass = 'ms-1 ms-lg-3'
 const btnClass =
@@ -15,23 +16,17 @@ const btnIconClass = 'svg-icon-1'
 
 const Navbar = () => {
   const {config} = useLayout()
-  const {promoters, isLoading} = usePromoterList()
-  const adminPromoter = promoters && promoters.find((p) => p.promoterIsAdmin)
-  const handlePromoterChange = (promoter: string) => {
-    setPromoterId(promoter)
-  }
-  const promoterId = getPromoterId()
-  if (!!promoterId && adminPromoter) {
-    setPromoterId(adminPromoter.promoterId.toString())
-  }
+  const {promoters, isLoading, setPromoterId, promoterId} = usePromoterList()
+
+  const isDataLoaded = !isLoading && promoters && promoters.length > 0
   return (
     <div className='app-navbar flex-shrink-0'>
       <div className={clsx('app-navbar-item', itemClass)}>
         <div className='menu-item px-5 mb-4'>
-          {!isLoading && promoters && promoters.length > 0 && (
+          {isDataLoaded && (
             <Form.Select
               defaultValue={promoterId ?? ''}
-              onChange={(e) => handlePromoterChange(e.target.value)}
+              onChange={(e) => setPromoterId(e.target.value)}
               className='form-select form-select-solid'
             >
               {promoters.map((promoter: IPromoter) => (
@@ -41,6 +36,7 @@ const Navbar = () => {
               ))}
             </Form.Select>
           )}
+          <RenderLoader show={isLoading} />
         </div>
         <div
           className={clsx('cursor-pointer symbol', userAvatarClass)}

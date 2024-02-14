@@ -1,10 +1,11 @@
 import {useEffect, useReducer, useState} from 'react'
 import {IGeneralSettingsResponse} from '../../../../types/GeneralSettings.types'
-import {CurrentGeneralSettings, GeneralSettingsForm} from '../../../../types/Forms.types'
+import {CurrentGeneralSettings, GeneralSettingsForm, GeneralSettingsPromoterForm} from '../../../../types/Forms.types'
 import axios from '../../../config/http-common'
 import {ReactQueryResponse} from '../../../../types/Generics'
 import {useMutation, useQuery} from 'react-query'
 import {enqueueSnackbar} from 'notistack'
+import { getStoragePromoterId } from '../../../helpers/localstorage.helper'
 
 enum GeneralSettingsKind {
   SET_GENERAL_SETTINGS = 'SET_GENERAL_SETTINGS',
@@ -60,12 +61,17 @@ export const useGeneralSettings = () => {
     isFetching,
     refetch: getGeneralSettings,
   } = useQuery<ReactQueryResponse<IGeneralSettingsResponse>>('get-general-settings', async () => {
-    return await axios.get(`/GeneralSettings/get-general-settings/promoterId/1`)
+
+    return await axios.get(`/GeneralSettings/get-general-settings/promoterId/${getStoragePromoterId()}`)
   })
 
   const {mutate: updateGeneralSettings, isLoading: submitIsLoading} = useMutation({
     mutationFn: async (body: GeneralSettingsForm[]) => {
-      return await axios.post('/GeneralSettings/update-general-settings', body)
+      const generalSettings = {
+        promoterId: getStoragePromoterId(),
+        settings: body
+      } as GeneralSettingsPromoterForm
+      return await axios.post('/GeneralSettings/update-general-settings', generalSettings)
     },
     onSuccess(data, variables, context) {
       handleSuccessResponse(data)

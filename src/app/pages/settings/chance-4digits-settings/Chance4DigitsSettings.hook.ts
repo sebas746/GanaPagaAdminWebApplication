@@ -1,13 +1,14 @@
-import {useMutation, useQuery} from 'react-query'
-import {ReactQueryResponse} from '../../../../types/Generics'
+import { useMutation, useQuery } from 'react-query'
+import { ReactQueryResponse } from '../../../../types/Generics'
 import axios from '../../../config/http-common'
-import {useEffect, useState} from 'react'
-import {enqueueSnackbar} from 'notistack'
-import {AxiosError} from 'axios'
+import { useEffect, useState } from 'react'
+import { enqueueSnackbar } from 'notistack'
+import { AxiosError } from 'axios'
 import {
   ISettingsChance4DigitsResponse,
   IChance4DigitsUpdateSettings,
 } from '../../../../types/Chance4Digits.types'
+import { getStoragePromoterId } from '../../../helpers/localstorage.helper'
 
 export const useChance4DigitsSettings = () => {
   const [chance4DigitsSettings, setChance4DigitsSettings] = useState(
@@ -17,12 +18,12 @@ export const useChance4DigitsSettings = () => {
   const onChangeTab = (tab: number) => {
     setActiveTab(tab)
   }
-  const {isFetching, refetch: getChance4DigitsSettings} = useQuery<
+  const { isFetching, refetch: getChance4DigitsSettings } = useQuery<
     ReactQueryResponse<ISettingsChance4DigitsResponse[]>
   >(
-    'get-chance-3digits-settings',
+    'get-chance-4digits-settings',
     async () => {
-      return await axios.get(`/ChanceFourLotterySettings/get-chance-four-lottery-settings`)
+      return await axios.get(`/ChanceFourLotterySettings/get-chance-four-lottery-settings/promoterId/${getStoragePromoterId()}`)
     },
     {
       onSuccess: (res) => {
@@ -55,7 +56,7 @@ export const useChance4DigitsSettings = () => {
     })
   }
 
-  const {mutate: updateLotterySettings, isLoading: isUpdatingSettings} = useMutation({
+  const { mutate: updateLotterySettings, isLoading: isUpdatingSettings } = useMutation({
     mutationFn: async (body: IChance4DigitsUpdateSettings[]) => {
       return await axios.post(
         `/ChanceFourLotterySettings/update-chance-four-lottery-settings/lotteryId/${activeTab}`,
