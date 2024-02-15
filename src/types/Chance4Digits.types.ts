@@ -13,7 +13,7 @@ export interface Chance4ScrutinyStatus {
 
 export interface IRaffleResultChance4DigitsDetail
   extends Chance4DigitsRaffleStatus,
-    Chance4ScrutinyStatus {
+  Chance4ScrutinyStatus {
   chanceFourRaffleId: number
   chanceFourRaffleName: string
   chanceFourRaffleDrawTime: string
@@ -50,7 +50,7 @@ export interface AddScrutinyChance4DigitsBody {
   raffleId: number
 }
 
-export interface IRaffleScrutinyChance4DigitsResponse extends IRaffleResultChance4DigitsResponse {}
+export interface IRaffleScrutinyChance4DigitsResponse extends IRaffleResultChance4DigitsResponse { }
 
 export interface IChance4DigitsLotterySetting {
   currencyId: number
@@ -61,15 +61,11 @@ export interface IChance4DigitsLotterySetting {
   betReturnedRate3Digits: number
   betReturnedRate4Digits: number
   maxOverallChanceBet: number
-  maxDigitsByBet: number
-  minDigitsByBet: number
 }
 
 export interface IChance4DigitsUpdateSettings {
   currencyCode: string
   maxBetByChance: number
-  maxDigitsByBet: number
-  minDigitsByBet: number
   maxOverallChanceBet: number
   betReturnedRate2Digits: number
   betReturnedRate3Digits: number

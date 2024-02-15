@@ -59,7 +59,7 @@ export const useChance4DigitsSettings = () => {
   const { mutate: updateLotterySettings, isLoading: isUpdatingSettings } = useMutation({
     mutationFn: async (body: IChance4DigitsUpdateSettings[]) => {
       return await axios.post(
-        `/ChanceFourLotterySettings/update-chance-four-lottery-settings/lotteryId/${activeTab}`,
+        `/ChanceFourLotterySettings/update-chance-four-lottery-settings/lotteryId/${activeTab}/promoterId/${getStoragePromoterId()}`,
         body
       )
     },

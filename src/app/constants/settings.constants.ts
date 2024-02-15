@@ -2,11 +2,11 @@ import {
   IAnimalitoUpdateGeneralSettings,
   IAnimalitoUpdateSettings,
 } from '../../types/Animalitos.types'
-import {IChance3DigitsUpdateSettings} from '../../types/Chance3Digits.types'
-import {IChance4DigitsUpdateSettings} from '../../types/Chance4Digits.types'
-import {IChanceZodiacUpdateSettings} from '../../types/ChanceZodiac.types'
+import { IChance3DigitsUpdateSettings } from '../../types/Chance3Digits.types'
+import { IChance4DigitsUpdateSettings } from '../../types/Chance4Digits.types'
+import { IChanceZodiacUpdateSettings } from '../../types/ChanceZodiac.types'
 
-export const mapAnimalitosSettingsLabel: {[K in keyof IAnimalitoUpdateSettings]?: string} = {
+export const mapAnimalitosSettingsLabel: { [K in keyof IAnimalitoUpdateSettings]?: string } = {
   betReturnedRate: 'Tasa de retorno de la apuesta',
   maxOverallAnimalitoBet: 'Cupo máximo de Apuesta por animalito y sorteo',
 }
@@ -30,17 +30,15 @@ export const animalitosSettingsLimits = {
   numericValue: 'El campo debe ser númerico',
 }
 
-export const mapChance4DigitsSettingsLabel: {[K in keyof IChance4DigitsUpdateSettings]?: string} = {
+export const mapChance4DigitsSettingsLabel: { [K in keyof IChance4DigitsUpdateSettings]?: string } = {
   maxBetByChance: 'Apuesta máxima por número',
   betReturnedRate2Digits: 'Tasa de retorno apuesta 2 cifras',
   betReturnedRate3Digits: 'Tasa de retorno apuesta 3 cifras',
   betReturnedRate4Digits: 'Tasa de retorno apuesta 4 cifras',
   maxOverallChanceBet: 'Cupo máximo de apuesta por número y sorteo',
-  maxDigitsByBet: 'Máximo de digitos por apuesta',
-  minDigitsByBet: 'Mínimo de dígitos por apuesta',
 }
 
-export const mapChance3DigitsSettingsLabel: {[K in keyof IChance3DigitsUpdateSettings]?: string} = {
+export const mapChance3DigitsSettingsLabel: { [K in keyof IChance3DigitsUpdateSettings]?: string } = {
   maxBetByChance: 'Apuesta máxima por número',
   betReturnedRate2Digits: 'Tasa de retorno apuesta 2 cifras',
   betReturnedRate3Digits: 'Tasa de retorno apuesta 3 cifras',
@@ -49,7 +47,7 @@ export const mapChance3DigitsSettingsLabel: {[K in keyof IChance3DigitsUpdateSet
   minDigitsByBet: 'Mínimo de dígitos por apuesta',
 }
 
-export const mapChanceZodiacSettingsLabel: {[K in keyof IChanceZodiacUpdateSettings]?: string} = {
+export const mapChanceZodiacSettingsLabel: { [K in keyof IChanceZodiacUpdateSettings]?: string } = {
   maxBetByChance: 'Apuesta máxima por número',
   betReturnedRate2Digits: 'Tasa de retorno apuesta 2 cifras',
   betReturnedRate3Digits: 'Tasa de retorno apuesta 3 cifras',
