@@ -33,38 +33,46 @@ const ScrutinySettingsTable = ({
               </tr>
             </thead>
             <tbody>
-              {emailScrutinySettings.map((email) => (
-                <tr className='fw-bold fs-6 text-gray-800' key={email.adminEmailId}>
-                  <td className='text-center'>{email.adminEmailName}</td>
-                  <td className='text-center'>{email.adminEmailLastName}</td>
-                  <td className='text-center'>{email.adminEmailEmail}</td>
-                  <td className='text-center'>
-                    <span
-                      className={`badge ${
-                        email.adminEmailStatus ? 'badge-light-success' : 'badge-light-warning'
-                      } fs-7 fw-semibold`}
-                    >
-                      {email.adminEmailStatus ? 'ACTIVO' : 'INACTIVO'}
-                    </span>
-                  </td>
-                  <td className='text-center'>
-                    <div className='d-flex align-items-center justify-content-center'>
-                      <div
-                        onClick={() => setEmailId(email.adminEmailId, 'update')}
-                        style={{cursor: 'pointer', marginRight: '10px'}}
-                      >
-                        <i className='bi bi-pencil text-primary btn-lg'></i>
-                      </div>
-                      <div
-                        onClick={() => setEmailId(email.adminEmailId, 'delete')}
-                        style={{cursor: 'pointer'}}
-                      >
-                        <i className='bi bi-trash text-danger btn-lg'></i>
-                      </div>
-                    </div>
+              {emailScrutinySettings.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className='text-center'>
+                    No hay resultados disponibles
                   </td>
                 </tr>
-              ))}
+              ) : (
+                emailScrutinySettings.map((email) => (
+                  <tr className='fw-bold fs-6 text-gray-800' key={email.adminEmailId}>
+                    <td className='text-center'>{email.adminEmailName}</td>
+                    <td className='text-center'>{email.adminEmailLastName}</td>
+                    <td className='text-center'>{email.adminEmailEmail}</td>
+                    <td className='text-center'>
+                      <span
+                        className={`badge ${
+                          email.adminEmailStatus ? 'badge-light-success' : 'badge-light-warning'
+                        } fs-7 fw-semibold`}
+                      >
+                        {email.adminEmailStatus ? 'ACTIVO' : 'INACTIVO'}
+                      </span>
+                    </td>
+                    <td className='text-center'>
+                      <div className='d-flex align-items-center justify-content-center'>
+                        <div
+                          onClick={() => setEmailId(email.adminEmailId, 'update')}
+                          style={{cursor: 'pointer', marginRight: '10px'}}
+                        >
+                          <i className='bi bi-pencil text-primary btn-lg'></i>
+                        </div>
+                        <div
+                          onClick={() => setEmailId(email.adminEmailId, 'delete')}
+                          style={{cursor: 'pointer'}}
+                        >
+                          <i className='bi bi-trash text-danger btn-lg'></i>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
