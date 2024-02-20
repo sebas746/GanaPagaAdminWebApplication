@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from 'react-query'
 import { useCreatePersonalizedQuota } from '../CreatePersonalizedQuota/useCreatePersonalizedQuota'
 import axios from '../../../config/http-common'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   IAllAnimalitosQuotaResponse,
   IAnimalitosLotteries,
@@ -11,6 +11,7 @@ import { QueryResponse, ReactQueryResponse } from '../../../../types/Generics'
 import { enqueueSnackbar } from 'notistack'
 import { AxiosResponse } from 'axios'
 import { getStoragePromoterId } from '../../../helpers/localstorage.helper'
+import { usePromoterList } from '../../../hooks/promoterList.hook'
 
 export const usePersonalizedQuotaOverview = () => {
   const {
@@ -21,6 +22,7 @@ export const usePersonalizedQuotaOverview = () => {
   } = useCreatePersonalizedQuota()
   const [pageIndex, setPageIndex] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
+  const { promoterId } = usePromoterList();
 
   const [deleteAnimalitosQuota, setDeleteAnimalitosQuota] = useState<IDeleteAnimalitosQuota>(
     {} as IDeleteAnimalitosQuota
@@ -71,11 +73,11 @@ export const usePersonalizedQuotaOverview = () => {
     isRefetching: isRefetchingCreatedPersonalizedAnimalitosQuota,
     refetch: getAllAnimalitosPersonalizedQuota,
   } = useQuery<ReactQueryResponse<IAllAnimalitosQuotaResponse>>({
-    queryKey: ['createdPersonalizedAnimalitosQuota', selectedLottery],
+    queryKey: ['createdPersonalizedAnimalitosQuota', selectedLottery], 
     queryFn: async () => {
-      let url = `/AnimalitosMaxOverallBet/get-animalitos-max-overall-paginated/promoterId/${getStoragePromoterId()}?pageIndex=${pageIndex}&pageSize=${pageSize}`
+      let url = `/AnimalitosMaxOverallBet/get-animalitos-max-overall-paginated/promoterId/${promoterId}?pageIndex=${pageIndex}&pageSize=${pageSize}`
       if (selectedLottery !== 0) {
-        url = `/AnimalitosMaxOverallBet/get-animalitos-max-overall-paginated/promoterId/${getStoragePromoterId()}?pageIndex=${pageIndex}&pageSize=${pageSize}&lotteryId=${selectedLottery}`
+        url = `/AnimalitosMaxOverallBet/get-animalitos-max-overall-paginated/promoterId/${promoterId}?pageIndex=${pageIndex}&pageSize=${pageSize}&lotteryId=${selectedLottery}`
       }
       return await axios.get(url)
     },
@@ -89,7 +91,7 @@ export const usePersonalizedQuotaOverview = () => {
   >({
     mutationFn: async (body) => {
       return await axios.delete(
-        `/AnimalitosMaxOverallBet/delete-animalitos-max-overall/lotteryId/${body.lotteryId}/animalitoId/${body.animalitoId}/promoterId/${getStoragePromoterId()}`
+        `/AnimalitosMaxOverallBet/delete-animalitos-max-overall/lotteryId/${body.lotteryId}/animalitoId/${body.animalitoId}/promoterId/${promoterId}`
       )
     },
     onSuccess: (response) => {
@@ -112,6 +114,7 @@ export const usePersonalizedQuotaOverview = () => {
       })
     },
   })
+
 
   useEffect(() => {
     getAllAnimalitosPersonalizedQuota()

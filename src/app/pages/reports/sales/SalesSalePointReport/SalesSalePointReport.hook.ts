@@ -1,13 +1,8 @@
-import {useEffect, useReducer, useState} from 'react'
-import {
-  ISalesSellerReportQueryParams,
-  ISalesSellerResponse,
-  ISellerResponse,
-} from '../../../../../types/SalesSellerReport.types'
-import {ReactQueryResponse} from '../../../../../types/Generics'
-import {useQuery} from 'react-query'
-import {buildUrl} from '../../../../helpers/urlBuilder.helpers'
-import {DateTime} from 'luxon'
+import { useEffect, useReducer, useState } from 'react'
+import { ReactQueryResponse } from '../../../../../types/Generics'
+import { useQuery } from 'react-query'
+import { buildUrl } from '../../../../helpers/urlBuilder.helpers'
+import { DateTime } from 'luxon'
 import axios from '../../../../config/http-common'
 import {
   ISalePointResponse,
@@ -15,9 +10,9 @@ import {
   ISalesSalePointReportQueryParams,
 } from '../../../../../types/SalesSalePointReport.types'
 import {
-  IpaginationResponse,
   IpaginationSalesReportResponse,
 } from '../../../../../types/Pagination.types'
+import { usePromoterList } from '../../../../hooks/promoterList.hook' 
 
 enum SalesSalePointReportKind {
   SET_SALE_POINT_SALES = 'SET_SALE_POINT_SALES',
@@ -29,16 +24,16 @@ enum SalesSalePointReportKind {
 interface SalesSalePointReportAction {
   type: SalesSalePointReportKind
   payload:
-    | IpaginationSalesReportResponse<ISalesSalePointReport>
-    | ISalePointResponse[]
-    | ISalesSalePointReportQueryParams
-    | string
+  | IpaginationSalesReportResponse<ISalesSalePointReport>
+  | ISalePointResponse[]
+  | ISalesSalePointReportQueryParams
+  | string
 }
 
 interface SalesSellerReportState {
   salesReportPaginated: IpaginationSalesReportResponse<ISalesSalePointReport>
   params: ISalesSalePointReportQueryParams
-  salePoints: ISalePointResponse[]
+  salePoints:  ISalePointResponse[]
   salePointId: string | undefined
 }
 
@@ -75,13 +70,14 @@ export const salesSalePointReportReducer = (
 }
 
 export const useSalesSalePointReport = () => {
+  const { promoterId } = usePromoterList()
   const formattedDate = DateTime.now().toFormat('yyyy-MM-dd').toString()
   const [salesSalePointReportState, dispatchSalesSalePointReport] = useReducer(
     salesSalePointReportReducer,
     {
       salesReportPaginated: {} as IpaginationSalesReportResponse<ISalesSalePointReport>,
       params: {
-        baseUrl: '/SalesReport/get-salepoint-total-sales-report',
+        baseUrl: `/SalesReport/get-salepoint-total-sales-report/promoterId/${promoterId}`,
         pageIndex: 0,
         pageSize: 10,
         initialDate: formattedDate,
@@ -121,13 +117,13 @@ export const useSalesSalePointReport = () => {
   const setSalesSalePointReportPaginated = (
     payload: IpaginationSalesReportResponse<ISalesSalePointReport>
   ) => {
-    dispatchSalesSalePointReport({type: SalesSalePointReportKind.SET_SALE_POINT_SALES, payload})
+    dispatchSalesSalePointReport({ type: SalesSalePointReportKind.SET_SALE_POINT_SALES, payload })
   }
 
   const handleFilterChange = (filterName: keyof ISalesSalePointReportQueryParams, value: any) => {
     dispatchSalesSalePointReport({
       type: SalesSalePointReportKind.SET_PARAMS,
-      payload: {[filterName]: value} as ISalesSalePointReportQueryParams,
+      payload: { [filterName]: value } as ISalesSalePointReportQueryParams,
     })
   }
 
@@ -142,15 +138,15 @@ export const useSalesSalePointReport = () => {
     }
 
     setTempFilters(resetValues)
-    dispatchSalesSalePointReport({type: SalesSalePointReportKind.SET_PARAMS, payload: resetValues})
+    dispatchSalesSalePointReport({ type: SalesSalePointReportKind.SET_PARAMS, payload: resetValues })
   }
 
   const setSalesSalePointReportParams = () => {
-    dispatchSalesSalePointReport({type: SalesSalePointReportKind.SET_PARAMS, payload: tempFilters})
+    dispatchSalesSalePointReport({ type: SalesSalePointReportKind.SET_PARAMS, payload: tempFilters })
   }
 
   const setSalePoints = (payload: ISalePointResponse[]) => {
-    dispatchSalesSalePointReport({type: SalesSalePointReportKind.SET_SALE_POINTS, payload})
+    dispatchSalesSalePointReport({ type: SalesSalePointReportKind.SET_SALE_POINTS, payload })
   }
 
   useEffect(() => {

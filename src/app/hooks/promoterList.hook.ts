@@ -4,6 +4,7 @@ import axios from '../config/http-common'
 import { ReactQueryResponse } from '../../types/Generics'
 import { useEffect, useReducer } from "react"
 import { getStoragePromoterId, setStoragePromoterId } from "../helpers/localstorage.helper"
+import { disableSplashScreen, enableSplashScreen } from "../components/RenderLoader/RenderLoader"
 
 enum PromotersKind {
   SET_PROMOTERS = 'SET_PROMOTERS',
@@ -83,13 +84,18 @@ export const usePromoterList = () => {
     if (promotersState.promoters) {
       const adminPromoter = promotersState.promoters.find((p) => p.promoterIsAdmin)
       if (promotersState.promoterId === '' && adminPromoter) {
-        console.log('setPromoterId' + adminPromoter.promoterId)
         setPromoterId(adminPromoter.promoterId.toString())
       }
     }
   }, [promotersState.promoterId, promotersState.promoters])
 
 
+  useEffect(() => {
+    enableSplashScreen()
+    setTimeout(() => {
+      disableSplashScreen()
+    }, 450)
+  }, [promotersState.promoterId])
 
   return { promoters: promotersState.promoters, isLoading: isFetching, setPromoterId, promoterId: getPromoterId() }
 }
