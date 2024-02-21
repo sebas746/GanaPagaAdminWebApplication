@@ -2,11 +2,8 @@ import clsx from 'clsx'
 import {KTSVG, toAbsoluteUrl} from '../../../helpers'
 import {HeaderNotificationsMenu, HeaderUserMenu, Search, ThemeModeSwitcher} from '../../../partials'
 import {useLayout} from '../../core'
-import {getStoragePromoterId} from '../../../../app/helpers/localstorage.helper'
-import {usePromoterList} from '../../../../app/hooks/promoterList.hook'
-import {Form} from 'react-bootstrap'
-import {IPromoter} from '../../../../types/Promoter.types'
-import RenderLoader from '../../../../app/components/RenderLoader/RenderLoader'
+import HasPermission from '../../../../app/components/HasPermissions/HasPermissions'
+import PromoterSelector from '../../../../app/components/PromoterSelector/PromoterSelector'
 
 const itemClass = 'ms-1 ms-lg-3'
 const btnClass =
@@ -16,28 +13,13 @@ const btnIconClass = 'svg-icon-1'
 
 const Navbar = () => {
   const {config} = useLayout()
-  const {promoters, isLoading, setPromoterId, promoterId} = usePromoterList()
 
-  const isDataLoaded = !isLoading && promoters && promoters.length > 0
   return (
     <div className='app-navbar flex-shrink-0'>
       <div className={clsx('app-navbar-item', itemClass)}>
-        <div className='menu-item px-5 mb-4'>
-          {isDataLoaded && (
-            <Form.Select
-              defaultValue={promoterId ?? ''}
-              onChange={(e) => setPromoterId(e.target.value)}
-              className='form-select form-select-solid'
-            >
-              {promoters.map((promoter: IPromoter) => (
-                <option key={promoter.promoterId} value={promoter.promoterId}>
-                  {promoter.promoterName}
-                </option>
-              ))}
-            </Form.Select>
-          )}
-          <RenderLoader show={isLoading} />
-        </div>
+        <HasPermission resource='promoter' actions={['change-promoter']}>
+          <PromoterSelector />
+        </HasPermission>
         <div
           className={clsx('cursor-pointer symbol', userAvatarClass)}
           data-kt-menu-trigger="{default: 'click'}"
@@ -46,9 +28,8 @@ const Navbar = () => {
         >
           <img src={toAbsoluteUrl('/media/avatars/300-1.jpg')} alt='' />
         </div>
+        <HeaderUserMenu />
       </div>
-
-      <HeaderUserMenu />
 
       {config.app?.header?.default?.menu?.display && (
         <div className='app-navbar-item d-lg-none ms-2 me-n3' title='Show header menu'>

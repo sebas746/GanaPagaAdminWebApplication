@@ -11,6 +11,7 @@ import {
 } from '../../../../../types/TicketReport.types'
 import {CURRENCY_USD, CURRENCY_VES} from '../../../../constants/reports.constants'
 import {CurrencyCode, CurrencyId, currencies} from '../../../../../types/Currency.types'
+import { usePromoterList } from '../../../../hooks/promoterList.hook'
 
 enum TicketReportKind {
   SET_TICKET_REPORT = 'SET_TICKET_REPORT',
@@ -67,11 +68,12 @@ export const ticketReportReducer = (state: TicketReportState, action: TicketRepo
 }
 
 export const useTicketReport = () => {
+  const {promoterId} = usePromoterList()
   const formattedDate = DateTime.now().toFormat('yyyy-MM-dd').toString()
   const [ticketReportUsdState, dispatchUsdTicketReport] = useReducer(ticketReportReducer, {
     ticketReportPaginated: {} as ITicketReportResponse,
     params: {
-      baseUrl: '/TicketReport/get-tickets-report',
+      baseUrl: `/TicketReport/get-tickets-report/promoterId/${promoterId}`,
       pageIndex: 0,
       pageSize: 10,
       initialDate: formattedDate,
@@ -85,7 +87,7 @@ export const useTicketReport = () => {
   const [ticketReportVesState, dispatchVesTicketReport] = useReducer(ticketReportReducer, {
     ticketReportPaginated: {} as ITicketReportResponse,
     params: {
-      baseUrl: '/TicketReport/get-tickets-report',
+      baseUrl: `/TicketReport/get-tickets-report/promoterId/${promoterId}`,
       pageIndex: 0,
       pageSize: 10,
       initialDate: formattedDate,

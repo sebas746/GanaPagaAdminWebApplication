@@ -83,7 +83,7 @@ export const usePromoterList = () => {
   useEffect(() => {
     if (promotersState.promoters) {
       const adminPromoter = promotersState.promoters.find((p) => p.promoterIsAdmin)
-      if (promotersState.promoterId === '' && adminPromoter) {
+      if (promotersState.promoterId === null && adminPromoter) {
         setPromoterId(adminPromoter.promoterId.toString())
       }
     }
