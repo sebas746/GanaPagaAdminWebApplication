@@ -73,12 +73,13 @@ export const useTicketReport = () => {
   const [ticketReportUsdState, dispatchUsdTicketReport] = useReducer(ticketReportReducer, {
     ticketReportPaginated: {} as ITicketReportResponse,
     params: {
-      baseUrl: `/TicketReport/get-tickets-report/promoterId/${promoterId}`,
+      baseUrl: `/TicketReport/get-tickets-report`,
       pageIndex: 0,
       pageSize: 10,
       initialDate: formattedDate,
       endDate: formattedDate,
       currency: CURRENCY_USD,
+      promoterId: promoterId
     } as ITicketReportQueryParams,
     sellers: [] as string[],
     ticketId: undefined,
@@ -87,12 +88,13 @@ export const useTicketReport = () => {
   const [ticketReportVesState, dispatchVesTicketReport] = useReducer(ticketReportReducer, {
     ticketReportPaginated: {} as ITicketReportResponse,
     params: {
-      baseUrl: `/TicketReport/get-tickets-report/promoterId/${promoterId}`,
+      baseUrl: `/TicketReport/get-tickets-report`,
       pageIndex: 0,
       pageSize: 10,
       initialDate: formattedDate,
       endDate: formattedDate,
       currency: CURRENCY_VES,
+      promoterId: promoterId
     } as ITicketReportQueryParams,
     sellers: [] as string[],
     ticketId: undefined,
@@ -107,6 +109,7 @@ export const useTicketReport = () => {
     currency: CURRENCY_USD,
     ticketId: undefined,
     sellerEmail: undefined,
+    promoterId: promoterId
   })
   const [tempFiltersVes, setTempFiltersVes] = useState<ITicketReportQueryParams>({
     baseUrl: ticketReportVesState.params.baseUrl,
@@ -117,6 +120,7 @@ export const useTicketReport = () => {
     currency: CURRENCY_VES,
     ticketId: undefined,
     sellerEmail: undefined,
+    promoterId: promoterId
   })
 
   const [selectedTab, setSelectedTab] = useState(currencies[0].currencyId)
@@ -132,6 +136,7 @@ export const useTicketReport = () => {
       currency: ticketReportUsdState.params.currency,
       ticketId: ticketReportUsdState.params.ticketId,
       sellerEmail: ticketReportUsdState.params.sellerEmail,
+      promoterId: promoterId
     })
 
     const response = await axios.get(url)
@@ -155,6 +160,7 @@ export const useTicketReport = () => {
       currency: ticketReportVesState.params.currency,
       ticketId: ticketReportVesState.params.ticketId,
       sellerEmail: ticketReportVesState.params.sellerEmail,
+      promoterId: promoterId,
     })
 
     const response = await axios.get(url)

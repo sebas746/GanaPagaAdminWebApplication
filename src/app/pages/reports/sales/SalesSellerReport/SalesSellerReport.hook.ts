@@ -76,11 +76,12 @@ export const useSalesSellerReport = () => {
   const [salesSellerReportState, dispatchSalesSellerReport] = useReducer(salesSellerReportReducer, {
     salesReportPaginated: {} as IpaginationSalesReportResponse<ISalesSellerResponse>,
     params: {
-      baseUrl: `/SalesReport/get-sellers-total-sales-report/promoterId/${promoterId}`,
+      baseUrl: `/SalesReport/get-sellers-total-sales-report`,
       pageIndex: 0,
       pageSize: 10,
       initialDate: formattedDate,
       endDate: formattedDate,
+      promoterId: promoterId
     } as ISalesSellerReportQueryParams,
     sellers: [] as ISellerResponse[],
     sellerId: undefined,
@@ -92,6 +93,7 @@ export const useSalesSellerReport = () => {
     initialDate: formattedDate,
     endDate: formattedDate,
     sellerId: undefined,
+    promoterId: undefined
   })
 
 
@@ -108,6 +110,7 @@ export const useSalesSellerReport = () => {
         initialDate: salesSellerReportState.params.initialDate,
         endDate: salesSellerReportState.params.endDate,
         sellerId: salesSellerReportState.params.sellerId,
+        promoterId: salesSellerReportState.params.promoterId
       })
       return await axios.get(url)
     }
@@ -134,6 +137,7 @@ export const useSalesSellerReport = () => {
       initialDate: formattedDate,
       endDate: formattedDate,
       sellerId: '',
+      promoterId: undefined
     }
 
     setTempFilters(resetValues)

@@ -10,6 +10,7 @@ const SidebarMenuMain = () => {
   const allRolesRoutes = useProtectedRoute(['Admin', 'Scrutiny'])
   const adminScrutinyRoutes = useProtectedRoute(['Admin', 'Scrutiny'])
   const adminRoutes = useProtectedRoute(['Admin'])
+  const adminPromoterRoutes = useProtectedRoute(['Promoter'])
 
   return (
     <>
@@ -145,7 +146,7 @@ const SidebarMenuMain = () => {
         </SidebarMenuItemWithSub>
       )}
 
-      {adminRoutes && (
+      {(adminRoutes || adminPromoterRoutes) && (
         <SidebarMenuItemWithSub
           to='/pages/sales-reports'
           title='Reportes de ventas'
@@ -196,9 +197,9 @@ const SidebarMenuMain = () => {
             to='/pages/personalized-quota/create'
             title='Crear Cupo Personalizada'
             hasBullet={true}
-            />
+          />
         </SidebarMenuItemWithSub>
-        )}
+      )}
     </>
   )
 }

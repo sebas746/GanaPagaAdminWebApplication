@@ -77,11 +77,12 @@ export const useSalesSalePointReport = () => {
     {
       salesReportPaginated: {} as IpaginationSalesReportResponse<ISalesSalePointReport>,
       params: {
-        baseUrl: `/SalesReport/get-salepoint-total-sales-report/promoterId/${promoterId}`,
+        baseUrl: `/SalesReport/get-salepoint-total-sales-report`,
         pageIndex: 0,
         pageSize: 10,
         initialDate: formattedDate,
         endDate: formattedDate,
+        promoterId: promoterId
       } as ISalesSalePointReportQueryParams,
       salePoints: [] as ISalePointResponse[],
       salePointId: undefined,
@@ -109,6 +110,7 @@ export const useSalesSalePointReport = () => {
         initialDate: salesSalePointReportState.params.initialDate,
         endDate: salesSalePointReportState.params.endDate,
         salePointId: salesSalePointReportState.params.salePointId,
+        promoterId: salesSalePointReportState.params.promoterId
       })
       return await axios.get(url)
     }
@@ -135,6 +137,7 @@ export const useSalesSalePointReport = () => {
       initialDate: formattedDate,
       endDate: formattedDate,
       sellerId: '',
+      promoterId: undefined
     }
 
     setTempFilters(resetValues)

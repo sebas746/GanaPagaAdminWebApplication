@@ -4,7 +4,7 @@ export enum UserRolesEnum {
   Promoter = 'Promoter'
 }
 
-export type UserRole = 'Admin' | 'Scrutiny'
+export type UserRole = 'Admin' | 'Scrutiny' | 'Promoter'
 
 export type SettingsActions =
   | 'get-general-settings'
@@ -73,4 +73,11 @@ export const rolePermissions: RolePermissionsMap = {
     scrutinySettings: [] as ScrutinySettings[],
     promoter: [] as PromoterActions[]
   },
+  Promoter: {
+    settings: [] as SettingsActions[],        
+    raffleResult: [] as RaffleResultActions[],
+    raffleScrutiny: [] as RaffleScrutinyActions[],
+    scrutinySettings: [] as ScrutinySettings[],
+    promoter: [] as PromoterActions[]
+  }
 }

@@ -1,6 +1,6 @@
 import {useAuth} from 'oidc-react/build/src/useAuth'
 import {useEffect, useState} from 'react'
-import {removeToken, setToken} from '../helpers/localstorage.helper'
+import {removeStoragePromoterId, removeToken, setToken} from '../helpers/localstorage.helper'
 import {disableSplashScreen, enableSplashScreen} from '../components/RenderLoader/RenderLoader'
 import {IDENTITY_CONFIG} from '../constants/oidc-identity-server.constants'
 
@@ -60,6 +60,7 @@ export const useRemoveSession = () => {
     enableSplashScreen()
     removeToken()
     auth.userManager.revokeTokens().then(() => {
+      removeStoragePromoterId()
       auth.signOut()
 
       auth.signOutRedirect({

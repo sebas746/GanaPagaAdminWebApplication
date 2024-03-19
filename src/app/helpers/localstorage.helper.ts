@@ -26,3 +26,7 @@ export const getStoragePromoterId = () => {
   return localStorage.getItem(PROMOTER_ID)
 }
 
+export const removeStoragePromoterId = () => {
+  localStorage.removeItem(PROMOTER_ID)
+}
+

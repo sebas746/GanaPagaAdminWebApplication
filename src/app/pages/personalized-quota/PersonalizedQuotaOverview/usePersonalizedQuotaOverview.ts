@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from 'react-query'
 import { useCreatePersonalizedQuota } from '../CreatePersonalizedQuota/useCreatePersonalizedQuota'
 import axios from '../../../config/http-common'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   IAllAnimalitosQuotaResponse,
   IAnimalitosLotteries,
@@ -10,7 +10,6 @@ import {
 import { QueryResponse, ReactQueryResponse } from '../../../../types/Generics'
 import { enqueueSnackbar } from 'notistack'
 import { AxiosResponse } from 'axios'
-import { getStoragePromoterId } from '../../../helpers/localstorage.helper'
 import { usePromoterList } from '../../../hooks/promoterList.hook'
 
 export const usePersonalizedQuotaOverview = () => {

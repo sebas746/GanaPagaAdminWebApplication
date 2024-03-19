@@ -142,7 +142,7 @@ const PrivateRoutes = () => {
           path='pages/sales-reports/*'
           element={
             <SuspensedView>
-              <ProtectedRoute roles={['Admin']}>
+              <ProtectedRoute roles={['Admin', 'Promoter']}>
                 <SalesSellerReportPage />
               </ProtectedRoute>
             </SuspensedView>
