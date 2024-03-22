@@ -3,6 +3,8 @@ import {useQuery} from 'react-query'
 import {ReactQueryResponse} from '../../types/Generics'
 import {IDownloadFilesResponse} from '../../types/DownloadFiles.types'
 import axios from '../config/http-common'
+import { usePromoterList } from './promoterList.hook'
+import { buildUrl } from '../helpers/urlBuilder.helpers'
 
 enum DownloadFilesAction {
   SET_RAFFLE_ID = 'SET_RAFFLE_ID',
@@ -67,6 +69,7 @@ export const downloadFilesReducer = (state: DownloadFilesState, action: IDownloa
 }
 
 export const useDownloadFiles = () => {
+  const { promoterId } = usePromoterList()
   const [downloadFilesState, dispatchDownloadFiles] = useReducer(downloadFilesReducer, {
     raffleId: 0,
     gameType: '',
@@ -125,8 +128,14 @@ export const useDownloadFiles = () => {
   } = useQuery<ReactQueryResponse<IDownloadFilesResponse>>(
     'get-download-url',
     async () => {
+      const url = buildUrl('/ScrutinyReport/get-export-scrutiny-report-by-raffle-and-game', {
+        raffleId: downloadFilesState.raffleId,
+        gameType: downloadFilesState.gameType,
+        fileType: downloadFilesState.fileType,
+        promoterId: promoterId
+      })
       return await axios.get(
-        `/ScrutinyReport/get-export-scrutiny-report-by-raffle-and-game/raffleId/${downloadFilesState.raffleId}/gameType/${downloadFilesState.gameType}/fileType/${downloadFilesState.fileType}`
+        url
       )
     },
     {
