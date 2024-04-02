@@ -157,9 +157,25 @@ export const useUsers = () => {
   }
 
   const { mutate: createUser, isLoading: isCreatingUser } = useMutation({
+    
     mutationFn: async (body: IUsersForm) => {
       //body.email = undefined
-      return await axios.post(`/User/add-user`, body)
+      const formData = new FormData();
+      // Append all fields from body to formData
+      Object.entries(body).forEach(([key, value]) => {
+      // If the value is not undefined, append it to formData
+      if (value !== undefined) {
+        formData.append(key, value);
+      }
+      });
+      if (body.promoterFile instanceof File || body.promoterFile instanceof Blob) {
+        formData.append('promoterFile', body.promoterFile);
+      }
+      return await axios.post('/User/add-user', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+      }
+    })
     },
     onSuccess(data) {
       setCurrentUser({} as IUsersResponse)

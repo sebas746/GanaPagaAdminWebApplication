@@ -42,6 +42,11 @@ const UsersWizardStep2 = ({
 
     return []
   }, [isPromoterListReady, usersPaginated.promoterList])
+  const handleLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      formik.setFieldValue('promoterFile', event.target.files[0])
+    }
+  }
   return (
     <Form>
       <Row className='mb-3'>
@@ -105,6 +110,16 @@ const UsersWizardStep2 = ({
             <Form.Control.Feedback type='invalid'>
               {formik.touched.description && formik.errors.description}
             </Form.Control.Feedback>
+          </Col>
+          <Col md={12}>
+            <Form.Label className={'text-dark'}>Logo</Form.Label>
+            <Form.Control
+              type='file'
+              id='promoterFile'
+              onChange={handleLogoChange}
+              accept='.png,.jpg,.jpeg' // Specify accepted file types if needed
+              size='sm'
+            />
           </Col>
         </Row>
       )}

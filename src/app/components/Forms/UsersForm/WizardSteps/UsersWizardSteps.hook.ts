@@ -31,6 +31,7 @@ export const useUsersWizardSteps = (
     isActive: true,
     description: '',
     promoterId: 0,
+    promoterFile: undefined
   }
 
   const combinedInitialValues = {
@@ -153,7 +154,8 @@ export const useUsersWizardSteps = (
         rolId: Number(formik.values.rolId),
         isActive: formik.values.isActive,
         description: formik.values.description,
-        promoterId: formik.values.promoterId
+        promoterId: formik.values.promoterId,
+        promoterFile: formik.values.promoterFile
       }
       const dataForm = { ...completeFormData, ...step2Data }
       submitForm(dataForm)
