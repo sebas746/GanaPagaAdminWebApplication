@@ -2,3 +2,4 @@ export const AUTH_TOKEN = 'AUTH_TOKEN'
 export const LOTTERY_FRUITA_GANA_ID = 3
 export const PROMOTER_ID = 'PROMOTER_ID'
 export const PROMOTERS_LIST = 'PROMOTERS_LIST'
+export const PROMOTER_LOGO = 'PROMOTER_LOGO'

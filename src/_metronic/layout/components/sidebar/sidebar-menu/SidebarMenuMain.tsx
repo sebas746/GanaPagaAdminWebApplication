@@ -7,7 +7,7 @@ import {useProtectedRoute} from '../../../../../app/components/RouteProtection/P
 
 const SidebarMenuMain = () => {
   const intl = useIntl()
-  const allRolesRoutes = useProtectedRoute(['Admin', 'Scrutiny'])
+  const allRolesRoutes = useProtectedRoute(['Admin', 'Scrutiny', 'Promoter'])
   const adminScrutinyRoutes = useProtectedRoute(['Admin', 'Scrutiny'])
   const adminRoutes = useProtectedRoute(['Admin'])
   const adminPromoterRoutes = useProtectedRoute(['Promoter'])

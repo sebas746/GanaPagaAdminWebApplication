@@ -4,6 +4,8 @@ import {HeaderNotificationsMenu, HeaderUserMenu, Search, ThemeModeSwitcher} from
 import {useLayout} from '../../core'
 import HasPermission from '../../../../app/components/HasPermissions/HasPermissions'
 import PromoterSelector from '../../../../app/components/PromoterSelector/PromoterSelector'
+import {useAuth, User} from 'oidc-react'
+import {useEffect, useState} from 'react'
 
 const itemClass = 'ms-1 ms-lg-3'
 const btnClass =
@@ -13,12 +15,35 @@ const btnIconClass = 'svg-icon-1'
 
 const Navbar = () => {
   const {config} = useLayout()
+  const auth = useAuth()
+  const [username, setUsername] = useState<string | undefined>('')
+
+  const getUsername = () => {
+    auth.userManager.getUser().then((user: User | null) => {
+      console.log(user)
+      const fullName = user?.profile.preferred_username ?? ''
+      setUsername(fullName)
+    })
+  }
+
+  useEffect(() => {
+    if (!username) {
+      getUsername()
+    }
+  }, [auth])
 
   return (
     <div className='app-navbar flex-shrink-0'>
       <div className={clsx('app-navbar-item', itemClass)}>
         <HasPermission resource='promoter' actions={['change-promoter']}>
           <PromoterSelector />
+        </HasPermission>
+        <HasPermission resource='promoter' actions={['label-promoter']}>
+          <div style={{paddingRight: '10px'}}>
+            <button type='button' className='btn btn-primary'>
+              {username}
+            </button>
+          </div>
         </HasPermission>
         <div
           className={clsx('cursor-pointer symbol', userAvatarClass)}

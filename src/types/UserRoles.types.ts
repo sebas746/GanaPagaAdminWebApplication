@@ -23,7 +23,7 @@ export type ScrutinySettings =
   | 'update-admin-email'
   | 'delete-admin-email'
 
-export type PromoterActions = 'change-promoter'  
+export type PromoterActions = 'change-promoter' | 'label-promoter' 
 
 export type RoleActionPermissions = {
   settings: SettingsActions[]
@@ -78,6 +78,6 @@ export const rolePermissions: RolePermissionsMap = {
     raffleResult: [] as RaffleResultActions[],
     raffleScrutiny: [] as RaffleScrutinyActions[],
     scrutinySettings: [] as ScrutinySettings[],
-    promoter: [] as PromoterActions[]
+    promoter: ['label-promoter'] as PromoterActions[]
   }
 }

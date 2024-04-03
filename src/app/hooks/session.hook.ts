@@ -9,6 +9,7 @@ export const useCheckSessionStatus = () => {
   const intervalSeconds = 3000
   const expirationRenewSeconds = 600
   const [intervalRunning, setIntervalRunning] = useState<boolean>(false)
+  
   // const [firstTimeRun, setFirstTimeRun] = useState(false)
 
   useEffect(() => {

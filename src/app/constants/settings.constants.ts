@@ -99,3 +99,7 @@ export const chance4DigitsSettingsLimits = {
   minDigitsByBet: 2,
   numericValue: 'El campo debe ser númerico',
 }
+
+export const urls = {
+  logoFolder: process.env.REACT_APP_USERS_ENDPOINT_BASE_URL
+}
