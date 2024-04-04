@@ -4,13 +4,19 @@ import {useIntl} from 'react-intl'
 import {SidebarMenuItemWithSub} from './SidebarMenuItemWithSub'
 import {SidebarMenuItem} from './SidebarMenuItem'
 import {useProtectedRoute} from '../../../../../app/components/RouteProtection/ProtectedRoute.hook'
+import {
+  ADMIN_ROLES,
+  ALL_ROLES,
+  PROMOTER_ROLES,
+  SCRUTINY_ROLES,
+} from '../../../../../app/constants/session.constants'
 
 const SidebarMenuMain = () => {
   const intl = useIntl()
-  const allRolesRoutes = useProtectedRoute(['Admin', 'Scrutiny', 'Promoter'])
-  const adminScrutinyRoutes = useProtectedRoute(['Admin', 'Scrutiny'])
-  const adminRoutes = useProtectedRoute(['Admin'])
-  const adminPromoterRoutes = useProtectedRoute(['Promoter'])
+  const allRolesRoutes = useProtectedRoute(ALL_ROLES)
+  const adminScrutinyRoutes = useProtectedRoute(SCRUTINY_ROLES)
+  const adminRoutes = useProtectedRoute(ADMIN_ROLES)
+  const adminPromoterRoutes = useProtectedRoute(PROMOTER_ROLES)
 
   return (
     <>

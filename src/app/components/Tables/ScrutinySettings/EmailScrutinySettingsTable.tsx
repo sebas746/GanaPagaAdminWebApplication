@@ -13,6 +13,13 @@ const ScrutinySettingsTable = ({
   isDeleting,
   setEmailId,
 }: EmailScrutinySettingsTableProps) => {
+  const handleUpdateEmail = (emailId: number | undefined) => {
+    setEmailId(emailId, 'update')
+  }
+
+  const handleDeleteEmail = (emailId: number | undefined) => {
+    setEmailId(emailId, 'delete')
+  }
   return (
     <>
       <div className='card-body py-3'>
@@ -57,13 +64,13 @@ const ScrutinySettingsTable = ({
                     <td className='text-center'>
                       <div className='d-flex align-items-center justify-content-center'>
                         <div
-                          onClick={() => setEmailId(email.adminEmailId, 'update')}
+                          onClick={() => handleUpdateEmail(email.adminEmailId)}
                           style={{cursor: 'pointer', marginRight: '10px'}}
                         >
                           <i className='bi bi-pencil text-primary btn-lg'></i>
                         </div>
                         <div
-                          onClick={() => setEmailId(email.adminEmailId, 'delete')}
+                          onClick={() => handleDeleteEmail(email.adminEmailId)}
                           style={{cursor: 'pointer'}}
                         >
                           <i className='bi bi-trash text-danger btn-lg'></i>

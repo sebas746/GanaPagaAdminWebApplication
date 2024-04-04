@@ -19,7 +19,7 @@ const SidebarLogo = () => {
   const toggleState = appSidebarDefaultMinimizeDesktopEnabled ? 'active' : ''
   const appSidebarDefaultMinimizeDefault = config.app?.sidebar?.default?.minimize?.desktop?.default
   const logoPath = promoterInfo.promoterLogo
-    ? process.env.REACT_APP_USERS_BASE_URL?.replace(/\\/g, '/') + promoterInfo.promoterLogo
+    ? `${process.env.REACT_APP_USERS_BASE_URL?.replace(/\\/g, '/')}${promoterInfo.promoterLogo}`
     : '/media/logos/ganapaga-dark.svg'
   console.log(promoterInfo)
   return (
