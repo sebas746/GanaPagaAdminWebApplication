@@ -24,6 +24,7 @@ export interface ISalesSellerReportQueryParams {
   initialDate: string
   endDate: string
   sellerId?: string
+  promoterId?: string
 }
 
 export interface ICurrencyResponse {

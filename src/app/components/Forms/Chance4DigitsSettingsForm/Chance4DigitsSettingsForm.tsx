@@ -44,51 +44,7 @@ function Chance4DigitsSettingsForm({
             </Card.Title>
           </Card.Header>
           <Card.Body>
-            <Form>
-              <Row className='mb-6'>
-                <Col>
-                  <Form.Label className={'text-dark'}>
-                    {getChance4DigitsSettingsLabel('minDigitsByBet')}
-                  </Form.Label>
-                </Col>
-                <Col>
-                  <Form.Control
-                    id='minDigitsByBet'
-                    placeholder={getChance4DigitsSettingsLabel('minDigitsByBet')}
-                    value={formikVes.values.minDigitsByBet}
-                    onChange={formikVes.handleChange}
-                    isInvalid={!!formikVes.errors.minDigitsByBet}
-                    type='number'
-                    min={chance4DigitsSettingsLimits.minDigitsByBet}
-                    max={chance4DigitsSettingsLimits.maxDigitsByBet}
-                  />
-                  <Form.Control.Feedback type='invalid'>
-                    {formikVes.errors.minDigitsByBet}
-                  </Form.Control.Feedback>
-                </Col>
-              </Row>
-              <Row className='mb-6'>
-                <Col>
-                  <Form.Label className={'text-dark'}>
-                    {getChance4DigitsSettingsLabel('maxDigitsByBet')}
-                  </Form.Label>
-                </Col>
-                <Col>
-                  <Form.Control
-                    id='maxDigitsByBet'
-                    placeholder={getChance4DigitsSettingsLabel('maxDigitsByBet')}
-                    value={formikVes.values.maxDigitsByBet}
-                    onChange={formikVes.handleChange}
-                    isInvalid={!!formikVes.errors.maxDigitsByBet}
-                    type='number'
-                    min={chance4DigitsSettingsLimits.minDigitsByBet}
-                    max={chance4DigitsSettingsLimits.maxDigitsByBet}
-                  />
-                  <Form.Control.Feedback type='invalid'>
-                    {formikVes.errors.maxDigitsByBet}
-                  </Form.Control.Feedback>
-                </Col>
-              </Row>
+            <Form>              
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>
@@ -209,51 +165,7 @@ function Chance4DigitsSettingsForm({
             </Card.Title>
           </Card.Header>
           <Card.Body>
-            <Form>
-              <Row className='mb-6'>
-                <Col>
-                  <Form.Label className={'text-dark'}>
-                    {getChance4DigitsSettingsLabel('minDigitsByBet')}
-                  </Form.Label>
-                </Col>
-                <Col>
-                  <Form.Control
-                    id='minDigitsByBet'
-                    placeholder={getChance4DigitsSettingsLabel('minDigitsByBet')}
-                    value={formikUsd.values.minDigitsByBet}
-                    onChange={formikUsd.handleChange}
-                    isInvalid={!!formikUsd.errors.minDigitsByBet}
-                    type='number'
-                    min={chance4DigitsSettingsLimits.minDigitsByBet}
-                    max={chance4DigitsSettingsLimits.maxDigitsByBet}
-                  />
-                  <Form.Control.Feedback type='invalid'>
-                    {formikUsd.errors.minDigitsByBet}
-                  </Form.Control.Feedback>
-                </Col>
-              </Row>
-              <Row className='mb-6'>
-                <Col>
-                  <Form.Label className={'text-dark'}>
-                    {getChance4DigitsSettingsLabel('maxDigitsByBet')}
-                  </Form.Label>
-                </Col>
-                <Col>
-                  <Form.Control
-                    id='maxDigitsByBet'
-                    placeholder={getChance4DigitsSettingsLabel('maxDigitsByBet')}
-                    value={formikUsd.values.maxDigitsByBet}
-                    onChange={formikUsd.handleChange}
-                    isInvalid={!!formikUsd.errors.maxDigitsByBet}
-                    type='number'
-                    min={chance4DigitsSettingsLimits.minDigitsByBet}
-                    max={chance4DigitsSettingsLimits.maxDigitsByBet}
-                  />
-                  <Form.Control.Feedback type='invalid'>
-                    {formikUsd.errors.maxDigitsByBet}
-                  </Form.Control.Feedback>
-                </Col>
-              </Row>
+            <Form>              
               <Row className='mb-6'>
                 <Col>
                   <Form.Label className={'text-dark'}>

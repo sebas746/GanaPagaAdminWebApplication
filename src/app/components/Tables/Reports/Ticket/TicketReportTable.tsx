@@ -41,7 +41,7 @@ const TicketSummaryCard = ({
   totalCancelledTickets,
 }: TicketSummaryCardProps) => {
   return (
-    <div className='card mb-3' style={{maxWidth: '20rem'}}>
+    <div className='card mb-3' style={{maxWidth: '25rem'}}>
       <div
         className={`card-header text-white ${
           currencyCode === CURRENCY_USD ? 'bg-success' : 'bg-danger'
@@ -79,7 +79,6 @@ const TicketReportTable = ({
   isTicketDetailLoading,
   currencyCode,
 }: TicketReportTableProps) => {
-  console.log(typeof ticketId)
   const showPagination =
     !isLoading && ticketReportPaginated && ticketReportPaginated.ticketsCount > 0
   const showSummaryCard =
@@ -176,7 +175,7 @@ const TicketReportTable = ({
               totalTickets={ticketReportPaginated.ticketsCount}
               currencyCode={ticketReportPaginated.currencyCode}
               totalAmount={ticketReportPaginated.totalSales}
-              totalCancelledTickets={ticketReportPaginated.ticketCancelledCount}
+              totalCancelledTickets={ticketReportPaginated.ticketsCancelledCount}
             />
             <div className='table-responsive'>
               <table className='table table-bordered table-row-bordered table-row-gray-300 gy-6 table-hover'>
@@ -232,18 +231,21 @@ const TicketReportTable = ({
                         </td>
                       </tr>
                     ))}
-                  {ticketReportPaginated.tickets.length === 0 && (
-                    <tr>
-                      <td colSpan={7} className='text-center'>
-                        No results...
-                      </td>
-                    </tr>
-                  )}
                 </tbody>
               </table>
             </div>
           </>
         )}
+        {!isLoading &&
+          ticketReportPaginated &&
+          ticketReportPaginated.tickets &&
+          ticketReportPaginated.tickets.length === 0 && (
+            <tr>
+              <td colSpan={7} className='text-center'>
+                No hay resultados
+              </td>
+            </tr>
+          )}
         {showPagination && (
           <Pagination>
             {Array.from({

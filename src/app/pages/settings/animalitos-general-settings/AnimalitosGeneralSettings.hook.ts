@@ -1,5 +1,5 @@
-import {useMutation, useQuery} from 'react-query'
-import {ReactQueryResponse} from '../../../../types/Generics'
+import { useMutation, useQuery } from 'react-query'
+import { ReactQueryResponse } from '../../../../types/Generics'
 import axios from '../../../config/http-common'
 import {
   IAnimalitoUpdateGeneralSettings,
@@ -7,9 +7,10 @@ import {
   IGeneralSettingsAnimalitosResponse,
   ISettingsAnimalitosResponse,
 } from '../../../../types/Animalitos.types'
-import {useEffect, useState} from 'react'
-import {enqueueSnackbar} from 'notistack'
-import {AxiosError} from 'axios'
+import { useEffect, useState } from 'react'
+import { enqueueSnackbar } from 'notistack'
+import { AxiosError } from 'axios'
+import { getStoragePromoterId } from '../../../helpers/localstorage.helper'
 
 export const useAnimalitosGeneralSettings = () => {
   const [animalitosGeneralSettings, setAnimalitosGeneralSettings] = useState(
@@ -19,12 +20,12 @@ export const useAnimalitosGeneralSettings = () => {
   const onChangeTab = (tab: number) => {
     setActiveTab(tab)
   }
-  const {isFetching, refetch: getAnimalitosSettings} = useQuery<
+  const { isFetching, refetch: getAnimalitosSettings } = useQuery<
     ReactQueryResponse<IGeneralSettingsAnimalitosResponse[]>
   >(
     'get-animalitos-settings',
     async () => {
-      return await axios.get(`/AnimalitosLotterySettings/get-animalitos-lottery-settings/`)
+      return await axios.get(`/AnimalitosLotterySettings/get-animalitos-lottery-settings/promoterId/${getStoragePromoterId()}`)
     },
     {
       onSuccess: (res) => {
@@ -43,7 +44,7 @@ export const useAnimalitosGeneralSettings = () => {
   }, [])
 
   const handleSuccessResponse = () => {
-    enqueueSnackbar('La configuración de animalitos se ha actualizado correctamente', {
+    enqueueSnackbar('La configuración general de animalitos se ha actualizado correctamente', {
       variant: 'success',
       hideIconVariant: true,
     })
@@ -57,10 +58,10 @@ export const useAnimalitosGeneralSettings = () => {
     })
   }
 
-  const {mutate: updateGeneralLotterySettings, isLoading: isUpdatingSettings} = useMutation({
+  const { mutate: updateGeneralLotterySettings, isLoading: isUpdatingSettings } = useMutation({
     mutationFn: async (body: IAnimalitoUpdateGeneralSettings[]) => {
       return await axios.post(
-        `/AnimalitosLotterySettings/update-animalitos-lottery-general-settings`,
+        `/AnimalitosLotterySettings/update-animalitos-lottery-general-settings/promoterId/${getStoragePromoterId()}`,
         body
       )
     },

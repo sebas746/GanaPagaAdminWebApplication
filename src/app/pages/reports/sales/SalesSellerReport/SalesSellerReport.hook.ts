@@ -1,4 +1,4 @@
-import {useEffect, useReducer, useState} from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import {
   IpaginationResponse,
   IpaginationSalesReportResponse,
@@ -8,11 +8,12 @@ import {
   ISalesSellerResponse,
   ISellerResponse,
 } from '../../../../../types/SalesSellerReport.types'
-import {ReactQueryResponse} from '../../../../../types/Generics'
-import {useQuery} from 'react-query'
-import {buildUrl} from '../../../../helpers/urlBuilder.helpers'
-import {DateTime} from 'luxon'
+import { ReactQueryResponse } from '../../../../../types/Generics'
+import { useQuery } from 'react-query'
+import { buildUrl } from '../../../../helpers/urlBuilder.helpers'
+import { DateTime } from 'luxon'
 import axios from '../../../../config/http-common'
+import { usePromoterList } from '../../../../hooks/promoterList.hook'
 
 enum SalesSellerReportKind {
   SET_SELLER_SALES = 'SET_SELLER_SALES',
@@ -24,10 +25,10 @@ enum SalesSellerReportKind {
 interface SalesSellerReportAction {
   type: SalesSellerReportKind
   payload:
-    | IpaginationSalesReportResponse<ISalesSellerResponse>
-    | ISellerResponse[]
-    | ISalesSellerReportQueryParams
-    | string
+  | IpaginationSalesReportResponse<ISalesSellerResponse>
+  | ISellerResponse[]
+  | ISalesSellerReportQueryParams
+  | string
 }
 
 interface SalesSellerReportState {
@@ -70,15 +71,17 @@ export const salesSellerReportReducer = (
 }
 
 export const useSalesSellerReport = () => {
+  const { promoterId } = usePromoterList()
   const formattedDate = DateTime.now().toFormat('yyyy-MM-dd').toString()
   const [salesSellerReportState, dispatchSalesSellerReport] = useReducer(salesSellerReportReducer, {
     salesReportPaginated: {} as IpaginationSalesReportResponse<ISalesSellerResponse>,
     params: {
-      baseUrl: '/SalesReport/get-sellers-total-sales-report',
+      baseUrl: `/SalesReport/get-sellers-total-sales-report`,
       pageIndex: 0,
       pageSize: 10,
       initialDate: formattedDate,
       endDate: formattedDate,
+      promoterId: promoterId
     } as ISalesSellerReportQueryParams,
     sellers: [] as ISellerResponse[],
     sellerId: undefined,
@@ -90,14 +93,16 @@ export const useSalesSellerReport = () => {
     initialDate: formattedDate,
     endDate: formattedDate,
     sellerId: undefined,
+    promoterId: undefined
   })
+
 
   const {
     data: salesSellerReportPaginatedData,
     isFetching,
     refetch: getSalesSellerReport,
   } = useQuery<ReactQueryResponse<IpaginationSalesReportResponse<ISalesSellerResponse>>>(
-    'get-sellers-total-sales-report',
+    `get-sellers-total-sales-report`,
     async () => {
       const url = buildUrl(salesSellerReportState.params.baseUrl, {
         pageIndex: salesSellerReportState.params.pageIndex,
@@ -105,6 +110,7 @@ export const useSalesSellerReport = () => {
         initialDate: salesSellerReportState.params.initialDate,
         endDate: salesSellerReportState.params.endDate,
         sellerId: salesSellerReportState.params.sellerId,
+        promoterId: salesSellerReportState.params.promoterId
       })
       return await axios.get(url)
     }
@@ -113,13 +119,13 @@ export const useSalesSellerReport = () => {
   const setSalesSellerReportPaginated = (
     payload: IpaginationSalesReportResponse<ISalesSellerResponse>
   ) => {
-    dispatchSalesSellerReport({type: SalesSellerReportKind.SET_SELLER_SALES, payload})
+    dispatchSalesSellerReport({ type: SalesSellerReportKind.SET_SELLER_SALES, payload })
   }
 
   const handleFilterChange = (filterName: keyof ISalesSellerReportQueryParams, value: any) => {
     dispatchSalesSellerReport({
       type: SalesSellerReportKind.SET_PARAMS,
-      payload: {[filterName]: value} as ISalesSellerReportQueryParams,
+      payload: { [filterName]: value } as ISalesSellerReportQueryParams,
     })
   }
 
@@ -131,18 +137,19 @@ export const useSalesSellerReport = () => {
       initialDate: formattedDate,
       endDate: formattedDate,
       sellerId: '',
+      promoterId: undefined
     }
 
     setTempFilters(resetValues)
-    dispatchSalesSellerReport({type: SalesSellerReportKind.SET_PARAMS, payload: resetValues})
+    dispatchSalesSellerReport({ type: SalesSellerReportKind.SET_PARAMS, payload: resetValues })
   }
 
   const setSalesSellerReportParams = () => {
-    dispatchSalesSellerReport({type: SalesSellerReportKind.SET_PARAMS, payload: tempFilters})
+    dispatchSalesSellerReport({ type: SalesSellerReportKind.SET_PARAMS, payload: tempFilters })
   }
 
   const setSellers = (payload: ISellerResponse[]) => {
-    dispatchSalesSellerReport({type: SalesSellerReportKind.SET_SELLERS, payload})
+    dispatchSalesSellerReport({ type: SalesSellerReportKind.SET_SELLERS, payload })
   }
 
   useEffect(() => {

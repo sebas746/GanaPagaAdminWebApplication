@@ -20,15 +20,13 @@ const EmailScrutinySettings = () => {
   } = useEmailScrutinySettings()
   return (
     <>
-      {!isLoading &&
-        emailScrutinySettingsState.scrutinyEmailSettings &&
-        emailScrutinySettingsState.scrutinyEmailSettings.length > 0 && (
-          <EmailScrutinySettingsTable
-            emailScrutinySettings={emailScrutinySettingsState.scrutinyEmailSettings}
-            isDeleting={isDeleting}
-            setEmailId={setEmailId}
-          />
-        )}
+      {!isLoading && emailScrutinySettingsState.scrutinyEmailSettings && (
+        <EmailScrutinySettingsTable
+          emailScrutinySettings={emailScrutinySettingsState.scrutinyEmailSettings}
+          isDeleting={isDeleting}
+          setEmailId={setEmailId}
+        />
+      )}
       <div className='mb-10'>{isLoading && <RenderLoader show={true} huge={true} />}</div>
       <ConfirmDialog
         text={`Está seguro que desea eliminar el correo ${emailScrutinySettingsState.email}?`}

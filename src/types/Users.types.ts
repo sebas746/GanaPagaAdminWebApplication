@@ -38,6 +38,7 @@ export interface IUsersForm {
   isActive: boolean
   description?: string
   promoterId?: number
+  promoterFile?: Blob
 }
 
 export interface IUsersPasswordForm {

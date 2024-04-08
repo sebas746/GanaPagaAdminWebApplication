@@ -1,13 +1,14 @@
-import {useMutation, useQuery} from 'react-query'
-import {ReactQueryResponse} from '../../../../types/Generics'
+import { useMutation, useQuery } from 'react-query'
+import { ReactQueryResponse } from '../../../../types/Generics'
 import axios from '../../../config/http-common'
 import {
   IAnimalitoUpdateSettings,
   ISettingsAnimalitosResponse,
 } from '../../../../types/Animalitos.types'
-import {useEffect, useState} from 'react'
-import {enqueueSnackbar} from 'notistack'
-import {AxiosError} from 'axios'
+import { useEffect, useState } from 'react'
+import { enqueueSnackbar } from 'notistack'
+import { AxiosError } from 'axios'
+import { getStoragePromoterId } from '../../../helpers/localstorage.helper'
 
 export const useAnimalitosSettings = () => {
   const [animalitosSettings, setAnimalitosSettings] = useState([] as ISettingsAnimalitosResponse[])
@@ -15,12 +16,12 @@ export const useAnimalitosSettings = () => {
   const onChangeTab = (tab: number) => {
     setActiveTab(tab)
   }
-  const {isFetching, refetch: getAnimalitosSettings} = useQuery<
+  const { isFetching, refetch: getAnimalitosSettings } = useQuery<
     ReactQueryResponse<ISettingsAnimalitosResponse[]>
   >(
     'get-animalitos-settings',
     async () => {
-      return await axios.get(`/AnimalitosLotterySettings/get-animalitos-lottery-settings/`)
+      return await axios.get(`/AnimalitosLotterySettings/get-animalitos-lottery-settings/promoterId/${getStoragePromoterId()}`)
     },
     {
       onSuccess: (res) => {
@@ -53,10 +54,10 @@ export const useAnimalitosSettings = () => {
     })
   }
 
-  const {mutate: updateLotterySettings, isLoading: isUpdatingSettings} = useMutation({
+  const { mutate: updateLotterySettings, isLoading: isUpdatingSettings } = useMutation({
     mutationFn: async (body: IAnimalitoUpdateSettings[]) => {
       return await axios.post(
-        `/AnimalitosLotterySettings/update-animalitos-lottery-settings/lotteryId/${activeTab}`,
+        `/AnimalitosLotterySettings/update-animalitos-lottery-settings/lotteryId/${activeTab}/promoterId/${getStoragePromoterId()}`,
         body
       )
     },

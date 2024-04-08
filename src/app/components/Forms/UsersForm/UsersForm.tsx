@@ -35,6 +35,7 @@ const UsersForm = ({
     password: '',
     rolId: 0,
     isActive: true,
+    promoterFile: undefined,
   }
 
   const [completeFormData, setCompleteFormData] = useState<IUsersForm>(initialFormData)

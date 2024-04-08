@@ -1,6 +1,6 @@
 import {useAuth} from 'oidc-react/build/src/useAuth'
 import {useEffect, useState} from 'react'
-import {removeToken, setToken} from '../helpers/localstorage.helper'
+import {removeStoragePromoterId, removeToken, setToken} from '../helpers/localstorage.helper'
 import {disableSplashScreen, enableSplashScreen} from '../components/RenderLoader/RenderLoader'
 import {IDENTITY_CONFIG} from '../constants/oidc-identity-server.constants'
 
@@ -9,10 +9,10 @@ export const useCheckSessionStatus = () => {
   const intervalSeconds = 3000
   const expirationRenewSeconds = 600
   const [intervalRunning, setIntervalRunning] = useState<boolean>(false)
+  
   // const [firstTimeRun, setFirstTimeRun] = useState(false)
 
   useEffect(() => {
-    console.log(auth)
     if (auth.userData?.expires_in !== undefined && !intervalRunning) {
       checkTokenExpiration(auth.userData?.expires_in)
     }
@@ -61,6 +61,7 @@ export const useRemoveSession = () => {
     enableSplashScreen()
     removeToken()
     auth.userManager.revokeTokens().then(() => {
+      removeStoragePromoterId()
       auth.signOut()
 
       auth.signOutRedirect({
