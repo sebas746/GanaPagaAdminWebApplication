@@ -5,12 +5,13 @@ import {ReactQueryResponse} from '../../../../types/Generics'
 import axios from '../../../config/http-common'
 import {gameType} from '../../../constants/game-type.constants'
 import {useLocation} from 'react-router-dom'
+import {usePromoterList} from '../../../hooks/promoterList.hook'
 
 enum ScrutinyActionUrl {
-  ANIMALITOS = '/AnimalitosScrutiny/get-animalitos-scrutiny-by-raffle-and-currency/',
-  CHANCE3DIGITS = '/ChanceThreeScrutiny/get-chance-three-scrutiny-by-raffle-and-currency/',
-  CHANCE4DIGITS = '/ChanceFourScrutiny/get-chance-four-scrutiny-by-raffle-and-currency/',
-  CHANCEZODIAC = '/ChanceZodiacScrutiny/get-chance-zodiac-scrutiny-by-raffle-and-currency/',
+  ANIMALITOS = '/AnimalitosScrutiny/get-animalitos-scrutiny-by-raffle/',
+  CHANCE3DIGITS = '/ChanceThreeScrutiny/get-chance-three-scrutiny-by-raffle/',
+  CHANCE4DIGITS = '/ChanceFourScrutiny/get-chance-four-scrutiny-by-raffle/',
+  CHANCEZODIAC = '/ChanceZodiacScrutiny/get-chance-zodiac-scrutiny-by-raffle/',
 }
 
 enum ScrutinyDetailKind {
@@ -75,6 +76,7 @@ export const scrutinyDetailReducer = (state: ScrutinyDetailState, action: Scruti
 
 export const useScrutinyDetail = () => {
   const location = useLocation()
+  const {promoterId} = usePromoterList()
 
   const setEndpointUrl = (gametype: string) => {
     let url: string = ''
@@ -125,7 +127,9 @@ export const useScrutinyDetail = () => {
   } = useQuery<ReactQueryResponse<IScrutinyDetailResponse>>(
     'get-scrutiny-detail-by-raffle-and-currency',
     async () => {
-      return await axios.get(`${scrutinyDetailState.url}${scrutinyDetailState.raffleId}`)
+      return await axios.get(
+        `${scrutinyDetailState.url}raffleId/${scrutinyDetailState.raffleId}/promoterId/${promoterId}`
+      )
     }
   )
 

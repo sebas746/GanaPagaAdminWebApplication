@@ -2,9 +2,11 @@ import {Link} from 'react-router-dom'
 import clsx from 'clsx'
 import {KTSVG, toAbsoluteUrl} from '../../../helpers'
 import {useLayout} from '../../core'
+import {usePromoterInfo} from '../../../../app/hooks/promoterInfo.hook'
 
 const SidebarLogo = () => {
   const {config} = useLayout()
+  const {promoterInfo} = usePromoterInfo()
   const appSidebarDefaultMinimizeDesktopEnabled =
     config?.app?.sidebar?.default?.minimize?.desktop?.enabled
   const appSidebarDefaultCollapseDesktopEnabled =
@@ -16,13 +18,17 @@ const SidebarLogo = () => {
     : ''
   const toggleState = appSidebarDefaultMinimizeDesktopEnabled ? 'active' : ''
   const appSidebarDefaultMinimizeDefault = config.app?.sidebar?.default?.minimize?.desktop?.default
+  const logoPath = promoterInfo.promoterLogo
+    ? `${process.env.REACT_APP_USERS_BASE_URL?.replace(/\\/g, '/')}${promoterInfo.promoterLogo}`
+    : '/media/logos/ganapaga-dark.svg'
+  console.log(promoterInfo)
   return (
     <div className='app-sidebar-logo px-6' id='kt_app_sidebar_logo'>
       <Link to='/dashboard'>
         {config.layoutType === 'dark-sidebar' ? (
           <img
             alt='Logo'
-            src={toAbsoluteUrl('/media/logos/ganapaga-dark.svg')}
+            src={toAbsoluteUrl(logoPath)}
             className='h-40px app-sidebar-logo-default'
           />
         ) : (

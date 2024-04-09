@@ -12,7 +12,6 @@ import SettinsPage from '../modules/settings/SettingsPage'
 import ProtectedRoute from '../components/RouteProtection/ProtectedRoute'
 import ScrutinySettingsPage from '../modules/scrutiny-settings/ScrutinySettingsPage'
 import SystemSettingsPage from '../modules/system-settings/SystemSettingsPage'
-import ExchangeRateSettings from '../pages/system-settings/exchange-rate-settings/ExchangeRateSettings'
 import UsersManagementPage from '../modules/users-management/UsersManagementPage'
 import SalesSellerReportPage from '../modules/reports/SalesReportPage'
 
@@ -27,7 +26,9 @@ const PrivateRoutes = () => {
   const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'))
   const RaffleResultsPage = lazy(() => import('../modules/raffle-results/RaffleResultPage'))
   const ScrutinyPage = lazy(() => import('../modules/scrutiny/ScrutinyPage'))
-  const PersonalizedQuota = lazy(() => import('../modules/personalized-quota/PersonalizedQuotaPage'))
+  const PersonalizedQuota = lazy(
+    () => import('../modules/personalized-quota/PersonalizedQuotaPage')
+  )
 
   return (
     <Routes>
@@ -141,7 +142,7 @@ const PrivateRoutes = () => {
           path='pages/sales-reports/*'
           element={
             <SuspensedView>
-              <ProtectedRoute roles={['Admin']}>
+              <ProtectedRoute roles={['Admin', 'Promoter']}>
                 <SalesSellerReportPage />
               </ProtectedRoute>
             </SuspensedView>

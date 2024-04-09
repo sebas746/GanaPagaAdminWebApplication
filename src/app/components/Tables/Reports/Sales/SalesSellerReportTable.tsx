@@ -32,6 +32,10 @@ const SalesSellerReportTable = ({
   resetFilters,
   sellers,
 }: SalesSellerReportTableProps) => {
+  const dataIsReady =
+    !isLoading && salesSellerReportPaginated && salesSellerReportPaginated.totalCount > 0
+  const dataIsEmpty =
+    !isLoading && salesSellerReportPaginated && salesSellerReportPaginated.totalCount === 0
   return (
     <>
       <div className='card-body py-3'>
@@ -107,7 +111,7 @@ const SalesSellerReportTable = ({
         </div>
         <div style={{borderTop: '1px solid #ddd', margin: '20px 0'}}></div>
         {isLoading && <RenderLoader show={isLoading} huge={true} />}
-        {!isLoading && salesSellerReportPaginated && salesSellerReportPaginated.totalCount > 0 && (
+        {dataIsReady && (
           <>
             <div className='table-title text-left'>
               <h2>Reporte por vendedores</h2>
@@ -149,34 +153,23 @@ const SalesSellerReportTable = ({
                         </td>
                       </tr>
                     ))}
-                  {salesSellerReportPaginated.items.length === 0 && (
-                    <tr>
-                      <td colSpan={7} className='text-center'>
-                        No results...
-                      </td>
-                    </tr>
-                  )}
                 </tbody>
               </table>
             </div>
             <div style={{borderTop: '1px solid #ddd', margin: '20px 0'}}></div>
-            {!isLoading &&
-              salesSellerReportPaginated &&
-              salesSellerReportPaginated.totalCount > 0 && (
-                <Pagination>
-                  {Array.from({
-                    length: Math.ceil(salesSellerReportPaginated.totalCount / params.pageSize),
-                  }).map((_, index) => (
-                    <Pagination.Item
-                      key={index + 1}
-                      active={index === params.pageIndex}
-                      onClick={() => handleFilterChange('pageIndex', index)}
-                    >
-                      {index + 1}
-                    </Pagination.Item>
-                  ))}
-                </Pagination>
-              )}
+            <Pagination>
+              {Array.from({
+                length: Math.ceil(salesSellerReportPaginated.totalCount / params.pageSize),
+              }).map((_, index) => (
+                <Pagination.Item
+                  key={index + 1}
+                  active={index === params.pageIndex}
+                  onClick={() => handleFilterChange('pageIndex', index)}
+                >
+                  {index + 1}
+                </Pagination.Item>
+              ))}
+            </Pagination>
             <div className='table-title text-left'>
               <h2>Reporte general</h2>
             </div>
@@ -211,18 +204,12 @@ const SalesSellerReportTable = ({
                         </td>
                       </tr>
                     ))}
-                  {salesSellerReportPaginated.items.length === 0 && (
-                    <tr>
-                      <td colSpan={7} className='text-center'>
-                        No results...
-                      </td>
-                    </tr>
-                  )}
                 </tbody>
               </table>
             </div>
           </>
         )}
+        {dataIsEmpty && <div className='text-left'>No hay resultados</div>}
       </div>
     </>
   )

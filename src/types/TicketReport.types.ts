@@ -3,7 +3,7 @@ export interface ITicketReportResponse {
   currencyName: string
   currencyCode: string
   ticketsCount: number
-  ticketCancelledCount: number
+  ticketsCancelledCount: number
   tickets: ITicketResponse[]
 }
 
@@ -24,4 +24,5 @@ export interface ITicketReportQueryParams {
   currency: string
   ticketId?: string
   sellerEmail?: string
+  promoterId?: string | null
 }

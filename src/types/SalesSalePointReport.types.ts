@@ -16,6 +16,7 @@ export interface ISalesSalePointReportQueryParams {
   initialDate: string
   endDate: string
   salePointId?: string
+  promoterId?: string
 }
 
 export interface ISalePointResponse {

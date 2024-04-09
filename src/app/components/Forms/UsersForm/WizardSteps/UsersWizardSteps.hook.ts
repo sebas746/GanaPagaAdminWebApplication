@@ -1,4 +1,4 @@
-import {useFormik} from 'formik'
+import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import {
   IUsersResponse,
@@ -7,17 +7,17 @@ import {
   RoleIds,
   roleIdToName,
 } from '../../../../../types/Users.types'
-import {useState} from 'react'
-import {UsersActions} from '../../../../pages/users-management/users/Users.hook'
+import { UsersActions } from '../../../../pages/users-management/users/Users.hook'
 
 export const useUsersWizardSteps = (
   initialValues: IUsersResponse,
   submitForm: (usersForm: IUsersForm) => void,
-  currentStep: number,
-  nextStep: () => Promise<void>,
   setCompleteFormData: React.Dispatch<React.SetStateAction<IUsersForm>>,
   completeFormData: IUsersForm,
-  action: UsersActions
+  action: UsersActions,
+  setCurrentStep: (currentStep: number) => void,
+  currentStep: number,
+  resetFormData: () => void
 ) => {
   const defaultInitialValues = {
     firstName: '',
@@ -29,6 +29,9 @@ export const useUsersWizardSteps = (
     documentType: '',
     documentNumber: '',
     isActive: true,
+    description: '',
+    promoterId: 0,
+    promoterFile: undefined
   }
 
   const combinedInitialValues = {
@@ -65,6 +68,10 @@ export const useUsersWizardSteps = (
       email: Yup.string()
         .required('El usuario es requerido.')
         .email('El usuario debe ser un correo válido.'),
+      promoterId: Yup.string().test('requiredForPromoter', 'El promotor es requerido.', function (value) {
+        const rolId = this.resolve(Yup.ref('rolId'));
+        return rolId === '2' ? !!value : true;
+      }),
       password: passwordValidation,
       passwordConfirm: Yup.string()
         .required('La confirmación de la contraseña es requerida.')
@@ -81,7 +88,7 @@ export const useUsersWizardSteps = (
       password: Yup.string()
         .nullable()
         .test('conditional-required', 'La contraseña es requerida.', function (value) {
-          const {passwordConfirm} = this.parent
+          const { passwordConfirm } = this.parent
           if (!value && passwordConfirm) {
             return false
           }
@@ -96,7 +103,7 @@ export const useUsersWizardSteps = (
           'conditional-required',
           'La confirmación de la contraseña es requerida.',
           function (value) {
-            const {password} = this.parent
+            const { password } = this.parent
             if (!value && password) {
               return false
             }
@@ -111,21 +118,20 @@ export const useUsersWizardSteps = (
       rolId: Yup.string()
         .required('El rol es requerido.')
         .oneOf(Object.keys(roleIdToName) as RoleIds[], 'El rol seleccionado no es válido'),
-    })
+    });
+    
   }
 
   const formik = useFormik({
     initialValues: combinedInitialValues,
     validationSchema: currentStep === 0 ? personalInformationSchema : accountInformationSchema,
-    onSubmit: () => {},
+    onSubmit: () => { },
     enableReinitialize: true,
   })
 
-  const onSubmit = () => {
-    console.log(formik.isValid)
+  const onSubmit = (nextStep: () => Promise<void>, currentStepSubmit: number) => {
     if (
-      (!formik.isValid && action === 'update') ||
-      (!formik.isValid && action === 'create' && !formik.dirty)
+      !formik.isValid || !formik.dirty
     ) {
       return
     }
@@ -137,21 +143,25 @@ export const useUsersWizardSteps = (
         documentType: formik.values.documentType,
         documentNumber: formik.values.documentNumber,
       }
-      setCompleteFormData((prevState) => ({...prevState, ...step1Data}))
+      setCompleteFormData((prevState) => ({ ...prevState, ...step1Data }))
       nextStep()
+      setCurrentStep(1)
+      
     } else {
       const step2Data = {
         email: formik.values.email,
         password: formik.values.password,
         rolId: Number(formik.values.rolId),
         isActive: formik.values.isActive,
+        description: formik.values.description,
+        promoterId: formik.values.promoterId,
+        promoterFile: formik.values.promoterFile
       }
-      console.log(formik.values)
-      const dataForm = {...completeFormData, ...step2Data}
+      const dataForm = { ...completeFormData, ...step2Data }
       submitForm(dataForm)
+      resetFormData()
+      setCurrentStep(0)
     }
-
-    //hideModalConfirmation()
   }
 
   return {

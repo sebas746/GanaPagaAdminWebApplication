@@ -1,13 +1,14 @@
-import {useMutation, useQuery} from 'react-query'
-import {ReactQueryResponse} from '../../../../types/Generics'
+import { useMutation, useQuery } from 'react-query'
+import { ReactQueryResponse } from '../../../../types/Generics'
 import axios from '../../../config/http-common'
-import {useEffect, useState} from 'react'
-import {enqueueSnackbar} from 'notistack'
-import {AxiosError} from 'axios'
+import { useEffect, useState } from 'react'
+import { enqueueSnackbar } from 'notistack'
+import { AxiosError } from 'axios'
 import {
   ISettingsChance3DigitsResponse,
   IChance3DigitsUpdateSettings,
 } from '../../../../types/Chance3Digits.types'
+import { getStoragePromoterId } from '../../../helpers/localstorage.helper'
 
 export const useChance3DigitsSettings = () => {
   const [chance3DigitsSettings, setChance3DigitsSettings] = useState(
@@ -17,12 +18,12 @@ export const useChance3DigitsSettings = () => {
   const onChangeTab = (tab: number) => {
     setActiveTab(tab)
   }
-  const {isFetching, refetch: getChance3DigitsSettings} = useQuery<
+  const { isFetching, refetch: getChance3DigitsSettings } = useQuery<
     ReactQueryResponse<ISettingsChance3DigitsResponse[]>
   >(
     'get-chance-3digits-settings',
     async () => {
-      return await axios.get(`/ChanceThreeLotterySettings/get-chance-three-lottery-settings`)
+      return await axios.get(`/ChanceThreeLotterySettings/get-chance-three-lottery-settings/promoterId/${getStoragePromoterId()}`)
     },
     {
       onSuccess: (res) => {
@@ -55,10 +56,10 @@ export const useChance3DigitsSettings = () => {
     })
   }
 
-  const {mutate: updateLotterySettings, isLoading: isUpdatingSettings} = useMutation({
+  const { mutate: updateLotterySettings, isLoading: isUpdatingSettings } = useMutation({
     mutationFn: async (body: IChance3DigitsUpdateSettings[]) => {
       return await axios.post(
-        `/ChanceThreeLotterySettings/update-chance-three-lottery-settings/lotteryId/${activeTab}`,
+        `/ChanceThreeLotterySettings/update-chance-three-lottery-settings/lotteryId/${activeTab}/promoterId/${getStoragePromoterId()}`,
         body
       )
     },

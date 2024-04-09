@@ -10,6 +10,8 @@ export interface IUsersResponse {
   password?: string
   passwordConfirm?: string
   isActive: boolean
+  description?: string
+  promoterId?: number
 }
 
 export interface UsersQueryParams {
@@ -20,6 +22,7 @@ export interface UsersQueryParams {
   name?: string
   documentNumber?: string
   roleName?: string
+  promoterId?: string
   [key: string]: any
 }
 
@@ -33,6 +36,9 @@ export interface IUsersForm {
   documentType: string
   documentNumber: string
   isActive: boolean
+  description?: string
+  promoterId?: number
+  promoterFile?: Blob
 }
 
 export interface IUsersPasswordForm {
@@ -41,17 +47,25 @@ export interface IUsersPasswordForm {
   newPassword: string
 }
 
-type RoleNames = 'Scrutiny' | 'Seller'
+export type RoleNames = 'Scrutiny' | 'Seller' | 'Promoter'
 
 export const roleTranslations: Record<RoleNames, string> = {
   Scrutiny: 'Escrutinio',
   Seller: 'Vendedor',
+  Promoter: 'Promotor'
 }
 
-export type RoleIds = '2' | '3'
+export enum RolesEnum {
+  'Seller' = '2',
+  'Scrutiny' = '3',
+  'Promoter' = '4'
+}
+
+export type RoleIds = '2' | '3' | '4'
 export const roleIdToName: Record<RoleIds, RoleNames> = {
   '2': 'Seller',
   '3': 'Scrutiny',
+  '4': 'Promoter'
 }
 
 export type documentTypeNames = 'CC' | 'CE' | 'PA'

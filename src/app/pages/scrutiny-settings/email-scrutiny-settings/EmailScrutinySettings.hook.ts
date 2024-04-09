@@ -5,6 +5,7 @@ import axios from '../../../config/http-common'
 import {useMutation, useQuery} from 'react-query'
 import {enqueueSnackbar} from 'notistack'
 import {AxiosError} from 'axios'
+import {getStoragePromoterId} from '../../../helpers/localstorage.helper'
 
 enum EmailScrutinySettingsKind {
   SET_EMAILS_SETTINGS = 'SET_EMAILS_SETTINGS',
@@ -88,7 +89,9 @@ export const useEmailScrutinySettings = () => {
   } = useQuery<ReactQueryResponse<IEmailScrutinySettingsResponse[]>>(
     'get-email-scrutiny-settings',
     async () => {
-      return await axios.get(`/ScrutinySettings/get-admin-emails`)
+      return await axios.get(
+        `/ScrutinySettings/get-admin-emails/promoterId/${getStoragePromoterId()}`
+      )
     }
   )
 
@@ -110,7 +113,10 @@ export const useEmailScrutinySettings = () => {
   const {mutate: createEmailScrutinySettings, isLoading: isCreatingSettings} = useMutation({
     mutationFn: async (body: IEmailScrutinySettingsResponse) => {
       body.adminEmailId = undefined
-      return await axios.post(`/ScrutinySettings/add-admin-email`, body)
+      return await axios.post(
+        `/ScrutinySettings/add-admin-email/promoterId/${getStoragePromoterId()}`,
+        body
+      )
     },
     onSuccess(data) {
       handleSuccessResponse(data)

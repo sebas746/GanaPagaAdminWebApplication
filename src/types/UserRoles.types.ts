@@ -1,9 +1,10 @@
 export enum UserRolesEnum {
   Admin = 'Admin',
   Scrutiny = 'Scrutiny',
+  Promoter = 'Promoter'
 }
 
-export type UserRole = 'Admin' | 'Scrutiny'
+export type UserRole = 'Admin' | 'Scrutiny' | 'Promoter'
 
 export type SettingsActions =
   | 'get-general-settings'
@@ -22,11 +23,14 @@ export type ScrutinySettings =
   | 'update-admin-email'
   | 'delete-admin-email'
 
+export type PromoterActions = 'change-promoter' | 'label-promoter' 
+
 export type RoleActionPermissions = {
   settings: SettingsActions[]
   raffleResult: RaffleResultActions[]
   raffleScrutiny: RaffleScrutinyActions[]
   scrutinySettings: ScrutinySettings[]
+  promoter: PromoterActions[]
 }
 
 export type RolePermissionsMap = {
@@ -49,6 +53,9 @@ export const rolePermissions: RolePermissionsMap = {
       'get-admin-emails',
       'update-admin-email',
     ],
+    promoter: [
+      'change-promoter'
+    ],
   },
   Scrutiny: {
     settings: [
@@ -64,5 +71,13 @@ export const rolePermissions: RolePermissionsMap = {
     ],
     raffleScrutiny: ['create-scrutiny', 'view-scrutiny'],
     scrutinySettings: [] as ScrutinySettings[],
+    promoter: [] as PromoterActions[]
   },
+  Promoter: {
+    settings: [] as SettingsActions[],        
+    raffleResult: [] as RaffleResultActions[],
+    raffleScrutiny: [] as RaffleScrutinyActions[],
+    scrutinySettings: [] as ScrutinySettings[],
+    promoter: ['label-promoter'] as PromoterActions[]
+  }
 }
