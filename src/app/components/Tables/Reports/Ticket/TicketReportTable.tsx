@@ -5,11 +5,14 @@ import {DateTime} from 'luxon'
 import {
   ITicketReportQueryParams,
   ITicketReportResponse,
+  TicketStatusEnum,
 } from '../../../../../types/TicketReport.types'
 import TicketDetail from '../../../Modals/TicketDetail/TicketDetail'
 import {useScrutinyDetail} from '../../../Cards/ScrutinyDetail/components/ScrutinyDetailTable.hook'
 import {CURRENCY_USD} from '../../../../constants/reports.constants'
 import ConditionalRendering from '../../../../helpers/ConditionalRedering'
+import {useTicketReport} from '../../../../pages/reports/sales/TicketReport/TicketReport.hook'
+import {useTicketRerportTable} from './TicketReportTable.hook'
 
 interface TicketReportTableProps {
   ticketReportPaginated: ITicketReportResponse
@@ -32,6 +35,10 @@ interface TicketSummaryCardProps {
   totalAmount: number
   currencyCode: string
   totalCancelledTickets: number
+  ticketsPendingCount: number
+  ticketsPendingPaymentCount: number
+  ticketsWinnerCount: number
+  ticketLoserCount: number
 }
 
 const TicketSummaryCard = ({
@@ -39,9 +46,13 @@ const TicketSummaryCard = ({
   totalAmount,
   currencyCode,
   totalCancelledTickets,
+  ticketsPendingCount,
+  ticketsPendingPaymentCount,
+  ticketsWinnerCount,
+  ticketLoserCount,
 }: TicketSummaryCardProps) => {
   return (
-    <div className='card mb-3' style={{maxWidth: '25rem'}}>
+    <div className='card mb-3' style={{maxWidth: '50rem'}}>
       <div
         className={`card-header text-white ${
           currencyCode === CURRENCY_USD ? 'bg-success' : 'bg-danger'
@@ -50,15 +61,33 @@ const TicketSummaryCard = ({
         <h4 className='card-title text-white fw-bold'>Resultados</h4>
       </div>
       <div className='card-body'>
-        <p className='card-text fw-bold fs-6 text-gray-800'>
-          Total Tiquetes vendidos: {totalTickets}
-        </p>
-        <p className='card-text fw-bold fs-6 text-gray-800'>
-          Total Vendido {currencyCode}: {formatCurrency(totalAmount, currencyCode)}
-        </p>
-        <p className='card-text fw-bold fs-6 text-gray-800'>
-          Total Tiquetes anulados: {totalCancelledTickets}
-        </p>
+        <div className='row'>
+          <div className='col'>
+            <p className='card-text fw-bold fs-6 text-gray-800'>
+              Total Tiquetes vendidos: {totalTickets}
+            </p>
+            <p className='card-text fw-bold fs-6 text-gray-800'>
+              Total Vendido {currencyCode}: {formatCurrency(totalAmount, currencyCode)}
+            </p>
+            <p className='card-text fw-bold fs-6 text-gray-800'>
+              Total Tiquetes anulados: {totalCancelledTickets}
+            </p>
+            <p className='card-text fw-bold fs-6 text-gray-800'>
+              Total Tiquetes Pendientes: {ticketsPendingCount}
+            </p>
+          </div>
+          <div className='col'>
+            <p className='card-text fw-bold fs-6 text-gray-800'>
+              Total Tiquetes Pendientes por Pago: {ticketsPendingPaymentCount}
+            </p>
+            <p className='card-text fw-bold fs-6 text-gray-800'>
+              Total Tiquetes Ganadores: {ticketsWinnerCount}
+            </p>
+            <p className='card-text fw-bold fs-6 text-gray-800'>
+              Total Tiquetes Perdedores: {ticketLoserCount}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -79,6 +108,7 @@ const TicketReportTable = ({
   isTicketDetailLoading,
   currencyCode,
 }: TicketReportTableProps) => {
+  const {stateToText, stateToColor} = useTicketRerportTable()
   const showPagination =
     !isLoading && ticketReportPaginated && ticketReportPaginated.ticketsCount > 0
   const showSummaryCard =
@@ -146,6 +176,29 @@ const TicketReportTable = ({
                 ))}
               </Form.Select>
             </Col>
+
+            <Col md={3}>
+              <Form.Label htmlFor='ticketStatus'>Estado del Tiquete</Form.Label>
+              <Form.Select
+                id='ticketStatus'
+                className='form-control'
+                onChange={(e) => {
+                  const selectedValue = parseInt(e.target.value)
+                  const updatedValue = isNaN(selectedValue) ? undefined : selectedValue
+                  setTempFilters((prev) => ({...prev, ticketStatus: updatedValue}))
+                }}
+                value={tempFilters.ticketStatus ?? ''}
+              >
+                <option value=''>Todos</option>
+                {Object.values(TicketStatusEnum)
+                  .filter((value) => typeof value === 'number')
+                  .map((value) => (
+                    <option key={value} value={value}>
+                      {stateToText(value)}
+                    </option>
+                  ))}
+              </Form.Select>
+            </Col>
           </Row>
 
           <Row className='mb-3'>
@@ -176,6 +229,10 @@ const TicketReportTable = ({
               currencyCode={ticketReportPaginated.currencyCode}
               totalAmount={ticketReportPaginated.totalSales}
               totalCancelledTickets={ticketReportPaginated.ticketsCancelledCount}
+              ticketsPendingCount={ticketReportPaginated.ticketsPendingCount}
+              ticketsPendingPaymentCount={ticketReportPaginated.ticketsPendingPaymentCount}
+              ticketsWinnerCount={ticketReportPaginated.ticketsWinnerCount}
+              ticketLoserCount={ticketReportPaginated.ticketLoserCount}
             />
             <div className='table-responsive'>
               <table className='table table-bordered table-row-bordered table-row-gray-300 gy-6 table-hover'>
@@ -190,6 +247,7 @@ const TicketReportTable = ({
                     <th className='text-center fs-4 text-white'>Vendedor</th>
                     <th className='text-center fs-4 text-white'>Moneda</th>
                     <th className='text-center fs-4 text-white'>Total</th>
+                    <th className='text-center fs-4 text-white'>Estado</th>
                     <th className='text-center fs-4 text-white'>Acciones</th>
                   </tr>
                 </thead>
@@ -208,6 +266,9 @@ const TicketReportTable = ({
                         <td className='text-center'>{currencyCode}</td>
                         <td className='text-center'>
                           {formatCurrency(ticket.ticketTotal, currencyCode)}
+                        </td>
+                        <td className={`text-center ${stateToColor(ticket.ticketStatus)}`}>
+                          {stateToText(ticket.ticketStatus)}
                         </td>
                         <td className='text-center'>
                           <div

@@ -40,10 +40,6 @@ const UsersForm = ({
 
   const [completeFormData, setCompleteFormData] = useState<IUsersForm>(initialFormData)
 
-  const resetFormData = () => {
-    setCompleteFormData(initialFormData)
-  }
-
   const [currentStep, setCurrentStep] = useState<number>(0)
   const {formik, onSubmit} = useUsersWizardSteps(
     initialValues,
@@ -52,8 +48,7 @@ const UsersForm = ({
     completeFormData,
     action,
     setCurrentStep,
-    currentStep,
-    resetFormData
+    currentStep
   )
   return (
     <>

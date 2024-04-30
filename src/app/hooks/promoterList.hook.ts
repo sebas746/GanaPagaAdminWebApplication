@@ -1,14 +1,14 @@
-import { useQuery } from "react-query"
-import { IPromoter } from "../../types/Promoter.types"
+import {useQuery} from 'react-query'
+import {IPromoter} from '../../types/Promoter.types'
 import axios from '../config/http-common'
-import { ReactQueryResponse } from '../../types/Generics'
-import { useEffect, useReducer } from "react"
-import { getStoragePromoterId, setStoragePromoterId } from "../helpers/localstorage.helper"
-import { disableSplashScreen, enableSplashScreen } from "../components/RenderLoader/RenderLoader"
+import {ReactQueryResponse} from '../../types/Generics'
+import {useEffect, useReducer} from 'react'
+import {getStoragePromoterId, setStoragePromoterId} from '../helpers/localstorage.helper'
+import {disableSplashScreen, enableSplashScreen} from '../components/RenderLoader/RenderLoader'
 
 enum PromotersKind {
   SET_PROMOTERS = 'SET_PROMOTERS',
-  SET_PROMOTER_ID = 'SET_PROMOTER_ID'
+  SET_PROMOTER_ID = 'SET_PROMOTER_ID',
 }
 
 interface PromoterStateAction {
@@ -21,10 +21,7 @@ interface PromoterState {
   promoterId: string | null
 }
 
-export const promoterReducer = (
-  state: PromoterState,
-  action: PromoterStateAction
-) => {
+export const promoterReducer = (state: PromoterState, action: PromoterStateAction) => {
   switch (action.type) {
     case PromotersKind.SET_PROMOTERS:
       return {
@@ -44,7 +41,7 @@ export const promoterReducer = (
 export const usePromoterList = () => {
   const [promotersState, dispatchPromoters] = useReducer(promoterReducer, {
     promoters: [],
-    promoterId: getStoragePromoterId()
+    promoterId: getStoragePromoterId(),
   })
   const {
     data: promotersData,
@@ -67,12 +64,12 @@ export const usePromoterList = () => {
   }, [isFetching, promotersData])
 
   const setPromoters = (payload: IPromoter[]) => {
-    dispatchPromoters({ type: PromotersKind.SET_PROMOTERS, payload })
+    dispatchPromoters({type: PromotersKind.SET_PROMOTERS, payload})
   }
 
   const setPromoterId = (payload: string) => {
     setStoragePromoterId(payload)
-    dispatchPromoters({ type: PromotersKind.SET_PROMOTER_ID, payload })
+    dispatchPromoters({type: PromotersKind.SET_PROMOTER_ID, payload})
     window.location.reload()
   }
 
@@ -89,7 +86,6 @@ export const usePromoterList = () => {
     }
   }, [promotersState.promoterId, promotersState.promoters])
 
-
   useEffect(() => {
     enableSplashScreen()
     setTimeout(() => {
@@ -97,5 +93,10 @@ export const usePromoterList = () => {
     }, 450)
   }, [promotersState.promoterId])
 
-  return { promoters: promotersState.promoters, isLoading: isFetching, setPromoterId, promoterId: getPromoterId() }
+  return {
+    promoters: promotersState.promoters,
+    isLoading: isFetching,
+    setPromoterId,
+    promoterId: getPromoterId(),
+  }
 }
