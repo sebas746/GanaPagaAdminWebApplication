@@ -5,14 +5,13 @@ import {DateTime} from 'luxon'
 import {
   ITicketReportQueryParams,
   ITicketReportResponse,
+  ITicketResponse,
   TicketStatusEnum,
 } from '../../../../../types/TicketReport.types'
-import TicketDetail from '../../../Modals/TicketDetail/TicketDetail'
-import {useScrutinyDetail} from '../../../Cards/ScrutinyDetail/components/ScrutinyDetailTable.hook'
 import {CURRENCY_USD} from '../../../../constants/reports.constants'
 import ConditionalRendering from '../../../../helpers/ConditionalRedering'
-import {useTicketReport} from '../../../../pages/reports/sales/TicketReport/TicketReport.hook'
-import {useTicketRerportTable} from './TicketReportTable.hook'
+import {TicketReportChart} from './TicketReportChart'
+import {useTicketReportTable} from './TicketReportTable.hook'
 
 interface TicketReportTableProps {
   ticketReportPaginated: ITicketReportResponse
@@ -31,63 +30,15 @@ interface TicketReportTableProps {
 }
 
 interface TicketSummaryCardProps {
-  totalTickets: number
-  totalAmount: number
-  currencyCode: string
-  totalCancelledTickets: number
-  ticketsPendingCount: number
-  ticketsPendingPaymentCount: number
-  ticketsWinnerCount: number
-  ticketLoserCount: number
+  ticketInfo: ITicketReportResponse
 }
 
-const TicketSummaryCard = ({
-  totalTickets,
-  totalAmount,
-  currencyCode,
-  totalCancelledTickets,
-  ticketsPendingCount,
-  ticketsPendingPaymentCount,
-  ticketsWinnerCount,
-  ticketLoserCount,
-}: TicketSummaryCardProps) => {
+const TicketSummaryCard = ({ticketInfo}: TicketSummaryCardProps) => {
   return (
-    <div className='card mb-3' style={{maxWidth: '50rem'}}>
-      <div
-        className={`card-header text-white ${
-          currencyCode === CURRENCY_USD ? 'bg-success' : 'bg-danger'
-        }`}
-      >
-        <h4 className='card-title text-white fw-bold'>Resultados</h4>
-      </div>
-      <div className='card-body'>
-        <div className='row'>
-          <div className='col'>
-            <p className='card-text fw-bold fs-6 text-gray-800'>
-              Total Tiquetes vendidos: {totalTickets}
-            </p>
-            <p className='card-text fw-bold fs-6 text-gray-800'>
-              Total Vendido {currencyCode}: {formatCurrency(totalAmount, currencyCode)}
-            </p>
-            <p className='card-text fw-bold fs-6 text-gray-800'>
-              Total Tiquetes anulados: {totalCancelledTickets}
-            </p>
-            <p className='card-text fw-bold fs-6 text-gray-800'>
-              Total Tiquetes Pendientes: {ticketsPendingCount}
-            </p>
-          </div>
-          <div className='col'>
-            <p className='card-text fw-bold fs-6 text-gray-800'>
-              Total Tiquetes Pendientes por Pago: {ticketsPendingPaymentCount}
-            </p>
-            <p className='card-text fw-bold fs-6 text-gray-800'>
-              Total Tiquetes Ganadores: {ticketsWinnerCount}
-            </p>
-            <p className='card-text fw-bold fs-6 text-gray-800'>
-              Total Tiquetes Perdedores: {ticketLoserCount}
-            </p>
-          </div>
-        </div>
+    <div className='row'>
+      {/* Column for TicketReportChart */}
+      <div className='col-md-8'>
+        <TicketReportChart className={'mb-3'} ticketInfo={ticketInfo} />
       </div>
     </div>
   )
@@ -108,7 +59,7 @@ const TicketReportTable = ({
   isTicketDetailLoading,
   currencyCode,
 }: TicketReportTableProps) => {
-  const {stateToText, stateToColor} = useTicketRerportTable()
+  const {stateToText, stateToColor} = useTicketReportTable()
   const showPagination =
     !isLoading && ticketReportPaginated && ticketReportPaginated.ticketsCount > 0
   const showSummaryCard =
@@ -224,16 +175,8 @@ const TicketReportTable = ({
         </ConditionalRendering>
         {showSummaryCard && (
           <>
-            <TicketSummaryCard
-              totalTickets={ticketReportPaginated.ticketsCount}
-              currencyCode={ticketReportPaginated.currencyCode}
-              totalAmount={ticketReportPaginated.totalSales}
-              totalCancelledTickets={ticketReportPaginated.ticketsCancelledCount}
-              ticketsPendingCount={ticketReportPaginated.ticketsPendingCount}
-              ticketsPendingPaymentCount={ticketReportPaginated.ticketsPendingPaymentCount}
-              ticketsWinnerCount={ticketReportPaginated.ticketsWinnerCount}
-              ticketLoserCount={ticketReportPaginated.ticketLoserCount}
-            />
+            <TicketSummaryCard ticketInfo={ticketReportPaginated} />
+
             <div className='table-responsive'>
               <table className='table table-bordered table-row-bordered table-row-gray-300 gy-6 table-hover'>
                 <thead>
