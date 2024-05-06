@@ -8,6 +8,14 @@ export const mapTicketStatusToText: Record<TicketStatusEnum, string> = {
   [TicketStatusEnum.cancelled]: 'Anulado',
 }
 
+export const mapTicketStatusToLinkColor: Record<TicketStatusEnum, string> = {
+  [TicketStatusEnum.pending]: 'btn-active-color-warning',
+  [TicketStatusEnum.loser]: 'btn-active-color-danger',
+  [TicketStatusEnum.pendingPayment]: 'btn-active-color-info',
+  [TicketStatusEnum.winner]: 'btn-active-color-success',
+  [TicketStatusEnum.cancelled]: 'btn-active-color-dark',
+}
+
 export const mapTicketStatusToBarColor: Record<TicketStatusEnum, string> = {
   [TicketStatusEnum.pending]: 'bg-warning',
   [TicketStatusEnum.loser]: 'bg-danger',

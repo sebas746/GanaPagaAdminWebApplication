@@ -13,11 +13,11 @@ type Props = {
 
 const TicketReportChart: React.FC<Props> = ({className, ticketInfo}) => {
   const {calculatePercentage} = useHelperUtility()
-  const {stateToColor, stateToText, stateToBarColor} = useTicketReportTable()
+  const {stateToColor, stateToText, stateToBarColor, stateToLinkColor} = useTicketReportTable()
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
-      <div className='card-header border-0 pt-5'>
+      <div className='card-header border-0 pt-3 pb-0'>
         <h3 className='card-title align-items-start flex-column'>
           <span className='card-label fw-bold fs-3 mb-1'>
             Total Tiquetes Vendidos: {ticketInfo.ticketsCount}
@@ -42,11 +42,11 @@ const TicketReportChart: React.FC<Props> = ({className, ticketInfo}) => {
       </div>
       {/* end::Header */}
       {/* begin::Body */}
-      <div className='card-body py-3'>
+      <div className='card-body py-2'>
         {/* begin::Table container */}
         <div className='table-responsive'>
           {/* begin::Table */}
-          <table className='table align-middle gs-0 gy-5'>
+          <table className='table align-middle gs-0 gy-3'>
             {/* begin::Table head */}
             <thead>
               <tr>
@@ -107,7 +107,12 @@ const TicketReportChart: React.FC<Props> = ({className, ticketInfo}) => {
                   </div>
                 </td>
                 <td className='text-end'>
-                  <a href='#' className='btn btn-sm btn-icon btn-bg-light btn-active-color-primary'>
+                  <a
+                    href='#'
+                    className={`btn btn-sm btn-icon btn-bg-light btn-active-color-warning ${stateToLinkColor(
+                      TicketStatusEnum.pending
+                    )}`}
+                  >
                     <KTSVG path='/media/icons/duotune/arrows/arr064.svg' className='svg-icon-2' />
                   </a>
                 </td>
@@ -158,7 +163,12 @@ const TicketReportChart: React.FC<Props> = ({className, ticketInfo}) => {
                   </div>
                 </td>
                 <td className='text-end'>
-                  <a href='#' className='btn btn-sm btn-icon btn-bg-light btn-active-color-primary'>
+                  <a
+                    href='#'
+                    className={`btn btn-sm btn-icon btn-bg-light ${stateToLinkColor(
+                      TicketStatusEnum.loser
+                    )}`}
+                  >
                     <KTSVG path='/media/icons/duotune/arrows/arr064.svg' className='svg-icon-2' />
                   </a>
                 </td>
@@ -176,7 +186,7 @@ const TicketReportChart: React.FC<Props> = ({className, ticketInfo}) => {
                 <td>
                   <a
                     href='#'
-                    className={`fw-bold text-hover-primary mb-1 fs-6 ${stateToColor(
+                    className={`fw-bold text-hover-primary mb-1 fs-6 ${stateToLinkColor(
                       TicketStatusEnum.pendingPayment
                     )}`}
                   >
@@ -209,7 +219,12 @@ const TicketReportChart: React.FC<Props> = ({className, ticketInfo}) => {
                   </div>
                 </td>
                 <td className='text-end'>
-                  <a href='#' className='btn btn-sm btn-icon btn-bg-light btn-active-color-primary'>
+                  <a
+                    href='#'
+                    className={`btn btn-sm btn-icon btn-bg-light ${stateToLinkColor(
+                      TicketStatusEnum.pendingPayment
+                    )}`}
+                  >
                     <KTSVG path='/media/icons/duotune/arrows/arr064.svg' className='svg-icon-2' />
                   </a>
                 </td>
@@ -219,7 +234,7 @@ const TicketReportChart: React.FC<Props> = ({className, ticketInfo}) => {
                   <div className='symbol symbol-50px me-2'>
                     <span className='symbol-label'>
                       <span className={`fs-4 ${stateToColor(TicketStatusEnum.cancelled)}`}>
-                        {ticketInfo.ticketsPendingPaymentCount}
+                        {ticketInfo.ticketsCancelledCount}
                       </span>
                     </span>
                   </div>
@@ -260,7 +275,12 @@ const TicketReportChart: React.FC<Props> = ({className, ticketInfo}) => {
                   </div>
                 </td>
                 <td className='text-end'>
-                  <a href='#' className='btn btn-sm btn-icon btn-bg-light btn-active-color-primary'>
+                  <a
+                    href='#'
+                    className={`btn btn-sm btn-icon btn-bg-light ${stateToLinkColor(
+                      TicketStatusEnum.cancelled
+                    )}`}
+                  >
                     <KTSVG path='/media/icons/duotune/arrows/arr064.svg' className='svg-icon-2' />
                   </a>
                 </td>
@@ -311,7 +331,12 @@ const TicketReportChart: React.FC<Props> = ({className, ticketInfo}) => {
                   </div>
                 </td>
                 <td className='text-end'>
-                  <a href='#' className='btn btn-sm btn-icon btn-bg-light btn-active-color-primary'>
+                  <a
+                    href='#'
+                    className={`btn btn-sm btn-icon btn-bg-light ${stateToLinkColor(
+                      TicketStatusEnum.winner
+                    )}`}
+                  >
                     <KTSVG path='/media/icons/duotune/arrows/arr064.svg' className='svg-icon-2' />
                   </a>
                 </td>

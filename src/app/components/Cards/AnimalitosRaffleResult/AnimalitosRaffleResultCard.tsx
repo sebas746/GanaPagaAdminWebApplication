@@ -38,6 +38,7 @@ const AnimalitosRaffleResultCard = ({
     setRaffleResultForm,
   } = useRaffleResultCard({
     animalitosRaffleStatus: raffle.animalitosRaffleStatus,
+    selectedLottery,
   })
 
   const addRaffleAnimalitosResultWrapper = (selectedAnimal: string) => {

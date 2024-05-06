@@ -37,7 +37,10 @@ const AddRaffleAnimalitoResultForm = ({
     selectedLottery?.animalitosLotteryFruitCombined,
     selectedLottery?.lotteryId
   )
-  const submitButtonText = wrappedGetSubmitButtonText(formik.values.animalitoId)
+  const resultValue = selectedLottery?.animalitosLotteryFruitCombined
+    ? `${formik.values.animalitoId}-${formik.values.fruitId}`
+    : formik.values.animalitoId
+  const submitButtonText = wrappedGetSubmitButtonText(resultValue)
   var Typeahead = require('react-bootstrap-typeahead').Typeahead // CommonJS
 
   const animalOptions: IAnimalDetailSelect[] = options

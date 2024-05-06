@@ -2,6 +2,7 @@ import {TicketStatusEnum} from '../../../../../types/TicketReport.types'
 import {
   mapTicketStatusToBarColor,
   mapTicketStatusToColor,
+  mapTicketStatusToLinkColor,
   mapTicketStatusToText,
 } from '../../../../constants/ticket-state.constants'
 
@@ -18,9 +19,14 @@ export const useTicketReportTable = () => {
     return mapTicketStatusToBarColor[(ticketStatus as TicketStatusEnum) || TicketStatusEnum.pending]
   }
 
+  const stateToLinkColor = (ticketStatus: string | TicketStatusEnum) => {
+    return mapTicketStatusToLinkColor[(ticketStatus as TicketStatusEnum) || TicketStatusEnum.pending]
+  }
+
   return {
     stateToColor,
     stateToText,
     stateToBarColor,
+    stateToLinkColor
   }
 }
