@@ -11,7 +11,7 @@ import {
 } from '../../../../../types/TicketReport.types'
 import {CURRENCY_USD, CURRENCY_VES} from '../../../../constants/reports.constants'
 import {CurrencyCode, CurrencyId, currencies} from '../../../../../types/Currency.types'
-import { usePromoterList } from '../../../../hooks/promoterList.hook'
+import {usePromoterList} from '../../../../hooks/promoterList.hook'
 
 enum TicketReportKind {
   SET_TICKET_REPORT = 'SET_TICKET_REPORT',
@@ -79,7 +79,7 @@ export const useTicketReport = () => {
       initialDate: formattedDate,
       endDate: formattedDate,
       currency: CURRENCY_USD,
-      promoterId: promoterId
+      promoterId: promoterId,
     } as ITicketReportQueryParams,
     sellers: [] as string[],
     ticketId: undefined,
@@ -94,7 +94,7 @@ export const useTicketReport = () => {
       initialDate: formattedDate,
       endDate: formattedDate,
       currency: CURRENCY_VES,
-      promoterId: promoterId
+      promoterId: promoterId,
     } as ITicketReportQueryParams,
     sellers: [] as string[],
     ticketId: undefined,
@@ -109,7 +109,8 @@ export const useTicketReport = () => {
     currency: CURRENCY_USD,
     ticketId: undefined,
     sellerEmail: undefined,
-    promoterId: promoterId
+    promoterId: promoterId,
+    ticketStatus: undefined,
   })
   const [tempFiltersVes, setTempFiltersVes] = useState<ITicketReportQueryParams>({
     baseUrl: ticketReportVesState.params.baseUrl,
@@ -120,7 +121,8 @@ export const useTicketReport = () => {
     currency: CURRENCY_VES,
     ticketId: undefined,
     sellerEmail: undefined,
-    promoterId: promoterId
+    promoterId: promoterId,
+    ticketStatus: undefined,
   })
 
   const [selectedTab, setSelectedTab] = useState(currencies[0].currencyId)
@@ -128,6 +130,7 @@ export const useTicketReport = () => {
   const [shouldFetchDataVes, setShouldFetchDataVes] = useState(false)
 
   const fetchUsdData = async () => {
+    console.log(ticketReportUsdState.params)
     const url = buildUrl(ticketReportUsdState.params.baseUrl, {
       pageIndex: ticketReportUsdState.params.pageIndex,
       pageSize: ticketReportUsdState.params.pageSize,
@@ -136,7 +139,8 @@ export const useTicketReport = () => {
       currency: ticketReportUsdState.params.currency,
       ticketId: ticketReportUsdState.params.ticketId,
       sellerEmail: ticketReportUsdState.params.sellerEmail,
-      promoterId: promoterId
+      promoterId: promoterId,
+      ticketStatus: ticketReportUsdState.params.ticketStatus,
     })
 
     const response = await axios.get(url)
@@ -161,6 +165,7 @@ export const useTicketReport = () => {
       ticketId: ticketReportVesState.params.ticketId,
       sellerEmail: ticketReportVesState.params.sellerEmail,
       promoterId: promoterId,
+      ticketStatus: ticketReportVesState.params.ticketStatus,
     })
 
     const response = await axios.get(url)
@@ -207,6 +212,7 @@ export const useTicketReport = () => {
       currency: CURRENCY_USD,
       sellerId: '',
       ticketId: '',
+      ticketStatus: undefined,
     }
 
     setTempFiltersUsd(resetValues)
@@ -223,6 +229,7 @@ export const useTicketReport = () => {
       currency: CURRENCY_USD,
       sellerId: '',
       ticketId: '',
+      ticketStatus: undefined,
     }
 
     setTempFiltersVes(resetValues)

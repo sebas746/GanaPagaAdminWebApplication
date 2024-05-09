@@ -27,7 +27,7 @@ const RaffleResultsAnimalitos = () => {
     raffles: IRaffleResultAnimalitosDetail[],
     animalOptions: IAnimalDetail[]
   ) =>
-    raffles.map((raffle) => {
+    raffles.map((raffle, index) => {
       const wrapAddRaffleAnimalitosResult = (selectedAnimal: string) =>
         changeRaffleAnimalitoResult(raffle, selectedAnimal)
       return (
@@ -35,7 +35,7 @@ const RaffleResultsAnimalitos = () => {
           className='col-sm-12 col-md-6'
           key={`card-raffle-${raffle.animalitosRaffleName.split('').join('-')}-${
             raffle.animalitosRaffleId
-          }`}
+          }-${index}`}
         >
           <AnimalitosRaffleResultCard
             raffle={raffle}
@@ -50,14 +50,17 @@ const RaffleResultsAnimalitos = () => {
     })
 
   const renderAnimalitosTabContent = () =>
-    raffleResultState.raffleResultsByLottery.map((raffleResult) => (
+    raffleResultState.raffleResultsByLottery.map((raffleResult, index) => (
       <div
         className={clsx('tab-pane', 'fade', {
           show: raffleResultState.selectedTab === raffleResult.animalitosLotteryId,
           active: raffleResultState.selectedTab === raffleResult.animalitosLotteryId,
         })}
         id={`pill-${raffleResult.animalitosLotteryName.toLowerCase().split(' ').join('-')}`}
-        key={`tab-content-${raffleResult.animalitosLotteryName.toLowerCase().split(' ').join('-')}`}
+        key={`tab-content-${raffleResult.animalitosLotteryName
+          .toLowerCase()
+          .split(' ')
+          .join('-')}-${index}`}
         role='tabpanel'
         aria-labelledby={`pills-${raffleResult.animalitosLotteryName
           .toLowerCase()

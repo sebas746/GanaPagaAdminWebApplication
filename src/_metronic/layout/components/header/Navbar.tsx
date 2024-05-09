@@ -20,7 +20,6 @@ const Navbar = () => {
 
   const getUsername = () => {
     auth.userManager.getUser().then((user: User | null) => {
-      console.log(user)
       const fullName = user?.profile.preferred_username ?? ''
       setUsername(fullName)
     })

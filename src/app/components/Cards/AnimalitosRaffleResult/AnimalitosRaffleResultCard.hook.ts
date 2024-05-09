@@ -1,4 +1,4 @@
-import {IRaffleResultAnimalitosDetail, RaffleStatus} from '../../../../types/Animalitos.types'
+import {IAnimalitosLotteries, IRaffleResultAnimalitosDetail, RaffleStatus} from '../../../../types/Animalitos.types'
 import {useState} from 'react'
 import {
   mapRaffleStatusColorTextToState,
@@ -8,9 +8,11 @@ import {
   mapRaffleStatusToText,
 } from '../../../constants/raffle-state.constants'
 
-interface IRaffleResultHookCard extends RaffleStatus {}
+interface IRaffleResultHookCard extends RaffleStatus {
+  selectedLottery: IAnimalitosLotteries | undefined
+}
 
-export const useRaffleResultCard = ({animalitosRaffleStatus}: IRaffleResultHookCard) => {
+export const useRaffleResultCard = ({animalitosRaffleStatus, selectedLottery}: IRaffleResultHookCard) => {
   const [showRaffleResultForm, setShowRaffleResultForm] = useState(false)
 
   const setRaffleResultForm = () => {
@@ -25,8 +27,9 @@ export const useRaffleResultCard = ({animalitosRaffleStatus}: IRaffleResultHookC
     raffle: IRaffleResultAnimalitosDetail,
     selectedOption: string | undefined
   ) => {
+    const resultValue = selectedLottery?.animalitosLotteryFruitCombined ? `${raffle.animalitosRaffleResultValue}-${raffle.animalitosRaffleResultFruitValue}` : raffle.animalitosRaffleResultValue
     if (selectedOption !== 'undefined' && animalitosRaffleStatus === 'PendingApprove') {
-      if (raffle.animalitosRaffleResultValue === selectedOption) {
+      if (resultValue === selectedOption) {
         return mapRaffleStatusToSubmitButtonText['PendingApprove']
       } else {
         return mapRaffleStatusToSubmitButtonText['Update']
