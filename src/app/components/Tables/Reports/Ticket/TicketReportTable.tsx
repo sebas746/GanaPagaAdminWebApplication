@@ -12,6 +12,9 @@ import {CURRENCY_USD} from '../../../../constants/reports.constants'
 import ConditionalRendering from '../../../../helpers/ConditionalRedering'
 import {TicketReportChart} from './TicketReportChart'
 import {useTicketReportTable} from './TicketReportTable.hook'
+import CustomPagination from '../../../CustomPagination/CustomPagination'
+import {useState} from 'react'
+import CustomPaginator from '../../../Paginator/CustomPaginator'
 
 interface TicketReportTableProps {
   ticketReportPaginated: ITicketReportResponse
@@ -60,6 +63,10 @@ const TicketReportTable = ({
   currencyCode,
 }: TicketReportTableProps) => {
   const {stateToText, stateToColor} = useTicketReportTable()
+  const [pageIndex, setPageIndex] = useState<number>(0)
+  const handlePaginatorIndex = (index: number) => {
+    handleFilterChange('pageIndex', index)
+  }
   const showPagination =
     !isLoading && ticketReportPaginated && ticketReportPaginated.ticketsCount > 0
   const showSummaryCard =
@@ -251,19 +258,13 @@ const TicketReportTable = ({
             </tr>
           )}
         {showPagination && (
-          <Pagination>
-            {Array.from({
-              length: Math.ceil(ticketReportPaginated.ticketsCount / params.pageSize),
-            }).map((_, index) => (
-              <Pagination.Item
-                key={index + 1}
-                active={index === params.pageIndex}
-                onClick={() => handleFilterChange('pageIndex', index)}
-              >
-                {index + 1}
-              </Pagination.Item>
-            ))}
-          </Pagination>
+          <CustomPaginator
+            totalItems={ticketReportPaginated.ticketsCount}
+            pageIndex={params.pageIndex}
+            handleChange={handlePaginatorIndex}
+            pageSize={params.pageSize}
+            showPagination={showPagination}
+          ></CustomPaginator>
         )}
       </Card.Body>
     </>
