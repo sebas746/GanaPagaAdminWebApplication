@@ -130,7 +130,6 @@ export const useTicketReport = () => {
   const [shouldFetchDataVes, setShouldFetchDataVes] = useState(false)
 
   const fetchUsdData = async () => {
-    console.log(ticketReportUsdState.params)
     const url = buildUrl(ticketReportUsdState.params.baseUrl, {
       pageIndex: ticketReportUsdState.params.pageIndex,
       pageSize: ticketReportUsdState.params.pageSize,

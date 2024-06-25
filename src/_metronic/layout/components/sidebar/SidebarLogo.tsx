@@ -21,7 +21,6 @@ const SidebarLogo = () => {
   const logoPath = promoterInfo.promoterLogo
     ? `${process.env.REACT_APP_USERS_BASE_URL?.replace(/\\/g, '/')}${promoterInfo.promoterLogo}`
     : '/media/logos/ganapaga-dark.svg'
-  console.log(promoterInfo)
   return (
     <div className='app-sidebar-logo px-6' id='kt_app_sidebar_logo'>
       <Link to='/dashboard'>
