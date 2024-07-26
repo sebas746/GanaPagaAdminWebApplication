@@ -4,17 +4,12 @@ import AnimalitosTabs from '../../../components/Tabs/AnimalitosTabs'
 import ScrutinyForm from '../../../components/Forms/ScrutinyForm/ScrutinyForm'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
 import AnimalitosScrutinyCardList from '../../../components/AnimalitosScrutinyCardList/AnimalitosScrutinyCardList'
-import {useRaffleResultsAnimalitos} from '../../raffle-results/RaffleResultsAnimalitos/RaffleResultsAnimalitos.hook'
 
 const ScrutinyAnimalitos = () => {
   const {
     raffleScrutinyState,
     animalitosLotteries,
-    hasError,
     setScrutinyForm,
-    setScrutinyResults,
-    setScrutinyResultsByLottery,
-    setIsLoadingScrutinyResults,
     isLoading,
     setSelectedTab,
     addRaffleScrutinyAnimalitos,

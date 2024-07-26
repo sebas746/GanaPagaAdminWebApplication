@@ -21,6 +21,7 @@ enum ScrutinyAnimalitosKind {
   SET_SCRUTINY_FORM = 'SET_SCRUTINY_FORM',
   SET_SCRUTINY_RESULTS = 'SET_SCRUTINY_RESULTS',
   SET_SCRUTINY_RESULTS_BY_LOTTERY = 'SET_SCRUTINY_RESULTS_BY_LOTTERY',
+  RESET_SCRUTINY_RESULTS_BY_LOTTERY = 'RESET_SCRUTINY_RESULTS_BY_LOTTERY', // Add reset action
   SET_IS_LOADING_SCRUTINY_RESULTS = 'SET_IS_LOADING_SCRUTINY_RESULTS',
   SET_SELECTED_TAB = 'SET_SELECTED_TAB',
   SET_RAFFLE_ID_LOADING = 'SET_RAFFLE_ID_LOADING',
@@ -64,6 +65,11 @@ export const raffleResultReducer = (
       return {
         ...state,
         raffleResultsByLottery: action.payload as IRaffleScrutinyAnimalitosResponse[],
+      }
+    case ScrutinyAnimalitosKind.RESET_SCRUTINY_RESULTS_BY_LOTTERY:
+      return {
+        ...state,
+        raffleResultsByLottery: [],
       }
     case ScrutinyAnimalitosKind.SET_IS_LOADING_SCRUTINY_RESULTS:
       return {
@@ -141,14 +147,16 @@ export const useScrutinyAnimalitos = () => {
       const selectedLottery = animalitosLotteriesState.animalitosLotteries.find(
         (a) => a.lotteryId === raffleScrutinyState.selectedTab
       )
+      /*
       const resultValue = selectedLottery?.animalitosLotteryFruitCombined
         ? `${raffleDetail.animalitosRaffleResultValue}-${raffleDetail.animalitosRaffleResultFruitValue}`
         : raffleDetail.animalitosRaffleResultValue
-      switch (raffleDetail.animalitosRaffleStatus) {
-        case 'PendingResult':
+        */
+      switch (raffleDetail.animalitosRaffleScrutinyStatus) {
+        case 'Scrutinized':
           await recalculateAnimalitosScrutinyMutation({
             raffleId: Number(raffleDetail.animalitosRaffleId),
-            raffleResultValue: resultValue,
+            raffleResultValue: animalitoSelected,
           })
           break
       }
@@ -160,7 +168,7 @@ export const useScrutinyAnimalitos = () => {
   const {mutate: recalculateAnimalitosScrutinyMutation, isLoading: loadingRecalculate} =
     useMutation({
       mutationFn: async (body: AddRaffleAnimalitosResultBody) => {
-        return await axios.put('/AnimalitosRaffleResult/update-animalitos-raffle-result', body)
+        return await axios.post('/AnimalitosScrutiny/recalculate-animalitos-scrutiny', body)
       },
       onSuccess(data, variables, context) {
         handleSuccessResponse(data)
@@ -194,6 +202,7 @@ export const useScrutinyAnimalitos = () => {
         hideIconVariant: true,
       })
     }
+    resetScrutinyResultsByLottery()
     getAnimalitosScrutiny()
   }
 
@@ -234,6 +243,13 @@ export const useScrutinyAnimalitos = () => {
     dispatchScrutinyAnimalitos({
       type: ScrutinyAnimalitosKind.SET_SCRUTINY_RESULTS_BY_LOTTERY,
       payload,
+    })
+  }
+
+  const resetScrutinyResultsByLottery = () => {
+    dispatchScrutinyAnimalitos({
+      type: ScrutinyAnimalitosKind.RESET_SCRUTINY_RESULTS_BY_LOTTERY,
+      payload: [] as IRaffleScrutinyAnimalitosResponse[],
     })
   }
 

@@ -43,8 +43,10 @@ const AnimalitosScrutinyCardList = ({
         addRaffleScrutinyAnimalitos(raffle.animalitosRaffleId)
       const wrapOnClickRaffleAnimalitosResult = () =>
         onClickScrutinyAnimalitosDetail(raffle.animalitosRaffleId)
-      const wrapRecalculateRaffleAnimalitosResult = (selectedAnimal: string) =>
+      const wrapRecalculateRaffleAnimalitosResult = (selectedAnimal: string) => {
         changeRaffleAnimalitoResult(raffle, selectedAnimal)
+        // setRaffleResultForm()
+      }
       const selectedLottery = animalitosLotteries.find((a) => a.lotteryId === selectedTab)
       return (
         <div
