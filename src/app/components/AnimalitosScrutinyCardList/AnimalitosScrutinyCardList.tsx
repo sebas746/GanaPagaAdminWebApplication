@@ -2,6 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 import {
   IAnimalDetail,
+  IAnimalitosLotteries,
   IRaffleResultAnimalitosDetail,
   IRaffleScrutinyAnimalitosResponse,
 } from '../../../types/Animalitos.types'
@@ -14,6 +15,12 @@ interface IAnimalitosCardListProps {
   loadingAdd: boolean
   raffleId: number
   onClickScrutinyAnimalitosDetail: (raffleId: number) => void
+  isLoading: boolean
+  animalitosLotteries: IAnimalitosLotteries[]
+  changeRaffleAnimalitoResult: (
+    raffleDetail: IRaffleResultAnimalitosDetail,
+    animalitoSelected: string
+  ) => Promise<void>
 }
 
 const AnimalitosScrutinyCardList = ({
@@ -23,14 +30,22 @@ const AnimalitosScrutinyCardList = ({
   loadingAdd,
   raffleId,
   onClickScrutinyAnimalitosDetail,
+  isLoading,
+  animalitosLotteries,
+  changeRaffleAnimalitoResult,
 }: IAnimalitosCardListProps) => {
-  const renderResultCard = (raffles: IRaffleResultAnimalitosDetail[]) =>
+  const renderResultCard = (
+    raffles: IRaffleResultAnimalitosDetail[],
+    animalOptions: IAnimalDetail[]
+  ) =>
     raffles.map((raffle, index) => {
       const wrapAddRaffleAnimalitosResult = () =>
         addRaffleScrutinyAnimalitos(raffle.animalitosRaffleId)
       const wrapOnClickRaffleAnimalitosResult = () =>
         onClickScrutinyAnimalitosDetail(raffle.animalitosRaffleId)
-
+      const wrapRecalculateRaffleAnimalitosResult = (selectedAnimal: string) =>
+        changeRaffleAnimalitoResult(raffle, selectedAnimal)
+      const selectedLottery = animalitosLotteries.find((a) => a.lotteryId === selectedTab)
       return (
         <div
           className='col-sm-12 col-md-6'
@@ -44,6 +59,11 @@ const AnimalitosScrutinyCardList = ({
             loadingAdd={loadingAdd}
             raffleId={raffleId}
             onClickScrutinyAnimalitosDetail={wrapOnClickRaffleAnimalitosResult}
+            animalOptions={animalOptions}
+            selectedLottery={selectedLottery}
+            isLoading={isLoading}
+            selectedTab={selectedTab}
+            wrapRecalculateRaffleAnimalitosResult={wrapRecalculateRaffleAnimalitosResult}
           />
         </div>
       )
@@ -71,7 +91,10 @@ const AnimalitosScrutinyCardList = ({
             tabIndex={0}
           >
             <div className='row row-gap-8'>
-              {renderResultCard(raffleResult.raffleResultDetailResponse)}
+              {renderResultCard(
+                raffleResult.raffleResultDetailResponse,
+                raffleResult.animalDetails
+              )}
             </div>
           </div>
         ))}

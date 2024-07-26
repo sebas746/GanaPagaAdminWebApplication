@@ -4,6 +4,7 @@ import AnimalitosTabs from '../../../components/Tabs/AnimalitosTabs'
 import ScrutinyForm from '../../../components/Forms/ScrutinyForm/ScrutinyForm'
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
 import AnimalitosScrutinyCardList from '../../../components/AnimalitosScrutinyCardList/AnimalitosScrutinyCardList'
+import {useRaffleResultsAnimalitos} from '../../raffle-results/RaffleResultsAnimalitos/RaffleResultsAnimalitos.hook'
 
 const ScrutinyAnimalitos = () => {
   const {
@@ -19,6 +20,7 @@ const ScrutinyAnimalitos = () => {
     addRaffleScrutinyAnimalitos,
     loadingAdd,
     onClickScrutinyAnimalitosDetail,
+    changeRaffleAnimalitoResult,
   } = useScrutinyAnimalitos()
 
   return (
@@ -54,6 +56,9 @@ const ScrutinyAnimalitos = () => {
             loadingAdd={loadingAdd}
             raffleId={raffleScrutinyState.animalitosRaffleId}
             onClickScrutinyAnimalitosDetail={onClickScrutinyAnimalitosDetail}
+            isLoading={isLoading}
+            changeRaffleAnimalitoResult={changeRaffleAnimalitoResult}
+            animalitosLotteries={raffleScrutinyState.animalitosLotteries}
           />
         </ConditionalRedering>
       </div>

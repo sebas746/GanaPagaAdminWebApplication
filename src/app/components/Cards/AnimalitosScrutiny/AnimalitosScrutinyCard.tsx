@@ -2,6 +2,8 @@ import React from 'react'
 import {Card} from 'react-bootstrap'
 import {useScrutinyAnimalitos} from './AnimalitosScrutinyCard.hook'
 import {
+  IAnimalDetail,
+  IAnimalitosLotteries,
   IRaffleResultAnimalitosDetail,
   RaffleResulStatus,
   RaffleScrutinyStatus,
@@ -9,6 +11,8 @@ import {
 import ConditionalRedering from '../../../helpers/ConditionalRedering'
 import RenderLoader from '../../RenderLoader/RenderLoader'
 import HasPermission from '../../HasPermissions/HasPermissions'
+import AddRaffleAnimalitoResultForm from '../../Forms/AddRaffleAnimalitoResultForm/AddRaffleAnimalitoResultForm'
+import {useRaffleResultCard} from '../AnimalitosRaffleResult/AnimalitosRaffleResultCard.hook'
 
 interface AnimalitosScrutinyProps {
   addRaffleScrutinyAnimalitos: () => void
@@ -16,6 +20,11 @@ interface AnimalitosScrutinyProps {
   loadingAdd: boolean
   raffleId: number
   onClickScrutinyAnimalitosDetail: () => void
+  animalOptions: IAnimalDetail[]
+  selectedTab: number
+  isLoading: boolean
+  selectedLottery: IAnimalitosLotteries | undefined
+  wrapRecalculateRaffleAnimalitosResult: (selectedAnimal: string) => Promise<void>
 }
 
 const AnimalitosScrutinyCard = ({
@@ -24,10 +33,27 @@ const AnimalitosScrutinyCard = ({
   loadingAdd,
   raffleId,
   onClickScrutinyAnimalitosDetail,
+  animalOptions,
+  selectedTab,
+  isLoading,
+  selectedLottery,
+  wrapRecalculateRaffleAnimalitosResult,
 }: AnimalitosScrutinyProps) => {
-  const {colorState, colorTextState, textState, buttonText} = useScrutinyAnimalitos({
+  const {
+    colorState,
+    colorTextState,
+    textState,
+    buttonText,
+    getSubmitButtonText,
+    setRaffleResultForm,
+  } = useScrutinyAnimalitos({
     animalitosRaffleScrutinyStatus: raffle.animalitosRaffleScrutinyStatus,
   })
+
+  const wrappedGetSubmitButtonText = (selectedAnimal: string | undefined) => {
+    return getSubmitButtonText()
+  }
+
   return (
     <Card>
       <Card.Header className={`p-2 rounded-2 ${colorState}`}>
@@ -71,6 +97,18 @@ const AnimalitosScrutinyCard = ({
                 )}
               </button>
             </ConditionalRedering>
+          </HasPermission>
+          <HasPermission resource='raffleScrutiny' actions={['recalculate-scrutiny']}>
+            <AddRaffleAnimalitoResultForm
+              options={animalOptions}
+              selectedOption={raffle.animalitosRaffleResultValue ?? ''}
+              selectedFruitOption={raffle.animalitosRaffleResultFruitValue ?? ''}
+              addRaffleAnimalitosResult={wrapRecalculateRaffleAnimalitosResult}
+              setRaffleResultForm={setRaffleResultForm}
+              wrappedGetSubmitButtonText={wrappedGetSubmitButtonText}
+              isLoadingState={isLoading}
+              selectedLottery={selectedLottery}
+            />
           </HasPermission>
           <HasPermission resource='raffleScrutiny' actions={['view-scrutiny']}>
             <ConditionalRedering

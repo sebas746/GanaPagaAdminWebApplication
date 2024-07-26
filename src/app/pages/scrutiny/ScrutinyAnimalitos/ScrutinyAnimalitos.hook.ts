@@ -1,6 +1,8 @@
 import {
+  AddRaffleAnimalitosResultBody,
   AddScrutinyAnimalitosBody,
   IAnimalitosLotteries,
+  IRaffleResultAnimalitosDetail,
   IRaffleResultAnimalitosResponse,
   IRaffleScrutinyAnimalitosResponse,
 } from '../../../../types/Animalitos.types'
@@ -131,6 +133,43 @@ export const useScrutinyAnimalitos = () => {
     },
   })
 
+  const changeRaffleAnimalitoResult = async (
+    raffleDetail: IRaffleResultAnimalitosDetail,
+    animalitoSelected: string
+  ) => {
+    try {
+      const selectedLottery = animalitosLotteriesState.animalitosLotteries.find(
+        (a) => a.lotteryId === raffleScrutinyState.selectedTab
+      )
+      const resultValue = selectedLottery?.animalitosLotteryFruitCombined
+        ? `${raffleDetail.animalitosRaffleResultValue}-${raffleDetail.animalitosRaffleResultFruitValue}`
+        : raffleDetail.animalitosRaffleResultValue
+      switch (raffleDetail.animalitosRaffleStatus) {
+        case 'PendingResult':
+          await recalculateAnimalitosScrutinyMutation({
+            raffleId: Number(raffleDetail.animalitosRaffleId),
+            raffleResultValue: resultValue,
+          })
+          break
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const {mutate: recalculateAnimalitosScrutinyMutation, isLoading: loadingRecalculate} =
+    useMutation({
+      mutationFn: async (body: AddRaffleAnimalitosResultBody) => {
+        return await axios.put('/AnimalitosRaffleResult/update-animalitos-raffle-result', body)
+      },
+      onSuccess(data, variables, context) {
+        handleSuccessResponse(data)
+      },
+      onError(error, variables, context) {
+        handleErrorResponse()
+      },
+    })
+
   const handleErrorResponse = () => {
     enqueueSnackbar(
       'Se ha presentado un error, por favor recargue la página o consulte con el administrador.',
@@ -234,7 +273,8 @@ export const useScrutinyAnimalitos = () => {
     setIsLoadingScrutinyResults,
     setSelectedTab,
     addRaffleScrutinyAnimalitos,
-    loadingAdd,
+    loadingAdd: loadingAdd || loadingRecalculate,
     onClickScrutinyAnimalitosDetail,
+    changeRaffleAnimalitoResult,
   }
 }
