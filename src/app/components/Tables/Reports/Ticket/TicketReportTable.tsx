@@ -1,4 +1,4 @@
-import {Card, Col, Form, Pagination, Row} from 'react-bootstrap'
+import {Card, Col, Form, Row, OverlayTrigger, Tooltip} from 'react-bootstrap'
 import RenderLoader from '../../../RenderLoader/RenderLoader'
 import {formatCurrency} from '../../../../helpers/currency.helpers'
 import {DateTime} from 'luxon'
@@ -219,6 +219,22 @@ const TicketReportTable = ({
                         </td>
                         <td className={`text-center ${stateToColor(ticket.ticketStatus)}`}>
                           {stateToText(ticket.ticketStatus)}
+                          {ticket.ticketStatus === TicketStatusEnum.winner &&
+                            ticket.ticketHasRecalculatedBet && (
+                              <OverlayTrigger
+                                placement='top'
+                                overlay={
+                                  <Tooltip id={`tooltip-${ticket.ticketId}`}>
+                                    El tiquete tiene asociado un escrutinio recalculado.
+                                  </Tooltip>
+                                }
+                              >
+                                <i
+                                  className='bi bi-exclamation-triangle-fill text-warning fs-4 ml-2'
+                                  style={{marginLeft: '8px'}}
+                                ></i>
+                              </OverlayTrigger>
+                            )}
                         </td>
                         <td className='text-center'>
                           <div

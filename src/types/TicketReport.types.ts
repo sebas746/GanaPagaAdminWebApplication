@@ -18,6 +18,7 @@ export interface ITicketResponse {
   ticketCreatedAt: string
   ticketSoldByUserId: string
   ticketStatus: TicketStatusEnum
+  ticketHasRecalculatedBet: boolean
 }
 
 export enum TicketStatusEnum {
