@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card} from 'react-bootstrap'
+import {Card, OverlayTrigger, Tooltip} from 'react-bootstrap'
 import {useScrutinyAnimalitos} from './AnimalitosScrutinyCard.hook'
 import {
   IAnimalDetail,
@@ -71,7 +71,31 @@ const AnimalitosScrutinyCard = ({
             <h5 className={colorTextState}>{raffle.animalitosRaffleName}</h5>
             <h5 className='d-flex align-items-center'>
               <div className={`me-2 ${colorTextState}`}>Estado:</div>
-              <div className={colorTextState}>{textState}</div>
+              <div className={colorTextState}>
+                {textState}
+                {raffle.animalitosRaffleScrutinyWasRecalculated && ' recalculado'}
+              </div>
+              <div className='me-2'>
+                {raffle.animalitosRaffleScrutinyWasRecalculated && (
+                  <>
+                    <OverlayTrigger
+                      placement='top'
+                      overlay={
+                        <Tooltip id={`tooltip-${raffle.animalitosRaffleName}`}>
+                          El escrutinio fue recalculado{' '}
+                          {raffle.animalitosRaffleScrutinyRecalculatedCount - 1}{' '}
+                          {raffle.animalitosRaffleScrutinyRecalculatedCount < 2 ? 'veces' : 'vez'}.
+                        </Tooltip>
+                      }
+                    >
+                      <i
+                        className='bi bi-exclamation-triangle-fill text-warning fs-4 ml-2'
+                        style={{marginLeft: '8px'}}
+                      ></i>
+                    </OverlayTrigger>
+                  </>
+                )}
+              </div>
             </h5>
           </div>
         </Card.Title>
