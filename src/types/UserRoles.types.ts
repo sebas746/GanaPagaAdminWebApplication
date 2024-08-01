@@ -1,7 +1,7 @@
 export enum UserRolesEnum {
   Admin = 'Admin',
   Scrutiny = 'Scrutiny',
-  Promoter = 'Promoter'
+  Promoter = 'Promoter',
 }
 
 export type UserRole = 'Admin' | 'Scrutiny' | 'Promoter'
@@ -15,7 +15,7 @@ export type RaffleResultActions =
   | 'add-raffle-result'
   | 'get-raffle-result'
   | 'update-raffle-result'
-export type RaffleScrutinyActions = 'create-scrutiny' | 'view-scrutiny'
+export type RaffleScrutinyActions = 'create-scrutiny' | 'view-scrutiny' | 'recalculate-scrutiny'
 export type ScrutinySettings =
   | 'get-admin-emails'
   | 'get-admin-email-by-id'
@@ -23,7 +23,7 @@ export type ScrutinySettings =
   | 'update-admin-email'
   | 'delete-admin-email'
 
-export type PromoterActions = 'change-promoter' | 'label-promoter' 
+export type PromoterActions = 'change-promoter' | 'label-promoter'
 
 export type RoleActionPermissions = {
   settings: SettingsActions[]
@@ -45,7 +45,7 @@ export const rolePermissions: RolePermissionsMap = {
       'update-general-settings',
     ],
     raffleResult: ['get-raffle-result'],
-    raffleScrutiny: ['view-scrutiny'],
+    raffleScrutiny: ['view-scrutiny', 'recalculate-scrutiny'],
     scrutinySettings: [
       'add-admin-email',
       'delete-admin-email',
@@ -53,9 +53,7 @@ export const rolePermissions: RolePermissionsMap = {
       'get-admin-emails',
       'update-admin-email',
     ],
-    promoter: [
-      'change-promoter'
-    ],
+    promoter: ['change-promoter'],
   },
   Scrutiny: {
     settings: [
@@ -71,13 +69,13 @@ export const rolePermissions: RolePermissionsMap = {
     ],
     raffleScrutiny: ['create-scrutiny', 'view-scrutiny'],
     scrutinySettings: [] as ScrutinySettings[],
-    promoter: [] as PromoterActions[]
+    promoter: [] as PromoterActions[],
   },
   Promoter: {
-    settings: [] as SettingsActions[],        
+    settings: [] as SettingsActions[],
     raffleResult: [] as RaffleResultActions[],
     raffleScrutiny: [] as RaffleScrutinyActions[],
     scrutinySettings: [] as ScrutinySettings[],
-    promoter: ['label-promoter'] as PromoterActions[]
-  }
+    promoter: ['label-promoter'] as PromoterActions[],
+  },
 }

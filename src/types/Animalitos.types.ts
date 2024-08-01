@@ -50,6 +50,8 @@ export interface IRaffleResultAnimalitosDetail extends RaffleStatus, ScrutinySta
   animalitosRaffleResultApprovedBy: string
   animalitosRaffleResultFruitValue: string
   animalitosRaffleResultFruit: string
+  animalitosRaffleScrutinyWasRecalculated: boolean
+  animalitosRaffleScrutinyRecalculatedCount: number
 }
 
 export interface IRaffleResultAnimalitosResponse {

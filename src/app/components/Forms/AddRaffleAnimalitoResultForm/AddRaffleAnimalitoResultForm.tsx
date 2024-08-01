@@ -18,6 +18,7 @@ interface AddRaffleAnimalitoResultFormProps {
   wrappedGetSubmitButtonText: (selectedOption: string | undefined) => string | undefined
   isLoadingState: boolean
   selectedLottery: IAnimalitosLotteries | undefined
+  hideResetButton?: boolean
 }
 
 const AddRaffleAnimalitoResultForm = ({
@@ -29,6 +30,7 @@ const AddRaffleAnimalitoResultForm = ({
   wrappedGetSubmitButtonText,
   isLoadingState,
   selectedLottery,
+  hideResetButton = false,
 }: AddRaffleAnimalitoResultFormProps) => {
   const {formik} = useAddRaffleAnimalitoResultForm(
     addRaffleAnimalitosResult,
@@ -145,9 +147,11 @@ const AddRaffleAnimalitoResultForm = ({
         {isLoadingState && <RenderLoader show={isLoadingState} />}
         {!isLoadingState && submitButtonText}
       </Button>
-      <Button type='reset' variant='danger' onClick={setRaffleResultForm}>
-        Cancelar
-      </Button>
+      {!hideResetButton && (
+        <Button type='reset' variant='danger' onClick={setRaffleResultForm}>
+          Cancelar
+        </Button>
+      )}
     </form>
   )
 }

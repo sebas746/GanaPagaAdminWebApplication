@@ -58,8 +58,8 @@ const ScrutinyDetailTable = ({winners, setTicketId, ticketId}: ScrutinyDetailTab
                     </span>
                   </td>
                   <td className='text-center'>{winner.gameTypeLabel}</td>
-                  <td className='text-center'>{'vendedor'}</td>
-                  <td className='text-center'>{'punto de venta'}</td>
+                  <td className='text-center'>{winner.seller}</td>
+                  <td className='text-center'>{winner.salePoint}</td>
                   <td className='text-center'>
                     <div
                       onClick={() => setTicketId(winner.ticketNumber)}

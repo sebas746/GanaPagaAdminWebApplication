@@ -1,6 +1,8 @@
 import {
+  AddRaffleAnimalitosResultBody,
   AddScrutinyAnimalitosBody,
   IAnimalitosLotteries,
+  IRaffleResultAnimalitosDetail,
   IRaffleResultAnimalitosResponse,
   IRaffleScrutinyAnimalitosResponse,
 } from '../../../../types/Animalitos.types'
@@ -19,6 +21,7 @@ enum ScrutinyAnimalitosKind {
   SET_SCRUTINY_FORM = 'SET_SCRUTINY_FORM',
   SET_SCRUTINY_RESULTS = 'SET_SCRUTINY_RESULTS',
   SET_SCRUTINY_RESULTS_BY_LOTTERY = 'SET_SCRUTINY_RESULTS_BY_LOTTERY',
+  RESET_SCRUTINY_RESULTS_BY_LOTTERY = 'RESET_SCRUTINY_RESULTS_BY_LOTTERY', // Add reset action
   SET_IS_LOADING_SCRUTINY_RESULTS = 'SET_IS_LOADING_SCRUTINY_RESULTS',
   SET_SELECTED_TAB = 'SET_SELECTED_TAB',
   SET_RAFFLE_ID_LOADING = 'SET_RAFFLE_ID_LOADING',
@@ -62,6 +65,11 @@ export const raffleResultReducer = (
       return {
         ...state,
         raffleResultsByLottery: action.payload as IRaffleScrutinyAnimalitosResponse[],
+      }
+    case ScrutinyAnimalitosKind.RESET_SCRUTINY_RESULTS_BY_LOTTERY:
+      return {
+        ...state,
+        raffleResultsByLottery: [],
       }
     case ScrutinyAnimalitosKind.SET_IS_LOADING_SCRUTINY_RESULTS:
       return {
@@ -131,6 +139,45 @@ export const useScrutinyAnimalitos = () => {
     },
   })
 
+  const changeRaffleAnimalitoResult = async (
+    raffleDetail: IRaffleResultAnimalitosDetail,
+    animalitoSelected: string
+  ) => {
+    try {
+      const selectedLottery = animalitosLotteriesState.animalitosLotteries.find(
+        (a) => a.lotteryId === raffleScrutinyState.selectedTab
+      )
+      /*
+      const resultValue = selectedLottery?.animalitosLotteryFruitCombined
+        ? `${raffleDetail.animalitosRaffleResultValue}-${raffleDetail.animalitosRaffleResultFruitValue}`
+        : raffleDetail.animalitosRaffleResultValue
+        */
+      switch (raffleDetail.animalitosRaffleScrutinyStatus) {
+        case 'Scrutinized':
+          await recalculateAnimalitosScrutinyMutation({
+            raffleId: Number(raffleDetail.animalitosRaffleId),
+            raffleResultValue: animalitoSelected,
+          })
+          break
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const {mutate: recalculateAnimalitosScrutinyMutation, isLoading: loadingRecalculate} =
+    useMutation({
+      mutationFn: async (body: AddRaffleAnimalitosResultBody) => {
+        return await axios.post('/AnimalitosScrutiny/recalculate-animalitos-scrutiny', body)
+      },
+      onSuccess(data, variables, context) {
+        handleSuccessResponse(data)
+      },
+      onError(error, variables, context) {
+        handleErrorResponse()
+      },
+    })
+
   const handleErrorResponse = () => {
     enqueueSnackbar(
       'Se ha presentado un error, por favor recargue la página o consulte con el administrador.',
@@ -155,6 +202,7 @@ export const useScrutinyAnimalitos = () => {
         hideIconVariant: true,
       })
     }
+    resetScrutinyResultsByLottery()
     getAnimalitosScrutiny()
   }
 
@@ -198,6 +246,13 @@ export const useScrutinyAnimalitos = () => {
     })
   }
 
+  const resetScrutinyResultsByLottery = () => {
+    dispatchScrutinyAnimalitos({
+      type: ScrutinyAnimalitosKind.RESET_SCRUTINY_RESULTS_BY_LOTTERY,
+      payload: [] as IRaffleScrutinyAnimalitosResponse[],
+    })
+  }
+
   const setIsLoadingScrutinyResults = (payload: boolean) => {
     dispatchScrutinyAnimalitos({
       type: ScrutinyAnimalitosKind.SET_IS_LOADING_SCRUTINY_RESULTS,
@@ -234,7 +289,8 @@ export const useScrutinyAnimalitos = () => {
     setIsLoadingScrutinyResults,
     setSelectedTab,
     addRaffleScrutinyAnimalitos,
-    loadingAdd,
+    loadingAdd: loadingAdd || loadingRecalculate,
     onClickScrutinyAnimalitosDetail,
+    changeRaffleAnimalitoResult,
   }
 }

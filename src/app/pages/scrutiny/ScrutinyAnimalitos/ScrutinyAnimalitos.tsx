@@ -9,16 +9,13 @@ const ScrutinyAnimalitos = () => {
   const {
     raffleScrutinyState,
     animalitosLotteries,
-    hasError,
     setScrutinyForm,
-    setScrutinyResults,
-    setScrutinyResultsByLottery,
-    setIsLoadingScrutinyResults,
     isLoading,
     setSelectedTab,
     addRaffleScrutinyAnimalitos,
     loadingAdd,
     onClickScrutinyAnimalitosDetail,
+    changeRaffleAnimalitoResult,
   } = useScrutinyAnimalitos()
 
   return (
@@ -54,6 +51,9 @@ const ScrutinyAnimalitos = () => {
             loadingAdd={loadingAdd}
             raffleId={raffleScrutinyState.animalitosRaffleId}
             onClickScrutinyAnimalitosDetail={onClickScrutinyAnimalitosDetail}
+            isLoading={isLoading}
+            changeRaffleAnimalitoResult={changeRaffleAnimalitoResult}
+            animalitosLotteries={raffleScrutinyState.animalitosLotteries}
           />
         </ConditionalRedering>
       </div>

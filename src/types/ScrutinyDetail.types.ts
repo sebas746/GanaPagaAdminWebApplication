@@ -29,4 +29,6 @@ export interface Winner {
   isPaid: boolean
   currencyCode: string
   gameTypeLabel?: string
+  salePoint?: string
+  seller?: string
 }
