@@ -143,6 +143,7 @@ const AnimalitosScrutinyCard = ({
                 isLoadingState={loadingAdd}
                 selectedLottery={selectedLottery}
                 hideResetButton={true}
+                showConfirmationModal={true}
               />
             </ConditionalRendering>
           </HasPermission>

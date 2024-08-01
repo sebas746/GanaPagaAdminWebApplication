@@ -26,17 +26,19 @@ export const mapScrutinyStateToButtonText = {
 //raffle result state
 
 export const mapRaffleStatusColorToState = {
-  PendingDraw: 'bg-secondary',
+  PendingDraw: 'bg-primary',
   PendingResult: 'bg-danger',
   PendingApprove: 'bg-warning',
   Approved: 'bg-success',
+  NoTicketBets: 'bg-secondary',
 }
 
 export const mapRaffleStatusColorTextToState = {
-  PendingDraw: 'text-dark',
+  PendingDraw: 'text-white',
   PendingResult: 'text-white',
   PendingApprove: 'text-white',
   Approved: 'text-white',
+  NoTicketBets: 'text-dark',
 }
 
 export const mapRaffleStatusToText = {
@@ -44,6 +46,7 @@ export const mapRaffleStatusToText = {
   PendingResult: 'Pendiente resultado',
   PendingApprove: 'Pendiente de aprobación',
   Approved: 'Ingresado y aprobado',
+  NoTicketBets: 'Sorteo sin apuestas',
 }
 
 export const mapRaffleStatusToButtonText = {
@@ -51,6 +54,7 @@ export const mapRaffleStatusToButtonText = {
   PendingResult: 'Ingresar resultado',
   PendingApprove: 'Aprobar/Actualizar resultado',
   Approved: undefined,
+  NoTicketBets: undefined,
 }
 
 export const mapRaffleStatusToSubmitButtonText = {
@@ -59,4 +63,5 @@ export const mapRaffleStatusToSubmitButtonText = {
   PendingApprove: 'Aprobar',
   Approved: undefined,
   Update: 'Actualizar',
+  NoTicketBets: undefined,
 }
