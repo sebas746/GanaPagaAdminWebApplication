@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
   IAnimalDetail,
   IAnimalDetailSelect,
@@ -8,6 +8,7 @@ import {useAddRaffleAnimalitoResultForm} from './AddRaffleAnimalitosResultForm.h
 import Button from 'react-bootstrap/Button'
 import RenderLoader from '../../RenderLoader/RenderLoader'
 import {LOTTERY_FRUITA_GANA_ID} from '../../../constants/localstorage.constants'
+import Modal from 'react-bootstrap/Modal'
 
 interface AddRaffleAnimalitoResultFormProps {
   options: IAnimalDetail[]
@@ -19,6 +20,7 @@ interface AddRaffleAnimalitoResultFormProps {
   isLoadingState: boolean
   selectedLottery: IAnimalitosLotteries | undefined
   hideResetButton?: boolean
+  showConfirmationModal?: boolean // New optional prop to show confirmation modal
 }
 
 const AddRaffleAnimalitoResultForm = ({
@@ -31,6 +33,7 @@ const AddRaffleAnimalitoResultForm = ({
   isLoadingState,
   selectedLottery,
   hideResetButton = false,
+  showConfirmationModal = false, // Default value false
 }: AddRaffleAnimalitoResultFormProps) => {
   const {formik} = useAddRaffleAnimalitoResultForm(
     addRaffleAnimalitosResult,
@@ -39,6 +42,7 @@ const AddRaffleAnimalitoResultForm = ({
     selectedLottery?.animalitosLotteryFruitCombined,
     selectedLottery?.lotteryId
   )
+  const [showModal, setShowModal] = useState(false)
   const resultValue = selectedLottery?.animalitosLotteryFruitCombined
     ? `${formik.values.animalitoId}-${formik.values.fruitId}`
     : formik.values.animalitoId
@@ -95,64 +99,100 @@ const AddRaffleAnimalitoResultForm = ({
   const selectedAnimalFruit = selectedLottery?.animalitosLotteryFruitCombined
     ? fruitOptionsSelected
     : animalOptionsSelected
-  return (
-    <form className='d-flex align-items-center column-gap-4' onSubmit={formik.handleSubmit}>
-      {selectedLottery?.lotteryId !== LOTTERY_FRUITA_GANA_ID && (
-        <Typeahead
-          id={'animalitoId'}
-          onChange={(selectedAnimal: IAnimalDetailSelect[]) => {
-            if (selectedAnimal.length > 0) {
-              formik.handleChange({
-                target: {name: 'animalitoId', value: selectedAnimal[0].id},
-              })
-            } else {
-              formik.handleChange({
-                target: {name: 'animalitoId', value: undefined},
-              })
-            }
-          }}
-          options={animalOptions}
-          key={animalOptions.every((e) => e.id + 'typeahead_opt')}
-          defaultSelected={animalOptionsSelected ?? undefined}
-          placeholder={'Seleccionar animalito...'}
-          isInvalid={!!formik.errors.animalitoId}
-          isValid={formik.dirty && !formik.errors.animalitoId}
-        />
-      )}
 
-      {(selectedLottery?.animalitosLotteryFruitCombined ||
-        selectedLottery?.lotteryId === LOTTERY_FRUITA_GANA_ID) && (
-        <Typeahead
-          id={'fruitId'}
-          onChange={(selectedFruit: IAnimalDetailSelect[]) => {
-            if (selectedFruit.length > 0) {
-              formik.handleChange({
-                target: {name: 'fruitId', value: selectedFruit[0].id},
-              })
-            } else {
-              formik.handleChange({
-                target: {name: 'fruitId', value: undefined},
-              })
-            }
-          }}
-          options={fruitOptions}
-          key={fruitOptions.every((e) => e.id + 'typeahead_opt')}
-          defaultSelected={selectedAnimalFruit ?? undefined}
-          placeholder={'Seleccionar fruta...'}
-          isInvalid={!!formik.errors.fruitId}
-          isValid={formik.dirty && !formik.errors.fruitId}
-        />
-      )}
-      <Button variant='primary' type='submit' disabled={isLoadingState || !!formik.errors.fruitId}>
-        {isLoadingState && <RenderLoader show={isLoadingState} />}
-        {!isLoadingState && submitButtonText}
-      </Button>
-      {!hideResetButton && (
-        <Button type='reset' variant='danger' onClick={setRaffleResultForm}>
-          Cancelar
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (showConfirmationModal) {
+      setShowModal(true)
+    } else {
+      formik.handleSubmit(e)
+    }
+  }
+
+  const handleConfirm = () => {
+    setShowModal(false)
+    formik.handleSubmit()
+  }
+
+  return (
+    <>
+      <form className='d-flex align-items-center column-gap-4' onSubmit={handleSubmit}>
+        {selectedLottery?.lotteryId !== LOTTERY_FRUITA_GANA_ID && (
+          <Typeahead
+            id={'animalitoId'}
+            onChange={(selectedAnimal: IAnimalDetailSelect[]) => {
+              if (selectedAnimal.length > 0) {
+                formik.handleChange({
+                  target: {name: 'animalitoId', value: selectedAnimal[0].id},
+                })
+              } else {
+                formik.handleChange({
+                  target: {name: 'animalitoId', value: undefined},
+                })
+              }
+            }}
+            options={animalOptions}
+            key={animalOptions.every((e) => e.id + 'typeahead_opt')}
+            defaultSelected={animalOptionsSelected ?? undefined}
+            placeholder={'Seleccionar animalito...'}
+            isInvalid={!!formik.errors.animalitoId}
+            isValid={formik.dirty && !formik.errors.animalitoId}
+          />
+        )}
+
+        {(selectedLottery?.animalitosLotteryFruitCombined ||
+          selectedLottery?.lotteryId === LOTTERY_FRUITA_GANA_ID) && (
+          <Typeahead
+            id={'fruitId'}
+            onChange={(selectedFruit: IAnimalDetailSelect[]) => {
+              if (selectedFruit.length > 0) {
+                formik.handleChange({
+                  target: {name: 'fruitId', value: selectedFruit[0].id},
+                })
+              } else {
+                formik.handleChange({
+                  target: {name: 'fruitId', value: undefined},
+                })
+              }
+            }}
+            options={fruitOptions}
+            key={fruitOptions.every((e) => e.id + 'typeahead_opt')}
+            defaultSelected={selectedAnimalFruit ?? undefined}
+            placeholder={'Seleccionar fruta...'}
+            isInvalid={!!formik.errors.fruitId}
+            isValid={formik.dirty && !formik.errors.fruitId}
+          />
+        )}
+        <Button
+          variant='primary'
+          type='submit'
+          disabled={isLoadingState || !!formik.errors.fruitId}
+        >
+          {isLoadingState && <RenderLoader show={isLoadingState} />}
+          {!isLoadingState && submitButtonText}
         </Button>
-      )}
-    </form>
+        {!hideResetButton && (
+          <Button type='reset' variant='danger' onClick={setRaffleResultForm}>
+            Cancelar
+          </Button>
+        )}
+      </form>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar acción</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Está seguro de que desea confirmar la acción?</Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={() => setShowModal(false)}>
+            Cancelar
+          </Button>
+          <Button variant='primary' onClick={handleConfirm}>
+            Confirmar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   )
 }
 

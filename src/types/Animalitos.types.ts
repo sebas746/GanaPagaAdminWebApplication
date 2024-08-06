@@ -24,6 +24,7 @@ export enum RaffleResulStatus {
   PendingResult = 'PendingResult',
   PendingApprove = 'PendingApprove',
   Approved = 'Approved',
+  NoTicketBets = 'NoTicketBets',
 }
 
 export interface RaffleStatus {
