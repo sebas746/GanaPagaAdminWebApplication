@@ -6,6 +6,7 @@ export enum UserRolesEnum {
 
 export type UserRole = 'Admin' | 'Scrutiny' | 'Promoter'
 
+export type DashboardActions = 'dashboard'
 export type SettingsActions =
   | 'get-general-settings'
   | 'get-general-settings-by-setting-name'
@@ -26,6 +27,7 @@ export type ScrutinySettings =
 export type PromoterActions = 'change-promoter' | 'label-promoter'
 
 export type RoleActionPermissions = {
+  dashboard: DashboardActions[]
   settings: SettingsActions[]
   raffleResult: RaffleResultActions[]
   raffleScrutiny: RaffleScrutinyActions[]
@@ -39,6 +41,7 @@ export type RolePermissionsMap = {
 
 export const rolePermissions: RolePermissionsMap = {
   Admin: {
+    dashboard: ['dashboard'],
     settings: [
       'get-general-settings',
       'get-general-settings-by-setting-name',
@@ -56,6 +59,7 @@ export const rolePermissions: RolePermissionsMap = {
     promoter: ['change-promoter'],
   },
   Scrutiny: {
+    dashboard: [] as DashboardActions[],
     settings: [
       'get-general-settings',
       'get-general-settings-by-setting-name',
@@ -72,6 +76,7 @@ export const rolePermissions: RolePermissionsMap = {
     promoter: [] as PromoterActions[],
   },
   Promoter: {
+    dashboard: ['dashboard'],
     settings: [] as SettingsActions[],
     raffleResult: [] as RaffleResultActions[],
     raffleScrutiny: [] as RaffleScrutinyActions[],

@@ -41,9 +41,9 @@ const ChartsWidget2: React.FC<Props> = ({className}) => {
       {/* begin::Header */}
       <div className='card-header border-0 pt-5'>
         <h3 className='card-title align-items-start flex-column'>
-          <span className='card-label fw-bold fs-3 mb-1'>Recent Orders</span>
+          <span className='card-label fw-bold fs-3 mb-1'>Top 5</span>
 
-          <span className='text-muted fw-semibold fs-7'>More than 500 new orders</span>
+          <span className='text-muted fw-semibold fs-7'>Puntos de venta</span>
         </h3>
 
         {/* begin::Toolbar */}
@@ -89,18 +89,18 @@ export {ChartsWidget2}
 function getChartOptions(height: number): ApexOptions {
   const labelColor = getCSSVariableValue('--bs-gray-500')
   const borderColor = getCSSVariableValue('--bs-gray-200')
-  const baseColor = getCSSVariableValue('--bs-warning')
-  const secondaryColor = getCSSVariableValue('--bs-gray-300')
+  const baseColor = getCSSVariableValue('--bs-primary')
+  const secondaryColor = getCSSVariableValue('--bs-danger')
 
   return {
     series: [
       {
-        name: 'Net Profit',
-        data: [44, 55, 57, 56, 61, 58],
+        name: 'USD',
+        data: [44, 55, 57, 56, 61],
       },
       {
-        name: 'Revenue',
-        data: [76, 85, 101, 98, 87, 105],
+        name: 'VES',
+        data: [76, 85, 101, 98, 87],
       },
     ],
     chart: {
@@ -130,7 +130,7 @@ function getChartOptions(height: number): ApexOptions {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+      categories: ['Vendedor 1', 'Vendedor 2', 'Vendedor 3', 'Vendedor 4', 'Vendedor 5'],
       axisBorder: {
         show: false,
       },
