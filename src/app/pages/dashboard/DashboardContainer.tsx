@@ -1,39 +1,32 @@
 import {ChartsWidget1, ChartsWidget2} from '../../../_metronic/partials/widgets'
-import {IDonutSalesPaymentReport} from '../../../types/DonutSalesPaymentReport.types'
 import HasPermission from '../../components/HasPermissions/HasPermissions'
 import RenderLoader from '../../components/RenderLoader/RenderLoader'
+import {BarSalesSalePointReport} from '../../modules/dashboard/sales/bar/BarSalesSalePointReport'
+import {useBarSalesSalePointReport} from '../../modules/dashboard/sales/bar/BarSalesSalePointReport.hook'
+import {BarSalesSellersReport} from '../../modules/dashboard/sales/bar/BarSalesSellersReport'
+import {useBarSalesSellersReport} from '../../modules/dashboard/sales/bar/BarSalesSellersReport.hook'
 import {DonutSalesPaymentReport} from '../../modules/dashboard/sales/donut/DonutSalesPaymentReport'
-import {useDountSalesPaymentReport} from '../../modules/dashboard/sales/donut/DonutSalesPaymentReport.hook'
+import {useFormattedSalesPaymentData} from './DashboardContainer.hook'
 
 const DashboardContainer = () => {
-  const {isLoading, dailyData, monthlyData} = useDountSalesPaymentReport()
-  const usdDailyData: IDonutSalesPaymentReport = {
-    totalPaid: dailyData.usdTotalPaid ?? 0,
-    totalSales: dailyData.usdTotalSales ?? 0,
-    totalProfit: dailyData.usdTotalProfit ?? 0,
-  }
-  const vesDailyData: IDonutSalesPaymentReport = {
-    totalPaid: dailyData.vesTotalPaid ?? 0,
-    totalSales: dailyData.vesTotalSales ?? 0,
-    totalProfit: dailyData.vesTotalProfit ?? 0,
-  }
+  const {isLoading, usdDailyData, vesDailyData, usdMonthlyData, vesMonthlyData} =
+    useFormattedSalesPaymentData()
 
-  const usdMonthlyData: IDonutSalesPaymentReport = {
-    totalPaid: monthlyData.usdTotalPaid ?? 0,
-    totalSales: monthlyData.usdTotalSales ?? 0,
-    totalProfit: monthlyData.usdTotalProfit ?? 0,
-  }
-  const vesMonthlyData: IDonutSalesPaymentReport = {
-    totalPaid: monthlyData.vesTotalPaid ?? 0,
-    totalSales: monthlyData.vesTotalSales ?? 0,
-    totalProfit: monthlyData.vesTotalProfit ?? 0,
-  }
+  const {
+    isLoadingSalesSalePointReport,
+    salesSalePointData,
+    setSalesSalePointTempFilters,
+    saleSalesPointTempFilters,
+  } = useBarSalesSalePointReport()
+  const canLoadDonutReports = !isLoading && usdDailyData.totalSales && usdMonthlyData.totalSales
+  const canLoadBarReports =
+    !isLoadingSalesSalePointReport && salesSalePointData && salesSalePointData.length > 0
 
   return (
     <>
       <HasPermission resource='dashboard' actions={['dashboard']}>
         <RenderLoader show={isLoading} huge={true} />
-        {!isLoading && dailyData.usdTotalSales && monthlyData.usdTotalSales && (
+        {canLoadDonutReports && (
           <div className='row'>
             <div className='col-xl-3'>
               <DonutSalesPaymentReport
@@ -75,12 +68,21 @@ const DashboardContainer = () => {
                 reportData={vesMonthlyData}
               />
             </div>
-            <div className='col-xl-6'>
-              <ChartsWidget1 className='card-xxl-stretch mb-5 mb-xl-10' />
-            </div>
-            <div className='col-xl-6'>
-              <ChartsWidget2 className='card-xxl-stretch mb-5 mb-xl-10' />
-            </div>
+          </div>
+        )}
+        {canLoadBarReports && (
+          <div className='row'>
+            {salesSalePointData.map((data, index) => (
+              <div className='col-xl-6' key={index}>
+                <BarSalesSalePointReport
+                  setTempFilters={setSalesSalePointTempFilters}
+                  tempFilters={saleSalesPointTempFilters}
+                  className='card-xxl-stretch mb-5 mb-xl-10'
+                  currencyCode={data.currencyCode}
+                  data={data.totalSalesSeller}
+                />
+              </div>
+            ))}
           </div>
         )}
       </HasPermission>
