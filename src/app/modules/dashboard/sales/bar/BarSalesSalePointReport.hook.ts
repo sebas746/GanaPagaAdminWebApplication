@@ -50,15 +50,26 @@ export const useBarSalesSalePointReport = () => {
       params: {
         baseUrl: `/SalesReport/get-total-sales-by-sale-point-report`,
         promoterId: promoterId,
-        reportType: ReportTypes.Daily,
+        reportType: ReportTypes.Monthly,
       } as ISalesPaymentReportQueryParams,
     }
   )
 
   const [tempFilters, setTempFilters] = useState<ISalesPaymentReportQueryParams>({
-    baseUrl: salesSalePointReportState.params.baseUrl,
-    reportType: salesSalePointReportState.params.baseUrl,
+    baseUrl: `/SalesReport/get-total-sales-by-sale-point-report`,
+    reportType: salesSalePointReportState.params.reportType,
   })
+
+  useEffect(() => {
+    handleFilterChange('reportType', tempFilters.reportType)
+  }, [tempFilters])
+
+  const handleFilterChange = (filterName: keyof ISalesPaymentReportQueryParams, value: any) => {
+    dispatchSalesSalePointReport({
+      type: BarSalesSellersReportKind.SET_PARAMS,
+      payload: {[filterName]: value} as ISalesPaymentReportQueryParams,
+    })
+  }
 
   const {
     data: salesSalePointReportData,
@@ -67,14 +78,20 @@ export const useBarSalesSalePointReport = () => {
   } = useQuery<ReactQueryResponse<ISalesSalePointBarReport[]>>(
     'get-total-sales-by-sale-point-report',
     async () => {
-      const url = buildUrl(salesSalePointReportState.params.baseUrl, {
+      const url = buildUrl(`/SalesReport/get-total-sales-by-sale-point-report`, {
         promoterId: salesSalePointReportState.params.promoterId,
-        reportType: ReportTypes.Daily,
+        reportType: salesSalePointReportState.params.reportType,
       })
       return await axios.get(url)
     },
     {enabled: !!promoterId}
   )
+
+  useEffect(() => {
+    if (!isLoading) {
+      getSalesSalePointReport()
+    }
+  }, [salesSalePointReportState.params])
 
   const setDailyData = (payload: ISalesSalePointBarReport[]) => {
     dispatchSalesSalePointReport({type: BarSalesSellersReportKind.SET_DATA, payload})

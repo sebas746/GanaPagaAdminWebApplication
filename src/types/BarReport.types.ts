@@ -10,7 +10,7 @@ export interface ISalesSellersDetailBarReport {
 
 export interface ISalesSalePointBarReport {
   currencyCode: string
-  totalSalesSeller: ISalesSalePointDetailBarReport[]
+  salesSalePointList: ISalesSalePointDetailBarReport[]
 }
 
 export interface ISalesSalePointDetailBarReport {

@@ -53,27 +53,16 @@ const DonutSalesPaymentReport: React.FC<Props> = ({
   }, [chartRef, mode])
 
   return (
-    <div className={`card ${className}`}>
-      {/* begin::Body */}
-      <div className='card-body p-0 d-flex justify-content-between flex-column overflow-hidden'>
-        {/* begin::Hidden */}
-        <div className='d-flex flex-stack flex-wrap flex-grow-1 px-9 pt-9 pb-3'>
-          <div className='me-2'>
-            <span className='fw-bold text-gray-800 d-block fs-3'>Ganancias</span>
-
-            <span className='text-gray-400 fw-semibold'>{title}</span>
-          </div>
-
-          <div className={`fw-bold fs-3 text-${chartColor}`}>
-            {formatCurrency(reportData.totalProfit, currencyCode)}
-          </div>
+    <div className='d-flex justify-content-between flex-column overflow-hidden pb-4'>
+      <div className='d-flex flex-stack flex-wrap flex-grow-1 px-9 pt-9 pb-3'>
+        <div className='me-2'>
+          <span className='text-gray-400 fw-semibold'>{title}</span>
         </div>
-        {/* end::Hidden */}
-
-        {/* begin::Chart */}
-        <div ref={chartRef} className='mixed-widget-10-chart'></div>
-        {/* end::Chart */}
+        <div className={`fw-bold fs-3 text-${chartColor}`}>
+          {formatCurrency(reportData.totalProfit, currencyCode)}
+        </div>
       </div>
+      <div ref={chartRef} className='mixed-widget-10-chart'></div>
     </div>
   )
 }
