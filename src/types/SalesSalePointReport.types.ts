@@ -24,3 +24,9 @@ export interface ISalePointResponse {
   salePointName: string
   salePointAddress: string
 }
+
+export interface ISalesPaymentReportQueryParams {
+  baseUrl: string
+  reportType: string
+  promoterId?: string
+}

@@ -1,28 +1,20 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useEffect, useRef} from 'react'
 import ApexCharts, {ApexOptions} from 'apexcharts'
-import {KTSVG} from '../../../helpers'
-import {Dropdown1} from '../../content/dropdown/Dropdown1'
-import {getCSS, getCSSVariableValue} from '../../../assets/ts/_utils'
-import {useThemeMode} from '../../layout/theme-mode/ThemeModeProvider'
+import {useThemeMode} from '../../../../../_metronic/partials'
+import {getCSS, getCSSVariableValue} from '../../../../../_metronic/assets/ts/_utils'
+import {ISalesPaymentReportQueryParams} from '../../../../../types/SalesSalePointReport.types'
+import {ReportTypes} from '../../../../../types/DonutSalesPaymentReport.types'
 
 type Props = {
   className: string
+  setTempFilters: React.Dispatch<React.SetStateAction<ISalesPaymentReportQueryParams>>
+  tempFilters: ISalesPaymentReportQueryParams
 }
 
-const ChartsWidget1: React.FC<Props> = ({className}) => {
+const BarSalesSellersReport: React.FC<Props> = ({className, setTempFilters, tempFilters}) => {
   const chartRef = useRef<HTMLDivElement | null>(null)
   const {mode} = useThemeMode()
-
-  useEffect(() => {
-    const chart = refreshChart()
-
-    return () => {
-      if (chart) {
-        chart.destroy()
-      }
-    }
-  }, [chartRef, mode])
 
   const refreshChart = () => {
     if (!chartRef.current) {
@@ -39,32 +31,50 @@ const ChartsWidget1: React.FC<Props> = ({className}) => {
     return chart
   }
 
+  useEffect(() => {
+    const chart = refreshChart()
+    return () => {
+      if (chart) {
+        chart.destroy()
+      }
+    }
+  }, [chartRef, mode])
+
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
       <div className='card-header border-0 pt-5'>
-        {/* begin::Title */}
         <h3 className='card-title align-items-start flex-column'>
           <span className='card-label fw-bold fs-3 mb-1'>Top 5</span>
 
-          <span className='text-muted fw-semibold fs-7'>Ventas por vendedor</span>
+          <span className='text-muted fw-semibold fs-7'>Puntos de venta</span>
         </h3>
-        {/* end::Title */}
 
         {/* begin::Toolbar */}
-        <div className='card-toolbar'>
-          {/* begin::Menu */}
-          <button
-            type='button'
-            className='btn btn-sm btn-icon btn-color-primary btn-active-light-primary'
-            data-kt-menu-trigger='click'
-            data-kt-menu-placement='bottom-end'
-            data-kt-menu-flip='top-end'
+        <div className='card-toolbar' data-kt-buttons='true'>
+          <a
+            className='btn btn-sm btn-color-muted btn-active btn-active-primary active px-4 me-1'
+            id='kt_charts_widget_2_year_btn'
+            onClick={(e) => setTempFilters((prev) => ({...prev, reportType: ReportTypes.Monthly}))}
           >
-            <KTSVG path='/media/icons/duotune/general/gen024.svg' className='svg-icon-2' />
-          </button>
-          <Dropdown1 />
-          {/* end::Menu */}
+            Mensual
+          </a>
+
+          <a
+            className='btn btn-sm btn-color-muted btn-active btn-active-primary px-4 me-1'
+            id='kt_charts_widget_2_month_btn'
+            onClick={(e) => setTempFilters((prev) => ({...prev, reportType: ReportTypes.Weekly}))}
+          >
+            Semanal
+          </a>
+
+          <a
+            className='btn btn-sm btn-color-muted btn-active btn-active-primary px-4'
+            id='kt_charts_widget_2_week_btn'
+            onClick={(e) => setTempFilters((prev) => ({...prev, reportType: ReportTypes.Daily}))}
+          >
+            Diario
+          </a>
         </div>
         {/* end::Toolbar */}
       </div>
@@ -73,7 +83,7 @@ const ChartsWidget1: React.FC<Props> = ({className}) => {
       {/* begin::Body */}
       <div className='card-body'>
         {/* begin::Chart */}
-        <div ref={chartRef} id='kt_charts_widget_1_chart' style={{height: '350px'}} />
+        <div ref={chartRef} id='kt_charts_widget_2_chart' style={{height: '350px'}}></div>
         {/* end::Chart */}
       </div>
       {/* end::Body */}
@@ -81,7 +91,7 @@ const ChartsWidget1: React.FC<Props> = ({className}) => {
   )
 }
 
-export {ChartsWidget1}
+export {BarSalesSellersReport}
 
 function getChartOptions(height: number): ApexOptions {
   const labelColor = getCSSVariableValue('--bs-gray-500')
@@ -93,11 +103,11 @@ function getChartOptions(height: number): ApexOptions {
     series: [
       {
         name: 'USD',
-        data: [440, 550, 571, 566, 611],
+        data: [44, 55, 57, 56, 61],
       },
       {
         name: 'VES',
-        data: [766, 850, 101, 980, 874],
+        data: [76, 85, 101, 98, 87],
       },
     ],
     chart: {
@@ -127,7 +137,7 @@ function getChartOptions(height: number): ApexOptions {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: ['Punto 1', 'Punto 2', 'Punto 3', 'Punto 4', 'Punto 5'],
+      categories: ['Vendedor 1', 'Vendedor 2', 'Vendedor 3', 'Vendedor 4', 'Vendedor 5'],
       axisBorder: {
         show: false,
       },

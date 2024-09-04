@@ -1,16 +1,22 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useEffect, useRef} from 'react'
 import ApexCharts, {ApexOptions} from 'apexcharts'
-import {getCSS, getCSSVariableValue} from '../../../assets/ts/_utils'
-import {useThemeMode} from '../../layout/theme-mode/ThemeModeProvider'
+import {useThemeMode} from '../../../../../_metronic/partials'
+import {getCSS, getCSSVariableValue} from '../../../../../_metronic/assets/ts/_utils'
+import {ISalesPaymentReportQueryParams} from '../../../../../types/SalesSalePointReport.types'
+import {ReportTypes} from '../../../../../types/DonutSalesPaymentReport.types'
+import {ISalesSalePointDetailBarReport} from '../../../../../types/BarReport.types'
+import {CURRENCY_USD} from '../../../../constants/reports.constants'
+import {formatCurrency} from '../../../../helpers/currency.helpers'
 
 type Props = {
-  className: string
+  currencyCode: string
+  data: ISalesSalePointDetailBarReport[]
+  mode: string
 }
 
-const ChartsWidget2: React.FC<Props> = ({className}) => {
+const BarSalesSalePointReport: React.FC<Props> = ({currencyCode, data, mode}) => {
   const chartRef = useRef<HTMLDivElement | null>(null)
-  const {mode} = useThemeMode()
 
   const refreshChart = () => {
     if (!chartRef.current) {
@@ -19,7 +25,7 @@ const ChartsWidget2: React.FC<Props> = ({className}) => {
 
     const height = parseInt(getCSS(chartRef.current, 'height'))
 
-    const chart = new ApexCharts(chartRef.current, getChartOptions(height))
+    const chart = new ApexCharts(chartRef.current, getChartOptions(height, currencyCode, data))
     if (chart) {
       chart.render()
     }
@@ -36,71 +42,33 @@ const ChartsWidget2: React.FC<Props> = ({className}) => {
     }
   }, [chartRef, mode])
 
-  return (
-    <div className={`card ${className}`}>
-      {/* begin::Header */}
-      <div className='card-header border-0 pt-5'>
-        <h3 className='card-title align-items-start flex-column'>
-          <span className='card-label fw-bold fs-3 mb-1'>Top 5</span>
-
-          <span className='text-muted fw-semibold fs-7'>Puntos de venta</span>
-        </h3>
-
-        {/* begin::Toolbar */}
-        <div className='card-toolbar' data-kt-buttons='true'>
-          <a
-            className='btn btn-sm btn-color-muted btn-active btn-active-primary active px-4 me-1'
-            id='kt_charts_widget_2_year_btn'
-          >
-            Year
-          </a>
-
-          <a
-            className='btn btn-sm btn-color-muted btn-active btn-active-primary px-4 me-1'
-            id='kt_charts_widget_2_month_btn'
-          >
-            Month
-          </a>
-
-          <a
-            className='btn btn-sm btn-color-muted btn-active btn-active-primary px-4'
-            id='kt_charts_widget_2_week_btn'
-          >
-            Week
-          </a>
-        </div>
-        {/* end::Toolbar */}
-      </div>
-      {/* end::Header */}
-
-      {/* begin::Body */}
-      <div className='card-body'>
-        {/* begin::Chart */}
-        <div ref={chartRef} id='kt_charts_widget_2_chart' style={{height: '350px'}}></div>
-        {/* end::Chart */}
-      </div>
-      {/* end::Body */}
-    </div>
-  )
+  return <div ref={chartRef} id={`chart-${currencyCode}`} style={{height: '350px'}}></div>
 }
 
-export {ChartsWidget2}
+export {BarSalesSalePointReport}
 
-function getChartOptions(height: number): ApexOptions {
+function getChartOptions(
+  height: number,
+  currencyCode: string,
+  data: ISalesSalePointDetailBarReport[]
+): ApexOptions {
   const labelColor = getCSSVariableValue('--bs-gray-500')
   const borderColor = getCSSVariableValue('--bs-gray-200')
-  const baseColor = getCSSVariableValue('--bs-primary')
+  const baseColor =
+    currencyCode === CURRENCY_USD
+      ? getCSSVariableValue('--bs-primary')
+      : getCSSVariableValue('--bs-danger')
   const secondaryColor = getCSSVariableValue('--bs-danger')
+
+  const salePoints = data.map((item) => item.salePoint)
+  const totalSales = data.map((item) => item.totalSales)
+  console.log(salePoints)
 
   return {
     series: [
       {
-        name: 'USD',
-        data: [44, 55, 57, 56, 61],
-      },
-      {
-        name: 'VES',
-        data: [76, 85, 101, 98, 87],
+        name: 'Total Ventas',
+        data: totalSales,
       },
     ],
     chart: {
@@ -130,7 +98,7 @@ function getChartOptions(height: number): ApexOptions {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: ['Vendedor 1', 'Vendedor 2', 'Vendedor 3', 'Vendedor 4', 'Vendedor 5'],
+      categories: salePoints,
       axisBorder: {
         show: false,
       },
@@ -182,7 +150,7 @@ function getChartOptions(height: number): ApexOptions {
       },
       y: {
         formatter: function (val) {
-          return '$' + val + ' thousands'
+          return formatCurrency(val, currencyCode)
         },
       },
     },
