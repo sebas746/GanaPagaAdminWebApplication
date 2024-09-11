@@ -1,11 +1,7 @@
-import {ChartsWidget1, ChartsWidget2} from '../../../_metronic/partials/widgets'
 import HasPermission from '../../components/HasPermissions/HasPermissions'
 import RenderLoader from '../../components/RenderLoader/RenderLoader'
-import {BarSalesSalePointReport} from '../../modules/dashboard/sales/bar/BarSalesSalePointReport'
 import {useBarSalesSalePointReport} from '../../modules/dashboard/sales/bar/BarSalesSalePointReport.hook'
 import {BarSalesSalePointReportWrapper} from '../../modules/dashboard/sales/bar/BarSalesSalePointReportWrapper'
-import {BarSalesSellersReport} from '../../modules/dashboard/sales/bar/BarSalesSellersReport'
-import {useBarSalesSellersReport} from '../../modules/dashboard/sales/bar/BarSalesSellersReport.hook'
 import {DonutSalesPaymentReport} from '../../modules/dashboard/sales/donut/DonutSalesPaymentReport'
 import {useFormattedSalesPaymentData} from './DashboardContainer.hook'
 
@@ -26,7 +22,6 @@ const DashboardContainer = () => {
   const usdSalePointData =
     salesSalePointData.find((data) => data.currencyCode === 'USD')?.salesSalePointList || []
 
-  // Extract data for VES
   const vesSalePointData =
     salesSalePointData.find((data) => data.currencyCode === 'VES')?.salesSalePointList || []
 
