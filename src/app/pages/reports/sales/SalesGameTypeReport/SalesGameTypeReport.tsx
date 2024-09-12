@@ -1,16 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useEffect, useRef} from 'react'
 import ApexCharts, {ApexOptions} from 'apexcharts'
-import {KTSVG} from '../../../helpers'
-import {Dropdown1} from '../../content/dropdown/Dropdown1'
-import {getCSS, getCSSVariableValue} from '../../../assets/ts/_utils'
-import {useThemeMode} from '../../layout/theme-mode/ThemeModeProvider'
+import {useThemeMode} from '../../../../../_metronic/partials/layout/theme-mode/ThemeModeProvider'
+import {getCSS, getCSSVariableValue} from '../../../../../_metronic/assets/ts/_utils'
+import {KTSVG} from '../../../../../_metronic/helpers/components/KTSVG'
+import {Dropdown1} from '../../../../../_metronic/partials/content/dropdown/Dropdown1'
+import {CURRENCY_USD} from '../../../../constants/reports.constants'
 
 type Props = {
   className: string
+  currencyCode: string
 }
 
-const ChartsWidget1: React.FC<Props> = ({className}) => {
+const SalesGameTypeReport: React.FC<Props> = ({className, currencyCode}) => {
   const chartRef = useRef<HTMLDivElement | null>(null)
   const {mode} = useThemeMode()
 
@@ -31,7 +33,7 @@ const ChartsWidget1: React.FC<Props> = ({className}) => {
 
     const height = parseInt(getCSS(chartRef.current, 'height'))
 
-    const chart = new ApexCharts(chartRef.current, getChartOptions(height))
+    const chart = new ApexCharts(chartRef.current, getChartOptions(height, currencyCode))
     if (chart) {
       chart.render()
     }
@@ -40,60 +42,28 @@ const ChartsWidget1: React.FC<Props> = ({className}) => {
   }
 
   return (
-    <div className={`card ${className}`}>
-      {/* begin::Header */}
-      <div className='card-header border-0 pt-5'>
-        {/* begin::Title */}
-        <h3 className='card-title align-items-start flex-column'>
-          <span className='card-label fw-bold fs-3 mb-1'>Top 5</span>
-
-          <span className='text-muted fw-semibold fs-7'>Ventas por vendedor</span>
-        </h3>
-        {/* end::Title */}
-
-        {/* begin::Toolbar */}
-        <div className='card-toolbar'>
-          {/* begin::Menu */}
-          <button
-            type='button'
-            className='btn btn-sm btn-icon btn-color-primary btn-active-light-primary'
-            data-kt-menu-trigger='click'
-            data-kt-menu-placement='bottom-end'
-            data-kt-menu-flip='top-end'
-          >
-            <KTSVG path='/media/icons/duotune/general/gen024.svg' className='svg-icon-2' />
-          </button>
-          <Dropdown1 />
-          {/* end::Menu */}
-        </div>
-        {/* end::Toolbar */}
-      </div>
-      {/* end::Header */}
-
-      {/* begin::Body */}
-      <div className='card-body'>
-        {/* begin::Chart */}
-        <div ref={chartRef} id='kt_charts_widget_1_chart' style={{height: '350px'}} />
-        {/* end::Chart */}
-      </div>
-      {/* end::Body */}
+    <div className={className}>
+      <div ref={chartRef} id='kt_charts_widget_1_chart' style={{height: '350px'}} />
     </div>
   )
 }
 
-export {ChartsWidget1}
+export {SalesGameTypeReport}
 
-function getChartOptions(height: number): ApexOptions {
+function getChartOptions(height: number, currencyCode: string): ApexOptions {
   const labelColor = getCSSVariableValue('--bs-gray-500')
   const borderColor = getCSSVariableValue('--bs-gray-200')
-  const baseColor = getCSSVariableValue('--bs-primary')
+  const baseColor =
+    currencyCode === CURRENCY_USD
+      ? getCSSVariableValue('--bs-primary')
+      : getCSSVariableValue('--bs-danger')
   const secondaryColor = getCSSVariableValue('--bs-danger')
 
   return {
     series: [
       {
-        name: 'USD',
-        data: [1500, 250, 100, 91, 66],
+        name: currencyCode,
+        data: [1500, 1000, 100, 91, 66],
       },
     ],
     chart: {

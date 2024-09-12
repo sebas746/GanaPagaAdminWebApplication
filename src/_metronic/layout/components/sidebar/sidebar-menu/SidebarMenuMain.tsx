@@ -170,6 +170,11 @@ const SidebarMenuMain = () => {
             hasBullet={true}
           />
           <SidebarMenuItem
+            to='/pages/sales-reports/sales-game-type-report'
+            title='Reporte Tipo de Juegos'
+            hasBullet={true}
+          />
+          <SidebarMenuItem
             to='/pages/sales-reports/ticket-report'
             title='Reporte Tiquetes'
             hasBullet={true}
