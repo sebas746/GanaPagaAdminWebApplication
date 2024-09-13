@@ -17,3 +17,14 @@ export interface ISalesSalePointDetailBarReport {
   totalSales: number
   salePoint: string
 }
+
+export interface ISalesGameTypeBarReport {
+  currencyCode: string
+  salesGameTypeList: ISalesSalePointDetailBarReport[]
+}
+
+export interface ISalesGameTypeDetailBarReport {
+  totalSales: number
+  gameType: string
+  gameTypeName: string
+}

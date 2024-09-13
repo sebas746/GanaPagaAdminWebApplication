@@ -1,16 +1,18 @@
-import {Mixed} from '../../../../modules/widgets/components/Mixed'
+import {useThemeMode} from '../../../../../_metronic/partials/layout/theme-mode/ThemeModeProvider'
+import {ISalesGameTypeDetailBarReport} from '../../../../../types/BarReport.types'
+import {ReportTypes} from '../../../../../types/DonutSalesPaymentReport.types'
+import {ISalesGameTypeReportQueryParams} from '../../../../../types/SalesGameTypeReport.types'
 import {SalesGameTypeReport} from './SalesGameTypeReport'
-
 
 type CurrencyData = {
   currencyCode: string
-  data: ISalesSalePointDetailBarReport[]
+  data: ISalesGameTypeDetailBarReport[]
 }
 
 type Props = {
   className: string
-  setTempFilters: React.Dispatch<React.SetStateAction<ISalesPaymentReportQueryParams>>
-  tempFilters: ISalesPaymentReportQueryParams
+  setTempFilters: React.Dispatch<React.SetStateAction<ISalesGameTypeReportQueryParams>>
+  tempFilters: ISalesGameTypeReportQueryParams
   currenciesData: CurrencyData[]
 }
 
@@ -20,6 +22,8 @@ const SalesGameTypeReportWrapper: React.FC<Props> = ({
   tempFilters,
   currenciesData,
 }) => {
+  const {mode} = useThemeMode()
+  const isActive = (reportType: ReportTypes) => tempFilters.reportType === reportType
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
@@ -82,7 +86,12 @@ const SalesGameTypeReportWrapper: React.FC<Props> = ({
         <div className='row'>
           {currenciesData.map((currencyData, index) => (
             <div className='col-md-6' key={index}>
-              <SalesGameTypeReport className='mb-4' currencyCode='USD' />
+              <SalesGameTypeReport
+                className='mb-4'
+                currencyCode={currencyData.currencyCode}
+                mode={mode}
+                data={currencyData.data}
+              />
             </div>
           ))}
         </div>

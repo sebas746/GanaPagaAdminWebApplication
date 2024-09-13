@@ -1,8 +1,10 @@
+import SalesGameTypeReportWrapper from "./SalesGameTypeReportWrapper"
+
 const SalesGameTypeReportContainer = () => {
   return (
     <div className='row'>
       <div className='col-xl-12'>
-        <BarSalesSalePointReportWrapper
+        <SalesGameTypeReportWrapper />
           className='card-xl-stretch mb-5 mb-xl-8'
           setTempFilters={setSalesSalePointTempFilters}
           tempFilters={saleSalesPointTempFilters}
