@@ -1,10 +1,9 @@
 import {Outlet, Route, Routes} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
-import ExchangeRateSettings from '../../pages/system-settings/exchange-rate-settings/ExchangeRateSettings'
 import SalesSellerReport from '../../pages/reports/sales/SalesSellerReport/SalesSellerReport'
 import SalesSalePointReport from '../../pages/reports/sales/SalesSalePointReport/SalesSalePointReport'
 import TicketReport from '../../pages/reports/sales/TicketReport/TicketReport'
-import SalesGameTypeReportWrapper from '../../pages/reports/sales/SalesGameTypeReport/SalesGameTypeReportWrapper'
+import SalesGameTypeReportContainer from '../../pages/reports/sales/SalesGameTypeReport/SalesGameTypeReportContainer'
 
 const salesSellerReportBreadCrumbs: Array<PageLink> = [
   {
@@ -54,7 +53,7 @@ function SalesSellerReportPage() {
               <PageTitle breadcrumbs={salesSellerReportBreadCrumbs}>
                 Reporte de ventas por tipo de juego
               </PageTitle>
-              <SalesGameTypeReportWrapper />
+              <SalesGameTypeReportContainer />
             </>
           }
         />

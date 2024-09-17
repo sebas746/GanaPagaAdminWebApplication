@@ -3,16 +3,17 @@ import React, {useEffect, useRef} from 'react'
 import ApexCharts, {ApexOptions} from 'apexcharts'
 import {getCSS, getCSSVariableValue} from '../../../../../_metronic/assets/ts/_utils'
 import {CURRENCY_USD} from '../../../../constants/reports.constants'
-import {ISalesGameTypeDetailBarReport} from '../../../../../types/BarReport.types'
+import {ISalesGameTypeDetailReport} from '../../../../../types/SalesGameTypeReport.types'
+import {formatCurrency} from '../../../../helpers/currency.helpers'
 
 type Props = {
   className: string
   currencyCode: string
   mode: string
-  data: ISalesGameTypeDetailBarReport[]
+  data: ISalesGameTypeDetailReport[]
 }
 
-const SalesGameTypeReport: React.FC<Props> = ({className, currencyCode, mode}) => {
+const SalesGameTypeReport: React.FC<Props> = ({className, currencyCode, mode, data}) => {
   const chartRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const SalesGameTypeReport: React.FC<Props> = ({className, currencyCode, mode}) =
         chart.destroy()
       }
     }
-  }, [chartRef, mode])
+  }, [chartRef, mode, data])
 
   const refreshChart = () => {
     if (!chartRef.current) {
@@ -32,7 +33,7 @@ const SalesGameTypeReport: React.FC<Props> = ({className, currencyCode, mode}) =
 
     const height = parseInt(getCSS(chartRef.current, 'height'))
 
-    const chart = new ApexCharts(chartRef.current, getChartOptions(height, currencyCode))
+    const chart = new ApexCharts(chartRef.current, getChartOptions(height, currencyCode, data))
     if (chart) {
       chart.render()
     }
@@ -49,7 +50,11 @@ const SalesGameTypeReport: React.FC<Props> = ({className, currencyCode, mode}) =
 
 export {SalesGameTypeReport}
 
-function getChartOptions(height: number, currencyCode: string): ApexOptions {
+function getChartOptions(
+  height: number,
+  currencyCode: string,
+  data: ISalesGameTypeDetailReport[]
+): ApexOptions {
   const labelColor = getCSSVariableValue('--bs-gray-500')
   const borderColor = getCSSVariableValue('--bs-gray-200')
   const baseColor =
@@ -58,11 +63,14 @@ function getChartOptions(height: number, currencyCode: string): ApexOptions {
       : getCSSVariableValue('--bs-danger')
   const secondaryColor = getCSSVariableValue('--bs-danger')
 
+  const gameTypes = data.map((item) => item.gameTypeName)
+  const totalSales = data.map((item) => item.totalSales)
+
   return {
     series: [
       {
         name: currencyCode,
-        data: [1500, 1000, 100, 91, 66],
+        data: totalSales,
       },
     ],
     chart: {
@@ -92,7 +100,7 @@ function getChartOptions(height: number, currencyCode: string): ApexOptions {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: ['Animalitos', 'Tripleta', 'Chance 3', 'Chance Zodiacal', 'Chance 4'],
+      categories: gameTypes,
       axisBorder: {
         show: false,
       },
@@ -144,7 +152,7 @@ function getChartOptions(height: number, currencyCode: string): ApexOptions {
       },
       y: {
         formatter: function (val) {
-          return '$' + val + ' thousands'
+          return formatCurrency(val, currencyCode)
         },
       },
     },

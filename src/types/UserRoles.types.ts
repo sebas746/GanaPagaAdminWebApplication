@@ -23,6 +23,7 @@ export type ScrutinySettings =
   | 'add-admin-email'
   | 'update-admin-email'
   | 'delete-admin-email'
+export type ReportsActions = 'game-type-report'
 
 export type PromoterActions = 'change-promoter' | 'label-promoter'
 
@@ -33,6 +34,7 @@ export type RoleActionPermissions = {
   raffleScrutiny: RaffleScrutinyActions[]
   scrutinySettings: ScrutinySettings[]
   promoter: PromoterActions[]
+  reports: ReportsActions[]
 }
 
 export type RolePermissionsMap = {
@@ -57,6 +59,7 @@ export const rolePermissions: RolePermissionsMap = {
       'update-admin-email',
     ],
     promoter: ['change-promoter'],
+    reports: ['game-type-report'],
   },
   Scrutiny: {
     dashboard: [] as DashboardActions[],
@@ -74,6 +77,7 @@ export const rolePermissions: RolePermissionsMap = {
     raffleScrutiny: ['create-scrutiny', 'view-scrutiny'],
     scrutinySettings: [] as ScrutinySettings[],
     promoter: [] as PromoterActions[],
+    reports: [] as ReportsActions[],
   },
   Promoter: {
     dashboard: ['dashboard'],
@@ -82,5 +86,6 @@ export const rolePermissions: RolePermissionsMap = {
     raffleScrutiny: [] as RaffleScrutinyActions[],
     scrutinySettings: [] as ScrutinySettings[],
     promoter: ['label-promoter'] as PromoterActions[],
+    reports: ['game-type-report'],
   },
 }

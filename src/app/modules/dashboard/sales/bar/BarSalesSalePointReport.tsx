@@ -37,7 +37,7 @@ const BarSalesSalePointReport: React.FC<Props> = ({currencyCode, data, mode}) =>
         chart.destroy()
       }
     }
-  }, [chartRef, mode])
+  }, [chartRef, mode, data])
 
   return <div ref={chartRef} id={`chart-${currencyCode}`} style={{height: '350px'}}></div>
 }
@@ -59,8 +59,6 @@ function getChartOptions(
 
   const salePoints = data.map((item) => item.salePoint)
   const totalSales = data.map((item) => item.totalSales)
-  console.log(salePoints)
-
   return {
     series: [
       {

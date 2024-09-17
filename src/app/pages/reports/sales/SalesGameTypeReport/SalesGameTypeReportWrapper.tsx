@@ -1,12 +1,14 @@
 import {useThemeMode} from '../../../../../_metronic/partials/layout/theme-mode/ThemeModeProvider'
-import {ISalesGameTypeDetailBarReport} from '../../../../../types/BarReport.types'
 import {ReportTypes} from '../../../../../types/DonutSalesPaymentReport.types'
-import {ISalesGameTypeReportQueryParams} from '../../../../../types/SalesGameTypeReport.types'
+import {
+  ISalesGameTypeDetailReport,
+  ISalesGameTypeReportQueryParams,
+} from '../../../../../types/SalesGameTypeReport.types'
 import {SalesGameTypeReport} from './SalesGameTypeReport'
 
 type CurrencyData = {
   currencyCode: string
-  data: ISalesGameTypeDetailBarReport[]
+  data: ISalesGameTypeDetailReport[]
 }
 
 type Props = {
@@ -24,6 +26,7 @@ const SalesGameTypeReportWrapper: React.FC<Props> = ({
 }) => {
   const {mode} = useThemeMode()
   const isActive = (reportType: ReportTypes) => tempFilters.reportType === reportType
+
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
