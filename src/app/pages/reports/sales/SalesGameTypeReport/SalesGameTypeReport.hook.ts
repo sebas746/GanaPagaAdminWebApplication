@@ -9,22 +9,30 @@ import {useQuery} from 'react-query'
 import {ISalesSalePointBarReport} from '../../../../../types/BarReport.types'
 import {
   ISalesGameTypeBarReport,
+  ISalesGameTypeDetailReport,
   ISalesGameTypeReportQueryParams,
 } from '../../../../../types/SalesGameTypeReport.types'
+import {gameType} from '../../../../constants/game-type.constants'
+import {ISalesLotteryGameTypeBarReport} from '../../../../../types/SalesLotteryGameTypeReport.types'
 
 enum SalesGameTypeReportKind {
   SET_DATA = 'SET_DATA',
   SET_PARAMS = 'SET_PARAMS',
+  SET_LOTTERY_DATA = 'SET_LOTTERY_DATA',
 }
 
 interface SalesGameTypeReportAction {
   type: SalesGameTypeReportKind
-  payload: ISalesGameTypeBarReport[] | ISalesGameTypeReportQueryParams
+  payload:
+    | ISalesGameTypeBarReport[]
+    | ISalesGameTypeReportQueryParams
+    | ISalesLotteryGameTypeBarReport[]
 }
 
 interface BarSalesSellersReportState {
   data: ISalesGameTypeBarReport[]
   params: ISalesGameTypeReportQueryParams
+  lotteryData: ISalesLotteryGameTypeBarReport[]
 }
 
 export const barSalesSellersReportReducer = (
@@ -42,6 +50,11 @@ export const barSalesSellersReportReducer = (
         ...state,
         params: action.payload as ISalesGameTypeReportQueryParams,
       }
+    case SalesGameTypeReportKind.SET_LOTTERY_DATA:
+      return {
+        ...state,
+        lotteryData: action.payload as ISalesLotteryGameTypeBarReport[],
+      }
   }
 }
 
@@ -52,26 +65,37 @@ export const useSalesGameTypeReport = () => {
     {
       data: [] as ISalesGameTypeBarReport[],
       params: {
-        baseUrl: `/SalesReport/get-total-sales-by-game-type-report`,
         promoterId: promoterId,
         reportType: ReportTypes.Monthly,
+        gameType: '',
       } as ISalesGameTypeReportQueryParams,
+      lotteryData: [] as ISalesLotteryGameTypeBarReport[],
     }
   )
 
   const [tempFilters, setTempFilters] = useState<ISalesGameTypeReportQueryParams>({
-    baseUrl: `/SalesReport/get-total-sales-by-game-type-report`,
+    promoterId: salesGameTypeReportState.params.promoterId,
     reportType: salesGameTypeReportState.params.reportType,
+    gameType: salesGameTypeReportState.params.gameType || '',
   })
 
   useEffect(() => {
-    handleFilterChange('reportType', tempFilters.reportType)
+    if (tempFilters.reportType !== salesGameTypeReportState.params.reportType) {
+      handleFilterChange('reportType', tempFilters.reportType)
+    }
+
+    if (tempFilters.gameType !== salesGameTypeReportState.params.gameType) {
+      handleFilterChange('gameType', tempFilters.gameType)
+    }
   }, [tempFilters])
 
   const handleFilterChange = (filterName: keyof ISalesGameTypeReportQueryParams, value: any) => {
     dispatchSalesGameTypeReport({
       type: SalesGameTypeReportKind.SET_PARAMS,
-      payload: {[filterName]: value} as ISalesGameTypeReportQueryParams,
+      payload: {
+        ...salesGameTypeReportState.params,
+        [filterName]: value,
+      } as ISalesGameTypeReportQueryParams,
     })
   }
 
@@ -91,9 +115,30 @@ export const useSalesGameTypeReport = () => {
     {enabled: !!promoterId}
   )
 
+  const {
+    data: salesLotteryGameTypeReportData,
+    isFetching: isLoadingLottery,
+    refetch: getLotterySalesGameTypeReport,
+  } = useQuery<ReactQueryResponse<ISalesLotteryGameTypeBarReport[]>>(
+    'get-lottery-total-sales-by-game-type-report',
+    async () => {
+      const url = buildUrl(`/SalesReport/get-lottery-total-sales-by-game-type-report`, {
+        promoterId: salesGameTypeReportState.params.promoterId,
+        reportType: salesGameTypeReportState.params.reportType,
+        gameType: salesGameTypeReportState.params.gameType,
+      })
+      return await axios.get(url)
+    },
+    {enabled: false}
+  )
+
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && (tempFilters.gameType === undefined || tempFilters.gameType === '')) {
       getSalesGameTypeReport()
+    }
+
+    if (!isLoadingLottery && tempFilters.gameType && tempFilters.gameType !== '') {
+      getLotterySalesGameTypeReport()
     }
   }, [salesGameTypeReportState.params])
 
@@ -101,11 +146,25 @@ export const useSalesGameTypeReport = () => {
     dispatchSalesGameTypeReport({type: SalesGameTypeReportKind.SET_DATA, payload})
   }
 
+  const setLotteryData = (payload: ISalesLotteryGameTypeBarReport[]) => {
+    dispatchSalesGameTypeReport({type: SalesGameTypeReportKind.SET_LOTTERY_DATA, payload})
+  }
+
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && (tempFilters.gameType === undefined || tempFilters.gameType === '')) {
       getSalesGameTypeReport()
     }
+
+    if (!isLoadingLottery && tempFilters.gameType && tempFilters.gameType !== '') {
+      getLotterySalesGameTypeReport()
+    }
   }, [])
+
+  useEffect(() => {
+    if (!isLoadingLottery && salesLotteryGameTypeReportData) {
+      setLotteryData(salesLotteryGameTypeReportData.data.response)
+    }
+  }, [isLoadingLottery, salesLotteryGameTypeReportData])
 
   useEffect(() => {
     if (!isLoading && salesGameTypeReportData) {
@@ -114,8 +173,9 @@ export const useSalesGameTypeReport = () => {
   }, [isLoading, salesGameTypeReportData])
 
   return {
-    isLoadingSalesGameTypeReport: isLoading,
+    isLoadingSalesGameTypeReport: isLoading || isLoadingLottery,
     salesGameTypeData: salesGameTypeReportState.data,
+    salesLotteryGameTypeData: salesGameTypeReportState.lotteryData,
     setSalesGameTypeTempFilters: setTempFilters,
     saleGameTypeTempFilters: tempFilters,
   }

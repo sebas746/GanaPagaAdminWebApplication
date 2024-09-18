@@ -1,4 +1,5 @@
 import HasPermission from '../../../../components/HasPermissions/HasPermissions'
+import RenderLoader from '../../../../components/RenderLoader/RenderLoader'
 import {useSalesGameTypeReport} from './SalesGameTypeReport.hook'
 import SalesGameTypeReportWrapper from './SalesGameTypeReportWrapper'
 
@@ -8,30 +9,65 @@ const SalesGameTypeReportContainer = () => {
     saleGameTypeTempFilters,
     salesGameTypeData,
     setSalesGameTypeTempFilters,
+    salesLotteryGameTypeData,
   } = useSalesGameTypeReport()
 
-  const usdSalePointData =
+  const usdGameTypeData =
     salesGameTypeData.find((data) => data.currencyCode === 'USD')?.salesGameTypeList || []
 
-  const vesSalePointData =
+  const vesGameTypeData =
     salesGameTypeData.find((data) => data.currencyCode === 'VES')?.salesGameTypeList || []
 
-  const canLoadReport =
-    !isLoadingSalesGameTypeReport && salesGameTypeData && salesGameTypeData.length > 0
+  const usdLotteryGameTypeData =
+    salesLotteryGameTypeData.find((data) => data.currencyCode === 'USD')
+      ?.salesLotteryGameTypeList || []
+
+  const vesLotteryGameTypeData =
+    salesLotteryGameTypeData.find((data) => data.currencyCode === 'VES')
+      ?.salesLotteryGameTypeList || []
+
+  const canLoadReport = !isLoadingSalesGameTypeReport && salesGameTypeData
+
+  const isSalesGameReport =
+    saleGameTypeTempFilters.gameType === undefined || saleGameTypeTempFilters.gameType === ''
+
+  const canLoadLotteryReport = !isLoadingSalesGameTypeReport && salesLotteryGameTypeData
+
+  const isLotterySalesGameReport =
+    saleGameTypeTempFilters.gameType && saleGameTypeTempFilters.gameType !== ''
+
   return (
     <>
       <HasPermission resource='reports' actions={['game-type-report']}>
-        {canLoadReport && (
+        <RenderLoader show={isLoadingSalesGameTypeReport} huge={true} />
+        {canLoadReport && isSalesGameReport && (
           <div className='row'>
             <div className='col-xl-12'>
               <SalesGameTypeReportWrapper
                 className='card-xl-stretch mb-5 mb-xl-8'
                 setTempFilters={setSalesGameTypeTempFilters}
                 tempFilters={saleGameTypeTempFilters}
-                currenciesData={[
-                  {currencyCode: 'USD', data: usdSalePointData},
-                  {currencyCode: 'VES', data: vesSalePointData},
+                salesGameTypeData={[
+                  {currencyCode: 'USD', data: usdGameTypeData},
+                  {currencyCode: 'VES', data: vesGameTypeData},
                 ]}
+                title={'Ventas por tipo de Juego'}
+              />
+            </div>
+          </div>
+        )}
+        {canLoadLotteryReport && isLotterySalesGameReport && (
+          <div className='row'>
+            <div className='col-xl-12'>
+              <SalesGameTypeReportWrapper
+                className='card-xl-stretch mb-5 mb-xl-8'
+                setTempFilters={setSalesGameTypeTempFilters}
+                tempFilters={saleGameTypeTempFilters}
+                salesLotteryGameTypeData={[
+                  {currencyCode: 'USD', data: usdLotteryGameTypeData},
+                  {currencyCode: 'VES', data: vesLotteryGameTypeData},
+                ]}
+                title={'Ventas por lotería'}
               />
             </div>
           </div>

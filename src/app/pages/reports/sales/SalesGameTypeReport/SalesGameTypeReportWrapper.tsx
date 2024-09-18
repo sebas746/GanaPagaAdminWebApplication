@@ -4,52 +4,72 @@ import {
   ISalesGameTypeDetailReport,
   ISalesGameTypeReportQueryParams,
 } from '../../../../../types/SalesGameTypeReport.types'
+import {ISalesLotteryGameTypeDetailReport} from '../../../../../types/SalesLotteryGameTypeReport.types'
 import {SalesGameTypeReport} from './SalesGameTypeReport'
+import {SalesLotteryGameTypeReport} from './SalesLotteryGameTypeReport'
 
-type CurrencyData = {
+type SalesGameTypeData = {
   currencyCode: string
   data: ISalesGameTypeDetailReport[]
+}
+
+type SalesLotteryGameTypeData = {
+  currencyCode: string
+  data: ISalesLotteryGameTypeDetailReport[]
 }
 
 type Props = {
   className: string
   setTempFilters: React.Dispatch<React.SetStateAction<ISalesGameTypeReportQueryParams>>
   tempFilters: ISalesGameTypeReportQueryParams
-  currenciesData: CurrencyData[]
+  salesGameTypeData?: SalesGameTypeData[]
+  salesLotteryGameTypeData?: SalesLotteryGameTypeData[]
+  title: string
 }
 
 const SalesGameTypeReportWrapper: React.FC<Props> = ({
   className,
   setTempFilters,
   tempFilters,
-  currenciesData,
+  salesGameTypeData,
+  salesLotteryGameTypeData,
+  title,
 }) => {
   const {mode} = useThemeMode()
   const isActive = (reportType: ReportTypes) => tempFilters.reportType === reportType
 
+  const salesDataCount =
+    salesGameTypeData?.filter((currencyData) => currencyData.data.length > 0).length ?? 0
+  const salesLotteryDataCount =
+    salesLotteryGameTypeData?.filter((currencyData) => currencyData.data.length > 0).length ?? 0
+
+  const showSalesReport = salesGameTypeData && salesGameTypeData?.length > 0 && salesDataCount > 0
+  const showLotterySalesReport =
+    salesLotteryGameTypeData && salesLotteryGameTypeData.length > 0 && salesLotteryDataCount > 0
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
       <div className='card-header border-0 pt-5'>
         <h3 className='card-title align-items-start flex-column'>
           <span className='card-label fw-bold fs-3 mb-1'>Ventas</span>
-          <span className='text-muted fw-semibold fs-7'>Puntos de venta</span>
+          <span className='text-muted fw-semibold fs-7'>{title}</span>
         </h3>
-        <div className='mb-10 pt-5'>
+        <div className='pt-5'>
           <div>
             <select
               className='form-select form-select-solid'
               data-kt-select2='true'
               data-placeholder='Select option'
               data-allow-clear='true'
-              defaultValue={''}
+              defaultValue={tempFilters.gameType}
+              onChange={(e) => setTempFilters((prev) => ({...prev, gameType: e.target.value}))}
             >
-              <option>Todos</option>
+              <option value=''>Todos</option>
               <option value='1'>Animalitos</option>
-              <option value='2'>Tripleta</option>
-              <option value='3'>Chance 3 Cifras</option>
-              <option value='4'>Chance Zodiacal</option>
-              <option value='5'>Chance 4 Cifras</option>
+              <option value='2'>Chance 3 Cifras</option>
+              <option value='3'>Chance Zodiacal</option>
+              <option value='4'>Chance 4 Cifras</option>
+              <option value='5'>Tripleta</option>
             </select>
           </div>
         </div>
@@ -85,18 +105,33 @@ const SalesGameTypeReportWrapper: React.FC<Props> = ({
       {/* end::Header */}
 
       {/* begin::Body */}
+      {salesDataCount === 0 && salesLotteryDataCount === 0 && (
+        <div className='d-flex p-6'>No se encontraron resultados</div>
+      )}
       <div className='card-body'>
         <div className='row'>
-          {currenciesData.map((currencyData, index) => (
-            <div className='col-md-6' key={index}>
-              <SalesGameTypeReport
-                className='mb-4'
-                currencyCode={currencyData.currencyCode}
-                mode={mode}
-                data={currencyData.data}
-              />
-            </div>
-          ))}
+          {showSalesReport &&
+            salesGameTypeData.map((currencyData, index) => (
+              <div className='col-md-6' key={index}>
+                <SalesGameTypeReport
+                  className='mb-4'
+                  currencyCode={currencyData.currencyCode}
+                  mode={mode}
+                  data={currencyData.data}
+                />
+              </div>
+            ))}
+          {showLotterySalesReport &&
+            salesLotteryGameTypeData.map((currencyData, index) => (
+              <div className='col-md-6' key={index}>
+                <SalesLotteryGameTypeReport
+                  className='mb-4'
+                  currencyCode={currencyData.currencyCode}
+                  mode={mode}
+                  data={currencyData.data}
+                />
+              </div>
+            ))}
         </div>
       </div>
       {/* end::Body */}
