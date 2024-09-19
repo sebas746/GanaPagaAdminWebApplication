@@ -93,11 +93,7 @@ function getChartOptions(height: number): ApexOptions {
     series: [
       {
         name: 'USD',
-        data: [440, 550, 571, 566, 611],
-      },
-      {
-        name: 'VES',
-        data: [766, 850, 101, 980, 874],
+        data: [1500, 250, 100, 91, 66],
       },
     ],
     chart: {
@@ -127,7 +123,7 @@ function getChartOptions(height: number): ApexOptions {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: ['Punto 1', 'Punto 2', 'Punto 3', 'Punto 4', 'Punto 5'],
+      categories: ['Animalitos', 'Tripleta', 'Chance 3', 'Chance Zodiacal', 'Chance 4'],
       axisBorder: {
         show: false,
       },

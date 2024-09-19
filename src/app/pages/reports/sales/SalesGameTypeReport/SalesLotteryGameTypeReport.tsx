@@ -2,18 +2,29 @@
 import React, {useEffect, useRef} from 'react'
 import ApexCharts, {ApexOptions} from 'apexcharts'
 import {getCSS, getCSSVariableValue} from '../../../../../_metronic/assets/ts/_utils'
-import {ISalesSalePointDetailBarReport} from '../../../../../types/BarReport.types'
 import {CURRENCY_USD} from '../../../../constants/reports.constants'
 import {formatCurrency} from '../../../../helpers/currency.helpers'
+import {ISalesLotteryGameTypeDetailReport} from '../../../../../types/SalesLotteryGameTypeReport.types'
 
 type Props = {
+  className: string
   currencyCode: string
-  data: ISalesSalePointDetailBarReport[]
   mode: string
+  data: ISalesLotteryGameTypeDetailReport[]
 }
 
-const BarSalesSalePointReport: React.FC<Props> = ({currencyCode, data, mode}) => {
+const SalesLotteryGameTypeReport: React.FC<Props> = ({className, currencyCode, mode, data}) => {
   const chartRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const chart = refreshChart()
+
+    return () => {
+      if (chart) {
+        chart.destroy()
+      }
+    }
+  }, [chartRef, mode, data])
 
   const refreshChart = () => {
     if (!chartRef.current) {
@@ -30,24 +41,19 @@ const BarSalesSalePointReport: React.FC<Props> = ({currencyCode, data, mode}) =>
     return chart
   }
 
-  useEffect(() => {
-    const chart = refreshChart()
-    return () => {
-      if (chart) {
-        chart.destroy()
-      }
-    }
-  }, [chartRef, mode, data])
-
-  return <div ref={chartRef} id={`chart-${currencyCode}`} style={{height: '350px'}}></div>
+  return (
+    <div className={className}>
+      <div ref={chartRef} id='kt_charts_widget_1_chart' style={{height: '350px'}} />
+    </div>
+  )
 }
 
-export {BarSalesSalePointReport}
+export {SalesLotteryGameTypeReport}
 
 function getChartOptions(
   height: number,
   currencyCode: string,
-  data: ISalesSalePointDetailBarReport[]
+  data: ISalesLotteryGameTypeDetailReport[]
 ): ApexOptions {
   const labelColor = getCSSVariableValue('--bs-gray-500')
   const borderColor = getCSSVariableValue('--bs-gray-200')
@@ -57,12 +63,13 @@ function getChartOptions(
       : getCSSVariableValue('--bs-danger')
   const secondaryColor = getCSSVariableValue('--bs-danger')
 
-  const salePoints = data.map((item) => item.salePoint)
+  const lotteryNames = data.map((item) => item.lotteryName)
   const totalSales = data.map((item) => item.totalSales)
+
   return {
     series: [
       {
-        name: 'Total Ventas',
+        name: currencyCode,
         data: totalSales,
       },
     ],
@@ -93,7 +100,7 @@ function getChartOptions(
       colors: ['transparent'],
     },
     xaxis: {
-      categories: salePoints,
+      categories: lotteryNames,
       axisBorder: {
         show: false,
       },
@@ -103,7 +110,7 @@ function getChartOptions(
       labels: {
         style: {
           colors: labelColor,
-          fontSize: '12px',
+          fontSize: '10px',
         },
       },
     },
@@ -111,13 +118,14 @@ function getChartOptions(
       labels: {
         style: {
           colors: labelColor,
-          fontSize: '12px',
+          fontSize: '14px',
         },
       },
     },
     fill: {
       opacity: 1,
     },
+
     states: {
       normal: {
         filter: {

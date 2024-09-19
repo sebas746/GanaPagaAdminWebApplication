@@ -1,7 +1,4 @@
-import React, {useEffect, useRef} from 'react'
-import ApexCharts, {ApexOptions} from 'apexcharts'
 import {useThemeMode} from '../../../../../_metronic/partials'
-import {getCSS, getCSSVariableValue} from '../../../../../_metronic/assets/ts/_utils'
 import {ISalesPaymentReportQueryParams} from '../../../../../types/SalesSalePointReport.types'
 import {ReportTypes} from '../../../../../types/DonutSalesPaymentReport.types'
 import {ISalesSalePointDetailBarReport} from '../../../../../types/BarReport.types'
