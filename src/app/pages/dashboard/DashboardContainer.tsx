@@ -15,7 +15,18 @@ const DashboardContainer = () => {
     saleSalesPointTempFilters,
     setSalesSalePointTempFilters,
   } = useBarSalesSalePointReport()
-  const canLoadDonutReports = !isLoading && usdDailyData.totalSales && usdMonthlyData.totalSales
+  const canLoadUsdDailyReport =
+    !isLoading && (usdDailyData.totalSales > 0 || usdDailyData.totalPaid > 0)
+
+  const canLoadVesDailyReport =
+    !isLoading && (vesDailyData.totalSales > 0 || vesDailyData.totalPaid > 0)
+
+  const canLoadUsdMonthlyReport =
+    !isLoading && (usdMonthlyData.totalSales > 0 || usdMonthlyData.totalPaid > 0)
+
+  const canLoadVesMonthlyReport =
+    !isLoading && (vesMonthlyData.totalSales > 0 || vesMonthlyData.totalPaid > 0)
+
   const canLoadBarReports =
     !isLoadingSalesSalePointReport && salesSalePointData && salesSalePointData.length > 0
 
@@ -28,10 +39,10 @@ const DashboardContainer = () => {
   return (
     <>
       <HasPermission resource='dashboard' actions={['dashboard']}>
-        <RenderLoader show={isLoading} huge={true} />
-        {canLoadDonutReports && (
-          <div className='row'>
-            {/* Daily Report Card */}
+        <RenderLoader show={isLoading || isLoadingSalesSalePointReport} huge={true} />
+        <div className='row'>
+          {/* Daily Report Card */}
+          {(canLoadUsdDailyReport || canLoadVesDailyReport) && (
             <div className='col-xl-6'>
               <div className='card card-xl-stretch mb-5 mb-xl-8'>
                 <div className='card-header'>
@@ -39,30 +50,36 @@ const DashboardContainer = () => {
                 </div>
                 <div className='row'>
                   <div className='col-md-6'>
-                    <DonutSalesPaymentReport
-                      chartColor='primary'
-                      chartHeight='200px'
-                      title='USD'
-                      currencyCode='USD'
-                      reportData={usdDailyData}
-                      className={'mb-5'}
-                    />
+                    {canLoadUsdDailyReport && (
+                      <DonutSalesPaymentReport
+                        chartColor='primary'
+                        chartHeight='200px'
+                        title='USD'
+                        currencyCode='USD'
+                        reportData={usdDailyData}
+                        className={'mb-5'}
+                      />
+                    )}
                   </div>
                   <div className='col-md-6'>
-                    <DonutSalesPaymentReport
-                      chartColor='danger'
-                      chartHeight='200px'
-                      title='VES'
-                      currencyCode='VES'
-                      reportData={vesDailyData}
-                      className={'mb-5'}
-                    />
+                    {canLoadVesDailyReport && (
+                      <DonutSalesPaymentReport
+                        chartColor='danger'
+                        chartHeight='200px'
+                        title='VES'
+                        currencyCode='VES'
+                        reportData={vesDailyData}
+                        className={'mb-5'}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
             </div>
+          )}
 
-            {/* Monthly Report Card */}
+          {/* Monthly Report Card */}
+          {(canLoadUsdMonthlyReport || canLoadVesMonthlyReport) && (
             <div className='col-xl-6'>
               <div className='card card-xl-stretch mb-5 mb-xl-8'>
                 <div className='card-header'>
@@ -70,31 +87,34 @@ const DashboardContainer = () => {
                 </div>
                 <div className='row'>
                   <div className='col-md-6'>
-                    <DonutSalesPaymentReport
-                      chartColor='primary'
-                      chartHeight='200px'
-                      title='USD'
-                      currencyCode='USD'
-                      reportData={usdMonthlyData}
-                      className={'mb-5'}
-                    />
+                    {canLoadUsdMonthlyReport && (
+                      <DonutSalesPaymentReport
+                        chartColor='primary'
+                        chartHeight='200px'
+                        title='USD'
+                        currencyCode='USD'
+                        reportData={usdMonthlyData}
+                        className={'mb-5'}
+                      />
+                    )}
                   </div>
                   <div className='col-md-6'>
-                    <DonutSalesPaymentReport
-                      chartColor='danger'
-                      chartHeight='200px'
-                      title='VES'
-                      currencyCode='VES'
-                      reportData={vesMonthlyData}
-                      className={'mb-5'}
-                    />
+                    {canLoadVesMonthlyReport && (
+                      <DonutSalesPaymentReport
+                        chartColor='danger'
+                        chartHeight='200px'
+                        title='VES'
+                        currencyCode='VES'
+                        reportData={vesMonthlyData}
+                        className={'mb-5'}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-
+          )}
+        </div>
         {canLoadBarReports && (
           <div className='row'>
             <div className='col-xl-12'>

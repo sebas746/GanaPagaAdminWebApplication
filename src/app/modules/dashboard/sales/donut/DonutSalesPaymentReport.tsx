@@ -23,6 +23,7 @@ const DonutSalesPaymentReport: React.FC<Props> = ({
   currencyCode,
   reportData,
 }) => {
+  console.log(reportData)
   const chartRef = useRef<HTMLDivElement | null>(null)
   const {mode} = useThemeMode()
   const refreshChart = () => {

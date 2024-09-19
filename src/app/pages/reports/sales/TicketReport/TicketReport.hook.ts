@@ -275,7 +275,7 @@ export const useTicketReport = () => {
   }, [ticketReportUsdState.params])
 
   useEffect(() => {
-    if (!isFetchingVes && shouldFetchDataUsd) {
+    if (!isFetchingVes && shouldFetchDataVes) {
       getVesTicketsReport()
     }
   }, [ticketReportVesState.params])
