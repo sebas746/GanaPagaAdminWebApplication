@@ -88,6 +88,7 @@ export interface IAnimalitosLotteryGeneralSetting {
   currencyCode: CurrencyCode
   maxBetByAnimal: number
   maxAnimalsByTicket: number
+  maxOverallTripletaBet: number
 }
 
 export interface IAnimalitoUpdateSettings {
@@ -100,6 +101,7 @@ export interface IAnimalitoUpdateGeneralSettings {
   currencyCode: CurrencyCode
   maxBetByAnimal: number
   maxAnimalsByTicket: number
+  maxOverallTripletaBet: number
 }
 
 export interface ISettingsAnimalitosResponse {

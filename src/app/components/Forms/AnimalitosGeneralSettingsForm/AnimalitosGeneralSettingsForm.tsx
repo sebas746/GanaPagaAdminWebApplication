@@ -87,6 +87,27 @@ function AnimalitosGeneralSettingsForm({
                   </Form.Control.Feedback>
                 </Col>
               </Row>
+              <Row className='mb-6'>
+                <Col>
+                  <Form.Label className={'text-dark'}>
+                    {getAnimalitosGeneralSettingsLabel('maxOverallTripletaBet')}
+                  </Form.Label>
+                </Col>
+                <Col>
+                  <Form.Control
+                    id='maxOverallTripletaBet'
+                    placeholder={getAnimalitosGeneralSettingsLabel('maxOverallTripletaBet')}
+                    value={formikVes.values.maxOverallTripletaBet}
+                    onChange={formikVes.handleChange}
+                    isInvalid={!!formikVes.errors.maxOverallTripletaBet}
+                    type='number'
+                    autoComplete='off'
+                  />
+                  <Form.Control.Feedback type='invalid'>
+                    {formikVes.errors.maxOverallTripletaBet}
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
             </Form>
           </Card.Body>
         </Card>
@@ -137,6 +158,27 @@ function AnimalitosGeneralSettingsForm({
                   />
                   <Form.Control.Feedback type='invalid'>
                     {formikUsd.errors.maxAnimalsByTicket}
+                  </Form.Control.Feedback>
+                </Col>
+              </Row>
+              <Row className='mb-6'>
+                <Col>
+                  <Form.Label className={'text-dark'}>
+                    {getAnimalitosGeneralSettingsLabel('maxOverallTripletaBet')}
+                  </Form.Label>
+                </Col>
+                <Col>
+                  <Form.Control
+                    id='maxOverallTripletaBet'
+                    placeholder={getAnimalitosGeneralSettingsLabel('maxOverallTripletaBet')}
+                    value={formikUsd.values.maxOverallTripletaBet}
+                    onChange={formikUsd.handleChange}
+                    isInvalid={!!formikUsd.errors.maxOverallTripletaBet}
+                    type='number'
+                    autoComplete='off'
+                  />
+                  <Form.Control.Feedback type='invalid'>
+                    {formikUsd.errors.maxOverallTripletaBet}
                   </Form.Control.Feedback>
                 </Col>
               </Row>

@@ -40,6 +40,17 @@ export const useAnimalitosGeneralSettingsForm = (
         animalitosSettingsLimits.maxAnimalsByTicket,
         `Número máximo de animales por sorteo y tiquete debe ser inferior a ${animalitosSettingsLimits.maxAnimalsByTicket}`
       ),
+    maxOverallTripletaBet: Yup.number()
+      .typeError(animalitosSettingsLimits.numericValue)
+      .required('Cupo máximo por sorteo y combinación de tripleta es requerido')
+      .min(
+        animalitosSettingsLimits.minOverallTripletaBet,
+        `Cupo máximo por sorteo y combinación de tripleta debe ser superior a ${animalitosSettingsLimits.minOverallTripletaBet}`
+      )
+      .max(
+        animalitosSettingsLimits.maxOverallTripletaBet,
+        `Cupo máximo por sorteo y combinación de tripleta debe ser inferior a ${animalitosSettingsLimits.maxOverallTripletaBet}`
+      ),
   })
 
   initialValues.forEach((animalito) => {
@@ -57,6 +68,7 @@ export const useAnimalitosGeneralSettingsForm = (
       currencyCode: initialValuesVes.currencyCode,
       maxBetByAnimal: initialValuesVes.maxBetByAnimal,
       maxAnimalsByTicket: initialValuesVes.maxAnimalsByTicket,
+      maxOverallTripletaBet: initialValuesVes.maxOverallTripletaBet,
     },
     validationSchema: settingAnimalitosSchema,
     onSubmit: () => {},
@@ -69,6 +81,7 @@ export const useAnimalitosGeneralSettingsForm = (
       currencyCode: initialValuesUsd.currencyCode,
       maxBetByAnimal: initialValuesUsd.maxBetByAnimal,
       maxAnimalsByTicket: initialValuesUsd.maxAnimalsByTicket,
+      maxOverallTripletaBet: initialValuesUsd.maxOverallTripletaBet,
     },
     validationSchema: settingAnimalitosSchema,
     onSubmit: () => {},
@@ -88,11 +101,13 @@ export const useAnimalitosGeneralSettingsForm = (
         currencyCode: formikVes.values.currencyCode,
         maxBetByAnimal: formikVes.values.maxBetByAnimal,
         maxAnimalsByTicket: formikVes.values.maxAnimalsByTicket,
+        maxOverallTripletaBet: formikVes.values.maxOverallTripletaBet,
       },
       {
         currencyCode: formikUsd.values.currencyCode,
         maxBetByAnimal: formikUsd.values.maxBetByAnimal,
         maxAnimalsByTicket: formikUsd.values.maxAnimalsByTicket,
+        maxOverallTripletaBet: formikUsd.values.maxOverallTripletaBet,
       },
     ]
     submitForm(animalitosSettings)
