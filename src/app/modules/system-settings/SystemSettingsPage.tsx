@@ -32,6 +32,17 @@ function SystemSettingsPage() {
             </>
           }
         />
+        <Route
+          path='game-settings'
+          element={
+            <>
+              <PageTitle breadcrumbs={systemSettingsBreadCrumbs}>
+                Configuración global juegos
+              </PageTitle>
+              <ExchangeRateSettings />
+            </>
+          }
+        />
       </Route>
     </Routes>
   )

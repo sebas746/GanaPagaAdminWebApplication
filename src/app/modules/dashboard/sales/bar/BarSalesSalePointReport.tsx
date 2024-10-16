@@ -77,7 +77,7 @@ function getChartOptions(
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '30%',
+        columnWidth: '25%',
         borderRadius: 5,
       },
     },
@@ -103,14 +103,22 @@ function getChartOptions(
       labels: {
         style: {
           colors: labelColor,
-          fontSize: '12px',
+          fontSize: '8px',
         },
+        rotate: -90,
       },
     },
     yaxis: {
       labels: {
         style: {
           colors: labelColor,
+          fontSize: '11px',
+        },
+      },
+      title: {
+        text: `${currencyCode}`,
+        style: {
+          color: labelColor,
           fontSize: '12px',
         },
       },
