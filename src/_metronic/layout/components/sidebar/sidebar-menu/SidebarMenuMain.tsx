@@ -150,7 +150,7 @@ const SidebarMenuMain = () => {
             hasBullet={true}
           />
           <SidebarMenuItem
-            to='/pages/system-settings/settings-game'
+            to='/pages/system-settings/game-settings'
             title='Configuración global juegos'
             hasBullet={true}
           />

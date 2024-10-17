@@ -13,20 +13,20 @@ enum GameSettingsKind {
 
 interface GameSettingsStateAction {
   type: GameSettingsKind
-  payload: IGameSettingsResponse | boolean
+  payload: IGameSettingsResponse[] | boolean
 }
 
 interface GameSettingsState {
-  GameSettings: IGameSettingsResponse
+  GameSettings: IGameSettingsResponse[]
   isLoadingGame: boolean
 }
 
-export const GameSettingsReducer = (state: GameSettingsState, action: GameSettingsStateAction) => {
+export const gameSettingsReducer = (state: GameSettingsState, action: GameSettingsStateAction) => {
   switch (action.type) {
     case GameSettingsKind.SET_GAME_SETTINGS:
       return {
         ...state,
-        GameSettings: action.payload as IGameSettingsResponse,
+        GameSettings: action.payload as IGameSettingsResponse[],
       }
     case GameSettingsKind.SET_IS_LOADING:
       return {
@@ -37,8 +37,8 @@ export const GameSettingsReducer = (state: GameSettingsState, action: GameSettin
 }
 
 export const useGameSettings = () => {
-  const [GameSettingsState, dispatchGameSettings] = useReducer(GameSettingsReducer, {
-    GameSettings: {} as IGameSettingsResponse,
+  const [gameSettingsState, dispatchGameSettings] = useReducer(gameSettingsReducer, {
+    GameSettings: [] as IGameSettingsResponse[],
     isLoadingGame: false,
   })
 
@@ -46,11 +46,12 @@ export const useGameSettings = () => {
     data: gameSettingsData,
     isFetching,
     refetch: getGameSettings,
-  } = useQuery<ReactQueryResponse<IGameSettingsResponse>>('get-game-settings', async () => {
-    return await axios.get(`/GameSettings/get-game-settings`)
-  })
+  } = useQuery<ReactQueryResponse<IGameSettingsResponse[]>>(
+    'get-game-settings',
+    async () => await axios.get(`/GameSettings/get-game-settings`)
+  )
 
-  const setGameSettings = (payload: IGameSettingsResponse) => {
+  const setGameSettings = (payload: IGameSettingsResponse[]) => {
     dispatchGameSettings({type: GameSettingsKind.SET_GAME_SETTINGS, payload})
   }
 
@@ -61,8 +62,8 @@ export const useGameSettings = () => {
   }, [gameSettingsData])
 
   const {mutate: addGameSettings, isLoading: isSavingGameSettings} = useMutation({
-    mutationFn: async (body: IGameSettingsResponse) => {
-      return await axios.post(`/GameSettings/update-game-setings`, body)
+    mutationFn: async (body: IGameSettingsResponse[]) => {
+      return await axios.post(`/GameSettings/update-game-settings`, body)
     },
     onSuccess(data) {
       handleSuccessResponse(data)
@@ -100,10 +101,8 @@ export const useGameSettings = () => {
 
   return {
     isLoading: isFetching,
-    GameSettingsState,
+    gameSettingsState,
     addGameSettings,
     isLoadingForm: isSavingGameSettings,
   }
 }
-
-export {}
