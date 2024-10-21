@@ -39,7 +39,7 @@ const BarSalesSalePointReport: React.FC<Props> = ({currencyCode, data, mode}) =>
     }
   }, [chartRef, mode, data])
 
-  return <div ref={chartRef} id={`chart-${currencyCode}`} style={{height: '350px'}}></div>
+  return <div ref={chartRef} id={`chart-${currencyCode}`} style={{height: '400px'}}></div>
 }
 
 export {BarSalesSalePointReport}
@@ -77,7 +77,7 @@ function getChartOptions(
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '30%',
+        columnWidth: '25%',
         borderRadius: 5,
       },
     },
@@ -103,14 +103,22 @@ function getChartOptions(
       labels: {
         style: {
           colors: labelColor,
-          fontSize: '12px',
+          fontSize: '11px',
         },
+        rotate: -45,
       },
     },
     yaxis: {
       labels: {
         style: {
           colors: labelColor,
+          fontSize: '11px',
+        },
+      },
+      title: {
+        text: `${currencyCode}`,
+        style: {
+          color: labelColor,
           fontSize: '12px',
         },
       },

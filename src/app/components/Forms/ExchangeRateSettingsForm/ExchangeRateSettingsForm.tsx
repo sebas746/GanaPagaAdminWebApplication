@@ -18,7 +18,6 @@ const ExchangeRateSettingsForm = ({
   submitForm,
 }: ExchangeRateSettingsFormProps) => {
   const {formik, onSubmit} = useExchangeRateSettingsForm(initialValues, submitForm)
-  console.log(formik)
   return (
     <>
       <Stack className='w-50' gap={4} direction='horizontal'>

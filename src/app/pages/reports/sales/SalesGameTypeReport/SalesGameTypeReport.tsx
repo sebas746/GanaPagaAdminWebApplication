@@ -121,6 +121,13 @@ function getChartOptions(
           fontSize: '12px',
         },
       },
+      title: {
+        text: `${currencyCode}`,
+        style: {
+          color: labelColor,
+          fontSize: '12px',
+        },
+      },
     },
     fill: {
       opacity: 1,
