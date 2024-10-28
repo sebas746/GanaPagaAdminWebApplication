@@ -149,6 +149,11 @@ const SidebarMenuMain = () => {
             title='Configuración tasa de cambio'
             hasBullet={true}
           />
+          <SidebarMenuItem
+            to='/pages/system-settings/game-settings'
+            title='Configuración global juegos'
+            hasBullet={true}
+          />
         </SidebarMenuItemWithSub>
       )}
 
