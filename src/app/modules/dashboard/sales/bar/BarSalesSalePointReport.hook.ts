@@ -79,7 +79,7 @@ export const useBarSalesSalePointReport = () => {
     'get-total-sales-by-sale-point-report',
     async () => {
       const url = buildUrl(`/SalesReport/get-total-sales-by-sale-point-report`, {
-        promoterId: salesSalePointReportState.params.promoterId,
+        promoterId: promoterId,
         reportType: salesSalePointReportState.params.reportType,
       })
       return await axios.get(url)

@@ -1,5 +1,6 @@
 import HasPermission from '../../components/HasPermissions/HasPermissions'
 import RenderLoader from '../../components/RenderLoader/RenderLoader'
+import {getCurrentMonthInSpanish} from '../../helpers/utilities.helpers'
 import {useBarSalesSalePointReport} from '../../modules/dashboard/sales/bar/BarSalesSalePointReport.hook'
 import {BarSalesSalePointReportWrapper} from '../../modules/dashboard/sales/bar/BarSalesSalePointReportWrapper'
 import {DonutSalesPaymentReport} from '../../modules/dashboard/sales/donut/DonutSalesPaymentReport'
@@ -83,7 +84,7 @@ const DashboardContainer = () => {
             <div className='col-xl-6'>
               <div className='card card-xl-stretch mb-5 mb-xl-8'>
                 <div className='card-header'>
-                  <h3 className='card-title'>Balance - Mes en curso</h3>
+                  <h3 className='card-title'>Balance - {getCurrentMonthInSpanish()}</h3>
                 </div>
                 <div className='row'>
                   <div className='col-md-6'>

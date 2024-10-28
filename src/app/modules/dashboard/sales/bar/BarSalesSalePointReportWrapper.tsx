@@ -3,6 +3,9 @@ import {ISalesPaymentReportQueryParams} from '../../../../../types/SalesSalePoin
 import {ReportTypes} from '../../../../../types/DonutSalesPaymentReport.types'
 import {ISalesSalePointDetailBarReport} from '../../../../../types/BarReport.types'
 import {BarSalesSalePointReport} from './BarSalesSalePointReport'
+import {useState} from 'react'
+import {getReportDateRange} from '../../../../helpers/utilities.helpers'
+import {usePromoterList} from '../../../../hooks/promoterList.hook'
 
 type CurrencyData = {
   currencyCode: string
@@ -24,14 +27,33 @@ const BarSalesSalePointReportWrapper: React.FC<Props> = ({
 }) => {
   const {mode} = useThemeMode()
   const isActive = (reportType: ReportTypes) => tempFilters.reportType === reportType
+  const {promoterName} = usePromoterList()
+
+  // Use initial date range for the daily report by default
+  const [dateRange, setDateRange] = useState<{initialDate: Date; endDate: Date}>(
+    getReportDateRange(tempFilters.reportType)
+  )
+
+  const handleReportTypeChange = (type: ReportTypes) => {
+    setTempFilters((prev) => ({...prev, reportType: type}))
+    setDateRange(getReportDateRange(type))
+  }
+
+  const formatDate = (date: Date) => date.toLocaleDateString('es-ES')
 
   return (
     <div className={`card ${className}`}>
       {/* begin::Header */}
       <div className='card-header border-0 pt-5'>
         <h3 className='card-title align-items-start flex-column'>
-          <span className='card-label fw-bold fs-3 mb-1'>Ventas</span>
-          <span className='text-muted fw-semibold fs-7'>Puntos de venta</span>
+          <span className='card-label fw-bold fs-3 mb-1'>Ventas - Promotor: {promoterName} </span>
+          <span className='text-muted fw-semibold fs-7'>
+            <div>
+              <p>
+                {formatDate(dateRange.initialDate)} - {formatDate(dateRange.endDate)}
+              </p>
+            </div>
+          </span>
         </h3>
 
         {/* begin::Toolbar */}
@@ -40,7 +62,7 @@ const BarSalesSalePointReportWrapper: React.FC<Props> = ({
             className={`btn btn-sm btn-color-muted ${
               isActive(ReportTypes.Monthly) ? 'btn-active btn-active-primary active' : ''
             } px-4 me-1`}
-            onClick={() => setTempFilters((prev) => ({...prev, reportType: ReportTypes.Monthly}))}
+            onClick={() => handleReportTypeChange(ReportTypes.Monthly)}
           >
             Mensual
           </div>
@@ -48,7 +70,7 @@ const BarSalesSalePointReportWrapper: React.FC<Props> = ({
             className={`btn btn-sm btn-color-muted ${
               isActive(ReportTypes.Weekly) ? 'btn-active btn-active-primary active' : ''
             } px-4 me-1`}
-            onClick={() => setTempFilters((prev) => ({...prev, reportType: ReportTypes.Weekly}))}
+            onClick={() => handleReportTypeChange(ReportTypes.Weekly)}
           >
             Semanal
           </div>
@@ -56,7 +78,7 @@ const BarSalesSalePointReportWrapper: React.FC<Props> = ({
             className={`btn btn-sm btn-color-muted ${
               isActive(ReportTypes.Daily) ? 'btn-active btn-active-primary active' : ''
             } px-4`}
-            onClick={() => setTempFilters((prev) => ({...prev, reportType: ReportTypes.Daily}))}
+            onClick={() => handleReportTypeChange(ReportTypes.Daily)}
           >
             Diario
           </div>

@@ -1,25 +1,35 @@
-import { IPromoter } from '../../types/Promoter.types';
-import { AUTH_TOKEN, PROMOTERS_LIST, PROMOTER_ID, PROMOTER_LOGO } from '../constants/localstorage.constants';
+import {IPromoter} from '../../types/Promoter.types'
+import {
+  AUTH_TOKEN,
+  PROMOTERS_LIST,
+  PROMOTER_ID,
+  PROMOTER_LOGO,
+  PROMOTER_NAME,
+} from '../constants/localstorage.constants'
 
 export const isLoggedIn = () => {
-  const token = localStorage.getItem(AUTH_TOKEN);
-  return token !== null;
-};
+  const token = localStorage.getItem(AUTH_TOKEN)
+  return token !== null
+}
 
 export const setToken = (token: string) => {
-  localStorage.setItem(AUTH_TOKEN, token);
-};
+  localStorage.setItem(AUTH_TOKEN, token)
+}
 
 export const getToken = () => {
-  return localStorage.getItem(AUTH_TOKEN);
-};
+  return localStorage.getItem(AUTH_TOKEN)
+}
 
 export const removeToken = () => {
-  localStorage.removeItem(AUTH_TOKEN);
-};
+  localStorage.removeItem(AUTH_TOKEN)
+}
 
 export const setStoragePromoterId = (promoterId: string) => {
   localStorage.setItem(PROMOTER_ID, promoterId)
+}
+
+export const setStoragePromoterName = (promoterName: string) => {
+  localStorage.setItem(PROMOTER_NAME, promoterName)
 }
 
 export const setPromoterLogoUrl = (promoterLogo: string) => {
@@ -38,3 +48,10 @@ export const removeStoragePromoterId = () => {
   localStorage.removeItem(PROMOTER_ID)
 }
 
+export const getStoragePromoterName = () => {
+  return localStorage.getItem(PROMOTER_NAME)
+}
+
+export const removeStoragePromoterName = () => {
+  localStorage.removeItem(PROMOTER_NAME)
+}
