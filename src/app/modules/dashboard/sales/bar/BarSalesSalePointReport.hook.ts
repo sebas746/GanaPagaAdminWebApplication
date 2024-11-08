@@ -8,32 +8,32 @@ import {ReactQueryResponse} from '../../../../../types/Generics'
 import {useQuery} from 'react-query'
 import {ISalesSalePointBarReport} from '../../../../../types/BarReport.types'
 
-enum BarSalesSellersReportKind {
+enum BarSalesSalePointReportKind {
   SET_DATA = 'SET_DATA',
   SET_PARAMS = 'SET_PARAMS',
 }
 
-interface BarSalesSellersReportAction {
-  type: BarSalesSellersReportKind
+interface BarSalesSalePointReportAction {
+  type: BarSalesSalePointReportKind
   payload: ISalesSalePointBarReport[] | ISalesPaymentReportQueryParams
 }
 
-interface BarSalesSellersReportState {
+interface BarSalesSalePointReportState {
   data: ISalesSalePointBarReport[]
   params: ISalesPaymentReportQueryParams
 }
 
-export const barSalesSellersReportReducer = (
-  state: BarSalesSellersReportState,
-  action: BarSalesSellersReportAction
+export const barSalesSalePointReportReducer = (
+  state: BarSalesSalePointReportState,
+  action: BarSalesSalePointReportAction
 ) => {
   switch (action.type) {
-    case BarSalesSellersReportKind.SET_DATA:
+    case BarSalesSalePointReportKind.SET_DATA:
       return {
         ...state,
         data: action.payload as ISalesSalePointBarReport[],
       }
-    case BarSalesSellersReportKind.SET_PARAMS:
+    case BarSalesSalePointReportKind.SET_PARAMS:
       return {
         ...state,
         params: action.payload as ISalesPaymentReportQueryParams,
@@ -44,7 +44,7 @@ export const barSalesSellersReportReducer = (
 export const useBarSalesSalePointReport = () => {
   const {promoterId} = usePromoterList()
   const [salesSalePointReportState, dispatchSalesSalePointReport] = useReducer(
-    barSalesSellersReportReducer,
+    barSalesSalePointReportReducer,
     {
       data: [] as ISalesSalePointBarReport[],
       params: {
@@ -66,7 +66,7 @@ export const useBarSalesSalePointReport = () => {
 
   const handleFilterChange = (filterName: keyof ISalesPaymentReportQueryParams, value: any) => {
     dispatchSalesSalePointReport({
-      type: BarSalesSellersReportKind.SET_PARAMS,
+      type: BarSalesSalePointReportKind.SET_PARAMS,
       payload: {[filterName]: value} as ISalesPaymentReportQueryParams,
     })
   }
@@ -94,7 +94,7 @@ export const useBarSalesSalePointReport = () => {
   }, [salesSalePointReportState.params])
 
   const setDailyData = (payload: ISalesSalePointBarReport[]) => {
-    dispatchSalesSalePointReport({type: BarSalesSellersReportKind.SET_DATA, payload})
+    dispatchSalesSalePointReport({type: BarSalesSalePointReportKind.SET_DATA, payload})
   }
 
   useEffect(() => {

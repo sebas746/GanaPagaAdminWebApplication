@@ -92,11 +92,23 @@ const BarSalesSalePointReportWrapper: React.FC<Props> = ({
         <div className='row'>
           {currenciesData.map((currencyData, index) => (
             <div className='col-md-6' key={index}>
-              <BarSalesSalePointReport
-                currencyCode={currencyData.currencyCode}
-                data={currencyData.data}
-                mode={mode}
-              />
+              {currencyData && currencyData.data.length > 0 ? (
+                <BarSalesSalePointReport
+                  currencyCode={currencyData.currencyCode}
+                  data={currencyData.data}
+                  mode={mode}
+                  height={400}
+                />
+              ) : (
+                <div
+                  className='d-flex align-items-center justify-content-center'
+                  style={{height: '200px'}}
+                >
+                  <span className='text-center text-gray-500'>
+                    No hay información disponible ({currencyData.currencyCode}).
+                  </span>
+                </div>
+              )}
             </div>
           ))}
         </div>
