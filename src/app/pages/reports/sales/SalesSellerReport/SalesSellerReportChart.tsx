@@ -1,10 +1,10 @@
 import {useThemeMode} from '../../../../../_metronic/partials'
-import {ISalesSalePointDetailBarReport} from '../../../../../types/BarReport.types'
-import {BarSalesSalePointReport} from '../../../../modules/dashboard/sales/bar/BarSalesSalePointReport'
+import {ISalesSellersDetailBarReport} from '../../../../../types/BarReport.types'
+import {BarSalesSellersReport} from '../../../../modules/dashboard/sales/bar/BarSalesSellersReport'
 
 type CurrencyData = {
   currencyCode: string
-  data: ISalesSalePointDetailBarReport[]
+  data: ISalesSellersDetailBarReport[]
 }
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
   promoterName: string | null
 }
 
-const SalesSalePointReportChart: React.FC<Props> = ({currenciesData, promoterName}) => {
+const SalesSellerReportChart: React.FC<Props> = ({currenciesData, promoterName}) => {
   const {mode} = useThemeMode()
   return (
     <>
@@ -25,7 +25,7 @@ const SalesSalePointReportChart: React.FC<Props> = ({currenciesData, promoterNam
           {currenciesData.map((currencyData, index) => (
             <div className='col-md-6' key={index}>
               {currencyData && currencyData.data.length > 0 ? (
-                <BarSalesSalePointReport
+                <BarSalesSellersReport
                   currencyCode={currencyData.currencyCode}
                   data={currencyData.data}
                   mode={mode}
@@ -51,4 +51,4 @@ const SalesSalePointReportChart: React.FC<Props> = ({currenciesData, promoterNam
   )
 }
 
-export default SalesSalePointReportChart
+export default SalesSellerReportChart

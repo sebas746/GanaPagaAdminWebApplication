@@ -31,7 +31,7 @@ interface SalesSalePointReportTableProps {
   promoterName: string | null
 }
 
-const SalesSellerReportTable = ({
+const SalesSalePointReportTable = ({
   salesSalePointReportPaginated,
   params,
   handleFilterChange,
@@ -47,8 +47,6 @@ const SalesSellerReportTable = ({
   const dataIsReady = !isLoading && salesSalePointReportPaginated?.totalCount > 0
   const dataIsEmpty = !isLoading && salesSalePointReportPaginated?.totalCount === 0
   const totalPages = Math.ceil(salesSalePointReportPaginated.totalCount / params.pageSize)
-
-  // State to toggle between table/report view and chart view
   const [showChart, setShowChart] = useState(false)
 
   return (
@@ -130,11 +128,10 @@ const SalesSellerReportTable = ({
         {/* Loader */}
         {isLoading && <RenderLoader show={isLoading} huge={true} />}
         {/* Toggle Chart Button */}
-        {/* Switch to Toggle Between Views */}
         <div className='d-flex justify-content-end mt-3'>
           <Form.Check
             type='switch'
-            id='toggle-chart-view'
+            id='custom-switch'
             label={showChart ? 'Ver Reporte' : 'Ver Gráfico'}
             checked={showChart}
             onChange={() => setShowChart((prev) => !prev)}
@@ -228,4 +225,4 @@ const SalesSellerReportTable = ({
   )
 }
 
-export default SalesSellerReportTable
+export default SalesSalePointReportTable

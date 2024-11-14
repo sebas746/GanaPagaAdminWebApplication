@@ -1,4 +1,4 @@
-import {Form, Pagination} from 'react-bootstrap'
+import {Button, Form, Pagination} from 'react-bootstrap'
 import {IpaginationSalesReportResponse} from '../../../../../types/Pagination.types'
 import {
   ISalesSellerReportQueryParams,
@@ -8,6 +8,15 @@ import {
 import RenderLoader from '../../../RenderLoader/RenderLoader'
 import {formatCurrency} from '../../../../helpers/currency.helpers'
 import {DateTime} from 'luxon'
+import {ISalesSellersDetailBarReport} from '../../../../../types/BarReport.types'
+import {useState} from 'react'
+import {SalesSellerReportChartReportReducer} from '../../../../pages/reports/sales/SalesSellerReport/SalesSellerReportChart.hook'
+import SalesSellerReportChart from '../../../../pages/reports/sales/SalesSellerReport/SalesSellerReportChart'
+
+type CurrencyData = {
+  currencyCode: string
+  data: ISalesSellersDetailBarReport[]
+}
 
 interface SalesSellerReportTableProps {
   salesSellerReportPaginated: IpaginationSalesReportResponse<ISalesSellerResponse>
@@ -19,6 +28,8 @@ interface SalesSellerReportTableProps {
   tempFilters: ISalesSellerReportQueryParams
   resetFilters: () => void
   sellers: ISellerResponse[]
+  currenciesData: CurrencyData[]
+  promoterName: string | null
 }
 
 const SalesSellerReportTable = ({
@@ -31,11 +42,15 @@ const SalesSellerReportTable = ({
   tempFilters,
   resetFilters,
   sellers,
+  currenciesData,
+  promoterName,
 }: SalesSellerReportTableProps) => {
   const dataIsReady =
     !isLoading && salesSellerReportPaginated && salesSellerReportPaginated.totalCount > 0
   const dataIsEmpty =
     !isLoading && salesSellerReportPaginated && salesSellerReportPaginated.totalCount === 0
+
+  const [showChart, setShowChart] = useState(false)
   return (
     <>
       <div className='card-body py-3'>
@@ -111,7 +126,17 @@ const SalesSellerReportTable = ({
         </div>
         <div style={{borderTop: '1px solid #ddd', margin: '20px 0'}}></div>
         {isLoading && <RenderLoader show={isLoading} huge={true} />}
-        {dataIsReady && (
+        {/* Switch to Toggle Between Views */}
+        <div className='d-flex justify-content-end mt-3'>
+          <Form.Check
+            type='switch'
+            id='custom-switch'
+            label={showChart ? 'Ver Reporte' : 'Ver Gráfico'}
+            checked={showChart}
+            onChange={() => setShowChart((prev) => !prev)}
+          />
+        </div>
+        {dataIsReady && !showChart && (
           <>
             <div className='table-title text-left'>
               <h2>Reporte por vendedores</h2>
@@ -211,6 +236,9 @@ const SalesSellerReportTable = ({
         )}
         {dataIsEmpty && <div className='text-left'>No hay resultados</div>}
       </div>
+      {showChart && (
+        <SalesSellerReportChart currenciesData={currenciesData} promoterName={promoterName} />
+      )}
     </>
   )
 }

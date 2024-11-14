@@ -14,6 +14,7 @@ import {buildUrl} from '../../../../helpers/urlBuilder.helpers'
 import {DateTime} from 'luxon'
 import axios from '../../../../config/http-common'
 import {usePromoterList} from '../../../../hooks/promoterList.hook'
+import {useSalesSellerReportChartReport} from './SalesSellerReportChart.hook'
 
 enum SalesSellerReportKind {
   SET_SELLER_SALES = 'SET_SELLER_SALES',
@@ -71,7 +72,7 @@ export const salesSellerReportReducer = (
 }
 
 export const useSalesSellerReport = () => {
-  const {promoterId} = usePromoterList()
+  const {promoterId, promoterName} = usePromoterList()
   const formattedDate = DateTime.now().toFormat('yyyy-MM-dd').toString()
   const [salesSellerReportState, dispatchSalesSellerReport] = useReducer(salesSellerReportReducer, {
     salesReportPaginated: {} as IpaginationSalesReportResponse<ISalesSellerResponse>,
@@ -95,6 +96,8 @@ export const useSalesSellerReport = () => {
     sellerId: undefined,
     promoterId: salesSellerReportState.params.promoterId,
   })
+  const {getSalesSellerFilteredPointReport, isLoadingSalesSellerChartReport, salesSellerChartData} =
+    useSalesSellerReportChartReport(tempFilters)
 
   const {
     data: salesSellerReportPaginatedData,
@@ -185,6 +188,12 @@ export const useSalesSellerReport = () => {
     }
   }, [salesSellerReportPaginatedData])
 
+  const usdSalePointData =
+    salesSellerChartData.find((data) => data.currencyCode === 'USD')?.salesSellerList || []
+
+  const vesSalePointData =
+    salesSellerChartData.find((data) => data.currencyCode === 'VES')?.salesSellerList || []
+
   return {
     isLoading: isFetching,
     salesSellerReportState,
@@ -193,5 +202,8 @@ export const useSalesSellerReport = () => {
     setSalesSellerReportParams,
     handleFilterChange,
     tempFilters,
+    usdSalePointData,
+    vesSalePointData,
+    promoterName,
   }
 }
