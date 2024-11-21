@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useEffect, useRef} from 'react'
 import ApexCharts, {ApexOptions} from 'apexcharts'
-import {getCSS, getCSSVariableValue} from '../../../../../_metronic/assets/ts/_utils'
+import {getCSSVariableValue} from '../../../../../_metronic/assets/ts/_utils'
 import {ISalesSalePointDetailBarReport} from '../../../../../types/BarReport.types'
 import {CURRENCY_USD} from '../../../../constants/reports.constants'
 import {formatCurrency} from '../../../../helpers/currency.helpers'
@@ -10,9 +10,10 @@ type Props = {
   currencyCode: string
   data: ISalesSalePointDetailBarReport[]
   mode: string
+  height: number
 }
 
-const BarSalesSalePointReport: React.FC<Props> = ({currencyCode, data, mode}) => {
+const BarSalesSalePointReport: React.FC<Props> = ({currencyCode, data, mode, height}) => {
   const chartRef = useRef<HTMLDivElement | null>(null)
 
   const refreshChart = () => {
@@ -20,7 +21,7 @@ const BarSalesSalePointReport: React.FC<Props> = ({currencyCode, data, mode}) =>
       return
     }
 
-    const height = parseInt(getCSS(chartRef.current, 'height'))
+    // const height = parseInt(getCSS(chartRef.current, 'height'))
 
     const chart = new ApexCharts(chartRef.current, getChartOptions(height, currencyCode, data))
     if (chart) {
@@ -39,7 +40,7 @@ const BarSalesSalePointReport: React.FC<Props> = ({currencyCode, data, mode}) =>
     }
   }, [chartRef, mode, data])
 
-  return <div ref={chartRef} id={`chart-${currencyCode}`} style={{height: '400px'}}></div>
+  return <div ref={chartRef} id={`chart-${currencyCode}`} style={{height: height}}></div>
 }
 
 export {BarSalesSalePointReport}

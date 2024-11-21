@@ -113,23 +113,46 @@ const SalesGameTypeReportWrapper: React.FC<Props> = ({
           {showSalesReport &&
             salesGameTypeData.map((currencyData, index) => (
               <div className='col-md-6' key={index}>
-                <SalesGameTypeReport
-                  className='mb-4'
-                  currencyCode={currencyData.currencyCode}
-                  mode={mode}
-                  data={currencyData.data}
-                />
+                {currencyData.data.length > 0 ? (
+                  <SalesGameTypeReport
+                    className='mb-4'
+                    currencyCode={currencyData.currencyCode}
+                    mode={mode}
+                    data={currencyData.data}
+                  />
+                ) : (
+                  <div
+                    className='d-flex align-items-center justify-content-center'
+                    style={{height: '200px'}}
+                  >
+                    <span className='text-center text-gray-500'>
+                      No hay información disponible.
+                    </span>
+                  </div>
+                )}
               </div>
             ))}
+
           {showLotterySalesReport &&
             salesLotteryGameTypeData.map((currencyData, index) => (
               <div className='col-md-6' key={index}>
-                <SalesLotteryGameTypeReport
-                  className='mb-4'
-                  currencyCode={currencyData.currencyCode}
-                  mode={mode}
-                  data={currencyData.data}
-                />
+                {currencyData.data.length > 0 ? (
+                  <SalesLotteryGameTypeReport
+                    className='mb-4'
+                    currencyCode={currencyData.currencyCode}
+                    mode={mode}
+                    data={currencyData.data}
+                  />
+                ) : (
+                  <div
+                    className='d-flex align-items-center justify-content-center'
+                    style={{height: '200px'}}
+                  >
+                    <span className='text-center text-gray-500'>
+                      No hay información disponible.
+                    </span>
+                  </div>
+                )}
               </div>
             ))}
         </div>

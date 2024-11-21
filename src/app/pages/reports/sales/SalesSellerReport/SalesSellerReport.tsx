@@ -10,6 +10,9 @@ const SalesSellerReport = () => {
     setSalesSellerReportParams,
     handleFilterChange,
     tempFilters,
+    usdSalePointData,
+    vesSalePointData,
+    promoterName,
   } = useSalesSellerReport()
   return (
     <>
@@ -23,6 +26,11 @@ const SalesSellerReport = () => {
         setTempFilters={setTempFilters}
         tempFilters={tempFilters}
         sellers={salesSellerReportState.sellers}
+        currenciesData={[
+          {currencyCode: 'USD', data: usdSalePointData},
+          {currencyCode: 'VES', data: vesSalePointData},
+        ]}
+        promoterName={promoterName}
       />
     </>
   )

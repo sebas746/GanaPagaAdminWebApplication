@@ -1,4 +1,4 @@
-import {Form, Pagination} from 'react-bootstrap'
+import {Form, Pagination, Button} from 'react-bootstrap'
 import RenderLoader from '../../../RenderLoader/RenderLoader'
 import {formatCurrency} from '../../../../helpers/currency.helpers'
 import {DateTime} from 'luxon'
@@ -8,6 +8,14 @@ import {
   ISalesSalePointReportQueryParams,
 } from '../../../../../types/SalesSalePointReport.types'
 import {IpaginationSalesReportResponse} from '../../../../../types/Pagination.types'
+import SalesSalePointReportChart from '../../../../pages/reports/sales/SalesSalePointReport/SalesSalePointReportChart'
+import {ISalesSalePointDetailBarReport} from '../../../../../types/BarReport.types'
+import {useState} from 'react'
+
+type CurrencyData = {
+  currencyCode: string
+  data: ISalesSalePointDetailBarReport[]
+}
 
 interface SalesSalePointReportTableProps {
   salesSalePointReportPaginated: IpaginationSalesReportResponse<ISalesSalePointReport>
@@ -19,9 +27,11 @@ interface SalesSalePointReportTableProps {
   tempFilters: ISalesSalePointReportQueryParams
   resetFilters: () => void
   salePoints: ISalePointResponse[]
+  currenciesData: CurrencyData[]
+  promoterName: string | null
 }
 
-const SalesSellerReportTable = ({
+const SalesSalePointReportTable = ({
   salesSalePointReportPaginated,
   params,
   handleFilterChange,
@@ -31,14 +41,18 @@ const SalesSellerReportTable = ({
   tempFilters,
   resetFilters,
   salePoints,
+  currenciesData,
+  promoterName,
 }: SalesSalePointReportTableProps) => {
-  const dataIsReady =
-    !isLoading && salesSalePointReportPaginated && salesSalePointReportPaginated.totalCount > 0
-  const dataIsEmpty =
-    !isLoading && salesSalePointReportPaginated && salesSalePointReportPaginated.totalCount === 0
+  const dataIsReady = !isLoading && salesSalePointReportPaginated?.totalCount > 0
+  const dataIsEmpty = !isLoading && salesSalePointReportPaginated?.totalCount === 0
+  const totalPages = Math.ceil(salesSalePointReportPaginated.totalCount / params.pageSize)
+  const [showChart, setShowChart] = useState(false)
+
   return (
     <>
       <div className='card-body py-3'>
+        {/* Filter Section */}
         <div className='mb-4'>
           <div className='row mb-2'>
             {/* Initial Date Input */}
@@ -51,8 +65,8 @@ const SalesSellerReportTable = ({
                 type='date'
                 className='form-control'
                 placeholder='Fecha inicial'
-                onChange={(e) => setTempFilters((prev) => ({...prev, initialDate: e.target.value}))}
                 value={tempFilters.initialDate}
+                onChange={(e) => setTempFilters((prev) => ({...prev, initialDate: e.target.value}))}
               />
             </div>
 
@@ -66,39 +80,40 @@ const SalesSellerReportTable = ({
                 type='date'
                 className='form-control'
                 placeholder='Fecha final'
-                onChange={(e) => setTempFilters((prev) => ({...prev, endDate: e.target.value}))}
                 value={tempFilters.endDate}
+                onChange={(e) => setTempFilters((prev) => ({...prev, endDate: e.target.value}))}
               />
             </div>
 
-            {/* Role Selector */}
+            {/* Sale Point Selector */}
             <div className='col-md-3'>
-              <label htmlFor='roleSelector' className='form-label'>
+              <label htmlFor='salePointId' className='form-label'>
                 Punto de Venta
               </label>
               <Form.Select
-                id='sellerId'
+                id='salePointId'
                 className='form-control'
-                onChange={(e) => setTempFilters((prev) => ({...prev, salePointId: e.target.value}))}
                 value={tempFilters.salePointId}
+                onChange={(e) => setTempFilters((prev) => ({...prev, salePointId: e.target.value}))}
               >
                 <option value=''>Todos</option>
                 {salePoints.map((salePoint) => (
                   <option key={salePoint.salePointId} value={salePoint.salePointId}>
-                    {`${salePoint.salePointName}`}
+                    {salePoint.salePointName}
                   </option>
                 ))}
               </Form.Select>
             </div>
           </div>
 
+          {/* Action Buttons */}
           <div className='row mb-3'>
             <div className='col-md-12'>
               <div className='btn-group'>
                 <button
                   className='btn btn-primary'
                   disabled={isLoading}
-                  onClick={() => setSalesSalePointReportParams()}
+                  onClick={setSalesSalePointReportParams}
                 >
                   Buscar
                 </button>
@@ -109,9 +124,23 @@ const SalesSellerReportTable = ({
             </div>
           </div>
         </div>
+
+        {/* Loader */}
         {isLoading && <RenderLoader show={isLoading} huge={true} />}
-        {dataIsReady && (
+        {/* Toggle Chart Button */}
+        <div className='d-flex justify-content-end mt-3'>
+          <Form.Check
+            type='switch'
+            id='custom-switch'
+            label={showChart ? 'Ver Reporte' : 'Ver Gráfico'}
+            checked={showChart}
+            onChange={() => setShowChart((prev) => !prev)}
+          />
+        </div>
+        {/* Table Section */}
+        {dataIsReady && !showChart && (
           <>
+            {/* Detailed Report Table */}
             <div className='table-title text-left'>
               <h2>Reporte por puntos de venta</h2>
             </div>
@@ -127,33 +156,24 @@ const SalesSellerReportTable = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {salesSalePointReportPaginated.totalCount > 0 &&
-                    salesSalePointReportPaginated.items.map((sale, index) => (
-                      <tr
-                        className='fw-bold fs-6 text-gray-800'
-                        key={`${sale.currentDate}-${index}`}
-                      >
-                        <td className='text-center'>
-                          {DateTime.fromISO(sale.currentDate).toFormat('yyyy-MM-dd')}
-                        </td>
-                        <td className='text-center'>{sale.currencyCode}</td>
-                        <td className='text-center'>{sale.salePointName}</td>
-                        <td className='text-center'>{sale.salePointAddress}</td>
-                        <td className='text-center'>
-                          {formatCurrency(sale.totalSales, sale.currencyCode)}
-                        </td>
-                      </tr>
-                    ))}
-                  {salesSalePointReportPaginated.items.length === 0 && (
-                    <tr>
-                      <td colSpan={7} className='text-center'>
-                        No results...
+                  {salesSalePointReportPaginated.items.map((sale, index) => (
+                    <tr key={`${sale.currentDate}-${index}`} className='fw-bold fs-6 text-gray-800'>
+                      <td className='text-center'>
+                        {DateTime.fromISO(sale.currentDate).toFormat('yyyy-MM-dd')}
+                      </td>
+                      <td className='text-center'>{sale.currencyCode}</td>
+                      <td className='text-center'>{sale.salePointName}</td>
+                      <td className='text-center'>{sale.salePointAddress}</td>
+                      <td className='text-center'>
+                        {formatCurrency(sale.totalSales, sale.currencyCode)}
                       </td>
                     </tr>
-                  )}
+                  ))}
                 </tbody>
               </table>
             </div>
+
+            {/* Summary Report Table */}
             <div className='table-title text-left'>
               <h2>Reporte general</h2>
             </div>
@@ -166,27 +186,26 @@ const SalesSellerReportTable = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {salesSalePointReportPaginated.totalCount > 0 &&
-                    salesSalePointReportPaginated.salesTotals.map((sale, index) => (
-                      <tr
-                        className='fw-bold fs-6 text-gray-800'
-                        key={`${sale.currencyCode}-${index}`}
-                      >
-                        <td className='text-center'>{sale.currencyCode}</td>
-                        <td className='text-center'>
-                          {formatCurrency(sale.totalSales, sale.currencyCode)}
-                        </td>
-                      </tr>
-                    ))}
+                  {salesSalePointReportPaginated.salesTotals.map((sale, index) => (
+                    <tr
+                      key={`${sale.currencyCode}-${index}`}
+                      className='fw-bold fs-6 text-gray-800'
+                    >
+                      <td className='text-center'>{sale.currencyCode}</td>
+                      <td className='text-center'>
+                        {formatCurrency(sale.totalSales, sale.currencyCode)}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
+
+            {/* Pagination */}
             <Pagination>
-              {Array.from({
-                length: Math.ceil(salesSalePointReportPaginated.totalCount / params.pageSize),
-              }).map((_, index) => (
+              {Array.from({length: totalPages}).map((_, index) => (
                 <Pagination.Item
-                  key={index + 1}
+                  key={index}
                   active={index === params.pageIndex}
                   onClick={() => handleFilterChange('pageIndex', index)}
                 >
@@ -196,10 +215,14 @@ const SalesSellerReportTable = ({
             </Pagination>
           </>
         )}
-        {dataIsEmpty && <div className='text-left'>No hay resultados</div>}
       </div>
+
+      {/* Chart Section */}
+      {showChart && (
+        <SalesSalePointReportChart currenciesData={currenciesData} promoterName={promoterName} />
+      )}
     </>
   )
 }
 
-export default SalesSellerReportTable
+export default SalesSalePointReportTable

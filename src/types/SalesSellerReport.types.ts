@@ -27,6 +27,14 @@ export interface ISalesSellerReportQueryParams {
   promoterId?: string
 }
 
+export interface ISalesSellerFilteredReportQueryParams {
+  baseUrl: string
+  initialDate: string
+  endDate: string
+  sellerId?: string
+  promoterId?: string
+}
+
 export interface ICurrencyResponse {
   currencyId: number
   currencyCode: string
