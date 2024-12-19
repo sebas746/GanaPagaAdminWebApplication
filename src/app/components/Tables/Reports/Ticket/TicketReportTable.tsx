@@ -197,6 +197,7 @@ const TicketReportTable = ({
                     <th className='text-center fs-4 text-white'>Vendedor</th>
                     <th className='text-center fs-4 text-white'>Moneda</th>
                     <th className='text-center fs-4 text-white'>Total</th>
+                    <th className='text-center fs-4 text-white'>Premio</th>
                     <th className='text-center fs-4 text-white'>Estado</th>
                     <th className='text-center fs-4 text-white'>Acciones</th>
                   </tr>
@@ -216,6 +217,9 @@ const TicketReportTable = ({
                         <td className='text-center'>{currencyCode}</td>
                         <td className='text-center'>
                           {formatCurrency(ticket.ticketTotal, currencyCode)}
+                        </td>
+                        <td className='text-center'>
+                          {formatCurrency(ticket.ticketTotalBetToPay, currencyCode)}
                         </td>
                         <td className={`text-center ${stateToColor(ticket.ticketStatus)}`}>
                           {stateToText(ticket.ticketStatus)}
